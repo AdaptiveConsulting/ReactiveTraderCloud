@@ -60,9 +60,9 @@ export const [useSelectedInstrument] = bind(
     withLatestFrom(creditInstrumentsByCusip$),
     map(([instrumentId, creditInstrumentsByCusip]) =>
       instrumentId !== null
-        ? Object.values(creditInstrumentsByCusip).find(
+        ? (Object.values(creditInstrumentsByCusip).find(
             (instrument) => instrument.id === instrumentId,
-          ) ?? null
+          ) ?? null)
         : null,
     ),
   ),

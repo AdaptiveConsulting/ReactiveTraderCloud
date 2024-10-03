@@ -1,11 +1,10 @@
-import { fixupPluginRules } from "@eslint/compat"
 import js from "@eslint/js"
-import pluginVitest from "@vitest/eslint-plugin"
 import pluginImport from "eslint-plugin-import"
 import pluginPlaywright from "eslint-plugin-playwright"
 import pluginReact from "eslint-plugin-react"
 import pluginReactHooks from "eslint-plugin-react-hooks"
 import pluginSimpleImportSort from "eslint-plugin-simple-import-sort"
+import pluginVitest from "@vitest/eslint-plugin"
 import globals from "globals"
 import pluginTypescriptEslint from "typescript-eslint"
 
@@ -44,10 +43,10 @@ export default [
       // https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks
       // compat with ESLint v9, see https://github.com/facebook/react/issues/28313
       // recent "compatibility" PR does not address flat config at all, so still on "hacked" eslint config
+      // also need to use "rc" version - been rc for 5mths! - otherwise peer deps complaints
       "react-hooks": pluginReactHooks,
       // https://github.com/import-js/eslint-plugin-import
-      // compat with ESLint v9, see https://github.com/import-js/eslint-plugin-import/issues/2948#issuecomment-2148832701
-      import: fixupPluginRules(pluginImport),
+      import: pluginImport,
       // https://github.com/lydell/eslint-plugin-simple-import-sort
       "simple-import-sort": pluginSimpleImportSort,
     },
