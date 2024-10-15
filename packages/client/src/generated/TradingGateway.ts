@@ -501,6 +501,7 @@ function stringTypeDefinition() {
       location: { bitOffset: 0, byteOffset: 0, mask: 0 },
     },
     encoding: "Utf16" as const,
+    maxCount: undefined,
   }
 }
 
@@ -870,6 +871,7 @@ function DealerIdListTypeDefinition() {
     elementType: DealerIdTypeDefinition,
     lengthEncoding: undefined,
     firstElementOffset: 2,
+    maxCount: undefined,
   }
 }
 
@@ -933,6 +935,7 @@ function string_135TypeDefinition() {
       location: { bitOffset: 0, byteOffset: 0, mask: 0 },
     },
     encoding: "Utf16" as const,
+    maxCount: undefined,
   }
 }
 
@@ -1111,6 +1114,7 @@ function CurrencyPairUpdateListTypeDefinition() {
       location: { bitOffset: 16, byteOffset: 2, mask: 0 },
     },
     firstElementOffset: 5,
+    maxCount: undefined,
   }
 }
 
@@ -1180,6 +1184,7 @@ function SymbolTypeDefinition() {
       location: { bitOffset: 0, byteOffset: 0, mask: 0 },
     },
     encoding: "Utf16" as const,
+    maxCount: undefined,
   }
 }
 
@@ -1215,6 +1220,7 @@ function PriceTickListTypeDefinition() {
       location: { bitOffset: 16, byteOffset: 2, mask: 0 },
     },
     firstElementOffset: 5,
+    maxCount: undefined,
   }
 }
 
@@ -1334,6 +1340,7 @@ function CurrencyTypeDefinition() {
       location: { bitOffset: 0, byteOffset: 0, mask: 0 },
     },
     encoding: "Utf16" as const,
+    maxCount: undefined,
   }
 }
 
@@ -1391,6 +1398,7 @@ function TradeListTypeDefinition() {
       location: { bitOffset: 16, byteOffset: 2, mask: 0 },
     },
     firstElementOffset: 5,
+    maxCount: undefined,
   }
 }
 
@@ -1433,6 +1441,7 @@ function HistoricPositionListTypeDefinition() {
       location: { bitOffset: 16, byteOffset: 2, mask: 0 },
     },
     firstElementOffset: 5,
+    maxCount: undefined,
   }
 }
 
@@ -1475,6 +1484,7 @@ function CurrencyPairPositionListTypeDefinition() {
       location: { bitOffset: 16, byteOffset: 2, mask: 0 },
     },
     firstElementOffset: 5,
+    maxCount: undefined,
   }
 }
 
