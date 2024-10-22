@@ -3,7 +3,6 @@ import { of } from "rxjs"
 import { map, switchMap } from "rxjs/operators"
 
 import { AdaptiveLoader } from "@/client/components/AdaptiveLoader"
-import { CenteringContainer } from "@/client/components/CenteringContainer"
 import {
   customNumberFormatter,
   DECIMAL_SEPARATOR,
@@ -26,6 +25,7 @@ import {
   Pip,
   Price,
   PriceButtonDisabledPlaceholder,
+  PriceContainer,
   QuotePriceLoading,
   Tenth,
   TradeButton,
@@ -117,16 +117,18 @@ export const PriceButtonInner = ({
       data-testid={`${direction}-${currencyPair.symbol}`}
     >
       <Price disabled={disabled}>
-        <CenteringContainer>
-          <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
+        <DirectionLabel priceAnnounced={priceAnnounced}>
+          {`${direction} ${currencyPair.base}`.toUpperCase()}
+        </DirectionLabel>
+        <PriceContainer>
           <Big>{price ? bigFigure : "-"}</Big>
-        </CenteringContainer>
-        {price && (
-          <>
-            <Pip>{pip}</Pip>
-            <Tenth>{tenth}</Tenth>
-          </>
-        )}
+          {price && (
+            <>
+              <Pip>{pip}</Pip>
+              <Tenth>{tenth}</Tenth>
+            </>
+          )}
+        </PriceContainer>
       </Price>
       {isExpired && (
         <ExpiredPrice data-testid="expireLabel">Expired</ExpiredPrice>
