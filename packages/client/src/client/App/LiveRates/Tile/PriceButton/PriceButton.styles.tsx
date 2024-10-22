@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from "styled-components"
+import styled, { css, DefaultTheme, keyframes } from "styled-components"
 
 import { Theme } from "@/client/theme/themes"
 import { Direction } from "@/generated/TradingGateway"
@@ -27,6 +27,11 @@ const getAnimationCSSProperty = (props: {
   animation: ${backgroundEffectKeyframes(props)} 5s;
 `
 
+const getDirectionColor = (theme: DefaultTheme, direction: Direction) =>
+  direction === Direction.Buy
+    ? theme.newTheme.color["Colors/Background/bg-buy-primary"]
+    : theme.newTheme.color["Colors/Background/bg-sell-primary"]
+
 type TradeButtonProps = {
   direction: Direction
   priceAnnounced: boolean
@@ -45,17 +50,16 @@ const backgroundEffect = ({
     ? getAnimationCSSProperty({ direction, theme })
     : isStatic
       ? `
-    background-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
+    background-color: ${getDirectionColor(theme, direction)};
     color: white;`
       : ""
 
 export const TradeButton = styled.button<TradeButtonProps>`
-  background-color: ${({ theme }) => theme.core.lightBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
   border-radius: 3px;
   color: ${({ theme, priceAnnounced, direction }) =>
-    priceAnnounced
-      ? theme.colors.spectrum.uniqueCollections[direction].base
-      : theme.core.textColor};
+    priceAnnounced ? getDirectionColor(theme, direction) : "inherit"};
   transition: background-color 0.2s ease;
   cursor: pointer;
   border: none;
@@ -67,7 +71,7 @@ export const TradeButton = styled.button<TradeButtonProps>`
   ${({ isStatic, theme, direction }) =>
     isStatic
       ? `
-    background-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
+    background-color: ${getDirectionColor(theme, direction)};
     color: white;`
       : ``}
 
@@ -80,8 +84,8 @@ export const TradeButton = styled.button<TradeButtonProps>`
       : `
 
   &:hover {
-    background-color: ${theme.colors.spectrum.uniqueCollections[direction].base} !important;
-    color: ${theme.white};
+    background-color: ${getDirectionColor(theme, direction)} !important;
+    color: ${theme.newTheme.color["Colors/Text/text-primary (900)"]};
   }
   `};
 `
@@ -99,25 +103,32 @@ export const DirectionLabel = styled(Box)<{ priceAnnounced?: boolean }>`
     priceAnnounced ? theme.secondary.base : theme.secondary[1]};
 `
 
+const inlineBlock = css`
+  display: inline;
+`
+
+export const PriceContainer = styled(Box)`
+  padding-top: ${({ theme }) => theme.newTheme.spacing.md};
+`
+
 export const Big = styled(Box)`
+  ${inlineBlock}
   font-size: 0.8125rem;
-  line-height: 1rem;
 `
 
 export const Pip = styled(Box)`
+  ${inlineBlock}
   font-size: 2.125rem;
-  line-height: 2.5rem;
-  margin: 0 0.125rem;
 `
 
 export const Tenth = styled(Box)`
-  margin: 0.125rem 0;
-  align-self: flex-end;
+  ${inlineBlock}
 `
 
 export const Price = styled.div<{ disabled: boolean }>`
   height: 2.1rem;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 

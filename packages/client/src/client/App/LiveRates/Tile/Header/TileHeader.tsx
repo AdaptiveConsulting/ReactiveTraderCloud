@@ -13,27 +13,27 @@ import { tearOut } from "../TearOut/state"
 import { useTileContext } from "../Tile.context"
 
 export const DeliveryDate = styled.div`
-  color: ${({ theme }) => theme.core.textColor};
-  font-size: 0.625rem;
   line-height: 1rem;
-  opacity: 0.59;
   margin-left: auto;
   transition: margin-right 0.2s;
 `
 const HeaderWrapper = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   position: relative;
-`
-const TileSymbol = styled.div`
-  color: ${({ theme }) => theme.core.textColor};
-  font-size: 0.8125rem;
-  line-height: 1rem;
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-tertiary"]};
+  padding: ${({ theme }) =>
+    `${theme.newTheme.spacing.md} ${theme.newTheme.spacing["3xl"]}`};
+  font-size: 11px;
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-tertiary (600)"]};
 `
 export const HeaderAction = styled.button`
   position: absolute;
-  right: -4px;
-  top: -5px;
+  right: 2px;
+  top: 3px;
   opacity: 0;
   transition: opacity 0.2s;
 
@@ -71,9 +71,9 @@ export const HeaderInner = forwardRef<HTMLDivElement, HeaderProps>(
 
     return (
       <HeaderWrapper ref={ref}>
-        <TileSymbol data-qa="tile-header__tile-symbol">
+        <div data-qa="tile-header__tile-symbol">
           {base}/{terms}
-        </TileSymbol>
+        </div>
         <DeliveryDate data-qa="tile-header__delivery-date">{date}</DeliveryDate>
         {canTearOut && (
           <HeaderAction
