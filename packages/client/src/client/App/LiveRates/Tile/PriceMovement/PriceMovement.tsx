@@ -10,24 +10,33 @@ import { useRfqPayload } from "../Rfq/Rfq.state"
 import { symbolBind } from "../Tile.context"
 
 const MovementIconUP = styled(FaSortUp)<{ $show: boolean }>`
-  text-align: center;
-  color: ${({ theme }) => theme.accents.positive.base};
+  position: absolute;
   visibility: ${({ $show: show }) => (show ? "visible" : "hidden")};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-success-primary (600)"]};
+  top: 50%;
+  margin-top: -16px;
 `
 const MovementIconDown = styled(FaSortDown)<{ $show: boolean }>`
-  text-align: center;
-  color: ${({ theme }) => theme.accents.negative.base};
+  position: absolute;
   visibility: ${({ $show: show }) => (show ? "visible" : "hidden")};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-error-primary (600)"]};
+  bottom: 50%;
+  margin-bottom: -16px;
 `
 
 const MovementValue = styled.div`
-  font-size: 11px;
-  opacity: 0.59;
+  font-size: 10px;
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-tertiary (600)"]};
+  padding: ${({ theme }) => theme.newTheme.spacing.lg} 0;
 `
 
 const PriceMovementStyle = styled.div<{
   isAnalyticsView: boolean
 }>`
+  position: relative;
   display: flex;
   padding-right: ${({ isAnalyticsView }) => (isAnalyticsView ? "9px" : "0")};
   padding-left: ${({ isAnalyticsView }) => (isAnalyticsView ? "9px" : "0")};
@@ -37,6 +46,13 @@ const PriceMovementStyle = styled.div<{
   width: 100%;
   z-index: 1;
   grid-area: movement;
+`
+
+const Line = styled.div`
+  height: 12px;
+  width: 1px;
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-quaternary"]};
 `
 
 const [usePriceMovementData, priceMovement$] = symbolBind((symbol: string) =>
@@ -59,15 +75,19 @@ export const PriceMovementInner = ({
   isAnalyticsView: boolean
 }) => (
   <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
+    <Line />
     <MovementIconUP
       $show={movementType === PriceMovementType.UP}
+      // $show={true}
       aria-hidden="true"
     />
     <MovementValue>{spread}</MovementValue>
     <MovementIconDown
       $show={movementType === PriceMovementType.DOWN}
+      // $show={true}
       aria-hidden="true"
     />
+    <Line />
   </PriceMovementStyle>
 )
 
