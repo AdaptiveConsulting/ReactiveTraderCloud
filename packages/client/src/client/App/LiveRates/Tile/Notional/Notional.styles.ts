@@ -9,22 +9,24 @@ export const Input = styled.input`
   width: 83px;
   height: 28px;
   margin-left: ${({ theme }) => theme.newTheme.spacing.xs};
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-secondary (700)"]};
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-primary"]};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-secondary (700)"]};
   border: 1.5px solid
     ${({ theme }) => theme.newTheme.color["Colors/Background/bg-tertiary"]};
   caret-color: ${({ theme }) => theme.primary.base};
   &:focus {
     outline: none !important;
-    border-color: ${({ theme }) => theme.accents.primary.base};
+    border-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
   }
   &:disabled {
     opacity: 0.3;
   }
   &.is-invalid {
-    border-bottom-color: ${({ theme }) => theme.accents.negative.base};
+    border-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-error-primary (600)"]};
   }
 `
 
@@ -44,6 +46,7 @@ export const InputWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
 `
 
 export const ErrorMessage = styled.div`
@@ -56,8 +59,10 @@ export const ErrorMessage = styled.div`
 `
 
 export const ResetInputValue = styled.button<{ isVisible: boolean }>`
-  background-color: ${({ theme }) => theme.core.lightBackground};
-  border: 2px solid ${({ theme }) => theme.core.darkBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary"]};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-secondary (700)"]};
   display: ${({ isVisible }) => (isVisible ? "inline-flex" : "none")};
   border-radius: 3px;
   margin-left: 8px;
