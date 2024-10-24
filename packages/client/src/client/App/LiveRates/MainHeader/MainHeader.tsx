@@ -61,13 +61,13 @@ export const MainHeader = () => {
         ))}
       </LeftNav>
       <RightNav>
-        <ToggleView />
-        {isLimitCheckerRunning && <LimitCheckerIndicator />}
         {supportsTearOut && (
           <IconNavItem active={false}>
             <TearOutComponent section="tiles" />
           </IconNavItem>
         )}
+        {isLimitCheckerRunning && <LimitCheckerIndicator />}
+        <ToggleView />
         <CurrencyDropdown>
           <DropdownMenu
             selectedOption={currency}

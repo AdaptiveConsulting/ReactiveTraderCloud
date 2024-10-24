@@ -3,7 +3,6 @@ import styled from "styled-components"
 export const Header = styled.div`
   display: flex;
   justify-content: space-between;
-
   color: ${({ theme }) =>
     theme.newTheme.color["Colors/Text/text-quaternary (500)"]};
   background-color: ${({ theme }) =>
