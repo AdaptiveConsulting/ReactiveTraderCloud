@@ -16,6 +16,12 @@ import { tearOutState$, useTearOutEntry } from "./Tile/TearOut/state"
 const PanelItems = styled.div`
   display: grid;
 
+  padding: ${({
+    theme: {
+      newTheme: { spacing },
+    },
+  }) => `${spacing.lg} ${spacing.lg} 0 ${spacing.lg}`};
+
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   grid-template-rows: repeat(200px);
   grid-gap: ${({ theme }) => theme.newTheme.spacing.md};

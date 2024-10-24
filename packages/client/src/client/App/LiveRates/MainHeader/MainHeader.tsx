@@ -15,9 +15,8 @@ import {
 import {
   CurrencyDropdown,
   Header,
+  IconNavItem,
   LeftNav,
-  LeftNavItemFirst,
-  LeftNavTitle,
   NavItem,
   RightNav,
 } from "../styled"
@@ -46,7 +45,6 @@ export const MainHeader = () => {
   return (
     <Header>
       <LeftNav>
-        <LeftNavItemFirst>Live Rates</LeftNavItemFirst>
         {options.map((currencyOption) => (
           <NavItem
             data-testid={`menuButton-${currencyOption.toString()}`}
@@ -62,8 +60,14 @@ export const MainHeader = () => {
           </NavItem>
         ))}
       </LeftNav>
-      <LeftNavTitle>Live Rates</LeftNavTitle>
       <RightNav>
+        <ToggleView />
+        {isLimitCheckerRunning && <LimitCheckerIndicator />}
+        {supportsTearOut && (
+          <IconNavItem active={false}>
+            <TearOutComponent section="tiles" />
+          </IconNavItem>
+        )}
         <CurrencyDropdown>
           <DropdownMenu
             selectedOption={currency}
@@ -71,9 +75,6 @@ export const MainHeader = () => {
             onSelectionChange={onSelectCurrency}
           />
         </CurrencyDropdown>
-        <ToggleView />
-        {isLimitCheckerRunning && <LimitCheckerIndicator />}
-        {supportsTearOut && <TearOutComponent section="tiles" />}
       </RightNav>
     </Header>
   )
