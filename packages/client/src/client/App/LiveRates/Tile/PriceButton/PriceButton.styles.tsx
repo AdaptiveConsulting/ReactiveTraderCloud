@@ -11,11 +11,11 @@ const backgroundEffectKeyframes = ({
   theme: Theme
 }) => keyframes`
   5% {
-    background-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
+    background-color: ${getDirectionColor(theme, direction)};
     color: white;
   }
   80% {
-    background-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
+    background-color: ${getDirectionColor(theme, direction)};
     color: white;
   }
 `
@@ -66,7 +66,6 @@ export const TradeButton = styled.button<TradeButtonProps>`
   outline: none;
   height: 100%;
   min-width: 75px;
-  padding: 0.6rem 1.5rem 0.9rem 1.5rem;
   ${backgroundEffect}
   ${({ isStatic, theme, direction }) =>
     isStatic
@@ -89,6 +88,26 @@ export const TradeButton = styled.button<TradeButtonProps>`
   }
   `};
 `
+
+export const QuotePriceLoading = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+  border: 2px solid ${({ theme }) => theme.core.darkBackground};
+  border-radius: 3px;
+  font-size: 10px;
+  transition: background-color 0.2s ease;
+  height: 100%;
+
+  line-height: normal;
+  opacity: 0.5;
+  text-align: center;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.primary[5]};
+  font-weight: 400;
+`
+
 const Box = styled.div`
   padding: 0;
   margin: 0;
@@ -103,7 +122,7 @@ export const DirectionLabel = styled(Box)<{ priceAnnounced?: boolean }>`
     priceAnnounced ? theme.secondary.base : theme.secondary[1]};
 `
 
-const inlineBlock = css`
+const inline = css`
   display: inline;
 `
 
@@ -112,45 +131,26 @@ export const PriceContainer = styled(Box)`
 `
 
 export const Big = styled(Box)`
-  ${inlineBlock}
+  ${inline}
   font-size: 0.8125rem;
 `
 
 export const Pip = styled(Box)`
-  ${inlineBlock}
+  ${inline}
   font-size: 2.125rem;
 `
 
 export const Tenth = styled(Box)`
-  ${inlineBlock}
+  ${inline}
 `
 
 export const Price = styled.div<{ disabled: boolean }>`
-  height: 2.1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
   ${({ disabled }) => (disabled ? "opacity: 0.3" : "")}
-`
-export const QuotePriceLoading = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-flow: column;
-  border: 2px solid ${({ theme }) => theme.core.darkBackground};
-  border-radius: 3px;
-  font-size: 10px;
-  transition: background-color 0.2s ease;
-  height: 100%;
-  min-width: 125px;
-  line-height: normal;
-  opacity: 0.5;
-  text-align: center;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.primary[5]};
-  font-weight: 400;
 `
 
 const fadeOut = keyframes`
@@ -164,10 +164,10 @@ const fadeOut = keyframes`
 `
 
 export const ExpiredPrice = styled.div`
-  color: ${({ theme }) => theme.colors.spectrum.uniqueCollections.Sell.base};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-error-primary (600)"]};
   font-size: 8px;
   text-transform: uppercase;
-  height: 0;
   // animation: ${fadeOut} 1s linear;
   // transition: visibility 1s linear;
   // animation-fill-mode: forwards;

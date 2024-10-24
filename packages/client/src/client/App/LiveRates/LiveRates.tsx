@@ -17,10 +17,10 @@ combineKeys(currencyPairs$.pipe(map(Object.keys)), (symbol: string) =>
 ).subscribe()
 
 const LiveRateWrapper = styled.div`
-  padding: 0.5rem 0 0.5rem 1rem;
   user-select: none;
   height: 100%;
-  background: ${({ theme }) => theme.core.darkBackground};
+  background: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary"]};
 
   @media (max-width: 480px) {
     padding-right: 1rem;
@@ -29,7 +29,7 @@ const LiveRateWrapper = styled.div`
 `
 
 const OverflowScroll = styled.div`
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 100%;
 `
 
