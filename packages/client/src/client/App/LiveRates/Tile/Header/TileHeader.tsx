@@ -32,8 +32,8 @@ const HeaderWrapper = styled.div`
 `
 export const HeaderAction = styled.button`
   position: absolute;
-  right: 2px;
-  top: 3px;
+  right: 6px;
+  top: 8px;
   opacity: 0;
   transition: opacity 0.2s;
 

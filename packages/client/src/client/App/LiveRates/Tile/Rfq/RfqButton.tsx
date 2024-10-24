@@ -39,7 +39,7 @@ const RFQButtonComponent = styled.button<{
   font-stretch: normal;
   color: ${({ theme }) => theme.white};
   &:disabled {
-    background-color: ${({ theme }) => theme.accents.primary.darker};
+    opacity: 0.8;
     cursor: default;
   }
 `
