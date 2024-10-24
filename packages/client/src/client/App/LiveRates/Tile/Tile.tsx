@@ -75,7 +75,6 @@ const Tile = ({ isAnalytics }: Props) => {
   const InputTimerWrapper = ({ isAnalytics }: { isAnalytics?: boolean }) => {
     return (
       <InputTimerStyle isAnalyticsView={!!isAnalytics}>
-        <NotionalInput />
         {timerData ? (
           <RfqTimer
             {...timerData}
@@ -83,6 +82,7 @@ const Tile = ({ isAnalytics }: Props) => {
             onReject={() => onRejectQuote(symbol)}
           />
         ) : null}
+        <NotionalInput />
       </InputTimerStyle>
     )
   }

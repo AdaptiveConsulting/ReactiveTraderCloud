@@ -18,7 +18,10 @@ export const PriceControlsStyle = styled("div")<{
   isAnalyticsView: boolean
 }>`
   display: grid;
-  position: relative;
+  flex: 1;
+  height: 100%;
+  padding: ${({ theme }) => theme.newTheme.spacing.lg};
+
   ${({ isAnalyticsView }) =>
     isAnalyticsView
       ? `
@@ -29,7 +32,6 @@ export const PriceControlsStyle = styled("div")<{
       "movement buy";
     `
       : `
-      height: 4rem;
       grid-template-columns: 37% 26% 37%;
       grid-template-rows: 100%;
       grid-template-areas:
@@ -40,17 +42,18 @@ export const PriceControlsStyle = styled("div")<{
 export const InputTimerStyle = styled.div<{ isAnalyticsView: boolean }>`
   display: flex;
   flex-direction: column;
-  align-items: ${({ isAnalyticsView }) =>
-    isAnalyticsView ? "flex-start" : "center"};
 
   ${({ isAnalyticsView }) =>
     !isAnalyticsView
       ? `
+      align-items: flex-start;
+      `
+      : `
+      align-items: center;
     > div:first-child {
       padding-right: 1.3rem;
     }
-  `
-      : ""}
+      `}
 `
 
 export const PanelItem = styled.div<{ shouldMoveDate: boolean }>`
@@ -89,23 +92,14 @@ export const GraphNotionalWrapper = styled.div`
   width: 50%;
 `
 
-export const SpotTileStyle = styled.div`
-  position: absolute;
-  border-radius: 3px;
-  box-sizing: border-box;
-  background-color: ${({ theme }) => theme.core.lightBackground};
+const MainTileStyle = styled.div`
+  // TODO remove after analysis tile design
+  overflow: auto;
+  scrollbar-width: none;
+
   display: flex;
   width: 100%;
-  justify-content: space-between;
   flex-direction: column;
-  overflow: hidden;
-  &:hover,
-    box-shadow: ${({ theme }) =>
-      theme.name === "light" ? "0 0 10px 0 rgba(0, 0, 0, 0.1)" : "none"};
-  }
-`
-
-const MainTileStyle = styled(SpotTileStyle)`
   height: 100%;
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-primary"]};
@@ -122,7 +116,7 @@ const MainTileStyle = styled(SpotTileStyle)`
 const MainTileWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 145px;
+  height: 165px;
   color: ${({ theme }) => theme.core.textColor};
 `
 
