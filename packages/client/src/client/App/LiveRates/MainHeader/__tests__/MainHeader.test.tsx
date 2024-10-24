@@ -57,7 +57,7 @@ describe("MainHeader", () => {
   it("should load all the currency buttons", async () => {
     await renderComponent()
 
-    expect(screen.getByTestId("menuButton-ALL").textContent).toBe(`ALL`)
+    expect(screen.getByTestId("menuButton-All").textContent).toBe(`All`)
     expect(screen.getByTestId("menuButton-EUR").textContent).toBe(`EUR`)
     expect(screen.getByTestId("menuButton-GBP").textContent).toBe(`GBP`)
   })
