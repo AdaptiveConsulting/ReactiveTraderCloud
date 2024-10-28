@@ -64,7 +64,8 @@ export const TradeButton = styled.button<TradeButtonProps>`
   cursor: pointer;
   border: none;
   outline: none;
-  height: 100%;
+  padding: ${({ theme }) =>
+    `${theme.newTheme.spacing.md} ${theme.newTheme.spacing.lg}`};
   min-width: 75px;
   ${backgroundEffect}
   ${({ isStatic, theme, direction }) =>

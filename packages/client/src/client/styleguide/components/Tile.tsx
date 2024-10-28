@@ -18,7 +18,7 @@ import { RfqButtonInner } from "@/client/App/LiveRates/Tile/Rfq/RfqButton"
 import { TileState } from "@/client/App/LiveRates/Tile/Tile.state"
 import {
   Body,
-  GraphNotionalWrapper,
+  GraphPricesWrapper,
   InputTimerStyle,
   Main,
   PanelItem,
@@ -115,13 +115,13 @@ export const Tile = ({
         />
         <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>
           {isAnalytics ? (
-            <GraphNotionalWrapper>
+            <GraphPricesWrapper>
               <HistoricalGraphComponent
                 showTimer={!!timerData}
                 path={graphPath}
               />
               <InputTimerWrapper isAnalytics />
-            </GraphNotionalWrapper>
+            </GraphPricesWrapper>
           ) : null}
           <PriceControlWrapper>
             <PriceControlsStyle isAnalyticsView={isAnalytics}>

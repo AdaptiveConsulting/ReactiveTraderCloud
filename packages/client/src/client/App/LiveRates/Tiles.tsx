@@ -21,9 +21,7 @@ const OverflowContainer = styled.div`
 const PanelItems = styled.div`
   display: grid;
   padding: ${({ theme }) => theme.newTheme.spacing.lg};
-
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  grid-template-rows: repeat(200px);
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   grid-gap: ${({ theme }) => theme.newTheme.spacing.md};
 `
 
