@@ -3,7 +3,7 @@ import { curveBasis } from "d3"
 import { forwardRef, useEffect, useRef } from "react"
 import { combineLatest } from "rxjs"
 import { distinctUntilChanged, map, startWith } from "rxjs/operators"
-import styled from "styled-components"
+import styled, { useTheme } from "styled-components"
 
 import { equals } from "@/client/utils"
 import {
@@ -47,17 +47,15 @@ const [useHistoricalPath, historicalGraph$] = symbolBind((symbol: string) =>
 )
 
 const LineChartWrapper = styled.div<{ showTimer?: boolean }>`
-  width: 100%;
-  height: ${({ showTimer }) => {
-    return showTimer ? "60%" : "75%"
-  }};
+  width: 50%;
+  height: 108px;
   grid-area: chart;
 `
 
 const Path = styled.path``
 const Svg = styled.svg`
   &:hover ${Path} {
-    stroke: #5f94f5;
+    stroke: ${({ theme }) => theme.newTheme.color["Colors/Border/border-buy"]};
   }
 `
 
@@ -81,11 +79,16 @@ export const HistoricalGraphComponent = forwardRef<
   { showTimer, path, active, showCenterLine },
   ref,
 ) {
+  const theme = useTheme()
   return (
     <LineChartWrapper showTimer={showTimer} ref={ref}>
       <Svg data-testid="tile-graph">
         <Path
-          stroke={active ? "#5f94f5" : "#737987"}
+          stroke={
+            active
+              ? theme.newTheme.color["Colors/Border/border-buy"]
+              : theme.newTheme.color["Colors/Text/text-primary (900)"]
+          }
           strokeOpacity={0.9}
           strokeWidth={1.6}
           fill="none"
@@ -96,7 +99,6 @@ export const HistoricalGraphComponent = forwardRef<
             <line
               y="0"
               strokeDasharray="4 3"
-              stroke="#737987"
               strokeOpacity="0.9"
               strokeWidth="0.8"
               fill="none"

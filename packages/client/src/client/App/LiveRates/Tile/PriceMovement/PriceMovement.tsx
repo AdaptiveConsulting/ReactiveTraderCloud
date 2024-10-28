@@ -48,8 +48,11 @@ const PriceMovementStyle = styled.div<{
   grid-area: movement;
 `
 
-const Line = styled.div`
-  height: 12px;
+const Line = styled.div<{ isAnalyticsView: boolean }>`
+  height: ${({ theme, isAnalyticsView }) =>
+    isAnalyticsView
+      ? theme.newTheme.spacing["3xl"]
+      : theme.newTheme.spacing.lg};
   width: 1px;
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-quaternary"]};
@@ -75,7 +78,7 @@ export const PriceMovementInner = ({
   isAnalyticsView: boolean
 }) => (
   <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
-    <Line />
+    <Line isAnalyticsView={isAnalyticsView} />
     <MovementIconUP
       $show={movementType === PriceMovementType.UP}
       // $show={true}
@@ -87,7 +90,7 @@ export const PriceMovementInner = ({
       // $show={true}
       aria-hidden="true"
     />
-    <Line />
+    <Line isAnalyticsView={isAnalyticsView} />
   </PriceMovementStyle>
 )
 

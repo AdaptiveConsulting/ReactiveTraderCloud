@@ -26,7 +26,7 @@ import {
 import { Provider, symbolBind, useTileContext } from "./Tile.context"
 import {
   Body,
-  GraphNotionalWrapper,
+  GraphPricesWrapper,
   InputTimerStyle,
   Main,
   PanelItem,
@@ -93,21 +93,29 @@ const Tile = ({ isAnalytics }: Props) => {
         <Header />
         <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>
           {isAnalytics ? (
-            <GraphNotionalWrapper>
+            <GraphPricesWrapper>
               <HistoricalGraph showTimer={!!timerData} />
-              <InputTimerWrapper isAnalytics />
-            </GraphNotionalWrapper>
-          ) : null}
-          <PriceControlWrapper>
-            <PriceControlsStyle isAnalyticsView={isAnalytics}>
-              <PriceMovement isAnalyticsView={isAnalytics} />
-              <PriceButton direction={Direction.Sell} />
-              <PriceButton direction={Direction.Buy} />
-              <RfqButton isAnalytics={isAnalytics} />
-            </PriceControlsStyle>
-          </PriceControlWrapper>
-          {!isAnalytics ? <InputTimerWrapper /> : null}
+              <PriceControlWrapper>
+                <PriceControlsStyle isAnalyticsView={isAnalytics}>
+                  <PriceMovement isAnalyticsView={isAnalytics} />
+                  <PriceButton direction={Direction.Sell} />
+                  <PriceButton direction={Direction.Buy} />
+                  <RfqButton isAnalytics={isAnalytics} />
+                </PriceControlsStyle>
+              </PriceControlWrapper>
+            </GraphPricesWrapper>
+          ) : (
+            <PriceControlWrapper>
+              <PriceControlsStyle isAnalyticsView={isAnalytics}>
+                <PriceMovement isAnalyticsView={isAnalytics} />
+                <PriceButton direction={Direction.Sell} />
+                <PriceButton direction={Direction.Buy} />
+                <RfqButton isAnalytics={isAnalytics} />
+              </PriceControlsStyle>
+            </PriceControlWrapper>
+          )}
         </Body>
+        <InputTimerWrapper />
       </Main>
       <ExecutionResponse />
     </PanelItem>

@@ -17,21 +17,19 @@ export const PriceControlWrapper = styled.div`
 export const PriceControlsStyle = styled("div")<{
   isAnalyticsView: boolean
 }>`
-  display: grid;
   flex: 1;
-  height: 100%;
-  padding: ${({ theme }) => theme.newTheme.spacing.lg};
-
+  display: grid;
+  padding: 0 ${({ theme }) => theme.newTheme.spacing.md};
   ${({ isAnalyticsView }) =>
     isAnalyticsView
       ? `
-      grid-row-gap: 3px;
-      grid-template-rows: 50% 50%;
-      grid-template-areas:
-      "movement sell"
-      "movement buy";
-    `
+  grid-template-rows: 50% 50%;
+  grid-template-areas:
+  "movement sell"
+  "movement buy";
+  `
       : `
+      height: 100%;
       grid-template-columns: 37% 26% 37%;
       grid-template-rows: 100%;
       grid-template-areas:
@@ -49,10 +47,6 @@ export const InputTimerStyle = styled.div<{ isAnalyticsView: boolean }>`
       align-items: flex-start;
       `
       : `
-      align-items: center;
-    > div:first-child {
-      padding-right: 1.3rem;
-    }
       `}
 `
 
@@ -77,30 +71,17 @@ export const Body = styled.div<{
   showTimer: boolean
 }>`
   display: flex;
-  ${({ isAnalyticsView }) =>
-    isAnalyticsView
-      ? `
-  `
-      : `
-    flex-direction: column;
-    flex: 1;
-  `}
-`
-export const GraphNotionalWrapper = styled.div`
-  display: flex;
   flex-direction: column;
-  width: 50%;
+  flex: 1;
+  padding: ${({ theme }) => theme.newTheme.spacing.md} 0;
+`
+export const GraphPricesWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
 `
 
 const MainTileStyle = styled.div`
-  // TODO remove after analysis tile design
-  overflow: auto;
-  scrollbar-width: none;
-
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  height: 100%;
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-primary"]};
   border: 2px solid
@@ -114,9 +95,7 @@ const MainTileStyle = styled.div`
   }
 `
 const MainTileWrapper = styled.div`
-  position: relative;
   width: 100%;
-  height: 165px;
   color: ${({ theme }) => theme.core.textColor};
 `
 
