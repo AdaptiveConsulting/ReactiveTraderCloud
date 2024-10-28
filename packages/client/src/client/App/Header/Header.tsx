@@ -68,7 +68,7 @@ const Header = ({ logo, filler, controls, switches }: HeaderProps) => {
     <AppHeaderWrapper role="banner" aria-label="Reactive Trader Header">
       <AppHeaderRoot>
         {logo || defaultLogo}
-        {filler || defaultFiller}
+        {filler}
 
         <HeaderNav>
           {switches || <DefaultSwitches />}

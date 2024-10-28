@@ -9,7 +9,6 @@ import DarkThemeIcon from "./DarkThemeIcon"
 import LightThemeIcon from "./LightThemeIcon"
 
 export type ThemeStorageSwitchProps = Partial<ReactSwitchProps>
-const iconSize = 18
 
 const ThemeStorageSwitch = ({
   theme,
@@ -51,32 +50,28 @@ const ThemeStorageSwitch = ({
           checked={isDarkTheme}
           checkedIcon={
             <IconContainer hover={hover}>
-              <DarkThemeIcon
-                height={iconSize}
-                width={iconSize}
-                fill={theme.secondary.base}
-              />
+              <DarkThemeIcon />
             </IconContainer>
           }
           uncheckedIcon={
             <IconContainer hover={hover}>
-              <LightThemeIcon
-                height={iconSize}
-                width={iconSize}
-                fill={theme.secondary.base}
-              />
+              <LightThemeIcon />
             </IconContainer>
           }
           handleDiameter={props.handleDiameter || 15}
-          offColor={theme.primary.base}
-          offHandleColor={theme.accents.primary.base}
-          onColor={theme.primary[1]}
-          onHandleColor={theme.accents.primary.base}
+          offColor={theme.newTheme.color["Colors/Background/bg-secondary"]}
+          offHandleColor={
+            theme.newTheme.color["Colors/Background/bg-brand-primary"]
+          }
+          onColor={theme.newTheme.color["Colors/Background/bg-secondary"]}
+          onHandleColor={
+            theme.newTheme.color["Colors/Background/bg-brand-primary"]
+          }
           {...props}
         />
       ) : (
         <IconContainer hover={hover}>
-          <Icon height={iconSize} width={iconSize} />
+          <Icon />
         </IconContainer>
       )}
     </SwitchContainer>

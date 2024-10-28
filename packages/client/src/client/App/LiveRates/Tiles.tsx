@@ -13,14 +13,14 @@ import { Tile, tile$ } from "./Tile"
 import { handleTearOut } from "./Tile/TearOut/handleTearOut"
 import { tearOutState$, useTearOutEntry } from "./Tile/TearOut/state"
 
+const OverflowContainer = styled.div`
+  height: 100%;
+  overflow: auto;
+`
+
 const PanelItems = styled.div`
   display: grid;
-
-  padding: ${({
-    theme: {
-      newTheme: { spacing },
-    },
-  }) => `${spacing.lg} ${spacing.lg} 0 ${spacing.lg}`};
+  padding: ${({ theme }) => theme.newTheme.spacing.lg};
 
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   grid-template-rows: repeat(200px);
@@ -72,14 +72,16 @@ export const Tiles = () => {
   }, [tearOutEntry])
 
   return (
-    <PanelItems role="region" aria-label="Lives Rates Tiles">
-      {currencyPairs.map((currencyPair) => (
-        <Tile
-          key={currencyPair.symbol}
-          currencyPair={currencyPair}
-          isAnalytics={selectedView === TileView.Analytics}
-        />
-      ))}
-    </PanelItems>
+    <OverflowContainer>
+      <PanelItems role="region" aria-label="Lives Rates Tiles">
+        {currencyPairs.map((currencyPair) => (
+          <Tile
+            key={currencyPair.symbol}
+            currencyPair={currencyPair}
+            isAnalytics={selectedView === TileView.Analytics}
+          />
+        ))}
+      </PanelItems>
+    </OverflowContainer>
   )
 }

@@ -17,20 +17,14 @@ combineKeys(currencyPairs$.pipe(map(Object.keys)), (symbol: string) =>
 ).subscribe()
 
 const LiveRateWrapper = styled.div`
-  user-select: none;
   height: 100%;
+  user-select: none;
   background: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-secondary"]};
 
   @media (max-width: 480px) {
     padding-right: 1rem;
   }
-  overflow-y: auto;
-`
-
-const OverflowScroll = styled.div`
-  overflow-y: auto;
-  height: 100%;
 `
 
 const loader = (
@@ -47,14 +41,10 @@ export const LiveRates = () => {
   }, [])
 
   return (
-    <LiveRateWrapper>
-      <OverflowScroll>
-        <div data-qa="workspace__tiles-workspace">
-          <Suspense fallback={loader}>
-            <LiveRatesCore>{loader}</LiveRatesCore>
-          </Suspense>
-        </div>
-      </OverflowScroll>
+    <LiveRateWrapper data-qa="workspace__tiles-workspace">
+      <Suspense fallback={loader}>
+        <LiveRatesCore>{loader}</LiveRatesCore>
+      </Suspense>
     </LiveRateWrapper>
   )
 }
