@@ -45,11 +45,13 @@ export const UserWrapper = styled.div`
   position: relative;
 `
 export const UserContainer = styled(Button)`
-  color: ${({ theme }) => theme.textColor};
+  color: ${({ theme }) =>
+    theme.newTheme.color[
+      "Component colors/Components/Buttons/Primary/button-primary-fg"
+    ]};
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  border-left: 1px solid ${({ theme }) => theme.core.dividerColor};
   border-radius: 0;
   height: 24px;
   padding-left: 5px;
