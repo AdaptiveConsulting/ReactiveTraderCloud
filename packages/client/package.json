@@ -148,5 +148,8 @@
     "vite-plugin-static-copy": "1.0.6",
     "vitest": "2.1.2",
     "wait-on": "8.0.1"
+  },
+  "optionalDependencies": {
+    "@adaptive-uikit/figma-to-theme": "0.0.1"
   }
 }

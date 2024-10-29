@@ -52,7 +52,9 @@ jobs:
           project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm config set //weareadaptive.jfrog.io/artifactory/api/npm/ui-starter-kit-npm-local-private/:_authToken ${{ secrets.ARTIFACTORY_AUTH }}
+          npm ci --ignore-scripts
 
       - name: Verify Quality (type checking, linting, format checking, tests)
         run: npm run verify
