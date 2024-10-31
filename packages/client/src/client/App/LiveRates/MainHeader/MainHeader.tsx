@@ -3,7 +3,7 @@ import { map } from "rxjs/operators"
 
 import { supportsTearOut } from "@/client/App/TearOutSection/supportsTearOut"
 import { TearOutComponent } from "@/client/App/TearOutSection/TearOutComponent"
-import { DropdownMenu } from "@/client/components/DropdownMenu"
+import { TabBar, TabBarActionConfig } from "@/client/components/TabBar/TabBar"
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { useIsLimitCheckerRunning } from "@/services/limitChecker/limitChecker"
 
@@ -13,16 +13,13 @@ import {
   useSelectedCurrency,
 } from "../selectedCurrency"
 import {
-  CurrencyDropdown,
-  Header,
-  LeftNav,
-  LeftNavItemFirst,
-  LeftNavTitle,
-  NavItem,
-  RightNav,
-} from "../styled"
+  getInitView,
+  onToggleSelectedView,
+  TileView,
+  useSelectedTileView,
+} from "../selectedView"
 import { LimitCheckerIndicator } from "./LimitCheckerIndicator"
-import { ToggleView } from "./ToggleView"
+import { ChartIcon } from "./ToggleView/ChartIcon"
 
 const [useCurrencies, mainHeader$] = bind(
   currencyPairs$.pipe(
@@ -40,41 +37,38 @@ export const MainHeader = () => {
   const currencies = useCurrencies()
   const currency = useSelectedCurrency()
   const isLimitCheckerRunning = useIsLimitCheckerRunning()
+  const tileView = useSelectedTileView(getInitView())
 
   const options = [ALL_CURRENCIES, ...currencies]
+  const actions: TabBarActionConfig[] = [
+    {
+      name: "toggleTileView",
+      inner: <ChartIcon />,
+      active: tileView === TileView.Analytics,
+      onClick: onToggleSelectedView,
+    },
+  ]
+
+  if (supportsTearOut) {
+    actions.push({
+      name: "tearOut",
+      inner: <TearOutComponent section="tiles" />,
+    })
+  }
+
+  if (isLimitCheckerRunning) {
+    actions.push({
+      name: "limitChecker",
+      inner: <LimitCheckerIndicator />,
+    })
+  }
 
   return (
-    <Header>
-      <LeftNav>
-        <LeftNavItemFirst>Live Rates</LeftNavItemFirst>
-        {options.map((currencyOption) => (
-          <NavItem
-            data-testid={`menuButton-${currencyOption.toString()}`}
-            key={currencyOption.toString()}
-            active={currencyOption === currency}
-            data-qa="workspace-header__nav-item"
-            data-qa-id={`currency-option-${currencyOption
-              .toString()
-              .toLowerCase()}`}
-            onClick={() => onSelectCurrency(currencyOption)}
-          >
-            {currencyOption}
-          </NavItem>
-        ))}
-      </LeftNav>
-      <LeftNavTitle>Live Rates</LeftNavTitle>
-      <RightNav>
-        <CurrencyDropdown>
-          <DropdownMenu
-            selectedOption={currency}
-            options={options}
-            onSelectionChange={onSelectCurrency}
-          />
-        </CurrencyDropdown>
-        <ToggleView />
-        {isLimitCheckerRunning && <LimitCheckerIndicator />}
-        {supportsTearOut && <TearOutComponent section="tiles" />}
-      </RightNav>
-    </Header>
+    <TabBar
+      items={options}
+      handleItemOnClick={(item) => onSelectCurrency(item)}
+      activeItem={currency}
+      actions={actions}
+    />
   )
 }
