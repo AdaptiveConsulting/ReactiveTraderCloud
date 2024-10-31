@@ -4,32 +4,34 @@ import styled, { css } from "styled-components"
 
 import { usePopUpMenu } from "@/client/utils/usePopUpMenu"
 
-const DropdownLayout = styled.div`
+const DropdownText = styled.div(
+  ({ theme }) => theme.newTheme.textStyles["Display xs/Regular"],
+)
+
+const DropdownLayout = styled(DropdownText)`
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
-  width: ${({ theme }) => theme.newTheme.spacing["9xl"]};
-  background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-tertiary"]};
+
+  line-height: 0;
+  margin-block-end: 0;
+
   color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-tertiary (600)"]};
-  font-size: 12px;
-  padding: ${({ theme }) =>
-    `${theme.newTheme.spacing.xs} ${theme.newTheme.spacing.md}`};
+    theme.newTheme.color["Colors/Text/text-secondary (700)"]};
   cursor: pointer;
   transition: all 200ms ease;
+  padding: 0 ${({ theme }) => theme.newTheme.spacing.md};
 `
 
 const DropdownOptions = styled.div`
   position: absolute;
-  top: 34px;
+  top: 24px;
   left: 0px;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-tertiary"]};
+    theme.newTheme.color["Colors/Background/bg-primary"]};
   box-shadow: 0 7px 26px 0 rgba(23, 24, 25, 0.5);
   z-index: 100;
-  width: 100%;
 `
 const DropdownOption = styled.div<{ selected: boolean }>`
   display: flex;
@@ -37,31 +39,32 @@ const DropdownOption = styled.div<{ selected: boolean }>`
   justify-content: space-between;
   height: ${({ theme }) => theme.newTheme.density.md};
   padding: ${({ theme }) =>
-    `${theme.newTheme.spacing.xs} ${theme.newTheme.spacing.md}`};
-  font-weight: ${({ selected }) => (selected ? "bold" : "normal")};
+    `${theme.newTheme.spacing["2xl"]} ${theme.newTheme.spacing["lg"]}`};
   color: ${({ theme, selected }) =>
     selected
       ? theme.newTheme.color["Colors/Text/text-brand-primary (900)"]
       : "inherit"};
-  margin-bottom: 5px;
 
   &:hover {
     background-color: ${({ theme }) =>
       theme.newTheme.color["Colors/Background/bg-quaternary"]};
-    font-weight: ${({ selected }) => (selected ? "bold" : "normal")};
   }
 `
 
 const chevronStyle = css`
   position: relative;
+  font-size: 12px;
   color: ${({ theme }) =>
     theme.newTheme.color["Colors/Text/text-quaternary_on-brand"]};
-  top: 2px;
+  margin-left: ${({ theme }) => theme.newTheme.spacing.xl};
 `
 const AlignedUp = styled(FaChevronUp)`
   ${chevronStyle}
 `
 const AlignedDown = styled(FaChevronDown)`
+  ${chevronStyle}
+`
+const Check = styled(FaCheck)`
   ${chevronStyle}
 `
 
@@ -105,7 +108,7 @@ export const DropdownMenu = <T extends string>({
               selected={selected === option}
             >
               {option}
-              {selected === option && <FaCheck />}
+              {selected === option && <Check />}
             </DropdownOption>
           ))}
         </DropdownOptions>

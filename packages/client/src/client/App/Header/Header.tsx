@@ -1,5 +1,6 @@
 import { ReactNode, useState } from "react"
 
+import { Line } from "@/client/components/Line"
 import Logo from "@/client/components/Logo"
 import { WEBSITE } from "@/client/constants"
 
@@ -68,8 +69,8 @@ const Header = ({ logo, filler, controls, switches }: HeaderProps) => {
     <AppHeaderWrapper role="banner" aria-label="Reactive Trader Header">
       <AppHeaderRoot>
         {logo || defaultLogo}
+        <Line height="4xl" />
         {filler}
-
         <HeaderNav>
           {switches || <DefaultSwitches />}
           {controls || defaultControls}

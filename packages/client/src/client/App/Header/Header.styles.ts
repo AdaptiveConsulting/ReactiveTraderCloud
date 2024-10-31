@@ -2,6 +2,7 @@ import styled from "styled-components"
 
 export const LogoWrapper = styled.div`
   line-height: 0;
+  padding-right: ${({ theme }) => theme.newTheme.spacing["2xl"]};
   &:hover {
     cursor: pointer;
   }
@@ -33,7 +34,7 @@ export const HeaderNav = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding-left: ${({ theme }) => theme.newTheme.spacing["3xl"]};
+  padding-left: ${({ theme }) => theme.newTheme.spacing["xl"]};
 `
 
 export const Fill = styled.div`

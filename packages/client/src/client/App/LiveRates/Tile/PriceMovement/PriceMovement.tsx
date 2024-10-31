@@ -1,12 +1,12 @@
 import { distinctUntilChanged, map } from "rxjs/operators"
 
+import { Line } from "@/client/components/Line"
 import { equals } from "@/client/utils/equals"
 import { getPrice$, PriceMovementType } from "@/services/prices"
 
 import { useRfqPayload } from "../Rfq/Rfq.state"
 import { symbolBind } from "../Tile.context"
 import {
-  Line,
   MovementIconDown,
   MovementIconUP,
   MovementValue,
@@ -45,7 +45,7 @@ export const PriceMovementInner = ({
   isAnalyticsView: boolean
 }) => (
   <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
-    <Line isAnalyticsView={isAnalyticsView} />
+    <Line height={isAnalyticsView ? "3xl" : "lg"} />
     <MovementIconUP
       $show={movementType === PriceMovementType.UP}
       aria-hidden="true"
@@ -55,7 +55,7 @@ export const PriceMovementInner = ({
       $show={movementType === PriceMovementType.DOWN}
       aria-hidden="true"
     />
-    <Line isAnalyticsView={isAnalyticsView} />
+    <Line height={isAnalyticsView ? "3xl" : "lg"} />
   </PriceMovementStyle>
 )
 

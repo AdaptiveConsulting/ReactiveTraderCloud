@@ -39,13 +39,3 @@ export const PriceMovementStyle = styled.div<{
   z-index: 1;
   grid-area: movement;
 `
-
-export const Line = styled.div<{ isAnalyticsView: boolean }>`
-  height: ${({ theme, isAnalyticsView }) =>
-    isAnalyticsView
-      ? theme.newTheme.spacing["3xl"]
-      : theme.newTheme.spacing.lg};
-  width: 1px;
-  background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-quaternary"]};
-`
