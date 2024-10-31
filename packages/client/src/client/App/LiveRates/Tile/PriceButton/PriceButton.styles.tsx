@@ -54,59 +54,63 @@ const backgroundEffect = ({
     color: white;`
       : ""
 
-export const TradeButton = styled.button<TradeButtonProps>`
+export const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const SharedButtonStyle = styled.button`
+  height: 69px;
+  width: 88px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+`
+
+export const TradeButton = styled(SharedButtonStyle)<TradeButtonProps>`
+  position: relative;
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-primary"]};
-  border-radius: 3px;
   color: ${({ theme, priceAnnounced, direction }) =>
     priceAnnounced ? getDirectionColor(theme, direction) : "inherit"};
   transition: background-color 0.2s ease;
   cursor: pointer;
   border: none;
   outline: none;
-  padding: ${({ theme }) =>
-    `${theme.newTheme.spacing.md} ${theme.newTheme.spacing.lg}`};
-  min-width: 75px;
   ${backgroundEffect}
   ${({ isStatic, theme, direction }) =>
     isStatic
       ? `
-    background-color: ${getDirectionColor(theme, direction)};
-    color: white;`
+  background-color: ${getDirectionColor(theme, direction)};
+  color: white;`
       : ``}
-
   ${({ theme, direction, disabled, priceAnnounced }) =>
     disabled && !priceAnnounced
       ? `
   cursor: initial;
   pointer-events: none;
-    `
+  `
       : `
-
+  
   &:hover {
     background-color: ${getDirectionColor(theme, direction)} !important;
     color: ${theme.newTheme.color["Colors/Text/text-primary (900)"]};
-  }
-  `};
+    }
+    `};
 `
 
-export const QuotePriceLoading = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-flow: column;
-  border: 2px solid ${({ theme }) => theme.core.darkBackground};
-  border-radius: 3px;
-  font-size: 10px;
-  transition: background-color 0.2s ease;
-  height: 100%;
+const QuotePriceLoadingText = styled(SharedButtonStyle)(({ theme }) => ({
+  ...theme.newTheme.textStyles["Text sm/Regular"],
+}))
 
-  line-height: normal;
+export const QuotePriceLoading = styled(QuotePriceLoadingText)`
+  transition: background-color 0.2s ease;
   opacity: 0.5;
-  text-align: center;
-  text-transform: uppercase;
   color: ${({ theme }) => theme.primary[5]};
-  font-weight: 400;
+  margin: 0;
 `
 
 const Box = styled.div`
@@ -114,36 +118,38 @@ const Box = styled.div`
   margin: 0;
 `
 
-export const DirectionLabel = styled(Box)<{ priceAnnounced?: boolean }>`
+export const DirectionLabel = styled(Box)`
   opacity: 0.59;
-  margin: 0 0 0.125rem 0;
   font-size: 0.625rem;
-
-  color: ${({ priceAnnounced, theme }) =>
-    priceAnnounced ? theme.secondary.base : theme.secondary[1]};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-tertiary (600)"]};
 `
 
-const inline = css`
-  display: inline;
-`
+const inline = {
+  display: "inline",
+}
 
 export const PriceContainer = styled(Box)`
-  padding-top: ${({ theme }) => theme.newTheme.spacing.md};
+  padding-top: ${({ theme }) => theme.newTheme.spacing.lg};
 `
 
-export const Big = styled(Box)`
-  ${inline}
-  font-size: 0.8125rem;
-`
+export const Big = styled(Box)(({ theme }) => ({
+  ...theme.newTheme.textStyles["Text sm/Regular"],
+  ...inline,
+  lineHeight: 0,
+}))
 
-export const Pip = styled(Box)`
-  ${inline}
-  font-size: 2.125rem;
-`
+export const Pip = styled(Box)(({ theme }) => ({
+  ...theme.newTheme.textStyles["Display xl/Regular"],
+  ...inline,
+  lineHeight: 0,
+}))
 
-export const Tenth = styled(Box)`
-  ${inline}
-`
+export const Tenth = styled(Box)(({ theme }) => ({
+  ...theme.newTheme.textStyles["Text sm/Regular"],
+  ...inline,
+  lineHeight: 0,
+}))
 
 export const Price = styled.div<{ disabled: boolean }>`
   display: flex;
@@ -165,6 +171,10 @@ const fadeOut = keyframes`
 `
 
 export const ExpiredPrice = styled.div`
+  position: absolute;
+  left: 30px;
+  top: 55px;
+  z-index: 1;
   color: ${({ theme }) =>
     theme.newTheme.color["Colors/Text/text-error-primary (600)"]};
   font-size: 8px;

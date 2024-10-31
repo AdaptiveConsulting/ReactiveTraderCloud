@@ -29,6 +29,7 @@ import {
   QuotePriceLoading,
   Tenth,
   TradeButton,
+  Wrapper,
 } from "./PriceButton.styles"
 
 const getPriceByDirection$ = (symbol: string, direction: Direction) =>
@@ -117,7 +118,7 @@ export const PriceButtonInner = ({
       data-testid={`${direction}-${currencyPair.symbol}`}
     >
       <Price disabled={disabled}>
-        <DirectionLabel priceAnnounced={priceAnnounced}>
+        <DirectionLabel>
           {`${direction} ${currencyPair.base}`.toUpperCase()}
         </DirectionLabel>
         <PriceContainer>
@@ -178,10 +179,14 @@ export const AwaitingPriceButton = () => (
 export const PriceButton = ({ direction }: { direction: Direction }) => {
   const rfqState = useRfqState()
 
-  return rfqState.stage === QuoteStateStage.Requested ? (
-    <AwaitingPriceButton />
-  ) : (
-    <PriceButtonContainer direction={direction} rfqQuoteState={rfqState} />
+  return (
+    <Wrapper>
+      {rfqState.stage === QuoteStateStage.Requested ? (
+        <AwaitingPriceButton />
+      ) : (
+        <PriceButtonContainer direction={direction} rfqQuoteState={rfqState} />
+      )}
+    </Wrapper>
   )
 }
 

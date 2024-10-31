@@ -1,17 +1,17 @@
 import styled from "styled-components"
 
-import { WithChildren } from "@/client/utils/utilityTypes"
-
 import { DeliveryDate, HeaderAction } from "./Header/TileHeader"
 
 export const AnalyticsPricesFirstCol = "20%"
 
-export const PriceControlWrapper = styled.div`
-  grid-area: control;
+export const PriceControlWrapper = styled.div<{ isAnalyticsView: boolean }>`
   flex: 1;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  align-self: stretch;
+  padding: ${({ isAnalyticsView, theme }) =>
+    isAnalyticsView ? `0` : theme.newTheme.spacing.md};
 `
 
 export const PriceControlsStyle = styled("div")<{
@@ -19,17 +19,16 @@ export const PriceControlsStyle = styled("div")<{
 }>`
   flex: 1;
   display: grid;
-  padding: 0 ${({ theme }) => theme.newTheme.spacing.md};
-  ${({ isAnalyticsView }) =>
+  ${({ isAnalyticsView, theme }) =>
     isAnalyticsView
       ? `
   grid-template-rows: 50% 50%;
   grid-template-areas:
   "movement sell"
   "movement buy";
+  gap: ${theme.newTheme.spacing.xxs};
   `
       : `
-      height: 100%;
       grid-template-columns: 37% 26% 37%;
       grid-template-rows: 100%;
       grid-template-areas:
@@ -40,7 +39,6 @@ export const PriceControlsStyle = styled("div")<{
 export const InputTimerStyle = styled.div<{ isAnalyticsView: boolean }>`
   display: flex;
   flex-direction: column;
-
   ${({ isAnalyticsView }) =>
     !isAnalyticsView
       ? `
@@ -69,19 +67,29 @@ export const PanelItem = styled.div<{ shouldMoveDate: boolean }>`
 export const Body = styled.div<{
   isAnalyticsView: boolean
   showTimer: boolean
-}>`
+}>(
+  ({ isAnalyticsView, theme }) => `
   display: flex;
-  flex-direction: column;
   flex: 1;
-  padding: ${({ theme }) => theme.newTheme.spacing.md} 0;
-`
+  flex-direction: ${isAnalyticsView ? "row" : "column"};
+  align-items: ${isAnalyticsView ? "center" : null};
+  padding: ${theme.newTheme.spacing.xs} 0;
+  min-height: ${isAnalyticsView ? "136px" : "0"};
+`,
+)
+
 export const GraphPricesWrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
 `
 
-const MainTileStyle = styled.div`
+export const Main = styled.div`
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  color: ${({ theme }) => theme.core.textColor};
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-primary"]};
   border: 2px solid
@@ -94,13 +102,3 @@ const MainTileStyle = styled.div`
       theme.name === "light" ? "0 0 10px 0 rgba(0, 0, 0, 0.1)" : "none"};
   }
 `
-const MainTileWrapper = styled.div`
-  width: 100%;
-  color: ${({ theme }) => theme.core.textColor};
-`
-
-export const Main = ({ children }: WithChildren) => (
-  <MainTileWrapper>
-    <MainTileStyle>{children}</MainTileStyle>
-  </MainTileWrapper>
-)
