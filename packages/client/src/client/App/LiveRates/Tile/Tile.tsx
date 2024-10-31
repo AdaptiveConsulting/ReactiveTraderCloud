@@ -26,7 +26,6 @@ import {
 import { Provider, symbolBind, useTileContext } from "./Tile.context"
 import {
   Body,
-  GraphPricesWrapper,
   InputTimerStyle,
   Main,
   PanelItem,
@@ -56,17 +55,15 @@ const [useIsSymbolDataStale] = symbolBind(
   ),
 )
 
-interface Props {
-  isAnalytics: boolean
-}
-
-const Tile = ({ isAnalytics }: Props) => {
+const Tile = ({ isAnalytics }: { isAnalytics: boolean }) => {
   useIsSymbolDataStale()
   const rfq = useRfqState()
+
   const {
     currencyPair: { symbol },
     supportsTearOut,
   } = useTileContext()
+
   const timerData =
     rfq.stage === QuoteStateStage.Received
       ? { start: rfq.payload.time, end: rfq.payload.time + rfq.payload.timeout }
@@ -92,28 +89,15 @@ const Tile = ({ isAnalytics }: Props) => {
       <Main>
         <Header />
         <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>
-          {isAnalytics ? (
-            <GraphPricesWrapper>
-              <HistoricalGraph showTimer={!!timerData} />
-              <PriceControlWrapper>
-                <PriceControlsStyle isAnalyticsView={isAnalytics}>
-                  <PriceMovement isAnalyticsView={isAnalytics} />
-                  <PriceButton direction={Direction.Sell} />
-                  <PriceButton direction={Direction.Buy} />
-                  <RfqButton isAnalytics={isAnalytics} />
-                </PriceControlsStyle>
-              </PriceControlWrapper>
-            </GraphPricesWrapper>
-          ) : (
-            <PriceControlWrapper>
-              <PriceControlsStyle isAnalyticsView={isAnalytics}>
-                <PriceMovement isAnalyticsView={isAnalytics} />
-                <PriceButton direction={Direction.Sell} />
-                <PriceButton direction={Direction.Buy} />
-                <RfqButton isAnalytics={isAnalytics} />
-              </PriceControlsStyle>
-            </PriceControlWrapper>
-          )}
+          {isAnalytics ? <HistoricalGraph showTimer={!!timerData} /> : null}
+          <PriceControlWrapper isAnalyticsView={isAnalytics}>
+            <PriceControlsStyle isAnalyticsView={isAnalytics}>
+              <PriceMovement isAnalyticsView={isAnalytics} />
+              <PriceButton direction={Direction.Sell} />
+              <PriceButton direction={Direction.Buy} />
+              <RfqButton isAnalytics={isAnalytics} />
+            </PriceControlsStyle>
+          </PriceControlWrapper>
         </Body>
         <InputTimerWrapper />
       </Main>

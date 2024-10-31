@@ -9,10 +9,7 @@ import {
   PriceButtonInner,
   PriceUnavailableButton,
 } from "@/client/App/LiveRates/Tile/PriceButton"
-import {
-  PriceFromQuoteInner,
-  PriceMovementInner,
-} from "@/client/App/LiveRates/Tile/PriceMovement"
+import { PriceMovementInner } from "@/client/App/LiveRates/Tile/PriceMovement"
 import { RfqTimer } from "@/client/App/LiveRates/Tile/Rfq"
 import { RfqButtonInner } from "@/client/App/LiveRates/Tile/Rfq/RfqButton"
 import { TileState } from "@/client/App/LiveRates/Tile/Tile.state"
@@ -23,7 +20,6 @@ import {
   Main,
   PanelItem,
   PriceControlsStyle,
-  PriceControlWrapper,
 } from "@/client/App/LiveRates/Tile/Tile.styles"
 import { Direction } from "@/generated/TradingGateway"
 import { CurrencyPair } from "@/services/currencyPairs"
@@ -123,64 +119,55 @@ export const Tile = ({
               <InputTimerWrapper isAnalytics />
             </GraphPricesWrapper>
           ) : null}
-          <PriceControlWrapper>
-            <PriceControlsStyle isAnalyticsView={isAnalytics}>
-              {isRfq ? (
-                <PriceFromQuoteInner
-                  isAnalytics={isAnalytics}
-                  spread={priceMovement}
-                />
-              ) : (
-                <PriceMovementInner
-                  movementType={priceMovementType}
-                  spread={priceMovement}
-                  isAnalyticsView={isAnalytics}
-                />
-              )}
+          <PriceControlsStyle isAnalyticsView={isAnalytics}>
+            <PriceMovementInner
+              movementType={isRfq ? PriceMovementType.NONE : priceMovementType}
+              spread={priceMovement}
+              isAnalyticsView={isAnalytics}
+            />
 
-              {sellPrice ? (
-                <PriceButtonInner
-                  direction={Direction.Sell}
-                  currencyPair={currencyPair}
-                  onClick={() => null}
-                  disabled={!!priceDisabled}
-                  isExpired={!!isExpired}
-                  priceAnnounced={!!timerData}
-                  price={sellPrice}
-                  isStatic={!!priceButtonStatic}
-                />
-              ) : isRfq ? (
-                <AwaitingPriceButton />
-              ) : (
-                <PriceUnavailableButton />
-              )}
-              {buyPrice ? (
-                <PriceButtonInner
-                  direction={Direction.Buy}
-                  currencyPair={currencyPair}
-                  onClick={() => null}
-                  disabled={!!priceDisabled}
-                  isExpired={!!isExpired}
-                  priceAnnounced={!!timerData}
-                  price={buyPrice}
-                  isStatic={!!priceButtonStatic}
-                />
-              ) : isRfq ? (
-                <AwaitingPriceButton />
-              ) : (
-                <PriceUnavailableButton />
-              )}
-              {rfqButtonText && typeof rfqButtonText === "string" && (
-                <RfqButtonInner
-                  isAnalytics={isAnalytics}
-                  disabled={false}
-                  onClick={() => null}
-                  textWrap={!!rfqTextWrap}
-                  buttonText={rfqButtonText}
-                />
-              )}
-            </PriceControlsStyle>
-          </PriceControlWrapper>
+            {sellPrice ? (
+              <PriceButtonInner
+                direction={Direction.Sell}
+                currencyPair={currencyPair}
+                onClick={() => null}
+                disabled={!!priceDisabled}
+                isExpired={!!isExpired}
+                priceAnnounced={!!timerData}
+                price={sellPrice}
+                isStatic={!!priceButtonStatic}
+              />
+            ) : isRfq ? (
+              <AwaitingPriceButton />
+            ) : (
+              <PriceUnavailableButton />
+            )}
+            {buyPrice ? (
+              <PriceButtonInner
+                direction={Direction.Buy}
+                currencyPair={currencyPair}
+                onClick={() => null}
+                disabled={!!priceDisabled}
+                isExpired={!!isExpired}
+                priceAnnounced={!!timerData}
+                price={buyPrice}
+                isStatic={!!priceButtonStatic}
+              />
+            ) : isRfq ? (
+              <AwaitingPriceButton />
+            ) : (
+              <PriceUnavailableButton />
+            )}
+            {rfqButtonText && typeof rfqButtonText === "string" && (
+              <RfqButtonInner
+                isAnalytics={isAnalytics}
+                disabled={false}
+                onClick={() => null}
+                textWrap={!!rfqTextWrap}
+                buttonText={rfqButtonText}
+              />
+            )}
+          </PriceControlsStyle>
           {!isAnalytics ? <InputTimerWrapper /> : null}
         </Body>
       </Main>
