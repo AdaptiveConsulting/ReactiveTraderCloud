@@ -61,7 +61,7 @@ export const Wrapper = styled.div`
 `
 
 const SharedButtonStyle = styled.button`
-  height: 69px;
+  height: 60px;
   width: 88px;
   display: flex;
   flex-direction: column;
@@ -130,7 +130,7 @@ const inline = {
 }
 
 export const PriceContainer = styled(Box)`
-  padding-top: ${({ theme }) => theme.newTheme.spacing.lg};
+  padding-top: ${({ theme }) => theme.newTheme.spacing.xl};
 `
 
 export const Big = styled(Box)(({ theme }) => ({
