@@ -20,7 +20,7 @@ const LiveRateWrapper = styled.div`
   height: 100%;
   user-select: none;
   background: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary"]};
+    theme.newTheme.color["Colors/Background/bg-primary_alt"]};
 
   @media (max-width: 480px) {
     padding-right: 1rem;

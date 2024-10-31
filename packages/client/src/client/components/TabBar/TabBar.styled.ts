@@ -1,12 +1,13 @@
 import styled from "styled-components"
 
 export const Background = styled.div`
+  height: ${({ theme }) => theme.newTheme.density.md};
   display: flex;
   justify-content: space-between;
   color: ${({ theme }) =>
     theme.newTheme.color["Colors/Text/text-quaternary (500)"]};
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary_alt"]};
+    theme.newTheme.color["Colors/Background/bg-secondary"]};
 `
 
 export const LeftSection = styled.ul`
@@ -26,11 +27,13 @@ export const RightSection = styled.ul`
   list-style: none;
 `
 
-export const Tab = styled.li<{ active: boolean }>`
-  width: ${({ theme }) => theme.newTheme.spacing["9xl"]};
-  height: ${({ theme }) => theme.newTheme.density.md};
-  font-size: 12px;
+const TabText = styled.li(({ theme }) => ({
+  ...theme.newTheme.textStyles["Text md/Semibold"],
+}))
 
+export const Tab = styled(TabText)<{ active: boolean }>`
+  height: 100%;
+  width: ${({ theme }) => theme.newTheme.spacing["9xl"]};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -43,7 +46,7 @@ export const Tab = styled.li<{ active: boolean }>`
       ? theme.newTheme.color["Colors/Text/text-brand-primary (900)"]
       : "inherit"};
   background-color: ${({ active, theme }) =>
-    active ? theme.newTheme.color["Colors/Background/bg-tertiary"] : "none"};
+    active ? theme.newTheme.color["Colors/Background/bg-primary_alt"] : "none"};
 
   &:hover {
     cursor: pointer;
