@@ -10,7 +10,7 @@ import { QuoteStatus } from "@/services/rfqs/types"
 import { LimitCheckStatus, TradeStatus } from "@/services/trades/types"
 
 export const Table = styled.div`
-  height: calc(100% - 4.75rem);
+  flex: 1;
   width: 100%;
   .visually-hidden {
     display: none;

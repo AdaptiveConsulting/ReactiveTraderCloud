@@ -15,8 +15,8 @@ import { tearOutState$, useTearOutEntry } from "./Tile/TearOut/state"
 
 const PanelItems = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  grid-gap: 0.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  grid-gap: ${({ theme }) => theme.newTheme.spacing.md};
 `
 
 export const [useFilteredCurrencyPairs, filteredCurrencyPairs$] = bind(

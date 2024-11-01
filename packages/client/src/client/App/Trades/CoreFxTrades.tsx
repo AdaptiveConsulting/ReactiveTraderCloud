@@ -7,7 +7,7 @@ import {
 } from "@/client/notifications"
 import { FxTrade, trades$ } from "@/services/trades"
 
-import { TradesGrid } from "./TradesGrid"
+import { GridRegion } from "./GridRegion"
 import { useFxTradeRowHighlight } from "./TradesState"
 import { fxColDef, fxColFields } from "./TradesState/colConfig"
 
@@ -38,7 +38,7 @@ const FxTrades = () => {
   )
 
   return (
-    <TradesGrid
+    <GridRegion
       caption="Reactive Trader FX Trades Table"
       highlightedRow={highlightedRow}
       columnDefinitions={fxColDef}

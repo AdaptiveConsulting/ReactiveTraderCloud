@@ -13,22 +13,23 @@ export interface TabBarActionConfig {
   name: string
   inner: JSX.Element
   active?: boolean
+  size: "sm" | "lg"
   onClick?: () => void
 }
 
-interface TabBarProps {
-  items: string[]
-  activeItem: string
-  handleItemOnClick: (item: string) => void
-  actions: TabBarActionConfig[]
+interface TabBarProps<T> {
+  items: T[]
+  activeItem: T
+  handleItemOnClick?: (item: T) => void
+  actions?: TabBarActionConfig[]
 }
 
-export const TabBar = ({
+export const TabBar = <T extends string>({
   items,
   activeItem,
   handleItemOnClick,
   actions,
-}: TabBarProps) => {
+}: TabBarProps<T>) => {
   return (
     <Background>
       <LeftSection>
@@ -36,7 +37,7 @@ export const TabBar = ({
           <Tab
             active={item === activeItem}
             key={item}
-            onClick={() => handleItemOnClick(item)}
+            onClick={() => handleItemOnClick?.(item)}
             data-testid={`tabItem-${item}`}
           >
             <Typography
@@ -53,18 +54,21 @@ export const TabBar = ({
         ))}
       </LeftSection>
       <RightSection>
-        {actions.toReversed().map(({ name, active, onClick, inner }) => (
-          <Action key={name} active={!!active} onClick={onClick}>
-            {inner}
-          </Action>
-        ))}
-        <DropdownWrapper>
-          <DropdownMenu
-            selectedOption={activeItem}
-            options={items}
-            onSelectionChange={handleItemOnClick}
-          />
-        </DropdownWrapper>
+        {actions &&
+          actions.toReversed().map(({ name, active, onClick, inner, size }) => (
+            <Action key={name} active={!!active} onClick={onClick} size={size}>
+              {inner}
+            </Action>
+          ))}
+        {handleItemOnClick && (
+          <DropdownWrapper>
+            <DropdownMenu
+              selectedOption={activeItem}
+              options={items}
+              onSelectionChange={handleItemOnClick}
+            />
+          </DropdownWrapper>
+        )}
       </RightSection>
     </Background>
   )

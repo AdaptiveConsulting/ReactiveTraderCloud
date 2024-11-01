@@ -1,7 +1,7 @@
-import { Subscribe } from "@react-rxjs/core"
 import { useEffect } from "react"
 import { merge } from "rxjs"
 
+import { Region } from "@/client/components/Region/Region"
 import {
   registerFxTradeNotifications,
   unregisterFxTradeNotifications,
@@ -22,10 +22,12 @@ const LiveRates = ({ children }: WithChildren) => {
   }, [])
 
   return (
-    <Subscribe source$={liveRates$} fallback={children}>
-      <MainHeader />
-      <Tiles />
-    </Subscribe>
+    <Region
+      source$={liveRates$}
+      fallback={children}
+      Header={<MainHeader />}
+      Body={<Tiles />}
+    />
   )
 }
 

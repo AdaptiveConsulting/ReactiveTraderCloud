@@ -2,27 +2,6 @@ import styled from "styled-components"
 
 import { transparentColor } from "./globals/variables"
 
-export const AnalyticsInnerWrapper = styled.div<{ inExternalWindow?: boolean }>`
-  width: 100%;
-  height: 100%;
-  width: 320px;
-  margin: auto;
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: relative;
-  display: grid;
-  grid-template-rows: ${({ inExternalWindow }) =>
-    inExternalWindow ? "0 auto" : "46px auto"};
-`
-
-export const AnalyticsHeader = styled.header`
-  display: grid;
-  align-items: center;
-  grid-template-columns: 1fr 24px;
-  padding: 10px;
-  color: ${({ theme }) => theme.core.textColor};
-`
-
 export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
   border-radius: 0.25rem;
   color: ${({ theme }) => theme.core.textColor};
@@ -134,27 +113,4 @@ export const BubbleChart = styled.div`
   height: 18rem;
   overflow: hidden;
   position: relative;
-`
-
-export const Controls = styled("div")`
-  text-align: right;
-  opacity: 1;
-  transition: opacity 0.2s;
-`
-
-export const PopoutButton = styled("button")`
-  &:hover {
-    .hover-state {
-      fill: #5f94f5;
-    }
-  }
-`
-
-export const RightNav = styled.ul`
-  align-self: flex-end;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  list-style-type: none;
-  list-style: none;
 `

@@ -46,6 +46,7 @@ export const MainHeader = () => {
       inner: <ChartIcon />,
       active: tileView === TileView.Analytics,
       onClick: onToggleSelectedView,
+      size: "sm",
     },
   ]
 
@@ -53,6 +54,7 @@ export const MainHeader = () => {
     actions.push({
       name: "tearOut",
       inner: <TearOutComponent section="tiles" />,
+      size: "sm",
     })
   }
 
@@ -60,6 +62,7 @@ export const MainHeader = () => {
     actions.push({
       name: "limitChecker",
       inner: <LimitCheckerIndicator />,
+      size: "sm",
     })
   }
 
