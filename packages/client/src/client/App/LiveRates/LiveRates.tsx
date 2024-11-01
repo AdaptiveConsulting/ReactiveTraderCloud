@@ -1,11 +1,12 @@
 import { joinChannel } from "@finos/fdc3"
 import { combineKeys } from "@react-rxjs/utils"
-import { lazy, Suspense, useEffect } from "react"
+import { lazy, useEffect } from "react"
 import { merge } from "rxjs"
 import { map } from "rxjs/operators"
 import styled from "styled-components"
 
 import { Loader } from "@/client/components/Loader"
+import { RegionWrapper } from "@/client/components/Region/RegionWrapper"
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { getHistoricalPrices$, getPrice$ } from "@/services/prices"
 
@@ -16,12 +17,7 @@ combineKeys(currencyPairs$.pipe(map(Object.keys)), (symbol: string) =>
   merge(getHistoricalPrices$(symbol), getPrice$(symbol)),
 ).subscribe()
 
-const LiveRateWrapper = styled.div`
-  height: 100%;
-  user-select: none;
-  background: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary_alt"]};
-
+const LiveRateWrapper = styled(RegionWrapper)`
   @media (max-width: 480px) {
     padding-right: 1rem;
   }
@@ -41,10 +37,8 @@ export const LiveRates = () => {
   }, [])
 
   return (
-    <LiveRateWrapper data-qa="workspace__tiles-workspace">
-      <Suspense fallback={loader}>
-        <LiveRatesCore>{loader}</LiveRatesCore>
-      </Suspense>
+    <LiveRateWrapper fallback={loader}>
+      <LiveRatesCore>{loader}</LiveRatesCore>
     </LiveRateWrapper>
   )
 }

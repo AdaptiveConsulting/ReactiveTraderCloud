@@ -1,7 +1,7 @@
 import { scan, share } from "rxjs"
 import styled from "styled-components"
 
-import { TradesGrid } from "@/client/App/Trades/TradesGrid"
+import { GridRegion } from "@/client/App/Trades/GridRegion"
 import {
   limitCheckerColDef,
   limitCheckerColFields,
@@ -39,7 +39,7 @@ const Container = styled.div`
 export const LimitCheckResultsTable = () => {
   return (
     <Container>
-      <TradesGrid
+      <GridRegion
         columnFields={limitCheckerColFields}
         columnDefinitions={limitCheckerColDef}
         trades$={tableRows$}

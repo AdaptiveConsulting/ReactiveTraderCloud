@@ -1,23 +1,14 @@
-import { lazy, Suspense } from "react"
-import styled from "styled-components"
+import { lazy } from "react"
 
 import { Loader } from "@/client/components/Loader"
+import { RegionWrapper } from "@/client/components/Region/RegionWrapper"
 
 const TradesCore = lazy(() => import("./CoreCreditTrades"))
 
-const TradesWrapper = styled.article`
-  height: 100%;
-  padding: 0.5rem 1rem;
-  user-select: none;
-  background: ${({ theme }) => theme.core.darkBackground};
-`
-
 export const CreditTrades = () => (
-  <TradesWrapper>
-    <Suspense fallback={<Loader />}>
-      <TradesCore />
-    </Suspense>
-  </TradesWrapper>
+  <RegionWrapper fallback={<Loader />}>
+    <TradesCore />
+  </RegionWrapper>
 )
 
 export default CreditTrades

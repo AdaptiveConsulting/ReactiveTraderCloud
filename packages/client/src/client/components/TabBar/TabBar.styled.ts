@@ -67,8 +67,9 @@ export const DropdownWrapper = styled.div`
   }
 `
 
-export const Action = styled(Tab)`
-  width: ${({ theme }) => theme.newTheme.density.md};
+export const Action = styled(Tab)<{ size: "sm" | "lg" }>`
+  width: ${({ theme, size }) =>
+    size === "sm" ? theme.newTheme.density.md : "auto"};
   display: flex;
   align-items: center;
   line-height: 0;
