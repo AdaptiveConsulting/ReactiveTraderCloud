@@ -13,8 +13,7 @@ const BodyWrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: ${({ theme }) => theme.newTheme.spacing.lg};
-  padding-bottom: 0;
+  padding: 0 ${({ theme }) => theme.newTheme.spacing.lg};
 `
 
 export interface RegionLayoutProps {

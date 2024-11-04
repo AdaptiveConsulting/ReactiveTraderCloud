@@ -9,7 +9,11 @@ import {
 import { QuoteStatus } from "@/services/rfqs/types"
 import { LimitCheckStatus, TradeStatus } from "@/services/trades/types"
 
-export const Table = styled.div`
+const TableText = styled.div(
+  ({ theme }) => theme.newTheme.textStyles["Text sm/Regular"],
+)
+
+export const Table = styled(TableText)`
   flex: 1;
   width: 100%;
   .visually-hidden {
@@ -21,11 +25,13 @@ export const TableHeadRow = styled.div`
   position: sticky;
   top: 0;
   display: flex;
-  font-size: 0.675rem;
-  text-transform: uppercase;
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-quaternary (500)"]};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary_alt"]};
   z-index: 1;
-  height: 2rem;
-  background-color: ${({ theme }) => theme.core.lightBackground};
+
+  padding: 4px;
 `
 
 export const highlightBackgroundColor = css`
@@ -38,10 +44,13 @@ export const TableBodyRow = styled.div<{
 }>`
   display: flex;
   width: 100%;
-  background-color: ${({ theme, index }) =>
-    index && index % 2 === 0 ? undefined : theme.core.lightBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
+  border-bottom: 1px solid
+    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-tertiary"]};
   &:hover {
-    background-color: ${({ theme }) => theme.core.alternateBackground};
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-secondary"]};
   }
   ${({ highlight }) => highlight && highlightBackgroundColor}
 `
@@ -75,7 +84,7 @@ export const StatusIndicator = styled.div<{
   status: QuoteStatus | LimitCheckStatus | TradeStatus
 }>`
   width: 21px;
-  border-left: 6px solid
+  border-left: 2px solid
     ${({ status, theme: { accents } }) => {
       if (
         status === TradeStatus.Done ||
@@ -96,6 +105,5 @@ export const StatusIndicator = styled.div<{
 `
 
 export const StatusIndicatorSpacer = styled.div`
-  border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
   width: 21px;
 `

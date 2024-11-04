@@ -24,8 +24,6 @@ const TableHeadCell = styled.div<{
   numeric: boolean
 }>`
   width: ${({ width }) => width}%;
-  font-weight: unset;
-  border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
   cursor: pointer;
   display: flex;
   flex-direction: ${({ headerFirst }) => (headerFirst ? "row" : "row-reverse")};
