@@ -96,7 +96,7 @@ describe("MainHeader", () => {
     )
 
     act(() => {
-      fireEvent.click(screen.getByTestId("toggleButton"))
+      fireEvent.click(screen.getByTestId("action-toggleTileView"))
     })
 
     expect(screen.getByTestId("tile-EURUSD").textContent).toBe(
@@ -104,7 +104,7 @@ describe("MainHeader", () => {
     )
 
     act(() => {
-      fireEvent.click(screen.getByTestId("toggleButton"))
+      fireEvent.click(screen.getByTestId("action-toggleTileView"))
     })
 
     expect(screen.getByTestId("tile-EURUSD").textContent).toBe(
