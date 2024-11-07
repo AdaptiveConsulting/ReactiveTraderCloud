@@ -61,6 +61,7 @@ export const GridRegion = <Row extends Trade>({
         <TradesStreamContext.Provider value={trades$}>
           <HighlightedRowContext.Provider value={highlightedRow}>
             <Region
+              aria-labelledby="trades-table-heading"
               fallback={<Loader ariaLabel="Loading trades blotter" />}
               Header={
                 <TradesHeader

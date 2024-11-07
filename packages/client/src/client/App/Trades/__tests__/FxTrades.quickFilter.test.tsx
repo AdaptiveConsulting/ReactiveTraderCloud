@@ -22,7 +22,7 @@ vi.mock("../TradesState/tableTrades", async () => {
     useFxTradeRowHighlight: vi.fn().mockReturnValue(undefined),
   }
 })
-vi.mock("../TradesGrid/utils")
+vi.mock("../GridRegion/utils")
 vi.mock("react-virtualized-auto-sizer", () => ({
   default: ({
     children,

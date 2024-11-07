@@ -56,7 +56,13 @@ export const TabBar = <T extends string>({
       <RightSection>
         {actions &&
           actions.toReversed().map(({ name, active, onClick, inner, size }) => (
-            <Action key={name} active={!!active} onClick={onClick} size={size}>
+            <Action
+              key={name}
+              active={!!active}
+              onClick={onClick}
+              size={size}
+              data-testid={`action-${name}`}
+            >
               {inner}
             </Action>
           ))}
