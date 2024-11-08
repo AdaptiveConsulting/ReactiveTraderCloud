@@ -8,19 +8,21 @@ import {
   Tab,
 } from "./TabBar.styled"
 
-export interface TabBarActionConfig {
+interface TabBarActionConfigItem {
   name: string
   inner: JSX.Element
   active?: boolean
-  size: "sm" | "lg"
+  size?: "sm" | "lg"
   onClick?: () => void
 }
+
+export type TabBarActionConfig = TabBarActionConfigItem[]
 
 interface TabBarProps<T> {
   items: T[]
   activeItem: T
   handleItemOnClick?: (item: T) => void
-  actions?: TabBarActionConfig[]
+  actions?: TabBarActionConfig
 }
 
 export const TabBar = <T extends string>({
@@ -38,6 +40,7 @@ export const TabBar = <T extends string>({
             key={item}
             onClick={() => handleItemOnClick?.(item)}
             data-testid={`tabItem-${item}`}
+            isStatic={items.length < 2}
           >
             {item}
           </Tab>
@@ -50,7 +53,7 @@ export const TabBar = <T extends string>({
               key={name}
               active={!!active}
               onClick={onClick}
-              size={size}
+              size={size || "sm"}
               data-testid={`action-${name}`}
             >
               {inner}

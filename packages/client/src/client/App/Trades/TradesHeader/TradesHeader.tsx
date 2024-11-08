@@ -18,11 +18,10 @@ export const TradesHeader = ({
 }) => {
   const items: string[] = [title]
 
-  const actions: TabBarActionConfig[] = [
+  const actions: TabBarActionConfig = [
     {
       name: "excel",
       inner: <ExcelButton />,
-      size: "sm",
     },
     {
       name: "filter",
@@ -40,7 +39,6 @@ export const TradesHeader = ({
     actions.push({
       name: "tearOut",
       inner: <TearOutComponent section={section} />,
-      size: "sm",
     })
   }
 

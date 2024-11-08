@@ -28,7 +28,7 @@ const TableHeadCell = styled.div<{
   display: flex;
   flex-direction: ${({ headerFirst }) => (headerFirst ? "row" : "row-reverse")};
   align-items: center;
-  padding-right: ${({ numeric }) => (numeric ? "1.5rem;" : null)};
+  padding-right: ${({ numeric }) => (numeric ? "1.3rem;" : null)};
 
   svg {
     width: 0.675rem;

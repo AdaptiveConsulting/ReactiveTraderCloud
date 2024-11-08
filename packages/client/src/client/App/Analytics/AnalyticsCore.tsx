@@ -17,7 +17,7 @@ const analytics$ = merge(pnL$, profitAndLoss$, positions$)
 
 const SuspenseOnStaleData = createSuspenseOnStale(isAnalyticsDataStale$)
 
-const actions: TabBarActionConfig[] = []
+const actions: TabBarActionConfig = []
 
 if (supportsTearOut) {
   actions.push({

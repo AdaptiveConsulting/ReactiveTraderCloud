@@ -31,7 +31,7 @@ const TabText = styled.li(({ theme }) => ({
   ...theme.newTheme.textStyles["Text md/Semibold"],
 }))
 
-export const Tab = styled(TabText)<{ active: boolean }>`
+export const Tab = styled(TabText)<{ active: boolean; isStatic?: boolean }>`
   height: 100%;
   width: ${({ theme }) => theme.newTheme.spacing["9xl"]};
   display: flex;
@@ -49,7 +49,7 @@ export const Tab = styled(TabText)<{ active: boolean }>`
     active ? theme.newTheme.color["Colors/Background/bg-primary_alt"] : "none"};
 
   &:hover {
-    cursor: pointer;
+    cursor: ${({ isStatic }) => (isStatic ? undefined : "pointer")};
   }
 `
 
