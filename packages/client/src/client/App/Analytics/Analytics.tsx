@@ -8,9 +8,12 @@ import { analytics$ } from "@/services/analytics"
 
 const AnalyticsCore = lazy(() => import("./AnalyticsCore"))
 
-const AnalyticsWrapper = styled(RegionWrapper)<{
+const AnalyticsWrapper = styled.div<{
   hideIfMatches?: string | null
 }>`
+  border-left: solid
+    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-primary"]}
+    ${({ theme }) => theme.newTheme.spacing.sm};
   ${({ hideIfMatches }) =>
     hideIfMatches
       ? ` @media ${hideIfMatches} {
@@ -38,8 +41,14 @@ export const Analytics = ({ hideIfMatches = "(max-width: 750px)" }: Props) => {
   const shouldMountAnalytics = useHasItBeenVisible(ref)
 
   return (
-    <AnalyticsWrapper fallback={loader} ref={ref} hideIfMatches={hideIfMatches}>
-      {shouldMountAnalytics ? <AnalyticsCore>{loader}</AnalyticsCore> : loader}
+    <AnalyticsWrapper hideIfMatches={hideIfMatches}>
+      <RegionWrapper fallback={loader} ref={ref}>
+        {shouldMountAnalytics ? (
+          <AnalyticsCore>{loader}</AnalyticsCore>
+        ) : (
+          loader
+        )}
+      </RegionWrapper>
     </AnalyticsWrapper>
   )
 }
