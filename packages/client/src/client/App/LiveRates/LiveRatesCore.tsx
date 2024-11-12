@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { merge } from "rxjs"
 
-import { Region } from "@/client/components/Region/Region"
+import { Region } from "@/client/components/layout/Region"
 import {
   registerFxTradeNotifications,
   unregisterFxTradeNotifications,

@@ -89,11 +89,11 @@ export const Main = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  color: ${({ theme }) => theme.core.textColor};
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-primary"]};
   border: 2px solid
     ${({ theme }) => theme.newTheme.color["Colors/Background/bg-primary"]};
+
   &:hover,
   .tile-hover & {
     color: ${({ theme }) =>

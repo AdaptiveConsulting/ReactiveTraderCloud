@@ -1,7 +1,7 @@
 import { lazy } from "react"
 
+import { RegionWrapper } from "@/client/components/layout/Region"
 import { Loader } from "@/client/components/Loader"
-import { RegionWrapper } from "@/client/components/Region/RegionWrapper"
 
 const TradesCore = lazy(() => import("./CoreCreditTrades"))
 

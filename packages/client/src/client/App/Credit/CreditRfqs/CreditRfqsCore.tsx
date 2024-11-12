@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-import { Region } from "@/client/components/Region/Region"
+import { Region } from "@/client/components/layout/Region"
 import {
   registerCreditQuoteAcceptedNotifications,
   registerCreditQuoteReceivedNotifications,

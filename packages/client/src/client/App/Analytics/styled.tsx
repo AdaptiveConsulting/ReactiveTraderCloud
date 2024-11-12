@@ -4,6 +4,7 @@ import { transparentColor } from "./globals/variables"
 
 export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
   color: ${({ theme }) => theme.core.textColor};
+
   ${({ inExternalWindow }) =>
     inExternalWindow
       ? `@media (min-width: 640px) {
@@ -13,7 +14,8 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
       grid-gap: 0.5rem;
     }`
       : ``}
-  padding: 1rem;
+
+  padding: ${({ theme }) => theme.newTheme.spacing.lg};
   font-size: 1rem;
   scrollbar-width: thin;
   /* axis */
@@ -80,10 +82,7 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
 `
 
 export const AnalyticsLineChartWrapper = styled.div`
-  width: 100%;
-  min-height: 12.5rem;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  padding-top: ${({ theme }) => theme.newTheme.spacing.xl};
 `
 
 export const ProfitAndLossHeader = styled.div`
@@ -93,7 +92,6 @@ export const ProfitAndLossHeader = styled.div`
 `
 
 export const Title = styled.div`
-  margin-bottom: 1rem;
   font-size: 15px;
   font-weight: normal;
 `
@@ -106,9 +104,9 @@ export const HrBar = styled.hr`
   border: none;
 `
 
-export const BubbleChart = styled.div`
-  text-anchor: middle;
-  height: 18rem;
-  overflow: hidden;
+export const BubbleChartWrapper = styled.div`
   position: relative;
+  height: 18rem;
+  text-anchor: middle;
+  overflow: hidden;
 `

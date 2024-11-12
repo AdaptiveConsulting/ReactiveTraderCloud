@@ -10,13 +10,17 @@ export const Background = styled.div`
     theme.newTheme.color["Colors/Background/bg-secondary"]};
 `
 
-export const LeftSection = styled.ul`
+export const LeftSection = styled.ul<{ isStatic: boolean }>`
   display: flex;
   flex-wrap: wrap;
 
+  ${({ isStatic }) =>
+    isStatic
+      ? undefined
+      : `  
   @media (max-width: 915px) {
     display: none;
-  }
+  }`}
 `
 
 export const RightSection = styled.ul`

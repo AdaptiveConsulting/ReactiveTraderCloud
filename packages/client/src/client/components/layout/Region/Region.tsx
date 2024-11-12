@@ -1,7 +1,8 @@
 import { Subscribe } from "@react-rxjs/core"
 import React from "react"
 
-import { RegionLayout, RegionLayoutProps } from "./RegionLayout"
+import { LayoutProps } from "../types"
+import { RegionLayout } from "./"
 
 export const Region = ({
   source$,
@@ -9,11 +10,12 @@ export const Region = ({
   children,
   Header,
   Body,
-}: RegionLayoutProps & React.ComponentProps<typeof Subscribe>) => {
+  style,
+}: LayoutProps & React.ComponentProps<typeof Subscribe>) => {
   return (
     <Subscribe source$={source$} fallback={fallback}>
       {children}
-      <RegionLayout Header={Header} Body={Body} />
+      <RegionLayout Header={Header} Body={Body} style={style} />
     </Subscribe>
   )
 }

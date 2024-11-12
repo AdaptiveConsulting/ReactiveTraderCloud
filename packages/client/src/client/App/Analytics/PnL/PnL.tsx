@@ -1,6 +1,7 @@
 import { bind } from "@react-rxjs/core"
 import { distinctUntilChanged, map } from "rxjs/operators"
 
+import { SectionLayout } from "@/client/components/layout/SectionLayout"
 import { equals } from "@/client/utils/equals"
 import { mapObject } from "@/client/utils/mapObject"
 import { currentPositions$ } from "@/services/analytics"
@@ -30,12 +31,12 @@ const [usePnL, pnL$] = bind(
 export { pnL$ }
 
 export const PnLInner = ({ data }: { data: PNLBarProps[] }) => (
-  <div>
-    <Title>PnL</Title>
-    {data.map((pnlItem) => (
+  <SectionLayout
+    Header={<Title>PnL</Title>}
+    Body={data.map((pnlItem) => (
       <PNLBar key={pnlItem.symbol} {...pnlItem} />
     ))}
-  </div>
+  />
 )
 
 export const PnL = () => {

@@ -33,7 +33,7 @@ export const TabBar = <T extends string>({
 }: TabBarProps<T>) => {
   return (
     <Background>
-      <LeftSection>
+      <LeftSection isStatic={items.length < 2}>
         {items.map((item) => (
           <Tab
             active={item === activeItem}

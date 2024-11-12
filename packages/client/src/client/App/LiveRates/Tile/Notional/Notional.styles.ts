@@ -10,11 +10,11 @@ export const Input = styled.input`
   height: 28px;
   margin-left: ${({ theme }) => theme.newTheme.spacing.xs};
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+    theme.newTheme.color["Colors/Background/bg-secondary"]};
   color: ${({ theme }) =>
     theme.newTheme.color["Colors/Text/text-secondary (700)"]};
   border: 1.5px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-tertiary"]};
+    ${({ theme }) => theme.newTheme.color["Colors/Border/border-secondary"]};
   caret-color: ${({ theme }) => theme.primary.base};
   &:focus {
     outline: none !important;

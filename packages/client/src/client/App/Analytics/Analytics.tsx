@@ -1,8 +1,8 @@
 import { lazy, useRef } from "react"
 import styled from "styled-components"
 
+import { RegionWrapper } from "@/client/components/layout/Region"
 import { Loader } from "@/client/components/Loader"
-import { RegionWrapper } from "@/client/components/Region/RegionWrapper"
 import { useHasItBeenVisible } from "@/client/utils/useHasItBeenVisible"
 import { analytics$ } from "@/services/analytics"
 
@@ -41,8 +41,8 @@ export const Analytics = ({ hideIfMatches = "(max-width: 750px)" }: Props) => {
   const shouldMountAnalytics = useHasItBeenVisible(ref)
 
   return (
-    <AnalyticsWrapper hideIfMatches={hideIfMatches}>
-      <RegionWrapper fallback={loader} ref={ref}>
+    <AnalyticsWrapper ref={ref} hideIfMatches={hideIfMatches}>
+      <RegionWrapper fallback={loader}>
         {shouldMountAnalytics ? (
           <AnalyticsCore>{loader}</AnalyticsCore>
         ) : (

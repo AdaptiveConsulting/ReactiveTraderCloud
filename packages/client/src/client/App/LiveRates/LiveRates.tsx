@@ -5,8 +5,8 @@ import { merge } from "rxjs"
 import { map } from "rxjs/operators"
 import styled from "styled-components"
 
+import { RegionWrapper } from "@/client/components/layout/Region"
 import { Loader } from "@/client/components/Loader"
-import { RegionWrapper } from "@/client/components/Region/RegionWrapper"
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { getHistoricalPrices$, getPrice$ } from "@/services/prices"
 

@@ -1,6 +1,7 @@
 import { merge } from "rxjs"
+import styled from "styled-components"
 
-import { Region } from "@/client/components/Region/Region"
+import { Region } from "@/client/components/layout/Region"
 import { TabBar, TabBarActionConfig } from "@/client/components/TabBar"
 import { createSuspenseOnStale } from "@/client/utils/createSuspenseOnStale"
 import { WithChildren } from "@/client/utils/utilityTypes"
@@ -32,6 +33,9 @@ const Analytics = ({ children }: WithChildren) => {
     <Region
       source$={analytics$}
       fallback={children}
+      style={{
+        width: 320,
+      }}
       Header={
         <TabBar
           items={["Analytics"]}
