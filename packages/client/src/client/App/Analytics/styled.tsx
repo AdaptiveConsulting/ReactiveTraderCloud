@@ -44,7 +44,8 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
   }
 
   .analytics__positions-label {
-    fill: ${({ theme }) => theme.white};
+    fill: ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-primary (900)"]};
     font-size: 0.6875rem;
     pointer-events: none;
     user-select: none;

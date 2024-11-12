@@ -7,6 +7,7 @@ import {
   useEffect,
   useState,
 } from "react"
+import { BehaviorSubject, map } from "rxjs"
 import { ThemeProvider as StyledThemeProvider } from "styled-components"
 
 import { ThemeName, themes } from "./themes"
@@ -28,6 +29,8 @@ export const ThemeContext = createContext<ContextValue>({
 
 const STORAGE_KEY = "themeName"
 
+const themeName$ = new BehaviorSubject<ThemeName>(ThemeName.Dark)
+
 export const ThemeProvider = ({ storage = localStorage, children }: Props) => {
   const [themeName, setThemeName] = useState<ThemeName>(
     () => (storage.getItem(STORAGE_KEY) as ThemeName) || ThemeName.Dark,
@@ -40,6 +43,7 @@ export const ThemeProvider = ({ storage = localStorage, children }: Props) => {
 
         if (themeName && themes[themeName] != null) {
           setThemeName(themeName)
+          themeName$.next(themeName)
         }
       }
     }
@@ -78,5 +82,7 @@ export const useTheme = () => {
 
   return { themeName, setTheme: setThemeName, toggleTheme }
 }
+
+export const theme$ = themeName$.pipe(map((themeName) => themes[themeName]))
 
 export const ThemeConsumer = ThemeContext.Consumer

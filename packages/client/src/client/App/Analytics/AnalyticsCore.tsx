@@ -1,5 +1,4 @@
 import { merge } from "rxjs"
-import styled from "styled-components"
 
 import { Region } from "@/client/components/layout/Region"
 import { TabBar, TabBarActionConfig } from "@/client/components/TabBar"

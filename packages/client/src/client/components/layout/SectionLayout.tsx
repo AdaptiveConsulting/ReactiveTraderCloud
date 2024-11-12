@@ -13,8 +13,8 @@ const HeaderWrapper = styled.div`
 
 const BodyWrapper = styled.div``
 
-export const SectionLayout = ({ Header, Body }: LayoutProps) => (
-  <Background>
+export const SectionLayout = ({ Header, Body, style }: LayoutProps) => (
+  <Background style={style}>
     <HeaderWrapper>{Header}</HeaderWrapper>
     <BodyWrapper>{Body}</BodyWrapper>
   </Background>
