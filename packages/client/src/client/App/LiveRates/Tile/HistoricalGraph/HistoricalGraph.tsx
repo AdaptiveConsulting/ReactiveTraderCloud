@@ -47,13 +47,14 @@ const [useHistoricalPath, historicalGraph$] = symbolBind((symbol: string) =>
 )
 
 const LineChartWrapper = styled.div<{ showTimer?: boolean }>`
-  width: 50%;
+  width: 45%;
   height: 108px;
   grid-area: chart;
 `
 
 const Path = styled.path``
 const Svg = styled.svg`
+  width: 100%;
   &:hover ${Path} {
     stroke: ${({ theme }) => theme.newTheme.color["Colors/Border/border-buy"]};
   }
