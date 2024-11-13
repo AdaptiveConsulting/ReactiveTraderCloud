@@ -1,24 +1,21 @@
 import { merge } from "rxjs"
 
+import { FlexBox } from "@/client/components/FlexBox"
 import { SectionLayout } from "@/client/components/layout/SectionLayout"
+import { Typography } from "@/client/components/Typography"
 
-import { AnalyticsLineChartWrapper, Title } from "../styled"
 import { LastPosition, lastPosition$ } from "./LastPosition"
 import { LineChart, lineChart$ } from "./LineChart"
 
 export const ProfitAndLoss = () => (
   <SectionLayout
     Header={
-      <>
-        <Title>Profit &amp; Loss</Title>
+      <FlexBox style={{ flex: 1, justifyContent: "space-between" }}>
+        <Typography variant="Text lg/Regular">Profit &amp; Loss</Typography>
         <LastPosition />
-      </>
+      </FlexBox>
     }
-    Body={
-      <AnalyticsLineChartWrapper>
-        <LineChart />
-      </AnalyticsLineChartWrapper>
-    }
+    Body={<LineChart />}
   />
 )
 

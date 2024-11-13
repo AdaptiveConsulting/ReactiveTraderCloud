@@ -4,6 +4,10 @@ import { transparentColor } from "./globals/variables"
 
 export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
   color: ${({ theme }) => theme.core.textColor};
+  flex: 1;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  overflow-y: hidden;
 
   ${({ inExternalWindow }) =>
     inExternalWindow
@@ -16,7 +20,6 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
       : ``}
 
   padding: ${({ theme }) => theme.newTheme.spacing.lg};
-  font-size: 1rem;
   scrollbar-width: thin;
   /* axis */
   .nvd3 .nv-axis path,
@@ -34,9 +37,7 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
     width: auto;
     height: auto;
     padding: 2px 0.5rem;
-    font-size: 0.75rem;
     background-color: ${({ theme }) => theme.core.textColor};
-    color: ${({ theme }) => theme.core.lightBackground};
     opacity: 1;
     box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.4);
     pointer-events: none;
@@ -46,7 +47,7 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
   .analytics__positions-label {
     fill: ${({ theme }) =>
       theme.newTheme.color["Colors/Text/text-primary (900)"]};
-    font-size: 0.6875rem;
+    font-size: ${({ theme }) => theme.newTheme.typography["Font size/text-xs"]};
     pointer-events: none;
     user-select: none;
   }
@@ -82,32 +83,9 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
   }
 `
 
-export const AnalyticsLineChartWrapper = styled.div`
-  padding-top: ${({ theme }) => theme.newTheme.spacing.xl};
-`
-
-export const ProfitAndLossHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-`
-
-export const Title = styled.div`
-  font-size: 15px;
-  font-weight: normal;
-`
-
-export const HrBar = styled.hr`
-  height: 4px;
-  color: #282d39;
-  background-color: #282d39;
-  margin-top: 20px;
-  border: none;
-`
-
 export const BubbleChartWrapper = styled.div`
   position: relative;
-  height: 18rem;
+  height: 260px;
   text-anchor: middle;
   overflow: hidden;
 `

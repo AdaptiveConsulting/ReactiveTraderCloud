@@ -1,6 +1,8 @@
+import { PropsWithChildren } from "react"
 import { distinctUntilChanged, map } from "rxjs/operators"
 
 import { Line } from "@/client/components/Line"
+import { Typography } from "@/client/components/Typography"
 import { equals } from "@/client/utils/equals"
 import { getPrice$, PriceMovementType } from "@/services/prices"
 
@@ -23,6 +25,17 @@ const [usePriceMovementData, priceMovement$] = symbolBind((symbol: string) =>
 )
 export { priceMovement$ }
 
+const MovementTypography = ({ children }: PropsWithChildren) => (
+  <MovementValue>
+    <Typography
+      variant="Text xs/Regular"
+      color="Colors/Text/text-tertiary (600)"
+    >
+      {children}
+    </Typography>
+  </MovementValue>
+)
+
 export const PriceFromQuoteInner = ({
   isAnalytics,
   spread,
@@ -31,7 +44,7 @@ export const PriceFromQuoteInner = ({
   spread: string
 }) => (
   <PriceMovementStyle isAnalyticsView={isAnalytics}>
-    <MovementValue>{spread}</MovementValue>
+    <MovementTypography>{spread}</MovementTypography>
   </PriceMovementStyle>
 )
 
@@ -50,7 +63,7 @@ export const PriceMovementInner = ({
       $show={movementType === PriceMovementType.UP}
       aria-hidden="true"
     />
-    <MovementValue>{spread}</MovementValue>
+    <MovementTypography>{spread}</MovementTypography>
     <MovementIconDown
       $show={movementType === PriceMovementType.DOWN}
       aria-hidden="true"

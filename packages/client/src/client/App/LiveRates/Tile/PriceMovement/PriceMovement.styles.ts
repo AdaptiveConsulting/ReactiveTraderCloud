@@ -19,9 +19,6 @@ export const MovementIconDown = styled(FaSortDown)<{ $show: boolean }>`
 `
 
 export const MovementValue = styled.div`
-  font-size: 10px;
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-tertiary (600)"]};
   padding: ${({ theme }) => theme.newTheme.spacing.lg} 0;
 `
 

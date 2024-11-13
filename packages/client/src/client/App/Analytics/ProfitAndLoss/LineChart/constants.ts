@@ -1,6 +1,6 @@
-export const LINE_CHART_WIDTH = 280
-export const LINE_CHART_HEIGHT = 170
-export const Y_LEGENDS_WIDTH = 40
+export const LINE_CHART_WIDTH = 270
+export const LINE_CHART_HEIGHT = 260
+export const Y_LEGENDS_WIDTH = 50
 export const X_LEGENDS_HEIGHT = 30
 
 export const TOTAL_WIDTH = LINE_CHART_WIDTH + Y_LEGENDS_WIDTH

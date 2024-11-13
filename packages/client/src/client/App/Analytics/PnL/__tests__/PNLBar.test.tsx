@@ -7,7 +7,11 @@ import PNLBar from "../PNLBar"
 const renderComponent = (symbol: string, basePnl: number, maxVal: number) =>
   render(
     <TestThemeProvider>
-      <PNLBar symbol={symbol} basePnl={basePnl} maxVal={maxVal} />
+      <PNLBar
+        symbol={symbol}
+        profitOrLossValue={basePnl}
+        largetProfitOrLossValue={maxVal}
+      />
     </TestThemeProvider>,
   )
 

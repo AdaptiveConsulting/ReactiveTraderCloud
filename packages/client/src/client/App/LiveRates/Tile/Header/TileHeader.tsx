@@ -4,8 +4,10 @@ import { forwardRef, useRef } from "react"
 import { map } from "rxjs/operators"
 import styled from "styled-components"
 
+import { FlexBox } from "@/client/components/FlexBox"
 import { PopInIcon } from "@/client/components/icons/PopInIcon"
 import { PopOutIcon } from "@/client/components/icons/PopOutIcon"
+import { Typography } from "@/client/components/Typography"
 import { CurrencyPair } from "@/services/currencyPairs"
 import { getPrice$ } from "@/services/prices"
 
@@ -13,27 +15,20 @@ import { tearOut } from "../TearOut/state"
 import { useTileContext } from "../Tile.context"
 
 export const DeliveryDate = styled.div`
-  line-height: 1rem;
-  margin-left: auto;
   transition: margin-right 0.2s;
 `
-const HeaderWrapper = styled.div`
+const HeaderWrapper = styled(FlexBox)`
   position: relative;
-  display: flex;
-  align-items: center;
-  position: relative;
+  justify-content: space-between;
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-tertiary"]};
   padding: ${({ theme }) =>
     `${theme.newTheme.spacing.md} ${theme.newTheme.spacing["3xl"]}`};
-  font-size: 11px;
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-tertiary (600)"]};
 `
 export const HeaderAction = styled.button`
   position: absolute;
   right: 6px;
-  top: 8px;
+  top: 6px;
   opacity: 0;
   transition: opacity 0.2s;
 
@@ -71,10 +66,22 @@ export const HeaderInner = forwardRef<HTMLDivElement, HeaderProps>(
 
     return (
       <HeaderWrapper ref={ref}>
-        <div data-qa="tile-header__tile-symbol">
+        <Typography
+          variant="Text sm/Regular"
+          color="Colors/Text/text-tertiary (600)"
+          data-qa="tile-header__tile-symbol"
+        >
           {base}/{terms}
-        </div>
-        <DeliveryDate data-qa="tile-header__delivery-date">{date}</DeliveryDate>
+        </Typography>
+        <DeliveryDate>
+          <Typography
+            variant="Text sm/Regular"
+            color="Colors/Text/text-tertiary (600)"
+            data-qa="tile-header__delivery-date"
+          >
+            {date}
+          </Typography>
+        </DeliveryDate>
         {canTearOut && (
           <HeaderAction
             onClick={onClick}
