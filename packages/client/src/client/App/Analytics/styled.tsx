@@ -37,7 +37,10 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
     width: auto;
     height: auto;
     padding: 2px 0.5rem;
-    background-color: ${({ theme }) => theme.core.textColor};
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Foreground/fg-white"]};
+    color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-black"]};
+    font-size: ${({ theme }) => theme.newTheme.typography["Font size/text-xs"]};
     opacity: 1;
     box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.4);
     pointer-events: none;

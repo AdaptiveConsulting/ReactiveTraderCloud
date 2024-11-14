@@ -68,7 +68,6 @@ export const PriceIndicator = styled.div<{
 `
 
 export const BarPriceContainer = styled.div`
-  overflow: hidden;
   width: ${barLength}px;
 `
 

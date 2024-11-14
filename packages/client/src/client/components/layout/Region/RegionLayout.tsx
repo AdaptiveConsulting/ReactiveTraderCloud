@@ -18,9 +18,9 @@ const BodyWrapper = styled.div`
   overflow-y: auto;
 `
 
-export const RegionLayout = ({ Header, Body, style }: LayoutProps) => {
+export const RegionLayout = ({ Header, Body, className }: LayoutProps) => {
   return (
-    <Background style={style} role="region">
+    <Background className={className} role="region">
       <HeaderWrapper>{Header}</HeaderWrapper>
       <BodyWrapper>{Body}</BodyWrapper>
     </Background>

@@ -1,4 +1,5 @@
 import { merge } from "rxjs"
+import styled from "styled-components"
 
 import { Region } from "@/client/components/layout/Region"
 import { TabBar, TabBarActionConfig } from "@/client/components/TabBar"
@@ -27,14 +28,15 @@ if (supportsTearOut) {
   })
 }
 
+const AnalyticsRegion = styled(Region)`
+  width: 320px;
+`
+
 const Analytics = ({ children }: WithChildren) => {
   return (
-    <Region
+    <AnalyticsRegion
       source$={analytics$}
       fallback={children}
-      style={{
-        width: 320,
-      }}
       Header={
         <TabBar
           items={["Analytics"]}
@@ -55,7 +57,7 @@ const Analytics = ({ children }: WithChildren) => {
       }
     >
       <SuspenseOnStaleData />
-    </Region>
+    </AnalyticsRegion>
   )
 }
 

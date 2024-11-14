@@ -13,8 +13,8 @@ const BodyWrapper = styled.div`
   padding-top: ${({ theme }) => theme.newTheme.spacing["2xl"]};
 `
 
-export const SectionLayout = ({ Header, Body, style }: LayoutProps) => (
-  <Background style={style}>
+export const SectionLayout = ({ Header, Body, className }: LayoutProps) => (
+  <Background className={className}>
     <Typography
       variant="Text lg/Regular"
       color="Colors/Text/text-secondary (700)"

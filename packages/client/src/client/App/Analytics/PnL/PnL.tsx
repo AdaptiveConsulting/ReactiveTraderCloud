@@ -1,5 +1,6 @@
 import { bind } from "@react-rxjs/core"
 import { distinctUntilChanged, map } from "rxjs/operators"
+import styled from "styled-components"
 
 import { SectionLayout } from "@/client/components/layout/SectionLayout"
 import { equals } from "@/client/utils/equals"
@@ -31,8 +32,12 @@ const [usePnL, pnL$] = bind(
 
 export { pnL$ }
 
+const PnLSectionLayout = styled(SectionLayout)`
+  overflow: hidden;
+`
+
 export const PnLInner = ({ data }: { data: PNLBarProps[] }) => (
-  <SectionLayout
+  <PnLSectionLayout
     Header="PnL"
     Body={data.map((pnlItem) => (
       <PNLBar key={pnlItem.symbol} {...pnlItem} />
