@@ -1,4 +1,5 @@
 import { DropdownMenu } from "../DropdownMenu"
+import { Typography } from "../Typography"
 import {
   Action,
   Background,
@@ -42,7 +43,16 @@ export const TabBar = <T extends string>({
             data-testid={`tabItem-${item}`}
             isStatic={items.length < 2}
           >
-            {item}
+            <Typography
+              variant="Text md/Regular"
+              color={
+                item === activeItem
+                  ? "Colors/Text/text-quaternary_on-brand"
+                  : "Colors/Text/text-quaternary (500)"
+              }
+            >
+              {item}
+            </Typography>
           </Tab>
         ))}
       </LeftSection>
