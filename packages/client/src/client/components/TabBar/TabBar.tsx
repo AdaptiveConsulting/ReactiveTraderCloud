@@ -70,7 +70,12 @@ export const TabBar = <T extends string>({
                 data-testid={`action-${name}`}
                 disabled={disabled}
               >
-                {inner}
+                <Typography
+                  variant="Text md/Regular"
+                  color="Colors/Text/text-primary (900)"
+                >
+                  {inner}
+                </Typography>
               </Action>
             ))}
         {handleItemOnClick && (

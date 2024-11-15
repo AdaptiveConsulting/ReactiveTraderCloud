@@ -1,2 +1,2 @@
-export * from "./CreditRfqForm"
+export * from "./NewRfq"
 export * from "./CreditRfqs"
