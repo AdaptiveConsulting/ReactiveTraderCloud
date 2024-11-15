@@ -1,4 +1,4 @@
-import { CreditRfqForm, CreditRfqs } from "@/client/App/Credit"
+import { NewRfq, CreditRfqs } from "@/client/App/Credit"
 import { getTornOutSections } from "@/client/App/TearOutSection/state"
 import { CreditTrades } from "@/client/App/Trades"
 import Resizer from "@/client/components/Resizer"
@@ -15,7 +15,7 @@ const CreditPage = () => {
         <CreditRfqs />
         {!tornOutSections.creditBlotter && <CreditTrades />}
       </Resizer>
-      {!tornOutSections.newRfq && <CreditRfqForm />}
+      {!tornOutSections.newRfq && <NewRfq />}
     </>
   )
 }

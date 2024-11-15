@@ -2,7 +2,7 @@ import { Subscribe } from "@react-rxjs/core"
 import React from "react"
 
 import { LayoutProps } from "../types"
-import { RegionLayout } from "./"
+import { RegionLayout } from "./RegionLayout"
 
 export const Region = ({
   source$,
