@@ -71,10 +71,15 @@ export const DropdownWrapper = styled.div`
   }
 `
 
-export const Action = styled(Tab)<{ size: "sm" | "lg" }>`
+export const Action = styled(Tab)<{ size: "sm" | "lg"; disabled?: boolean }>`
   width: ${({ theme, size }) =>
     size === "sm" ? theme.newTheme.density.md : "auto"};
   display: flex;
   align-items: center;
   line-height: 0;
+
+  opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+  &:hover {
+    cursor: ${({ disabled }) => (disabled ? "auto" : "pointer")};
+  }
 `

@@ -13,6 +13,7 @@ interface TabBarActionConfigItem {
   name: string
   inner: JSX.Element
   active?: boolean
+  disabled?: boolean
   size?: "sm" | "lg"
   onClick?: () => void
 }
@@ -58,17 +59,20 @@ export const TabBar = <T extends string>({
       </LeftSection>
       <RightSection>
         {actions &&
-          actions.toReversed().map(({ name, active, onClick, inner, size }) => (
-            <Action
-              key={name}
-              active={!!active}
-              onClick={onClick}
-              size={size || "sm"}
-              data-testid={`action-${name}`}
-            >
-              {inner}
-            </Action>
-          ))}
+          actions
+            .toReversed()
+            .map(({ name, active, onClick, inner, size, disabled }) => (
+              <Action
+                key={name}
+                active={!!active}
+                onClick={onClick}
+                size={size || "sm"}
+                data-testid={`action-${name}`}
+                disabled={disabled}
+              >
+                {inner}
+              </Action>
+            ))}
         {handleItemOnClick && (
           <DropdownWrapper>
             <DropdownMenu
