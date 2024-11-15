@@ -3,17 +3,6 @@ import styled, { css, DefaultTheme, keyframes } from "styled-components"
 import { ThemeName } from "@/client/theme"
 import { Direction } from "@/generated/TradingGateway"
 
-// Card
-
-export const CreditRfqCardGridWrapper = styled.div<{ empty: boolean }>`
-  display: ${({ empty }) => (empty ? "flex" : "grid")};
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-gap: 8px;
-  align-content: start;
-  margin-right: 8px;
-  flex: 1;
-`
-
 const cardFlash = ({
   theme,
   direction,
