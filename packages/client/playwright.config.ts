@@ -9,10 +9,10 @@ const config: PlaywrightTestConfig = {
   workers: 1,
   projects: [
     {
-      name: "chrome",
+      name: "web",
       use: {
-        ...devices["Desktop Chrome"], 
-        channel: 'chrome',
+        ...devices["Desktop Chrome"],
+        channel: "chrome",
         //Artifacts
         screenshot: "only-on-failure",
         video: "retain-on-failure",

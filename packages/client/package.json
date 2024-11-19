@@ -64,8 +64,8 @@
     "_e2e:openfin:run": "cross-env-shell of-automation $npm_config_manifest_url ./e2e/openfin.spec.js --devToolsPort=9091 --closeRuntime=never",
     "e2e:openfin": "playwright test --project=openfin",
     "e2e:openfin:smoke": "playwright test --project=openfin --grep @smoke",
-    "e2e:web": "playwright test --project=chrome",
-    "e2e:web:smoke": "playwright test --project=chrome --grep @smoke",
+    "e2e:web": "playwright test --project=web",
+    "e2e:web:smoke": "playwright test --project=web --grep @smoke",
     "generateCod": "hydra-web-codegen -i ../../trading-gateway.hyer -o src/generated"
   },
   "dependencies": {
@@ -100,7 +100,7 @@
   },
   "devDependencies": {
     "@adaptive/hydra-web-codegen": "4.70.0",
-    "@eslint/js": "9.11.1",
+    "@eslint/js": "9.15.0",
     "@google-cloud/dialogflow": "6.7.0",
     "@openfin/automation-cli": "1.2.0",
     "@playwright/test": "1.45.2",
@@ -125,7 +125,7 @@
     "concurrently": "9.0.1",
     "cross-env": "^6.0.3",
     "csstype": "^3.0.2",
-    "eslint": "9.11.1",
+    "eslint": "9.15.0",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-playwright": "1.6.2",
     "eslint-plugin-react": "7.37.1",
