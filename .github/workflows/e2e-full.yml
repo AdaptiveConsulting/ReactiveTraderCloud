@@ -2,7 +2,7 @@ name: Reactive Trader Dev Weekday E2E
 
 on:
   schedule:
-    - cron: "55 8 * * 1-5"
+    - cron: "00 8,10,12,14,16 * * 1-5"
 
 defaults:
   run:
@@ -28,15 +28,28 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Test
+      - name: Test Dev
         env:
           E2E_RTC_WEB_ROOT_URL: https://web.dev.reactivetrader.com
-        run: npm run e2e:web
+        run: npx playwright test --project=web credit.spec.ts
 
       - name: Artifact Upload
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: playwright-report
+          name: playwright-report-dev
+          path: packages/client/playwright-report/
+          retention-days: 7
+
+      - name: Test UAT
+        env:
+          E2E_RTC_WEB_ROOT_URL: https://web.uat.reactivetrader.com
+        run: npx playwright test --project=web credit.spec.ts
+
+      - name: Artifact Upload
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-uat
           path: packages/client/playwright-report/
           retention-days: 7
