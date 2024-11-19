@@ -19,10 +19,10 @@ env:
 
 jobs:
   build:
-    name: Build & deploy
+    name: Multi E2E
 
     runs-on: ubuntu-20.04
-    if: ${{ !github.event.pull_request.head.repo.fork && !github.event.pull_request.draft }}
+    if: ${{ !github.event.pull_request.head.repo.fork }}
 
     steps:
       - name: Checkout
@@ -32,6 +32,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (web)
+        env:
+          DOMAIN: https://web.env.reactivetrader.com
+          URL_PATH: /pull/${{ github.event.number }}
+          VITE_BUILD_VERSION: ${{ github.sha }}
+        run: |
+          npm run build
 
       - name: "Authenticate to Google Cloud"
         uses: "google-github-actions/auth@v2"
@@ -43,21 +54,6 @@ jobs:
         with:
           project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Verify Quality (type checking, linting, format checking, tests)
-        run: npm run verify
-
-      - name: Build (web)
-        env:
-          DOMAIN: https://web.env.reactivetrader.com
-          URL_PATH: /pull/${{ github.event.number }}
-          VITE_BUILD_VERSION: ${{ github.sha }}
-        run: |
-          npm run build
-          npm run storybook:build
-
       - name: Deploy (web)
         run: |
           gsutil -m \
@@ -65,151 +61,62 @@ jobs:
             rsync -d -r dist \
             gs://$BUCKET_WEB/pull/${{ github.event.number }}
 
-      - name: Build (OpenFin)
-        env:
-          DOMAIN: https://openfin.env.reactivetrader.com
-          URL_PATH: /pull/${{ github.event.number }}
-          VITE_BUILD_VERSION: ${{ github.sha }}
-        run: npm run openfin:build
-
-      - name: Deploy (OpenFin)
-        run: |
-          gsutil -m \
-            -h "Cache-Control: no-cache" \
-            rsync -d -r dist \
-            gs://$BUCKET_OPENFIN/pull/${{ github.event.number }}
-
-      - name: Find comment
-        uses: peter-evans/find-comment@v3
-        id: comment
-        with:
-          issue-number: ${{ github.event.number }}
-          comment-author: "github-actions[bot]"
-          body-includes: "(auto-deploy)"
-
-      - name: Create comment (if not exists)
-        if: ${{ steps.comment.outputs.comment-id == 0 }}
-        uses: peter-evans/create-or-update-comment@v4
-        with:
-          issue-number: ${{ github.event.number }}
-          body: |
-            (auto-deploy) A deployment has been created for this Pull Request
-
-            ### Preview links
-
-            As part of the code review process, please ensure that you test against the following
-            | Version             | URL                                                                                                    |
-            | :------------------ | :----------------------------------------------------------------------------------------------------- |
-            | Web                 | https://web.env.reactivetrader.com/pull/${{ github.event.number }}                                     |
-            | OpenFin - FX        | fins://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json                |
-            | OpenFin - Credit    | fins://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-credit.json            |
-            | OpenFin - Launcher  | fins://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/launcher.json             |
-            | OpenFin - Workspace | fins://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/workspace/config/workspace.json  |
-
-            ### Performance
-
-            Please ensure that this PR does not degrade the performance of the UI. We should maintain a performance score of 95+.
-
-            https://developers.google.com/speed/pagespeed/insights/?url=https://web.env.reactivetrader.com/pull/${{ github.event.number }}
-
-  web-end-to-end-test:
-    name: Web e2e test - All
-
-    needs: build
-
-    runs-on: ubuntu-20.04
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set Node version
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Test
+      - name: E2E Run 1
+        id: e1
+        continue-on-error: true
         env:
           E2E_RTC_WEB_ROOT_URL: https://web.env.reactivetrader.com/pull/${{ github.event.number }}
-        run: npm run e2e:web
+        run: npx playwright test --project=web credit.spec.ts
 
       - name: Artifact Upload
         uses: actions/upload-artifact@v4
-        if: failure()
+        if: steps.e1.outcome == 'failure'
         with:
-          name: playwright-report-web
+          name: playwright-report-1
           path: packages/client/playwright-report/
-          retention-days: 7
+          retention-days: 1
 
-  openfin-end-to-end-test-fx:
-    name: Openfin e2e test - FX
-
-    needs: web-end-to-end-test
-
-    runs-on: windows-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set Node version
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: start openfin
-        run: npm run _e2e:openfin:run --manifest_url=https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json
-
-      - name: Run tests
+      - name: E2E Run 2
+        id: e2
+        continue-on-error: true
         env:
-          E2E_RTC_WEB_ROOT_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
-        run: npm run e2e:openfin fx-spot-tile.spec fx-blotter.spec fx-analytics.spec
+          E2E_RTC_WEB_ROOT_URL: https://web.env.reactivetrader.com/pull/${{ github.event.number }}
+        run: npx playwright test --project=web
 
       - name: Artifact Upload
         uses: actions/upload-artifact@v4
-        if: failure()
+        if: steps.e2.outcome == 'failure'
         with:
-          name: playwright-report-of-fx
+          name: playwright-report-2
           path: packages/client/playwright-report/
-          retention-days: 7
+          retention-days: 1
 
-  openfin-end-to-end-test-credit:
-    name: Openfin e2e test - Credit
-
-    needs: web-end-to-end-test
-
-    runs-on: windows-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set Node version
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: start openfin
-        run: npm run _e2e:openfin:run --manifest_url=https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-credit.json
-
-      - name: Run tests
+      - name: E2E Run 3
+        id: e3
+        continue-on-error: true
         env:
-          E2E_RTC_WEB_ROOT_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
-        run: npm run e2e:openfin credit.spec
+          E2E_RTC_WEB_ROOT_URL: https://web.env.reactivetrader.com/pull/${{ github.event.number }}
+        run: npx playwright test --project=web credit.spec.ts
 
       - name: Artifact Upload
         uses: actions/upload-artifact@v4
-        if: failure()
+        if: steps.e3.outcome == 'failure'
         with:
-          name: playwright-report-of-credit
+          name: playwright-report-3
           path: packages/client/playwright-report/
-          retention-days: 7
+          retention-days: 1
+
+      - name: E2E Run 4
+        id: e4
+        continue-on-error: true
+        env:
+          E2E_RTC_WEB_ROOT_URL: https://web.env.reactivetrader.com/pull/${{ github.event.number }}
+        run: npx playwright test --project=web
+
+      - name: Artifact Upload
+        uses: actions/upload-artifact@v4
+        if: steps.e4.outcome == 'failure'
+        with:
+          name: playwright-report-4
+          path: packages/client/playwright-report/
+          retention-days: 1

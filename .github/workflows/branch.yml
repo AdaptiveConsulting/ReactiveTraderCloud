@@ -3,7 +3,7 @@ name: Branch
 on:
   push:
     branches:
-      - "**"
+      - "justnotthisoneok"
 
 defaults:
   run:

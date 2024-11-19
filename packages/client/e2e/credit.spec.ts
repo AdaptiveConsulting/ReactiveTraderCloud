@@ -90,12 +90,10 @@ test.describe("Credit", () => {
       await expect(async () => {
         await firstQuote.hover()
         await acceptButton.click()
-      }, `Unable to retry clicking on accept button within ${retryTimeout} seconds`).toPass(
-        {
-          intervals: [250],
-          timeout: retryTimeout,
-        },
-      )
+      }, `Click on quote Accept within ${retryTimeout} seconds`).toPass({
+        intervals: [250],
+        timeout: retryTimeout,
+      })
 
       await rfqsPage.locator("div").getByText(/All/).nth(0).click()
       const btnTxt = await rfqsPage
