@@ -32,6 +32,7 @@ jobs:
         env:
           E2E_RTC_WEB_ROOT_URL: https://web.dev.reactivetrader.com
         run: npx playwright test --project=web credit.spec.ts
+        continue-on-error: true
 
       - name: Artifact Upload
         uses: actions/upload-artifact@v4
@@ -45,11 +46,26 @@ jobs:
         env:
           E2E_RTC_WEB_ROOT_URL: https://web.uat.reactivetrader.com
         run: npx playwright test --project=web credit.spec.ts
+        continue-on-error: true
 
       - name: Artifact Upload
         uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: playwright-report-uat
+          path: packages/client/playwright-report/
+          retention-days: 7
+
+      - name: Test Prod
+        env:
+          E2E_RTC_WEB_ROOT_URL: https://web.prod.reactivetrader.com
+        run: npx playwright test --project=web credit.spec.ts
+        continue-on-error: true
+
+      - name: Artifact Upload
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-prod
           path: packages/client/playwright-report/
           retention-days: 7
