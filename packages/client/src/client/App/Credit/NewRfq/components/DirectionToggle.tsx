@@ -1,5 +1,3 @@
-import { bind } from "@react-rxjs/core"
-import { createSignal } from "@react-rxjs/utils"
 import styled from "styled-components"
 
 import { DirectionIcon } from "@/client/components/icons/DirectionIcon"
@@ -102,21 +100,19 @@ const IconWrapper = styled.div<{ direction: Direction }>`
     theme.colors.spectrum.uniqueCollections[direction].base};
 `
 
-const [directionInput$, setDirection] = createSignal<Direction>()
-
-const [useDirection, direction$] = bind(directionInput$, Direction.Buy)
-
-export { direction$, setDirection, useDirection }
-
-export const DirectionToggle = () => {
-  const direction = useDirection()
-
+export const DirectionToggle = ({
+  onChange,
+  direction,
+}: {
+  onChange: (direction: Direction) => void
+  direction: Direction
+}) => {
   return (
     <DirectionToggleWrapper>
       <DirectionButton
         direction={Direction.Buy}
         active={direction === Direction.Buy}
-        onClick={() => setDirection(Direction.Buy)}
+        onClick={() => onChange(Direction.Buy)}
       >
         YOU BUY
       </DirectionButton>
@@ -126,7 +122,7 @@ export const DirectionToggle = () => {
       <DirectionButton
         direction={Direction.Sell}
         active={direction === Direction.Sell}
-        onClick={() => setDirection(Direction.Sell)}
+        onClick={() => onChange(Direction.Sell)}
       >
         YOU SELL
       </DirectionButton>

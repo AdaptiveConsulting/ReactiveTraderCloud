@@ -1,5 +1,4 @@
 import { bind } from "@react-rxjs/core"
-import { createSignal } from "@react-rxjs/utils"
 import { useCombobox } from "downshift"
 import { forwardRef, useCallback, useMemo, useRef, useState } from "react"
 import { FaSearch } from "react-icons/fa"
@@ -11,7 +10,8 @@ import {
   useCreditInstrumentsByCusip,
 } from "@/services/credit"
 
-import { CusipWithBenchmark } from "../common/CusipWithBenchmark"
+import { CusipWithBenchmark } from "../../common"
+import { instrumentId$, setInstrumentId } from "../state"
 
 const InstrumentSearchWrapper = styled.div`
   position: relative;
@@ -52,11 +52,8 @@ const IconWrapper = styled.div`
   }
 `
 
-export const [selectedInstrumentId$, setSelectedInstrumentId] = createSignal<
-  number | null
->()
 export const [useSelectedInstrument] = bind(
-  selectedInstrumentId$.pipe(
+  instrumentId$.pipe(
     withLatestFrom(creditInstrumentsByCusip$),
     map(([instrumentId, creditInstrumentsByCusip]) =>
       instrumentId !== null
@@ -97,7 +94,7 @@ export const CreditInstrumentSearch = () => {
   const { inputRef, focusInput } = useInputFocus()
 
   const showAndResetInput = () => {
-    setSelectedInstrumentId(null)
+    setInstrumentId(null)
     focusInput()
   }
 
@@ -115,7 +112,7 @@ export const CreditInstrumentSearch = () => {
             />
           </CreditInstrument>
         ) : (
-          <SearchBox ref={inputRef} />
+          <SearchBox onChange={setInstrumentId} ref={inputRef} />
         )}
       </InputWrapper>
       <IconWrapper onClick={showAndResetInput}>
@@ -168,7 +165,10 @@ const MissingInstrument = styled.div`
   font-size: 15px;
 `
 
-const SearchBox = forwardRef<HTMLInputElement>(function SearchBox(_, inputRef) {
+const SearchBox = forwardRef<
+  HTMLInputElement,
+  { onChange: (value: number | null) => void }
+>(function SearchBox({ onChange }, inputRef) {
   const instruments = useCreditInstrumentsByCusip()
   const [inputValue, setInputValue] = useState<string>("")
 
@@ -199,7 +199,7 @@ const SearchBox = forwardRef<HTMLInputElement>(function SearchBox(_, inputRef) {
     inputValue,
     onSelectedItemChange: ({ selectedItem, type }) => {
       if (type !== useCombobox.stateChangeTypes.InputBlur) {
-        setSelectedInstrumentId(selectedItem?.id ?? null)
+        onChange(selectedItem?.id ?? null)
       }
     },
     defaultHighlightedIndex: 0,
