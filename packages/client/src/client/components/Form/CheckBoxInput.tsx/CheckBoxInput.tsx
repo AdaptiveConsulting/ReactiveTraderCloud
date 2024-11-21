@@ -2,11 +2,10 @@ import styled from "styled-components"
 
 import Check from "@/client/components/icons/svg/tick.svg"
 
-import { FlexBox } from "../FlexBox"
-import { Typography } from "../Typography"
-import { RadioInputListItems } from "./types"
+import { FlexBox } from "../../FlexBox"
+import { Typography } from "../../Typography"
 
-const RadioInputWrapper = styled(FlexBox)`
+const CheckBoxInputWrapper = styled(FlexBox)`
   border-bottom: 1px solid
     ${({ theme }) => theme.newTheme.color["Colors/Background/bg-tertiary"]};
   padding: ${({ theme }) => theme.newTheme.spacing.sm};
@@ -32,20 +31,25 @@ const CheckBox = styled.input.attrs({ type: "checkbox" })<{
   `}
 `
 
-interface RadioInputListProps {
-  items: RadioInputListItems
-  onChange: (id: string) => void
+interface Props {
+  name: string
+  checked: boolean
+  onChange: (checked: boolean) => void
 }
 
-export const RadioInputList = ({ items, onChange }: RadioInputListProps) =>
-  items.map(({ name, checked }) => (
-    <RadioInputWrapper key={name}>
-      <CheckBox checked={checked} onChange={() => onChange(name)} />
+export const CheckBoxInput = ({ name, checked, onChange }: Props) => {
+  return (
+    <CheckBoxInputWrapper key={name}>
+      <CheckBox
+        checked={checked}
+        onChange={({ target }) => onChange(target.checked)}
+      />
       <Typography
         variant="Text xs/Regular"
         color="Colors/Text/text-secondary (700)"
       >
         {name}
       </Typography>
-    </RadioInputWrapper>
-  ))
+    </CheckBoxInputWrapper>
+  )
+}

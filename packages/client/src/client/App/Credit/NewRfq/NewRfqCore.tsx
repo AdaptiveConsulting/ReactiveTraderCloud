@@ -12,6 +12,7 @@ import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqRes
 import { supportsTearOut } from "../../TearOutSection/supportsTearOut"
 import { TearOutComponent } from "../../TearOutSection/TearOutComponent"
 import { NewRfqForm } from "./NewRfqForm"
+import { request$ } from "./state"
 
 const NewRfqCore = ({ children }: WithChildren) => {
   useEffect(() => {
@@ -38,6 +39,7 @@ const NewRfqCore = ({ children }: WithChildren) => {
     <Region
       Header={<TabBar actions={actions} items={items} activeItem="New RFQ" />}
       Body={<NewRfqForm />}
+      source$={request$}
       fallback={children}
     />
   )

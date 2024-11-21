@@ -1,11 +1,10 @@
-import React from "react"
 import styled from "styled-components"
 
 const TextInputText = styled.input(
   ({ theme }) => theme.newTheme.textStyles["Text md/Regular"],
 )
 
-export const TextInput = styled(TextInputText)<React.ComponentProps<"input">>`
+const _TextInput = styled(TextInputText)<Partial<HTMLInputElement>>`
   ${({ theme, disabled }) => `
 height: 28px;
 width: 100%;
@@ -35,3 +34,18 @@ ${
 
 `}
 `
+
+interface Props {
+  disabled?: boolean
+  placeholder?: string
+  value?: string
+  onChange?: (value: string) => void
+}
+
+export const TextInput = ({ onChange, value, ...props }: Props) => (
+  <_TextInput
+    onChange={({ target }) => onChange?.(target.value)}
+    value={value}
+    {...props}
+  />
+)

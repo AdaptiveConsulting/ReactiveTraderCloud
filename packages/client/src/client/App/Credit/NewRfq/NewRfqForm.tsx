@@ -1,24 +1,85 @@
-import { FormControl } from "@/client/components/FormControl/FormControl"
-import { TextInput } from "@/client/components/FormControl/TextInput"
+import styled from "styled-components"
 
-import { CounterpartySelection } from "./CounterpartySelection"
-import { DirectionToggle } from "./DirectionToggle"
-import { RfqButtonPanel } from "./RfqButtonPanel"
-import { RfqParameters } from "./RfqParameters"
+import { CheckBoxInput } from "@/client/components/Form/CheckBoxInput.tsx/CheckBoxInput"
+import { Form } from "@/client/components/Form/Form"
+import { FormControl } from "@/client/components/Form/FormControl/FormControl"
+import { Label } from "@/client/components/Form/FormControl/Label"
+import { TextInput } from "@/client/components/Form/TextInput"
+import { customNumberFormatter } from "@/client/utils"
+
+import { CreditInstrumentSearch } from "./components/CreditInstrumentSearch"
+import { DirectionToggle } from "./components/DirectionToggle"
+import { RfqButtonPanel } from "./components/RfqButtonPanel"
+import {
+  setDealerIds,
+  setDirection,
+  setQuantity,
+  useFormState,
+  useSortedCreditDealers,
+} from "./state"
 import { TicketWrapper } from "./styled"
 
-export const NewRfqForm = () => (
-  <TicketWrapper>
-    <DirectionToggle />
-    {/* <CreditInstrumentSearch /> */}
-    <FormControl label="Instrument">
-      <TextInput placeholder="Enter a CUSIP" />
-    </FormControl>
-    <RfqParameters />
-    <FormControl label="Fill Type">
-      <TextInput placeholder="All or None" disabled />
-    </FormControl>
-    <CounterpartySelection />
-    <RfqButtonPanel />
-  </TicketWrapper>
-)
+const Row = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.newTheme.spacing.xl};
+`
+
+const formatter = customNumberFormatter()
+
+export const NewRfqForm = () => {
+  const counterparties = useSortedCreditDealers()
+  const items = counterparties.map(({ id, name }) => ({
+    id,
+    name,
+  }))
+
+  const [direction, , quantity, dealerIds] = useFormState()
+
+  return (
+    <TicketWrapper>
+      <Form>
+        <DirectionToggle onChange={setDirection} direction={direction} />
+
+        <FormControl>
+          <Label>Instrument</Label>
+          <CreditInstrumentSearch />
+        </FormControl>
+
+        <Row>
+          <FormControl>
+            <Label>Quantity (000)</Label>
+            <TextInput
+              placeholder="1000"
+              onChange={setQuantity}
+              value={quantity ? formatter(quantity) : ""}
+            />
+          </FormControl>
+
+          <FormControl>
+            <Label>RFQ Duration</Label>
+            <TextInput placeholder="2 Minutes" disabled />
+          </FormControl>
+        </Row>
+
+        <FormControl>
+          <Label>Fill Type</Label>
+          <TextInput placeholder="All or None" disabled />
+        </FormControl>
+
+        <FormControl>
+          <Label>Counterparty Selection</Label>
+          {items.map(({ name, id }) => (
+            <CheckBoxInput
+              key={id}
+              name={name}
+              checked={dealerIds.includes(id)}
+              onChange={(checked: boolean) => setDealerIds({ id, checked })}
+            />
+          ))}
+        </FormControl>
+
+        <RfqButtonPanel />
+      </Form>
+    </TicketWrapper>
+  )
+}
