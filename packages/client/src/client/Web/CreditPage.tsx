@@ -1,4 +1,4 @@
-import { NewRfq, CreditRfqs } from "@/client/App/Credit"
+import { CreditRfqs, NewRfq } from "@/client/App/Credit"
 import { getTornOutSections } from "@/client/App/TearOutSection/state"
 import { CreditTrades } from "@/client/App/Trades"
 import Resizer from "@/client/components/Resizer"
