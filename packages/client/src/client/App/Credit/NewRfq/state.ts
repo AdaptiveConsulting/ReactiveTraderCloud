@@ -45,6 +45,7 @@ export const [useSortedCreditDealers] = bind(
     }),
   ),
 )
+const [reset$, clear] = createSignal<void>()
 
 const prepareStream$ = <T>(source$: Observable<T>, startsWithValue: T) =>
   merge(source$, reset$.pipe(map(() => startsWithValue))).pipe(
@@ -53,16 +54,12 @@ const prepareStream$ = <T>(source$: Observable<T>, startsWithValue: T) =>
 const applyCharacterMultiplier = createApplyCharacterMultiplier(["k", "m"])
 
 const [_direction$, setDirection] = createSignal<Direction>()
-const [_instrumentId$, setInstrumentId] = createSignal<number | null>()
-const [_quantity$, setQuantity] = createSignal<string>()
-const [_dealerIds$, setDealerIds] = createSignal<{
-  id: number
-  checked: boolean
-}>()
-const [reset$, clear] = createSignal<void>()
-
 const direction$ = prepareStream$(_direction$, Direction.Buy)
+
+const [_instrumentId$, setInstrumentId] = createSignal<number | null>()
 const instrumentId$ = prepareStream$(_instrumentId$, null)
+
+const [_quantity$, setQuantity] = createSignal<string>()
 const quantity$ = prepareStream$(_quantity$, "").pipe(
   map((quantity) => {
     const numValue = Math.trunc(Math.abs(parseQuantity(quantity)))
@@ -71,21 +68,30 @@ const quantity$ = prepareStream$(_quantity$, "").pipe(
     return !Number.isNaN(value) ? value : 0
   }),
 )
+
+const [_dealerIds$, setDealerIds] = createSignal<{
+  id: number
+  checked: boolean
+}>()
 const dealerIds$ = merge(
   _dealerIds$,
-  reset$.pipe(map(() => ({ id: -1, checked: false }))),
+  reset$.pipe(map(() => ({ id: CLEAR_DEALER_IDS, checked: false }))),
 ).pipe(
   scan<{ id: number; checked: boolean }, number[]>((acc, { id, checked }) => {
-    if (id === -1) {
+    if (id === CLEAR_DEALER_IDS) {
       return []
     }
+
     if (checked) {
       return [...acc, id]
     }
+
     return acc.filter((value) => value !== id)
   }, []),
   startWith([] as number[]),
 )
+
+export const CLEAR_DEALER_IDS = -1
 
 const [useFormState, state$] = bind(
   combineLatest([direction$, instrumentId$, quantity$, dealerIds$]),

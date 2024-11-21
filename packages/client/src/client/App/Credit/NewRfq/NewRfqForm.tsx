@@ -11,6 +11,7 @@ import { CreditInstrumentSearch } from "./components/CreditInstrumentSearch"
 import { DirectionToggle } from "./components/DirectionToggle"
 import { RfqButtonPanel } from "./components/RfqButtonPanel"
 import {
+  CLEAR_DEALER_IDS,
   setDealerIds,
   setDirection,
   setQuantity,
@@ -68,6 +69,17 @@ export const NewRfqForm = () => {
 
         <FormControl>
           <Label>Counterparty Selection</Label>
+          <CheckBoxInput
+            name="All"
+            checked={dealerIds.length === items.length}
+            onChange={(checked) =>
+              checked
+                ? items
+                    .filter(({ id }) => !dealerIds.includes(id))
+                    .forEach(({ id }) => setDealerIds({ id, checked: true }))
+                : setDealerIds({ id: CLEAR_DEALER_IDS, checked: false })
+            }
+          />
           {items.map(({ name, id }) => (
             <CheckBoxInput
               key={id}
