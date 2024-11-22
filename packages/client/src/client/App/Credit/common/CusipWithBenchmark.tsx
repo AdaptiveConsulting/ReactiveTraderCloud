@@ -1,11 +1,6 @@
 import { memo } from "react"
-import styled from "styled-components"
 
-const InstrumentCusip = styled.div`
-  font-size: 11px;
-  font-weight: 500;
-  opacity: 0.6;
-`
+import { Typography } from "@/client/components/Typography"
 
 interface CusipWithBenchmarkProps {
   cusip?: string
@@ -17,9 +12,12 @@ export const CusipWithBenchmark = memo(function CusipWithBenchmark({
   benchmark,
 }: CusipWithBenchmarkProps) {
   return (
-    <InstrumentCusip>
+    <Typography
+      variant="Text sm/Regular"
+      color="Colors/Text/text-tertiary (600)"
+    >
       {cusip ?? "No cusip found"} &#160;&#x2022;&#160;{" "}
       {benchmark ?? "No benchmark available"}
-    </InstrumentCusip>
+    </Typography>
   )
 })

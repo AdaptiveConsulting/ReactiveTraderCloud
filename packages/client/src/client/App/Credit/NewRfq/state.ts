@@ -27,8 +27,17 @@ import {
   creditDealers$,
 } from "@/services/credit"
 
+const CLEAR_DEALER_IDS = -1
+
+const applyCharacterMultiplier = createApplyCharacterMultiplier(["k", "m"])
+
+const prepareStream$ = <T>(source$: Observable<T>, startsWithValue: T) =>
+  merge(source$, reset$.pipe(map(() => startsWithValue))).pipe(
+    startWith(startsWithValue),
+  )
+
 // We always want the Adaptive Dealer to be at the top of the list
-export const [useSortedCreditDealers] = bind(
+const [useSortedCreditDealers] = bind(
   creditDealers$.pipe(
     map((dealers) => {
       const sortedDealers = dealers.reduce((sortedDealers, dealer) => {
@@ -45,21 +54,19 @@ export const [useSortedCreditDealers] = bind(
     }),
   ),
 )
+
 const [reset$, clear] = createSignal<void>()
-
-const prepareStream$ = <T>(source$: Observable<T>, startsWithValue: T) =>
-  merge(source$, reset$.pipe(map(() => startsWithValue))).pipe(
-    startWith(startsWithValue),
-  )
-const applyCharacterMultiplier = createApplyCharacterMultiplier(["k", "m"])
-
+const [rfqRequest$, sendRfq] = createSignal()
 const [_direction$, setDirection] = createSignal<Direction>()
-const direction$ = prepareStream$(_direction$, Direction.Buy)
-
 const [_instrumentId$, setInstrumentId] = createSignal<number | null>()
-const instrumentId$ = prepareStream$(_instrumentId$, null)
-
 const [_quantity$, setQuantity] = createSignal<string>()
+const [_dealerIds$, setDealerIds] = createSignal<{
+  id: number
+  checked: boolean
+}>()
+
+const direction$ = prepareStream$(_direction$, Direction.Buy)
+const instrumentId$ = prepareStream$(_instrumentId$, null)
 const quantity$ = prepareStream$(_quantity$, "").pipe(
   map((quantity) => {
     const numValue = Math.trunc(Math.abs(parseQuantity(quantity)))
@@ -68,11 +75,6 @@ const quantity$ = prepareStream$(_quantity$, "").pipe(
     return !Number.isNaN(value) ? value : 0
   }),
 )
-
-const [_dealerIds$, setDealerIds] = createSignal<{
-  id: number
-  checked: boolean
-}>()
 const dealerIds$ = merge(
   _dealerIds$,
   reset$.pipe(map(() => ({ id: CLEAR_DEALER_IDS, checked: false }))),
@@ -91,23 +93,19 @@ const dealerIds$ = merge(
   startWith([] as number[]),
 )
 
-export const CLEAR_DEALER_IDS = -1
-
 const [useFormState, state$] = bind(
   combineLatest([direction$, instrumentId$, quantity$, dealerIds$]),
 )
 
 const [useIsValid, valid$] = bind(
-  combineLatest([instrumentId$, quantity$, dealerIds$]).pipe(
+  state$.pipe(
     map(
-      ([instrumentId, quantity, dealerIds]) =>
+      ([, instrumentId, quantity, dealerIds]) =>
         !!(instrumentId && quantity && dealerIds.length),
     ),
   ),
   false,
 )
-
-const [rfqRequest$, sendRfq] = createSignal()
 
 const request$ = rfqRequest$.pipe(
   withLatestFrom(valid$),
@@ -136,6 +134,7 @@ const request$ = rfqRequest$.pipe(
 
 export {
   clear,
+  CLEAR_DEALER_IDS,
   instrumentId$,
   request$,
   reset$,
@@ -146,4 +145,5 @@ export {
   setQuantity,
   useFormState,
   useIsValid,
+  useSortedCreditDealers,
 }
