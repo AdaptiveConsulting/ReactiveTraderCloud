@@ -1,5 +1,6 @@
 import styled from "styled-components"
 
+import { Button } from "@/client/components/Button"
 import { CheckBoxInput } from "@/client/components/Form/CheckBoxInput.tsx/CheckBoxInput"
 import { Form } from "@/client/components/Form/Form"
 import { FormControl } from "@/client/components/Form/FormControl/FormControl"
@@ -9,19 +10,22 @@ import { customNumberFormatter } from "@/client/utils"
 
 import { CreditInstrumentSearch } from "./components/CreditInstrumentSearch"
 import { DirectionToggle } from "./components/DirectionToggle"
-import { RfqButtonPanel } from "./components/RfqButtonPanel"
 import {
+  clear,
   CLEAR_DEALER_IDS,
+  sendRfq,
   setDealerIds,
   setDirection,
   setQuantity,
   useFormState,
+  useIsValid,
   useSortedCreditDealers,
 } from "./state"
 import { TicketWrapper } from "./styled"
 
 const Row = styled.div`
   display: flex;
+  justify-content: space-between;
   gap: ${({ theme }) => theme.newTheme.spacing.xl};
 `
 
@@ -29,12 +33,13 @@ const formatter = customNumberFormatter()
 
 export const NewRfqForm = () => {
   const counterparties = useSortedCreditDealers()
+  const valid = useIsValid()
+  const [direction, , quantity, dealerIds] = useFormState()
+
   const items = counterparties.map(({ id, name }) => ({
     id,
     name,
   }))
-
-  const [direction, , quantity, dealerIds] = useFormState()
 
   return (
     <TicketWrapper>
@@ -90,7 +95,14 @@ export const NewRfqForm = () => {
           ))}
         </FormControl>
 
-        <RfqButtonPanel />
+        <Row>
+          <Button variant="primary" size="lg" onClick={() => clear()}>
+            Clear
+          </Button>
+          <Button variant="brand" size="lg" onClick={sendRfq} disabled={!valid}>
+            Send RFQ
+          </Button>
+        </Row>
       </Form>
     </TicketWrapper>
   )
