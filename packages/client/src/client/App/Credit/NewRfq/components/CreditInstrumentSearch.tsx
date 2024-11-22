@@ -1,56 +1,27 @@
 import { bind } from "@react-rxjs/core"
 import { useCombobox } from "downshift"
-import { forwardRef, useCallback, useMemo, useRef, useState } from "react"
+import { forwardRef, useMemo, useState } from "react"
 import { FaSearch } from "react-icons/fa"
 import { map, withLatestFrom } from "rxjs/operators"
-import styled from "styled-components"
 
+import { TextInput } from "@/client/components/Form/TextInput"
+import { Typography } from "@/client/components/Typography"
 import {
   creditInstrumentsByCusip$,
   useCreditInstrumentsByCusip,
 } from "@/services/credit"
 
-import { CusipWithBenchmark } from "../../common"
+import { InstrumentDetails } from "../../common/InstrumentDetails"
 import { instrumentId$, setInstrumentId } from "../state"
-
-const InstrumentSearchWrapper = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 2em;
-`
-
-const InputWrapper = styled.div`
-  flex: 1 1 0;
-`
-
-const CreditInstrument = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`
-
-const InstrumentName = styled.div`
-  font-size: 15px;
-`
-
-const IconWrapper = styled.div`
-  position: absolute;
-  right: 0px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 5px;
-  height: 30px;
-  width: 30px;
-  color: ${({ theme }) => theme.secondary[5]};
-
-  &:hover {
-    cursor: pointer;
-    color: ${({ theme }) => theme.accents.primary.base};
-  }
-`
+import {
+  IconWrapper,
+  InputWrapper,
+  InstrumentSearchWrapper,
+  SearchResultItem,
+  SearchResultsWrapper,
+  SearchWrapper,
+} from "./styled"
+import { useInputFocus } from "./useInputFocus"
 
 export const [useSelectedInstrument] = bind(
   instrumentId$.pipe(
@@ -66,29 +37,6 @@ export const [useSelectedInstrument] = bind(
   null,
 )
 
-const useInputFocus = () => {
-  const shouldFocusInputOnMount = useRef(false)
-  const inputRef = useRef<HTMLInputElement | null>()
-
-  const inputRefCallback = useCallback((node: HTMLInputElement | null) => {
-    inputRef.current = node
-    if (node && shouldFocusInputOnMount.current) {
-      node.focus()
-      shouldFocusInputOnMount.current = false
-    }
-  }, [])
-
-  const focusInput = useCallback(() => {
-    if (inputRef.current) {
-      inputRef.current.focus()
-    } else {
-      shouldFocusInputOnMount.current = true
-    }
-  }, [])
-
-  return { inputRef: inputRefCallback, focusInput }
-}
-
 export const CreditInstrumentSearch = () => {
   const selectedInstrument = useSelectedInstrument()
   const { inputRef, focusInput } = useInputFocus()
@@ -102,15 +50,7 @@ export const CreditInstrumentSearch = () => {
     <InstrumentSearchWrapper>
       <InputWrapper>
         {selectedInstrument ? (
-          <CreditInstrument>
-            <InstrumentName data-testid="instrument-name">
-              {selectedInstrument.name}
-            </InstrumentName>
-            <CusipWithBenchmark
-              cusip={selectedInstrument.cusip}
-              benchmark={selectedInstrument.benchmark}
-            />
-          </CreditInstrument>
+          <InstrumentDetails {...selectedInstrument} />
         ) : (
           <SearchBox onChange={setInstrumentId} ref={inputRef} />
         )}
@@ -121,49 +61,6 @@ export const CreditInstrumentSearch = () => {
     </InstrumentSearchWrapper>
   )
 }
-
-const SearchWrapper = styled.div`
-  position: relative;
-`
-
-const SearchInput = styled.input`
-  display: flex;
-  padding: 6px;
-  width: 100%;
-  border-radius: 3px;
-  border: 1px solid ${({ theme }) => theme.primary[2]};
-  color: ${({ theme }) => theme.core.textColor};
-  background-color: ${({ theme }) => theme.core.darkBackground};
-  outline: none;
-  cursor: text;
-
-  &:focus {
-    outline: none !important;
-    border-color: ${({ theme }) => theme.accents.primary.base};
-  }
-`
-
-const SearchResults = styled.div`
-  position: absolute;
-  z-index: 1000;
-  width: 100%;
-  border-radius: 3px;
-  color: ${({ theme }) => theme.core.textColor};
-  background: ${({ theme }) => theme.core.darkBackground};
-`
-
-const SearchResultItem = styled.div`
-  padding: 6px 12px;
-
-  &[aria-selected="true"] {
-    background-color: ${({ theme }) => theme.core.backgroundHoverColor};
-  }
-`
-
-const MissingInstrument = styled.div`
-  padding: 6px 12px;
-  font-size: 15px;
-`
 
 const SearchBox = forwardRef<
   HTMLInputElement,
@@ -206,43 +103,39 @@ const SearchBox = forwardRef<
   })
 
   const renderItems = () => {
-    if (filteredInstruments.length === 0) {
-      return <MissingInstrument>No results found...</MissingInstrument>
+    if (!filteredInstruments.length) {
+      return (
+        <SearchResultItem>
+          <Typography variant="Text md/Regular">No results found...</Typography>
+        </SearchResultItem>
+      )
     }
-    return (
-      <>
-        {filteredInstruments.map((instrument, index) => (
-          <SearchResultItem
-            key={instrument.id}
-            {...getItemProps({
-              index,
-              item: instrument,
-            })}
-            data-testid="search-result-item"
-          >
-            <InstrumentName>{instrument.name}</InstrumentName>
-            <CusipWithBenchmark
-              cusip={instrument.cusip}
-              benchmark={instrument.benchmark}
-            />
-          </SearchResultItem>
-        ))}
-      </>
-    )
+    return filteredInstruments.map((instrument, index) => (
+      <SearchResultItem
+        key={instrument.id}
+        {...getItemProps({
+          index,
+          item: instrument,
+        })}
+        data-testid="search-result-item"
+      >
+        <InstrumentDetails {...instrument} />
+      </SearchResultItem>
+    ))
   }
 
   return (
     <SearchWrapper {...getComboboxProps()}>
-      <SearchInput
+      <TextInput
         {...getInputProps({
           placeholder: "Enter a CUSIP",
           onFocus: () => openMenu(),
           ref: inputRef,
         })}
       />
-      <SearchResults {...getMenuProps()} data-testid="search-results">
+      <SearchResultsWrapper {...getMenuProps()} data-testid="search-results">
         {isOpen && renderItems()}
-      </SearchResults>
+      </SearchResultsWrapper>
     </SearchWrapper>
   )
 })
