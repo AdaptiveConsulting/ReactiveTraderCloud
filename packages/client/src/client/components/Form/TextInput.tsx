@@ -1,3 +1,4 @@
+import React from "react"
 import styled from "styled-components"
 
 const TextInputText = styled.input(
@@ -42,10 +43,15 @@ interface Props {
   onChange?: (value: string) => void
 }
 
-export const TextInput = ({ onChange, value, ...props }: Props) => (
-  <_TextInput
-    onChange={({ target }) => onChange?.(target.value)}
-    value={value}
-    {...props}
-  />
+export const TextInput = React.forwardRef<HTMLInputElement, Props>(
+  function InputTest({ onChange, value, ...props }, ref) {
+    return (
+      <_TextInput
+        onChange={({ target }) => onChange?.(target.value)}
+        value={value}
+        ref={ref}
+        {...props}
+      />
+    )
+  },
 )

@@ -101,7 +101,7 @@ const [useIsValid, valid$] = bind(
   state$.pipe(
     map(
       ([, instrumentId, quantity, dealerIds]) =>
-        !!(instrumentId && quantity && dealerIds.length),
+        !!(instrumentId !== null && quantity && dealerIds.length),
     ),
   ),
   false,
