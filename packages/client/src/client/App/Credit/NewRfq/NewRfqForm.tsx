@@ -1,33 +1,25 @@
-import styled from "styled-components"
-
 import { Button } from "@/client/components/Button"
 import { CheckBoxInput } from "@/client/components/Form/CheckBoxInput.tsx/CheckBoxInput"
-import { Form } from "@/client/components/Form/Form"
 import { FormControl } from "@/client/components/Form/FormControl/FormControl"
 import { Label } from "@/client/components/Form/FormControl/Label"
 import { TextInput } from "@/client/components/Form/TextInput"
+import { Toggle } from "@/client/components/Toggle"
 import { customNumberFormatter } from "@/client/utils"
+import { Direction } from "@/generated/TradingGateway"
 
 import { CreditInstrumentSearch } from "./components/CreditInstrumentSearch"
-import { DirectionToggle } from "./components/DirectionToggle"
 import {
   clear,
   CLEAR_DEALER_IDS,
   sendRfq,
-  setDealerIds,
   setDirection,
   setQuantity,
+  updateDealerIds,
   useFormState,
   useIsValid,
   useSortedCreditDealers,
 } from "./state"
-import { TicketWrapper } from "./styled"
-
-const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: ${({ theme }) => theme.newTheme.spacing.xl};
-`
+import { Form, Row } from "./styled"
 
 const formatter = customNumberFormatter()
 
@@ -42,68 +34,75 @@ export const NewRfqForm = () => {
   }))
 
   return (
-    <TicketWrapper>
-      <Form>
-        <DirectionToggle onChange={setDirection} direction={direction} />
+    <Form>
+      <Toggle
+        left="You Buy"
+        right="You Sell"
+        onChange={() =>
+          setDirection(
+            direction === Direction.Buy ? Direction.Sell : Direction.Buy,
+          )
+        }
+        isToggled={direction === Direction.Sell}
+      />
 
+      <FormControl>
+        <Label>Instrument</Label>
+        <CreditInstrumentSearch />
+      </FormControl>
+
+      <Row>
         <FormControl>
-          <Label>Instrument</Label>
-          <CreditInstrumentSearch />
-        </FormControl>
-
-        <Row>
-          <FormControl>
-            <Label>Quantity (000)</Label>
-            <TextInput
-              placeholder="1000"
-              onChange={setQuantity}
-              value={quantity ? formatter(quantity) : ""}
-            />
-          </FormControl>
-
-          <FormControl>
-            <Label>RFQ Duration</Label>
-            <TextInput placeholder="2 Minutes" disabled />
-          </FormControl>
-        </Row>
-
-        <FormControl>
-          <Label>Fill Type</Label>
-          <TextInput placeholder="All or None" disabled />
-        </FormControl>
-
-        <FormControl>
-          <Label>Counterparty Selection</Label>
-          <CheckBoxInput
-            name="All"
-            checked={dealerIds.length === items.length}
-            onChange={(checked) =>
-              checked
-                ? items
-                    .filter(({ id }) => !dealerIds.includes(id))
-                    .forEach(({ id }) => setDealerIds({ id, checked: true }))
-                : setDealerIds({ id: CLEAR_DEALER_IDS, checked: false })
-            }
+          <Label>Quantity (000)</Label>
+          <TextInput
+            placeholder="1000"
+            onChange={setQuantity}
+            value={quantity ? formatter(quantity) : ""}
           />
-          {items.map(({ name, id }) => (
-            <CheckBoxInput
-              key={id}
-              name={name}
-              checked={dealerIds.includes(id)}
-              onChange={(checked: boolean) => setDealerIds({ id, checked })}
-            />
-          ))}
         </FormControl>
 
-        <Row>
-          <Button variant="primary" size="lg" onClick={() => clear()}>
-            Clear
-          </Button>
-          <Button variant="brand" size="lg" onClick={sendRfq} disabled={!valid}>
-            Send RFQ
-          </Button>
-        </Row>
-      </Form>
-    </TicketWrapper>
+        <FormControl>
+          <Label>RFQ Duration</Label>
+          <TextInput placeholder="2 Minutes" disabled />
+        </FormControl>
+      </Row>
+
+      <FormControl>
+        <Label>Fill Type</Label>
+        <TextInput placeholder="All or None" disabled />
+      </FormControl>
+
+      <FormControl>
+        <Label>Counterparty Selection</Label>
+        <CheckBoxInput
+          name="All"
+          checked={dealerIds.length === items.length}
+          onChange={(checked) =>
+            checked
+              ? items
+                  .filter(({ id }) => !dealerIds.includes(id))
+                  .forEach(({ id }) => updateDealerIds({ id, checked: true }))
+              : updateDealerIds({ id: CLEAR_DEALER_IDS, checked: false })
+          }
+        />
+        {items.map(({ name, id }) => (
+          <CheckBoxInput
+            key={id}
+            name={name}
+            checked={dealerIds.includes(id)}
+            onChange={(checked: boolean) => updateDealerIds({ id, checked })}
+          />
+        ))}
+      </FormControl>
+
+      <Row>
+        <Button variant="primary" size="lg" onClick={() => clear()}>
+          Clear
+        </Button>
+        <Button variant="brand" size="lg" onClick={sendRfq} disabled={!valid}>
+          Send RFQ
+        </Button>
+      </Row>
+    </Form>
   )
 }
