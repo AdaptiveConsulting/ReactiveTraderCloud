@@ -34,6 +34,7 @@ export { pnL$ }
 
 const PnLSectionLayout = styled(SectionLayout)`
   overflow: hidden;
+  padding-bottom: ${({ theme }) => theme.newTheme.spacing.lg};
 `
 
 export const PnLInner = ({ data }: { data: PNLBarProps[] }) => (

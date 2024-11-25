@@ -4,9 +4,7 @@ import styled from "styled-components"
 import { Footer } from "@/client/App/Footer"
 import Header from "@/client/App/Header"
 
-const Wrapper = styled("div")`
-  background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+const Wrapper = styled.div`
   width: 100%;
   overflow: hidden;
   margin: 0 auto;
