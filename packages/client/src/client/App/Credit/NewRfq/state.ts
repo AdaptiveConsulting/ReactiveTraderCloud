@@ -60,7 +60,7 @@ const [rfqRequest$, sendRfq] = createSignal()
 const [_direction$, setDirection] = createSignal<Direction>()
 const [_instrumentId$, setInstrumentId] = createSignal<number | null>()
 const [_quantity$, setQuantity] = createSignal<string>()
-const [_dealerIds$, setDealerIds] = createSignal<{
+const [_dealerIds$, updateDealerIds] = createSignal<{
   id: number
   checked: boolean
 }>()
@@ -139,10 +139,10 @@ export {
   request$,
   reset$,
   sendRfq,
-  setDealerIds,
   setDirection,
   setInstrumentId,
   setQuantity,
+  updateDealerIds,
   useFormState,
   useIsValid,
   useSortedCreditDealers,
