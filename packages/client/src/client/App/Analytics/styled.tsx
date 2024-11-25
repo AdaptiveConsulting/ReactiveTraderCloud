@@ -5,8 +5,7 @@ import { transparentColor } from "./globals/variables"
 export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
   color: ${({ theme }) => theme.core.textColor};
   flex: 1;
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
+
   overflow-y: hidden;
 
   ${({ inExternalWindow }) =>
@@ -19,7 +18,6 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
     }`
       : ``}
 
-  padding: ${({ theme }) => theme.newTheme.spacing.lg};
   scrollbar-width: thin;
   /* axis */
   .nvd3 .nv-axis path,

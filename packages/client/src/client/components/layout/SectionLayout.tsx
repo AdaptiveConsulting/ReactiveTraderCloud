@@ -7,6 +7,8 @@ import { LayoutProps } from "./types"
 const Background = styled.div`
   padding: 0 ${({ theme }) => theme.newTheme.spacing.xl};
   padding-top: ${({ theme }) => theme.newTheme.spacing.xl};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
 `
 
 const BodyWrapper = styled.div`

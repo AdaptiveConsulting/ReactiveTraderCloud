@@ -30,6 +30,8 @@ if (supportsTearOut) {
 
 const AnalyticsRegion = styled(Region)`
   width: 320px;
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
 `
 
 const Analytics = ({ children }: WithChildren) => {
