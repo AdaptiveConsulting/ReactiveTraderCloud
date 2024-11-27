@@ -51,8 +51,23 @@ jobs:
         with:
           project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
 
+      - name: Restore cache
+        uses: actions/cache/restore@v4
+        id: cache-npm
+        with:
+          path: packages/client/node_modules
+          key: ${{ runner.OS }}-node-${{ hashFiles('packages/client/package-lock.json') }}
+
       - name: Install dependencies
+        if: steps.cache-npm.outputs.cache-hit != 'true'
         run: npm ci
+
+      - name: Cache node modules
+        if: steps.cache-npm.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: packages/client/node_modules
+          key: ${{ runner.OS }}-node-${{ hashFiles('packages/client/package-lock.json') }}
 
       - name: Verify Quality (type checking, linting, format checking, tests)
         run: npm run verify
@@ -90,6 +105,7 @@ jobs:
             gs://$BUCKET_OPENFIN/branch/${{ steps.vars.outputs.BRANCH }}
 
       - name: Build (Finsemble)
+        if: ${{ steps.vars.outputs.ENVIRONMENT == 'dev' || steps.vars.outputs.ENVIRONMENT == 'uat' }}
         env:
           DOMAIN: https://finsemble.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
           URL_PATH: ${{ steps.vars.outputs.URL_SUFFIX }}
@@ -98,6 +114,7 @@ jobs:
         run: npm run finsemble:build
 
       - name: Deploy (Finsemble)
+        if: ${{ steps.vars.outputs.ENVIRONMENT == 'dev' || steps.vars.outputs.ENVIRONMENT == 'uat' }}
         run: |
           gsutil -m \
             -h "Cache-Control: no-cache" \
