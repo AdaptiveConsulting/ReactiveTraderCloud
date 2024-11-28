@@ -1,43 +1,17 @@
-import { FaSortDown, FaSortUp } from "react-icons/fa"
 import { distinctUntilChanged, map } from "rxjs/operators"
-import styled from "styled-components"
 
+import { Line } from "@/client/components/Line"
 import { equals } from "@/client/utils/equals"
 import { getPrice$, PriceMovementType } from "@/services/prices"
-import type { RfqResponse } from "@/services/rfqs"
 
 import { useRfqPayload } from "../Rfq/Rfq.state"
 import { symbolBind } from "../Tile.context"
-
-const MovementIconUP = styled(FaSortUp)<{ $show: boolean }>`
-  text-align: center;
-  color: ${({ theme }) => theme.accents.positive.base};
-  visibility: ${({ $show: show }) => (show ? "visible" : "hidden")};
-`
-const MovementIconDown = styled(FaSortDown)<{ $show: boolean }>`
-  text-align: center;
-  color: ${({ theme }) => theme.accents.negative.base};
-  visibility: ${({ $show: show }) => (show ? "visible" : "hidden")};
-`
-
-const MovementValue = styled.div`
-  font-size: 11px;
-  opacity: 0.59;
-`
-
-const PriceMovementStyle = styled.div<{
-  isAnalyticsView: boolean
-}>`
-  display: flex;
-  padding-right: ${({ isAnalyticsView }) => (isAnalyticsView ? "9px" : "0")};
-  padding-left: ${({ isAnalyticsView }) => (isAnalyticsView ? "9px" : "0")};
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-  z-index: 1;
-  grid-area: movement;
-`
+import {
+  MovementIconDown,
+  MovementIconUP,
+  MovementValue,
+  PriceMovementStyle,
+} from "./PriceMovement.styles"
 
 const [usePriceMovementData, priceMovement$] = symbolBind((symbol: string) =>
   getPrice$(symbol).pipe(
@@ -59,6 +33,7 @@ export const PriceMovementInner = ({
   isAnalyticsView: boolean
 }) => (
   <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
+    <Line height={isAnalyticsView ? "3xl" : "lg"} />
     <MovementIconUP
       $show={movementType === PriceMovementType.UP}
       aria-hidden="true"
@@ -68,46 +43,7 @@ export const PriceMovementInner = ({
       $show={movementType === PriceMovementType.DOWN}
       aria-hidden="true"
     />
-  </PriceMovementStyle>
-)
-
-const PriceMovementFromStream = ({
-  isAnalyticsView,
-}: {
-  isAnalyticsView: boolean
-}) => {
-  const { spread, movementType } = usePriceMovementData()
-
-  return (
-    <PriceMovementInner
-      spread={spread}
-      movementType={movementType}
-      isAnalyticsView={isAnalyticsView}
-    />
-  )
-}
-
-export const PriceFromQuoteInner = ({
-  isAnalytics,
-  spread,
-}: {
-  isAnalytics: boolean
-  spread: string
-}) => (
-  <PriceMovementStyle isAnalyticsView={isAnalytics}>
-    <MovementValue>{spread}</MovementValue>
-  </PriceMovementStyle>
-)
-
-const PriceFromQuote = ({
-  isAnalyticsView: isAnalytics,
-  rfqResponse,
-}: {
-  isAnalyticsView: boolean
-  rfqResponse: RfqResponse
-}) => (
-  <PriceMovementStyle isAnalyticsView={isAnalytics}>
-    <MovementValue>{rfqResponse.price.spread}</MovementValue>
+    <Line height={isAnalyticsView ? "3xl" : "lg"} />
   </PriceMovementStyle>
 )
 
@@ -117,13 +53,13 @@ export const PriceMovement = ({
   isAnalyticsView: boolean
 }) => {
   const payload = useRfqPayload()
+  const { spread, movementType } = usePriceMovementData()
 
-  return payload ? (
-    <PriceFromQuote
+  return (
+    <PriceMovementInner
       isAnalyticsView={isAnalyticsView}
-      rfqResponse={payload.rfqResponse}
+      spread={payload?.rfqResponse.price.spread || spread}
+      movementType={payload ? PriceMovementType.NONE : movementType}
     />
-  ) : (
-    <PriceMovementFromStream isAnalyticsView={isAnalyticsView} />
   )
 }

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { FaCheck, FaChevronDown, FaChevronUp } from "react-icons/fa"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
 import { usePopUpMenu } from "@/client/utils/usePopUpMenu"
 
@@ -10,6 +10,8 @@ const DropdownText = styled.div(
 
 const DropdownLayout = styled(DropdownText)`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   position: relative;
 
   line-height: 0;
@@ -23,7 +25,6 @@ const DropdownLayout = styled(DropdownText)`
 `
 
 const DropdownOptions = styled.div`
-  border-radius: 4px;
   position: absolute;
   top: 24px;
   left: 0px;
@@ -49,7 +50,8 @@ const DropdownOption = styled.div<{ selected: boolean }>`
       theme.newTheme.color["Colors/Background/bg-quaternary"]};
   }
 `
-const AlignedChecked = styled(FaCheck)`
+
+const chevronStyle = css`
   position: relative;
   font-size: 12px;
   color: ${({ theme }) =>
@@ -57,8 +59,7 @@ const AlignedChecked = styled(FaCheck)`
   margin-left: ${({ theme }) => theme.newTheme.spacing.xl};
 `
 const AlignedUp = styled(FaChevronUp)`
-  position: relative;
-  top: 2px;
+  ${chevronStyle}
 `
 const AlignedDown = styled(FaChevronDown)`
   ${chevronStyle}
@@ -96,7 +97,7 @@ export const DropdownMenu = <T extends string>({
 
   return (
     <DropdownLayout onClick={toggleOpenCloseState}>
-      <SelectedOption>{selected}</SelectedOption>
+      <div>{selected}</div>
       <div>{displayMenu ? <AlignedUp /> : <AlignedDown />}</div>
       {displayMenu && (
         <DropdownOptions ref={ref}>
