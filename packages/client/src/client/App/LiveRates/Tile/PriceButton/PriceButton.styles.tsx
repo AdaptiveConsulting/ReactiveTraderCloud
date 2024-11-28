@@ -49,19 +49,8 @@ const backgroundEffect = ({
     color: white;`
       : ""
 
-export const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const SharedButtonStyle = styled.button`
-  height: 60px;
-  width: 88px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+export const TradeButton = styled.button<TradeButtonProps>`
+  background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 3px;
   color: ${({ theme, priceAnnounced, direction }) =>
     priceAnnounced
@@ -105,16 +94,9 @@ export const DirectionLabel = styled(Box)<{ priceAnnounced?: boolean }>`
   opacity: 0.59;
   margin: 0 0 0.125rem 0;
   font-size: 0.625rem;
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-tertiary (600)"]};
-`
 
-const inline = {
-  display: "inline",
-}
-
-export const PriceContainer = styled(Box)`
-  padding-top: ${({ theme }) => theme.newTheme.spacing.xl};
+  color: ${({ priceAnnounced, theme }) =>
+    priceAnnounced ? theme.secondary.base : theme.secondary[1]};
 `
 
 export const Big = styled(Box)`
