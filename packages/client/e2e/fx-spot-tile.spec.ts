@@ -44,7 +44,7 @@ test.describe("Spot Tile", () => {
         .nth(1)
       await expect(blotterTradeID).toHaveText(tradeId)
 
-      await tilePage.locator("[data-testid='menuButton-ALL']").click()
+      await tilePage.locator("[data-testid='menuButton-All']").click()
     })
 
     test("When I buy USD/JPY then a tile displays in green with confirmation message", async () => {
@@ -199,7 +199,7 @@ test.describe("Spot Tile", () => {
         .locator('div[aria-label="Lives Rates Tiles"] > div')
         .count()
       expect(totalNZDTiles).toBe(1)
-      await tilePage.locator("[data-testid='menuButton-ALL']").click()
+      await tilePage.locator("[data-testid='menuButton-All']").click()
     })
   })
 })
