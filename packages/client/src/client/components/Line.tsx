@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-import { theme } from "../theme/uiskTheme"
+import { theme } from "../theme/uisk"
 
 export const Line = styled.div<{ height?: keyof typeof theme.spacing }>`
   height: ${({ theme, height }) =>
