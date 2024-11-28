@@ -26,7 +26,7 @@ export const CreditRfqsHeader = () => {
   const rfqState = useSelectedRfqsTab()
   const executedRfqIds = useExecutedRfqIds()
 
-  const actions: TabBarActionConfig[] = [
+  const actions: TabBarActionConfig = [
     {
       name: "clearRfqs",
       inner: (
@@ -37,7 +37,6 @@ export const CreditRfqsHeader = () => {
           {ClearRfqsIcon}
         </ClearRfqsButton>
       ),
-      size: "sm",
     },
   ]
 

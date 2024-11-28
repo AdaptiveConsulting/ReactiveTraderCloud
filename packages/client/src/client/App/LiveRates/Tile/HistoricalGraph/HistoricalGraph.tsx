@@ -47,15 +47,14 @@ const [useHistoricalPath, historicalGraph$] = symbolBind((symbol: string) =>
 )
 
 const LineChartWrapper = styled.div<{ showTimer?: boolean }>`
-  width: 100%;
-  height: ${({ showTimer }) => {
-    return showTimer ? "60%" : "75%"
-  }};
+  width: 45%;
+  height: 108px;
   grid-area: chart;
 `
 
 const Path = styled.path``
 const Svg = styled.svg`
+  width: 100%;
   &:hover ${Path} {
     stroke: #5f94f5;
   }

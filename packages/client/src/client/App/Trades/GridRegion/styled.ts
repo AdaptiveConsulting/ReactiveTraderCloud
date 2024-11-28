@@ -14,8 +14,10 @@ const TableText = styled.div(
 )
 
 export const Table = styled(TableText)`
-  flex: 1;
+  height: 100%;
   width: 100%;
+  margin: 0;
+  padding-left: ${({ theme }) => theme.newTheme.spacing.md};
   .visually-hidden {
     display: none;
   }
@@ -31,7 +33,7 @@ export const TableHeadRow = styled.div`
     theme.newTheme.color["Colors/Background/bg-primary_alt"]};
   z-index: 1;
 
-  padding: 4px;
+  padding: ${({ theme }) => theme.newTheme.spacing.sm};
 `
 
 export const highlightBackgroundColor = css`
@@ -48,6 +50,7 @@ export const TableBodyRow = styled.div<{
     theme.newTheme.color["Colors/Background/bg-primary"]};
   border-bottom: 1px solid
     ${({ theme }) => theme.newTheme.color["Colors/Background/bg-tertiary"]};
+
   &:hover {
     background-color: ${({ theme }) =>
       theme.newTheme.color["Colors/Background/bg-secondary"]};
@@ -76,7 +79,9 @@ export const TableBodyStrikeThrough = styled.div<{
   position: absolute;
   top: 50%;
   left: 0;
-  border-bottom: 1px solid red;
+  border-bottom: 1px solid
+    ${({ theme }) =>
+      theme.newTheme.color["Component colors/Utility/Error/utility-error-700"]};
   width: 100%;
 `
 
@@ -85,25 +90,29 @@ export const StatusIndicator = styled.div<{
 }>`
   width: 21px;
   border-left: 2px solid
-    ${({ status, theme: { accents } }) => {
+    ${({ status, theme }) => {
       if (
         status === TradeStatus.Done ||
         status === ACCEPTED_QUOTE_STATE ||
         status === LimitCheckStatus.Success
       )
-        return accents.positive.base
+        return theme.newTheme.color[
+          "Component colors/Utility/Success/utility-success-700"
+        ]
       else if (
         status === TradeStatus.Rejected ||
         status === REJECTED_WITH_PRICE_QUOTE_STATE ||
         status === REJECTED_WITHOUT_PRICE_QUOTE_STATE ||
         status === LimitCheckStatus.Failure
       ) {
-        return accents.negative.base
+        return theme.newTheme.color[
+          "Component colors/Utility/Error/utility-error-700"
+        ]
       }
       return "inherit"
     }};
 `
 
 export const StatusIndicatorSpacer = styled.div`
-  width: 21px;
+  width: ${({ theme }) => theme.newTheme.spacing["lg"]};
 `

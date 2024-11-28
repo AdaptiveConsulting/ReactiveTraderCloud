@@ -6,7 +6,8 @@ import { WithChildren } from "@/client/utils/utilityTypes"
 const Background = styled.div`
   height: 100%;
   user-select: none;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   background: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-primary_alt"]};
 `

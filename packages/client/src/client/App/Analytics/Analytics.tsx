@@ -16,7 +16,7 @@ const AnalyticsWrapper = styled(RegionWrapper)<{
       ? ` @media ${hideIfMatches} {
        display: none;
        } `
-      : ""}
+      : ""};
 `
 
 analytics$.subscribe()

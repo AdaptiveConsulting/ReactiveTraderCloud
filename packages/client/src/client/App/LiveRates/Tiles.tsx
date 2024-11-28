@@ -17,7 +17,8 @@ const PanelItems = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   grid-gap: ${({ theme }) => theme.newTheme.spacing.md};
-  padding-top: ${({ theme }) => theme.newTheme.spacing.lg};
+  padding: ${({ theme }) => theme.newTheme.spacing.lg};
+  padding-bottom: 0;
 `
 
 export const [useFilteredCurrencyPairs, filteredCurrencyPairs$] = bind(

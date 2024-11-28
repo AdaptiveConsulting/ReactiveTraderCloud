@@ -3,9 +3,7 @@ import styled from "styled-components"
 import { transparentColor } from "./globals/variables"
 
 export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
-  border-radius: 0.25rem;
   color: ${({ theme }) => theme.core.textColor};
-  background-color: ${({ theme }) => theme.core.lightBackground};
   ${({ inExternalWindow }) =>
     inExternalWindow
       ? `@media (min-width: 640px) {
