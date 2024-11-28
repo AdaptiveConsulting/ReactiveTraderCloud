@@ -81,6 +81,13 @@ export const Body = styled.div<{
     height: 77%;
   `}
 `
+
+export const GraphPricesWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+`
+
 export const GraphNotionalWrapper = styled.div`
   display: flex;
   flex-direction: column;
