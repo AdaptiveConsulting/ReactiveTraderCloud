@@ -11,7 +11,7 @@ import {
   withLatestFrom,
 } from "rxjs/operators"
 
-import { Direction } from "@/generated/TradingGateway"
+import { isBuy } from "@/client/App/Credit/common"
 import { getCurrencyPair$ } from "@/services/currencyPairs"
 import { execute$, ExecutionStatus } from "@/services/executions"
 import { nlpIntent$, NlpIntentType } from "@/services/nlp"
@@ -67,10 +67,10 @@ const tradeExecutionState$: Observable<TradeNlpExecutionState> =
           exhaustMap(([, price, { base, terms, symbol }]) =>
             execute$({
               currencyPair: symbol,
-              dealtCurrency: direction === Direction.Buy ? base : terms,
+              dealtCurrency: isBuy(direction) ? base : terms,
               direction,
               notional,
-              spotRate: direction === Direction.Buy ? price.ask : price.bid,
+              spotRate: isBuy(direction) ? price.ask : price.bid,
             }).pipe(
               map((trade) => {
                 if (trade.status === ExecutionStatus.CreditExceeded) {
