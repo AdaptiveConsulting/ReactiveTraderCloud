@@ -1,5 +1,6 @@
 import styled, { css, DefaultTheme, keyframes } from "styled-components"
 
+import { isBuy } from "@/client/App/Credit/common"
 import { Theme } from "@/client/theme/themes"
 import { Direction } from "@/generated/TradingGateway"
 
@@ -28,7 +29,7 @@ const getAnimationCSSProperty = (props: {
 `
 
 const getDirectionColor = (theme: DefaultTheme, direction: Direction) =>
-  direction === Direction.Buy
+  isBuy(direction)
     ? theme.newTheme.color["Colors/Background/bg-buy-primary"]
     : theme.newTheme.color["Colors/Background/bg-sell-primary"]
 

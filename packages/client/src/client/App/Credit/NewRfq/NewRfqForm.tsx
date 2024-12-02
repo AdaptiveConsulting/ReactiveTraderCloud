@@ -7,6 +7,7 @@ import { Toggle } from "@/client/components/Toggle"
 import { customNumberFormatter } from "@/client/utils"
 import { Direction } from "@/generated/TradingGateway"
 
+import { isBuy } from "../common"
 import { CreditInstrumentSearch } from "./components/CreditInstrumentSearch"
 import {
   clear,
@@ -39,9 +40,7 @@ export const NewRfqForm = () => {
         left="You Buy"
         right="You Sell"
         onChange={() =>
-          setDirection(
-            direction === Direction.Buy ? Direction.Sell : Direction.Buy,
-          )
+          setDirection(isBuy(direction) ? Direction.Sell : Direction.Buy)
         }
         isToggled={direction === Direction.Sell}
       />

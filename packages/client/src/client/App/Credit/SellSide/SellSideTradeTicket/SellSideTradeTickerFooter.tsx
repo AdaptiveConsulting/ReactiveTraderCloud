@@ -9,7 +9,6 @@ import {
 } from "@/client/utils"
 import {
   ACCEPTED_QUOTE_STATE,
-  Direction,
   PASSED_QUOTE_STATE,
   PENDING_WITHOUT_PRICE_QUOTE_STATE,
   QuoteBody,
@@ -21,7 +20,7 @@ import {
   useCreditRfqDetails,
 } from "@/services/credit"
 
-import { CreditRfqTimer, isRfqTerminated } from "../../common"
+import { CreditRfqTimer, isBuy, isRfqTerminated } from "../../common"
 import { price$, usePrice } from "../sellSideState"
 import { useIsFocused } from "../utils/useIsFocused"
 import {
@@ -147,8 +146,8 @@ export const SellSideTradeTicketFooter = ({
           <div>
             <div>Trade Successful</div>
             <TradeDetails>
-              You {direction === Direction.Buy ? "Bought" : "Sold"}{" "}
-              {formatter(quantity)} {instrument?.name ?? "Unknown Instrument"} @
+              You {isBuy(direction) ? "Bought" : "Sold"} {formatter(quantity)}{" "}
+              {instrument?.name ?? "Unknown Instrument"} @
               {quote.state?.type === ACCEPTED_QUOTE_STATE
                 ? `$${quote.state.payload}`
                 : null}

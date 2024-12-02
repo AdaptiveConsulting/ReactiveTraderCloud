@@ -1,5 +1,7 @@
 import { Direction } from "@/generated/TradingGateway"
 
+import { isBuy } from "../App/Credit/common"
+
 export function invertDirection(direction: Direction): Direction {
-  return direction === Direction.Buy ? Direction.Sell : Direction.Buy
+  return isBuy(direction) ? Direction.Sell : Direction.Buy
 }

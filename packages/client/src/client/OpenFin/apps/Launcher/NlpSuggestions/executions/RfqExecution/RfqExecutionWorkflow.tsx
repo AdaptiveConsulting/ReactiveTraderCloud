@@ -1,6 +1,7 @@
+import { isBuy } from "@/client/App/Credit/common"
 import { Card as RfqCard } from "@/client/App/Credit/CreditRfqs/CreditRfqCards/CreditRfqCard"
 import { formatNumber } from "@/client/utils"
-import { ACK_CREATE_RFQ_RESPONSE, Direction } from "@/generated/TradingGateway"
+import { ACK_CREATE_RFQ_RESPONSE } from "@/generated/TradingGateway"
 import { useCreditInstruments } from "@/services/credit"
 import { onResetInput } from "@/services/nlp"
 
@@ -26,7 +27,7 @@ const ConfirmContent = ({
   maturity,
 }: RfqNlpExecutionDataReady["payload"]["requestData"]) => {
   useMoveNextOnEnter(onNext)
-  const directionStr = direction === Direction.Buy ? "buying" : "selling"
+  const directionStr = isBuy(direction) ? "buying" : "selling"
   const notionalStr = formatNumber(notional * 1000)
   const instrumentMaturity = useCreditInstruments()
     .filter((bond) => bond.ticker === symbol)
