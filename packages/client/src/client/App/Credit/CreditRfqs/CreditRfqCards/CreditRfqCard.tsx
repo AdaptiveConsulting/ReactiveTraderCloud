@@ -1,4 +1,5 @@
 import { Loader } from "@/client/components/Loader"
+import { Typography } from "@/client/components/Typography"
 import { customNumberFormatter } from "@/client/utils"
 import {
   ACCEPTED_QUOTE_STATE,
@@ -16,20 +17,16 @@ import { useCreditRfqDetails } from "@/services/credit"
 import { CardFooter } from "./CardFooter"
 import { CardHeader } from "./CardHeader"
 import { Quote } from "./Quote/CardQuote"
-import {
-  CardContainer,
-  DetailsWrapper,
-  Label,
-  Quantity,
-  QuotesContainer,
-} from "./styled"
+import { CardContainer, DetailsWrapper, QuotesContainer } from "./styled"
 
 const formatter = customNumberFormatter()
 const Details = ({ quantity }: { quantity: number }) => {
   return (
     <DetailsWrapper>
-      <Label>RFQ DETAILS</Label>
-      <Quantity>QTY: {formatter(quantity)}</Quantity>
+      <Typography variant="Text xs/Regular">RFQ DETAILS</Typography>
+      <Typography variant="Text xs/Regular">
+        QTY: {formatter(quantity)}
+      </Typography>
     </DetailsWrapper>
   )
 }
@@ -89,7 +86,6 @@ export const Card = ({ id, highlight }: { id: number; highlight: boolean }) => {
 
   return (
     <CardContainer
-      direction={rfqDetails.direction}
       live={rfqDetails.state === RfqState.Open}
       highlight={highlight}
     >
