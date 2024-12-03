@@ -5,7 +5,7 @@ import { Typography } from "./Typography"
 
 interface Props {
   variant: "brand" | "primary" | "warning"
-  size: "xs" | "sm" | "lg"
+  size: "xxs" | "xs" | "sm" | "lg"
   disabled?: boolean
   onClick: () => void
 }
@@ -69,6 +69,10 @@ const _Button = styled.button<Props>`
   border-radius: ${({ theme }) => theme.newTheme.radius.full};
   ${({ theme, size }) => {
     switch (size) {
+      case "xxs":
+        return `height: 18px;
+                padding: 0 ${theme.newTheme.spacing.sm};
+                `
       case "xs":
         return `height: ${theme.newTheme.density.xs};`
       case "sm":
@@ -95,7 +99,11 @@ const _Button = styled.button<Props>`
 export const Button = ({ children, ...props }: PropsWithChildren<Props>) => {
   return (
     <_Button {...props}>
-      <Typography variant="Text sm/Semibold">{children}</Typography>
+      <Typography
+        variant={props.size === "xxs" ? "Text xxs/Regular" : "Text sm/Semibold"}
+      >
+        {children}
+      </Typography>
     </_Button>
   )
 }

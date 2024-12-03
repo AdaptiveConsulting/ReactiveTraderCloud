@@ -1,7 +1,10 @@
 import { createSignal } from "@react-rxjs/utils"
-import { FaCheckCircle, FaTrash } from "react-icons/fa"
 import { exhaustMap } from "rxjs/operators"
 
+import { Button } from "@/client/components/Button"
+import { BinIcon } from "@/client/components/icons/BinIcon"
+import { CheckCircle } from "@/client/components/icons/CheckCircle"
+import { Typography } from "@/client/components/Typography"
 import { ACCEPTED_QUOTE_STATE, RfqState } from "@/generated/TradingGateway"
 import {
   cancelCreditRfq$,
@@ -12,13 +15,7 @@ import { RfqDetails } from "@/services/credit/creditRfqs"
 
 import { CreditRfqTimer, rfqStateToLabel } from "../../common"
 import { handleViewTrade } from "./handleViewTrade"
-import {
-  AcceptedCardState,
-  CancelQuoteButton,
-  CardFooterWrapper,
-  TerminatedCardState,
-  ViewTrade,
-} from "./styled"
+import { CardFooterWrapper, CloseRfqButton, ViewTradeButton } from "./styled"
 
 const [cancelRfq$, onCancelRfq] = createSignal<number>()
 
@@ -35,9 +32,9 @@ export const LiveFooterContent = ({
 }) => (
   <>
     <CreditRfqTimer start={start} end={end} isSellSideView={false} />
-    <CancelQuoteButton onClick={() => onCancelRfq(rfqId)}>
+    <Button variant="primary" size="xxs" onClick={() => onCancelRfq(rfqId)}>
       Cancel
-    </CancelQuoteButton>
+    </Button>
   </>
 )
 
@@ -52,18 +49,26 @@ export const AcceptedFooterContent = ({
 
   return (
     <>
-      <AcceptedCardState>
-        <FaCheckCircle size={16} />
+      <CheckCircle />
+      <Typography
+        variant="Text xxs/Regular"
+        color="Colors/Text/text-success-primary (600)"
+      >
         You traded with {dealerName}
-      </AcceptedCardState>
-      <ViewTrade
+      </Typography>
+      <ViewTradeButton
         onClick={() => {
           handleViewTrade(rfqId)
         }}
         data-testid="view-trade"
       >
-        View Trade {rfqId}
-      </ViewTrade>
+        <Typography
+          variant="Text xxs/Regular"
+          color="Colors/Text/text-quaternary_on-brand"
+        >
+          View Trade {rfqId}
+        </Typography>
+      </ViewTradeButton>
     </>
   )
 }
@@ -75,10 +80,15 @@ export const TerminatedFooterContent = ({
   rfqId: number
   state: RfqState
 }) => (
-  <TerminatedCardState onClick={() => removeRfqs([rfqId])}>
-    <FaTrash size={12} />
-    {rfqStateToLabel(state)}
-  </TerminatedCardState>
+  <CloseRfqButton onClick={() => removeRfqs([rfqId])}>
+    <BinIcon />
+    <Typography
+      variant="Text xxs/Regular"
+      color="Colors/Text/text-secondary (700)"
+    >
+      {rfqStateToLabel(state)}
+    </Typography>
+  </CloseRfqButton>
 )
 
 export const CardFooter = ({

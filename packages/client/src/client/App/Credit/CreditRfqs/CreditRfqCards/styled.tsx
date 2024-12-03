@@ -1,23 +1,16 @@
 import styled, { css, DefaultTheme, keyframes } from "styled-components"
 
-import { ThemeName } from "@/client/theme"
-import { Direction } from "@/generated/TradingGateway"
+import { FlexBox } from "@/client/components/FlexBox"
 
-const cardFlash = ({
-  theme,
-  direction,
-}: {
-  theme: DefaultTheme
-  direction: Direction
-}) => keyframes`
+const cardFlash = ({ theme }: { theme: DefaultTheme }) => keyframes`
   0% {
-    border-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
+    border-color: ${theme.newTheme.color["Colors/Border/border-brand"]};
   }
   50% {
     border-color: transparent;
   }
   100% {
-    border-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
+    border-color: ${theme.newTheme.color["Colors/Border/border-brand"]};
   }
 `
 
@@ -26,24 +19,23 @@ const highlightBorderColor = css`
 `
 
 export const CardContainer = styled.div<{
-  direction: Direction
   live: boolean
   highlight: boolean
 }>`
   display: flex;
   flex-direction: column;
-  border-radius: 2px;
-  border: ${({ highlight }) => (highlight ? "2px" : "1px")} solid transparent;
+  border: 2px solid
+    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-primary"]};
   width: 100%;
   height: 251px;
 
   ${({ highlight }) => highlight && highlightBorderColor}
 
   &:first-child {
-    ${({ theme, direction, live, highlight }) =>
+    ${({ theme, live, highlight }) =>
       live &&
       !highlight &&
-      `border-color: ${theme.colors.spectrum.uniqueCollections[direction].base}`};
+      `border-color: ${theme.newTheme.color["Colors/Border/border-brand"]}`};
   }
 `
 
@@ -56,28 +48,16 @@ export const Row = styled.div`
 `
 
 export const DetailsWrapper = styled(Row)`
-  margin: 1px 0;
-  flex: 0 0 24px;
-  background: ${({ theme }) => theme.primary[2]};
-`
-
-export const RowText = styled.span`
-  font-size: 11px;
-  font-weight: 500;
-`
-
-export const Label = styled(RowText)`
-  color: ${({ theme }) => theme.textColor};
-`
-
-export const Quantity = styled(RowText)`
-  color: ${({ theme }) => theme.secondary[5]};
+  padding: ${({ theme }) => theme.newTheme.spacing.xs};
+  background: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-quaternary"]};
 `
 
 export const QuotesContainer = styled.div`
   flex: 1;
   overflow-y: auto;
-  background-color: ${({ theme }) => theme.core.lightBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
 `
 
 export const NoRfqsWrapper = styled.div`
@@ -90,40 +70,17 @@ export const NoRfqsWrapper = styled.div`
 
 // Card Footer
 
-export const CardFooterWrapper = styled.div`
+export const CardFooterWrapper = styled(FlexBox)`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 32px;
-  padding: 0 8px;
-  margin-top: 1px;
-  background: ${({ theme }) => theme.core.lightBackground};
-  font-size: 11px;
-`
-
-export const CancelQuoteButton = styled.button`
-  color: ${({ theme }) => theme.core.textColor};
-  background-color: ${({ theme }) => theme.core.darkBackground};
-  border-radius: 3px;
-  font-size: 11px;
-  padding: 2px 5px 3px 5px;
-  margin-left: 9px;
-`
-
-export const TerminatedCardState = styled.button`
-  display: flex;
-  align-items: center;
-  padding: 4px 8px;
-  border-radius: 3px;
-  background-color: ${({ theme }) =>
-    theme.primary[theme.name === ThemeName.Dark ? 2 : 3]};
-  color: ${({ theme }) =>
-    theme.name === ThemeName.Dark
-      ? theme.colors.light.core.activeColor
-      : theme.secondary[3]};
-
+  padding: ${({ theme }) => theme.newTheme.spacing.md};
+  background: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
   svg {
-    margin-right: 4px;
+    fill: ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-success-primary (600)"]};
+    margin-right: ${({ theme }) => theme.newTheme.spacing.xs};
   }
 `
 
@@ -131,14 +88,31 @@ export const AcceptedCardState = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  color: ${({ theme }) => theme.accents.positive.base};
 
   svg {
-    margin-right: 8px;
+    margin-right: ${({ theme }) => theme.newTheme.spacing.md};
   }
 `
 
-export const ViewTrade = styled.button`
-  flex: 0 0 fit-content;
-  color: ${({ theme }) => theme.accents.primary.base};
+export const FooterButton = styled.button`
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-tertiary"]};
+  padding: ${({ theme }) => theme.newTheme.spacing.md};
+`
+
+export const ViewTradeButton = styled(FooterButton)`
+  margin-left: auto;
+`
+
+export const CloseRfqButton = styled(FooterButton)`
+  display: flex;
+  align-items: center;
+  padding: ${({ theme }) => theme.newTheme.spacing.xs}
+    ${({ theme }) => theme.newTheme.spacing.md};
+  border-radius: ${({ theme }) => theme.newTheme.radius.xs};
+  svg {
+    fill: ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-brand-tertiary (600)"]};
+    margin-right: ${({ theme }) => theme.newTheme.spacing.md};
+  }
 `
