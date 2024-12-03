@@ -13,14 +13,15 @@ const Background = styled.div`
 
 interface Props {
   fallback: React.ReactNode
+  className?: string
 }
 
 export const RegionWrapper = React.forwardRef<
   HTMLDivElement,
   WithChildren & Props
->(function RegionWrapperInner({ fallback, children }, ref) {
+>(function RegionWrapperInner({ fallback, children, className }, ref) {
   return (
-    <Background ref={ref}>
+    <Background className={className} ref={ref}>
       <Suspense fallback={fallback}>{children}</Suspense>
     </Background>
   )

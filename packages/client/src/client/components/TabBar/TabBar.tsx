@@ -13,6 +13,7 @@ interface TabBarActionConfigItem {
   name: string
   inner: JSX.Element
   active?: boolean
+  disabled?: boolean
   size?: "sm" | "lg"
   onClick?: () => void
 }
@@ -31,54 +32,60 @@ export const TabBar = <T extends string>({
   activeItem,
   handleItemOnClick,
   actions,
-}: TabBarProps<T>) => {
-  return (
-    <Background>
-      <LeftSection isStatic={items.length < 2}>
-        {items.map((item) => (
-          <Tab
-            active={item === activeItem}
-            key={item}
-            onClick={() => handleItemOnClick?.(item)}
-            data-testid={`tabItem-${item}`}
-            isStatic={items.length < 2}
+}: TabBarProps<T>) => (
+  <Background>
+    <LeftSection isStatic={items.length < 2}>
+      {items.map((item) => (
+        <Tab
+          active={item === activeItem}
+          key={item}
+          onClick={() => handleItemOnClick?.(item)}
+          data-testid={`tabItem-${item}`}
+          isStatic={items.length < 2}
+        >
+          <Typography
+            variant="Text md/Regular"
+            color={
+              item === activeItem
+                ? "Colors/Text/text-quaternary_on-brand"
+                : "Colors/Text/text-quaternary (500)"
+            }
           >
-            <Typography
-              variant="Text md/Regular"
-              color={
-                item === activeItem
-                  ? "Colors/Text/text-quaternary_on-brand"
-                  : "Colors/Text/text-quaternary (500)"
-              }
-            >
-              {item}
-            </Typography>
-          </Tab>
-        ))}
-      </LeftSection>
-      <RightSection>
-        {actions &&
-          actions.toReversed().map(({ name, active, onClick, inner, size }) => (
+            {item}
+          </Typography>
+        </Tab>
+      ))}
+    </LeftSection>
+    <RightSection>
+      {actions &&
+        actions
+          .toReversed()
+          .map(({ name, active, onClick, inner, size, disabled }) => (
             <Action
               key={name}
               active={!!active}
               onClick={onClick}
               size={size || "sm"}
               data-testid={`action-${name}`}
+              disabled={disabled}
             >
-              {inner}
+              <Typography
+                variant="Text md/Regular"
+                color="Colors/Text/text-primary (900)"
+              >
+                {inner}
+              </Typography>
             </Action>
           ))}
-        {handleItemOnClick && (
-          <DropdownWrapper>
-            <DropdownMenu
-              selectedOption={activeItem}
-              options={items}
-              onSelectionChange={handleItemOnClick}
-            />
-          </DropdownWrapper>
-        )}
-      </RightSection>
-    </Background>
-  )
-}
+      {handleItemOnClick && (
+        <DropdownWrapper>
+          <DropdownMenu
+            selectedOption={activeItem}
+            options={items}
+            onSelectionChange={handleItemOnClick}
+          />
+        </DropdownWrapper>
+      )}
+    </RightSection>
+  </Background>
+)

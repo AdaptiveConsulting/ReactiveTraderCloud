@@ -29,6 +29,7 @@ import {
 } from "@/services/credit"
 import { executions$, ExecutionTrade } from "@/services/executions"
 
+import { isBuy } from "./App/Credit/common"
 import { setCreditRfqCardHighlight } from "./App/Credit/CreditRfqs/CreditRfqCards"
 import {
   processCreditQuoteReceived,
@@ -107,10 +108,9 @@ const createNotificationTemplate = (
           [
             createText("messageTradeDirection", 12, {
               fontWeight: "bold",
-              backgroundColor:
-                direction === Direction.Buy
-                  ? "rgb(45, 149, 255)"
-                  : "rgb(255, 39, 75)",
+              backgroundColor: isBuy(direction)
+                ? "rgb(45, 149, 255)"
+                : "rgb(255, 39, 75)",
               borderRadius: "10px",
               padding: "0 5px",
             }),

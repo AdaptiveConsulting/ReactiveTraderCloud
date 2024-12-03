@@ -31,11 +31,7 @@ export const RightSection = styled.ul`
   list-style: none;
 `
 
-const TabText = styled.li(({ theme }) => ({
-  ...theme.newTheme.textStyles["Text md/Semibold"],
-}))
-
-export const Tab = styled(TabText)<{ active: boolean; isStatic?: boolean }>`
+export const Tab = styled.div<{ active: boolean; isStatic?: boolean }>`
   height: 100%;
   width: ${({ theme }) => theme.newTheme.spacing["9xl"]};
   display: flex;
@@ -45,10 +41,6 @@ export const Tab = styled(TabText)<{ active: boolean; isStatic?: boolean }>`
   list-style-type: none;
   text-decoration: none;
 
-  color: ${({ theme, active }) =>
-    active
-      ? theme.newTheme.color["Colors/Text/text-brand-primary (900)"]
-      : "inherit"};
   background-color: ${({ active, theme }) =>
     active ? theme.newTheme.color["Colors/Background/bg-primary_alt"] : "none"};
 
@@ -71,10 +63,15 @@ export const DropdownWrapper = styled.div`
   }
 `
 
-export const Action = styled(Tab)<{ size: "sm" | "lg" }>`
+export const Action = styled(Tab)<{ size: "sm" | "lg"; disabled?: boolean }>`
   width: ${({ theme, size }) =>
     size === "sm" ? theme.newTheme.density.md : "auto"};
   display: flex;
   align-items: center;
   line-height: 0;
+
+  opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+  &:hover {
+    cursor: ${({ disabled }) => (disabled ? "auto" : "pointer")};
+  }
 `

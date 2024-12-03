@@ -3,7 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 
 import { Admin } from "@/client/App/Admin"
 import { Analytics } from "@/client/App/Analytics"
-import { CreditRfqForm } from "@/client/App/Credit"
+import { NewRfq } from "@/client/App/Credit"
 import { LiveRates } from "@/client/App/LiveRates"
 import { TornOutTileWrapper } from "@/client/App/LiveRates/Tile"
 import { TornOut } from "@/client/App/TearOutSection/TearOutWrapper"
@@ -66,7 +66,7 @@ export const WebApp = () => {
             path={ROUTES_CONFIG.newRfq}
             element={
               <TornOut>
-                <CreditRfqForm />
+                <NewRfq />
               </TornOut>
             }
           />

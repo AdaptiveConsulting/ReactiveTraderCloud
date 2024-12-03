@@ -1,8 +1,8 @@
 import { format } from "date-fns"
 import { createPortal } from "react-dom"
 
+import { isBuy } from "@/client/App/Credit/common"
 import { formatNumber } from "@/client/utils"
-import { Direction } from "@/generated/TradingGateway"
 import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { onResetInput } from "@/services/nlp"
 
@@ -27,7 +27,7 @@ const ConfirmContent = ({
   symbol,
 }: TradeNlpExecutionDataReady["payload"]["requestData"]) => {
   useMoveNextOnEnter(onNext)
-  const directionStr = direction === Direction.Buy ? "buying" : "selling"
+  const directionStr = isBuy(direction) ? "buying" : "selling"
   const notionalStr = formatNumber(notional)
 
   return (
@@ -47,7 +47,7 @@ const ConfirmContent = ({
 const SuccessContent: React.FC<ExecutionTrade> = (trade) => {
   const message =
     trade.status === ExecutionStatus.Done
-      ? `You ${trade.direction === Direction.Buy ? "bought" : "sold"} for ${
+      ? `You ${isBuy(trade.direction) ? "bought" : "sold"} for ${
           trade.dealtCurrency
         }${formatNumber(trade.notional)} @ ${trade.spotRate} settling ${format(
           trade.tradeDate,

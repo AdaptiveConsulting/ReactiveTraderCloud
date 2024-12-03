@@ -2,6 +2,7 @@ import { ButtonStyle, CLITemplate, TemplateFragment } from "@openfin/workspace"
 import * as CSS from "csstype"
 import { format } from "date-fns"
 
+import { isBuy } from "@/client/App/Credit/common"
 import {
   customNumberFormatter,
   DECIMAL_SEPARATOR,
@@ -386,9 +387,7 @@ export const constructTradeExecutedTemplateContent = (
     const terms = trade.currencyPair.slice(3, 6)
     const data = {
       tradeId: `Trade ID: ${trade.tradeId.toString()}`,
-      direction: `You ${
-        trade.direction === Direction.Buy ? "bought" : "sold"
-      } `,
+      direction: `You ${isBuy(trade.direction) ? "bought" : "sold"} `,
       notional: `${base} ${nf.format(trade.notional)}`,
       rateLabel: " at a rate of ",
       rate: trade.spotRate.toString(),

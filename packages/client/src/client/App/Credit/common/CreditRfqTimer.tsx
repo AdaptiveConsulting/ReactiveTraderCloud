@@ -1,6 +1,8 @@
 import { memo, useEffect, useLayoutEffect, useRef, useState } from "react"
 import styled, { css, keyframes } from "styled-components"
 
+import { Typography } from "@/client/components/Typography"
+
 export const TimerWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -8,17 +10,15 @@ export const TimerWrapper = styled.div`
   padding: 0 16px;
 `
 
-export const TimeLeft = styled.div<{ margin: "left" | "right" }>`
+export const TimeLeft = styled.div`
   color: ${({ theme }) => theme.textColor};
   font-size: 10px;
   opacity: 0.6;
   white-space: nowrap;
-  ${({ margin }) =>
-    margin === "left" ? "margin-left: 0.5rem" : "margin-right: 0.5rem"};
 `
 
 export const ProgressBarWrapper = styled.div`
-  background-color: ${({ theme }) => theme.core.darkBackground};
+  margin: 0 ${({ theme }) => theme.newTheme.spacing.sm};
   height: 6px;
   width: 100%;
   border-radius: 3px;
@@ -46,7 +46,8 @@ export const ProgressBar = memo(styled.div<{
   end: number
   transitionTime: number
 }>`
-  background-color: ${({ theme }) => theme.accents.primary.base};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
   border-radius: 3px;
   height: 100%;
   animation: ${progressAnimation};
@@ -67,12 +68,7 @@ const TimeProgress = ({ start, end }: { start: number; end: number }) => {
   )
 }
 
-const CountWrapper = styled.span<{ grid?: boolean }>`
-  color: ${({ grid, theme }) =>
-    grid ? theme.accents.primary.base : "inherit"};
-`
-
-export const SecsTimer = ({ end, grid }: { end: number; grid?: boolean }) => {
+export const SecsTimer = ({ end }: { end: number }) => {
   const [timeLeft, setTimeLeft] = useState(() =>
     Math.round((end - Date.now()) / 1000),
   )
@@ -90,9 +86,12 @@ export const SecsTimer = ({ end, grid }: { end: number; grid?: boolean }) => {
   const timeLeftSecs = timeLeft % 60
 
   return (
-    <CountWrapper grid={grid}>
+    <Typography
+      variant="Text xs/Regular"
+      color="Colors/Text/text-primary (900)"
+    >
       {timeLeftMins}m {timeLeftSecs}s
-    </CountWrapper>
+    </Typography>
   )
 }
 
@@ -121,7 +120,7 @@ export const CreditRfqTimer = ({
   return timerEnded ? null : (
     <>
       {!isSellSideView && (
-        <TimeLeft margin={"right"}>
+        <TimeLeft>
           <SecsTimer end={end} />
         </TimeLeft>
       )}
@@ -129,7 +128,7 @@ export const CreditRfqTimer = ({
         <TimeProgress start={start} end={end} />
       </ProgressBarWrapper>
       {isSellSideView && (
-        <TimeLeft margin={"left"}>
+        <TimeLeft>
           <SecsTimer end={end} />
         </TimeLeft>
       )}

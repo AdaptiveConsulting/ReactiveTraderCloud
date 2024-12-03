@@ -15,6 +15,7 @@ import {
   DirectionLabel,
   InstrumentLabelContainer,
   InstrumentName,
+  isBuy,
 } from "../../common"
 
 const Wrapper = styled.div`
@@ -42,15 +43,12 @@ export const SellSideTradeTicketHeader = memo(
     return (
       <Wrapper>
         <DirectionContainer direction={direction} terminated={terminated}>
-          {direction === Direction.Buy && (
+          {isBuy(direction) && (
             <DirectionLabel direction={direction} terminated={terminated}>
               <div>YOU {accepted ? "BOUGHT" : "BUY"}</div>
             </DirectionLabel>
           )}
-          <InstrumentLabelContainer
-            direction={direction}
-            terminated={terminated}
-          >
+          <InstrumentLabelContainer terminated={terminated}>
             <InstrumentName>
               {instrument?.name ?? "No name found"}
             </InstrumentName>

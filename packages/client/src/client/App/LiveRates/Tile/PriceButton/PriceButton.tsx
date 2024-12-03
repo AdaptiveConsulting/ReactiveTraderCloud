@@ -2,6 +2,7 @@ import { bind } from "@react-rxjs/core"
 import { of } from "rxjs"
 import { map, switchMap } from "rxjs/operators"
 
+import { isBuy } from "@/client/App/Credit/common"
 import { AdaptiveLoader } from "@/client/components/AdaptiveLoader"
 import {
   customNumberFormatter,
@@ -34,7 +35,7 @@ import {
 
 const getPriceByDirection$ = (symbol: string, direction: Direction) =>
   getPrice$(symbol).pipe(
-    map(({ bid, ask }) => (direction === Direction.Buy ? ask : bid)),
+    map(({ bid, ask }) => (isBuy(direction) ? ask : bid)),
     map((price) => ({ isExpired: false, price })),
   )
 
@@ -45,10 +46,9 @@ const [usePrice, getPriceDirection$] = bind(
         payload
           ? of({
               ...payload,
-              price:
-                direction === Direction.Buy
-                  ? payload.rfqResponse.price.ask
-                  : payload.rfqResponse.price.bid,
+              price: isBuy(direction)
+                ? payload.rfqResponse.price.ask
+                : payload.rfqResponse.price.bid,
             })
           : getPriceByDirection$(symbol, direction),
       ),

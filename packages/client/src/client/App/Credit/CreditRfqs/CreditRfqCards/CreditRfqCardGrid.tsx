@@ -3,6 +3,7 @@ import { createSignal } from "@react-rxjs/utils"
 import { combineLatest, merge } from "rxjs"
 import { delay, map, mergeMap } from "rxjs/operators"
 
+import { GridLayout } from "@/client/components/layout/GridLayout"
 import { HIGHLIGHT_ROW_FLASH_TIME } from "@/client/constants"
 import { RfqState } from "@/generated/TradingGateway"
 import { clearedRfqIds$, creditRfqsById$ } from "@/services/credit"
@@ -11,7 +12,6 @@ import { timeRemainingComparator } from "../../common"
 import { RfqsTab, selectedRfqsTab$ } from "../selectedRfqsTab"
 import { Card } from "./CreditRfqCard"
 import { NoRfqsScreen } from "./NoRfqsScreen/NoRfqsScreen"
-import { CreditRfqCardGridWrapper } from "./styled"
 
 const RFQ_STATE_TO_TAB_MAPPING: Record<RfqState, RfqsTab> = {
   [RfqState.Open]: RfqsTab.Live,
@@ -70,15 +70,17 @@ export const CreditRfqCardGrid = () => {
   const rfqIds = useFilteredCreditRfqIds()
   const highlightedRfqCard = useCreditRfqCardHighlight()
 
+  const empty = !rfqIds.length
+
   return (
-    <CreditRfqCardGridWrapper empty={rfqIds.length === 0}>
-      {rfqIds.length > 0 ? (
+    <GridLayout empty={empty}>
+      {empty ? (
+        <NoRfqsScreen />
+      ) : (
         rfqIds.map((id) => (
           <Card id={id} key={id} highlight={highlightedRfqCard === id} />
         ))
-      ) : (
-        <NoRfqsScreen />
       )}
-    </CreditRfqCardGridWrapper>
+    </GridLayout>
   )
 }

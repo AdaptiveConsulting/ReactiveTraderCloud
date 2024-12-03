@@ -18,7 +18,8 @@ import {
   withLatestFrom,
 } from "rxjs"
 
-import { ACK_CREATE_RFQ_RESPONSE, Direction } from "@/generated/TradingGateway"
+import { isBuy } from "@/client/App/Credit/common"
+import { ACK_CREATE_RFQ_RESPONSE } from "@/generated/TradingGateway"
 import { getCreditRfqDetails$ } from "@/services/credit"
 import { creditInstruments$ } from "@/services/credit/creditInstruments"
 import {
@@ -211,14 +212,13 @@ export const respondWithIntent = (
             const data = {
               manifestType: "trade-execution",
               currencyPair: symbol,
-              spotRate: direction === Direction.Buy ? ask : bid,
+              spotRate: isBuy(direction) ? ask : bid,
               valueDate: new Date().toISOString().substr(0, 10),
               direction,
               notional,
-              dealtCurrency:
-                direction === Direction.Buy
-                  ? symbol.substr(0, 3)
-                  : symbol.substr(3, 3),
+              dealtCurrency: isBuy(direction)
+                ? symbol.substr(0, 3)
+                : symbol.substr(3, 3),
             }
 
             result = {

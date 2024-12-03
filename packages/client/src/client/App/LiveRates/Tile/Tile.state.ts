@@ -21,6 +21,7 @@ import {
 } from "@/services/executions"
 import { getPrice$ } from "@/services/prices"
 
+import { isBuy } from "../../Credit/common"
 import { getNotionalValue$ } from "./Notional"
 
 // Dismiss Message
@@ -81,10 +82,10 @@ export const [useTileState, getTileState$] = bind(
       ),
       map(([{ direction }, notional, price, { base, terms, symbol }]) => ({
         currencyPair: symbol,
-        dealtCurrency: direction === Direction.Buy ? base : terms,
+        dealtCurrency: isBuy(direction) ? base : terms,
         direction,
         notional,
-        spotRate: direction === Direction.Buy ? price.ask : price.bid,
+        spotRate: isBuy(direction) ? price.ask : price.bid,
       })),
       tap(({ direction, currencyPair, spotRate, notional }) => {
         window.gtag("event", "fx_trade_attempt", {
