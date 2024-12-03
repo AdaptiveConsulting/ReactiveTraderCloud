@@ -2,7 +2,7 @@ import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { startWith } from "rxjs/operators"
 
-export const ALL_CURRENCIES = "ALL"
+export const ALL_CURRENCIES = "All"
 
 const [selectedCurrencyInput$, onSelectCurrency] = createSignal<string>()
 

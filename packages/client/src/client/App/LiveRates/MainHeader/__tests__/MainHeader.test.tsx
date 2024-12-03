@@ -57,9 +57,9 @@ describe("MainHeader", () => {
   it("should load all the currency buttons", async () => {
     await renderComponent()
 
-    expect(screen.getByTestId("menuButton-ALL").textContent).toBe(`ALL`)
-    expect(screen.getByTestId("menuButton-EUR").textContent).toBe(`EUR`)
-    expect(screen.getByTestId("menuButton-GBP").textContent).toBe(`GBP`)
+    expect(screen.getByTestId("tabItem-All").textContent).toBe(`All`)
+    expect(screen.getByTestId("tabItem-EUR").textContent).toBe(`EUR`)
+    expect(screen.getByTestId("tabItem-GBP").textContent).toBe(`GBP`)
   })
 
   it("should filter the tiles based on selection", async () => {
@@ -70,7 +70,7 @@ describe("MainHeader", () => {
     ).toBe(2)
 
     act(() => {
-      fireEvent.click(screen.getByTestId("menuButton-EUR"))
+      fireEvent.click(screen.getByTestId("tabItem-EUR"))
     })
 
     expect(
@@ -79,7 +79,7 @@ describe("MainHeader", () => {
     expect(screen.getByTestId("tile-EURUSD")).not.toBeNull()
 
     act(() => {
-      fireEvent.click(screen.getByTestId("menuButton-GBP"))
+      fireEvent.click(screen.getByTestId("tabItem-GBP"))
     })
 
     expect(
@@ -96,7 +96,7 @@ describe("MainHeader", () => {
     )
 
     act(() => {
-      fireEvent.click(screen.getByTestId("toggleButton"))
+      fireEvent.click(screen.getByTestId("action-toggleTileView"))
     })
 
     expect(screen.getByTestId("tile-EURUSD").textContent).toBe(
@@ -104,7 +104,7 @@ describe("MainHeader", () => {
     )
 
     act(() => {
-      fireEvent.click(screen.getByTestId("toggleButton"))
+      fireEvent.click(screen.getByTestId("action-toggleTileView"))
     })
 
     expect(screen.getByTestId("tile-EURUSD").textContent).toBe(

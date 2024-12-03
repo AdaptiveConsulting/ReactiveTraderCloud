@@ -22,7 +22,10 @@ const RFQButtonComponent = styled.button<{
   textWrap: boolean
   isAnalytics: boolean
 }>`
-  background-color: ${({ theme }) => theme.accents.primary.base};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color[
+      "Component colors/Components/Buttons/Brand/button-brand-bg"
+    ]};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,7 +39,7 @@ const RFQButtonComponent = styled.button<{
   font-stretch: normal;
   color: ${({ theme }) => theme.white};
   &:disabled {
-    background-color: ${({ theme }) => theme.accents.primary.darker};
+    opacity: 0.8;
     cursor: default;
   }
 `

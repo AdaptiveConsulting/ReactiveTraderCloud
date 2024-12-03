@@ -1,7 +1,6 @@
-import { Subscribe } from "@react-rxjs/core"
 import { useEffect } from "react"
-import styled from "styled-components"
 
+import { Region } from "@/client/components/layout/Region"
 import {
   registerCreditQuoteAcceptedNotifications,
   registerCreditQuoteReceivedNotifications,
@@ -13,12 +12,6 @@ import { WithChildren } from "@/client/utils/utilityTypes"
 import { CreditRfqCardGrid } from "./CreditRfqCards"
 import { CreditRfqsHeader } from "./CreditRfqsHeader"
 
-const CreditRfqsCoreWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow-y: auto;
-`
 const CreditRfqsCore = ({ children }: WithChildren) => {
   useEffect(() => {
     registerCreditQuoteReceivedNotifications()
@@ -33,12 +26,11 @@ const CreditRfqsCore = ({ children }: WithChildren) => {
   }, [])
 
   return (
-    <Subscribe fallback={children}>
-      <CreditRfqsCoreWrapper>
-        <CreditRfqsHeader />
-        <CreditRfqCardGrid />
-      </CreditRfqsCoreWrapper>
-    </Subscribe>
+    <Region
+      Header={<CreditRfqsHeader />}
+      Body={<CreditRfqCardGrid />}
+      fallback={children}
+    />
   )
 }
 

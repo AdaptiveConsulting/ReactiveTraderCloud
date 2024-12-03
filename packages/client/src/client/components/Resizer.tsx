@@ -20,21 +20,15 @@ const ResizableContent = styled.div`
 
 const Bar = styled.div<{ show?: boolean }>`
   display: ${({ show }) => (show ? "block" : "none")};
-  background-color: ${({ theme }) => theme.core.textColor};
-  box-shadow:
-    0 -0.125rem 0 0 ${({ theme }) => theme.core.textColor},
-    0 0.125rem 0 0 ${({ theme }) => theme.core.textColor};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
+
   cursor: row-resize;
-  opacity: 0.1;
   z-index: 1;
-  height: 0.25rem;
+  height: ${({ theme }) => theme.newTheme.spacing.sm};
   width: 100%;
 
   &:hover {
-    box-shadow:
-      0 -0.125rem 0 0 ${({ theme }) => theme.core.textColor},
-      0 0.125rem 0 0 ${({ theme }) => theme.core.textColor};
-    opacity: 0.3;
     transition: all 200ms ease-in-out;
   }
 

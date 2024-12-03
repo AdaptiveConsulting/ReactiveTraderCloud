@@ -1,10 +1,9 @@
 import { joinChannel } from "@finos/fdc3"
-import { Subscribe } from "@react-rxjs/core"
 import { useEffect } from "react"
 import { Observable } from "rxjs"
-import styled from "styled-components"
 
 import { Section } from "@/client/App/TearOutSection/state"
+import { Region } from "@/client/components/layout/Region"
 import { Loader } from "@/client/components/Loader"
 import { createSuspenseOnStale } from "@/client/utils/createSuspenseOnStale"
 import { isBlotterDataStale$, Trade } from "@/services/trades"
@@ -22,16 +21,9 @@ import { ColDef } from "../TradesState"
 import { FxColField } from "../TradesState/colConfig"
 import { TradesGridInner } from "./TradesGridInner"
 
-const TradesStyle = styled.div`
-  height: 100%;
-  width: 100%;
-  color: ${({ theme }) => theme.core.textColor};
-  font-size: 0.8125rem;
-`
-
 const SuspenseOnStaleData = createSuspenseOnStale(isBlotterDataStale$)
 
-interface TradesGridProps<Row extends Trade> {
+interface GridRegionProps<Row extends Trade> {
   columnFields: FxColField[]
   columnDefinitions: ColDef
   trades$: Observable<TradeType[]>
@@ -44,7 +36,7 @@ interface TradesGridProps<Row extends Trade> {
   title?: string
 }
 
-export const TradesGrid = <Row extends Trade>({
+export const GridRegion = <Row extends Trade>({
   columnFields,
   columnDefinitions,
   trades$,
@@ -55,7 +47,7 @@ export const TradesGrid = <Row extends Trade>({
   section,
   showHeaderTools,
   title,
-}: TradesGridProps<Row>) => {
+}: GridRegionProps<Row>) => {
   useEffect(() => {
     if (window.fdc3) {
       // https://developer.openfin.co/docs/javascript/stable/tutorial-fdc3.joinChannel.html
@@ -64,29 +56,36 @@ export const TradesGrid = <Row extends Trade>({
   }, [])
 
   return (
-    <Subscribe fallback={<Loader ariaLabel="Loading trades blotter" />}>
-      <ColFieldsContext.Provider value={columnFields}>
-        <ColDefContext.Provider value={columnDefinitions}>
-          <TradesStreamContext.Provider value={trades$}>
-            <HighlightedRowContext.Provider value={highlightedRow}>
-              <SuspenseOnStaleData />
-              <TradesStyle role="region" aria-labelledby="trades-table-heading">
+    <ColFieldsContext.Provider value={columnFields}>
+      <ColDefContext.Provider value={columnDefinitions}>
+        <TradesStreamContext.Provider value={trades$}>
+          <HighlightedRowContext.Provider value={highlightedRow}>
+            <Region
+              aria-labelledby="trades-table-heading"
+              fallback={<Loader ariaLabel="Loading trades blotter" />}
+              Header={
                 <TradesHeader
                   section={section}
                   showTools={showHeaderTools}
                   title={title}
                 />
-                <TradesGridInner
-                  isRejected={isRejected}
-                  onRowClick={onRowClick}
-                  caption={caption}
-                />
-                <TradesFooter />
-              </TradesStyle>
-            </HighlightedRowContext.Provider>
-          </TradesStreamContext.Provider>
-        </ColDefContext.Provider>
-      </ColFieldsContext.Provider>
-    </Subscribe>
+              }
+              Body={
+                <>
+                  <TradesGridInner
+                    isRejected={isRejected}
+                    onRowClick={onRowClick}
+                    caption={caption}
+                  />
+                  <TradesFooter />
+                </>
+              }
+            >
+              <SuspenseOnStaleData />
+            </Region>
+          </HighlightedRowContext.Provider>
+        </TradesStreamContext.Provider>
+      </ColDefContext.Provider>
+    </ColFieldsContext.Provider>
   )
 }

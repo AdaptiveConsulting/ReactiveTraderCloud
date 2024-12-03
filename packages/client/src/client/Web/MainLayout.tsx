@@ -4,9 +4,8 @@ import styled from "styled-components"
 import { Footer } from "@/client/App/Footer"
 import Header from "@/client/App/Header"
 
-const Wrapper = styled("div")`
+const Wrapper = styled.div`
   width: 100%;
-  background-color: ${({ theme }) => theme.core.darkBackground};
   overflow: hidden;
   margin: 0 auto;
   display: flex;
@@ -23,8 +22,12 @@ const AppLayoutRoot = styled.div`
 
   display: grid;
   grid-template-rows: auto 1fr auto;
-  background-color: ${({ theme }) => theme.core.darkBackground};
-  color: ${({ theme }) => theme.core.textColor};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+  border: ${({ theme }) =>
+    `${theme.newTheme.spacing.sm} ${theme.newTheme.color["Colors/Background/bg-primary"]} solid`};
 `
 const MainWrapper = styled.div`
   display: flex;

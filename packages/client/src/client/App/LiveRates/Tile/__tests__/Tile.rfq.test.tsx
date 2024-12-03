@@ -229,7 +229,7 @@ describe("Tile/rfq", () => {
     expect(screen.queryByRole("alert")).toBeNull()
 
     expect(screen.getAllByRole("button")[1].textContent).toBe(
-      `SELL${priceMock.bid}`,
+      `SELL ${currencyPairMock.base}${priceMock.bid}`,
     )
 
     expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe(

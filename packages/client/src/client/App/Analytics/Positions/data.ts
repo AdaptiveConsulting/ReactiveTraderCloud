@@ -9,7 +9,7 @@ import {
   withLatestFrom,
 } from "rxjs/operators"
 
-import { colors } from "@/client/theme"
+import { theme$ } from "@/client/theme/ThemeContext"
 import { equals } from "@/client/utils/equals"
 import { formatAsWholeNumber } from "@/client/utils/formatNumber"
 import { mapObject } from "@/client/utils/mapObject"
@@ -78,15 +78,16 @@ export const nodes$: Observable<BubbleChartNode[]> = currentPositions$.pipe(
       },
     ] as const
   }),
+  withLatestFrom(theme$),
   scan(
-    (acc, [positionsData, scales]) => {
+    (acc, [[positionsData, scales], theme]) => {
       // start from scratch with a new object so deleted nodes are not silently included
       const newAcc: Record<string, BubbleChartNode> = {}
       positionsData.forEach((dataObj: CCYPosition) => {
         const color =
           dataObj.baseTradedAmount > 0
-            ? colors.accents.positive.base
-            : colors.accents.negative.base
+            ? theme.newTheme.color["Colors/Border/border-buy"]
+            : theme.newTheme.color["Colors/Border/border-sell"]
 
         newAcc[dataObj.symbol] = Object.assign(
           acc[dataObj.symbol] || { id: dataObj.symbol },

@@ -4,6 +4,8 @@ import { DropdownMenu } from "@/client/components/DropdownMenu"
 import { ROUTES_CONFIG } from "@/client/constants"
 import { isMobileDevice } from "@/client/utils"
 
+import { InstrumentTypeSelectorWrapper } from "./Header.styles"
+
 enum InstrumentType {
   FX = "FX",
   CREDIT = "Credit",
@@ -20,17 +22,19 @@ const InstrumentTypeSelector = () => {
 
   if (isMobileDevice) return null
   return (
-    <DropdownMenu
-      options={[InstrumentType.FX, InstrumentType.CREDIT]}
-      onSelectionChange={(selection) => {
-        handleInstrumentTypeSelection(selection as InstrumentType)
-      }}
-      selectedOption={
-        location.pathname === ROUTES_CONFIG.credit
-          ? InstrumentType.CREDIT
-          : InstrumentType.FX
-      }
-    />
+    <InstrumentTypeSelectorWrapper>
+      <DropdownMenu
+        options={[InstrumentType.FX, InstrumentType.CREDIT]}
+        onSelectionChange={(selection) => {
+          handleInstrumentTypeSelection(selection as InstrumentType)
+        }}
+        selectedOption={
+          location.pathname === ROUTES_CONFIG.credit
+            ? InstrumentType.CREDIT
+            : InstrumentType.FX
+        }
+      />
+    </InstrumentTypeSelectorWrapper>
   )
 }
 

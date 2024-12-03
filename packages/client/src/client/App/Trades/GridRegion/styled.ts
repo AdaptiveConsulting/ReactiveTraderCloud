@@ -9,9 +9,15 @@ import {
 import { QuoteStatus } from "@/services/rfqs/types"
 import { LimitCheckStatus, TradeStatus } from "@/services/trades/types"
 
-export const Table = styled.div`
-  height: calc(100% - 4.75rem);
+const TableText = styled.div(
+  ({ theme }) => theme.newTheme.textStyles["Text sm/Regular"],
+)
+
+export const Table = styled(TableText)`
+  height: 100%;
   width: 100%;
+  margin: 0;
+  padding-left: ${({ theme }) => theme.newTheme.spacing.md};
   .visually-hidden {
     display: none;
   }
@@ -21,11 +27,13 @@ export const TableHeadRow = styled.div`
   position: sticky;
   top: 0;
   display: flex;
-  font-size: 0.675rem;
-  text-transform: uppercase;
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-quaternary (500)"]};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary_alt"]};
   z-index: 1;
-  height: 2rem;
-  background-color: ${({ theme }) => theme.core.lightBackground};
+
+  padding: ${({ theme }) => theme.newTheme.spacing.sm};
 `
 
 export const highlightBackgroundColor = css`
@@ -38,10 +46,14 @@ export const TableBodyRow = styled.div<{
 }>`
   display: flex;
   width: 100%;
-  background-color: ${({ theme, index }) =>
-    index && index % 2 === 0 ? undefined : theme.core.lightBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
+  border-bottom: 1px solid
+    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-tertiary"]};
+
   &:hover {
-    background-color: ${({ theme }) => theme.core.alternateBackground};
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-secondary"]};
   }
   ${({ highlight }) => highlight && highlightBackgroundColor}
 `
@@ -67,7 +79,9 @@ export const TableBodyStrikeThrough = styled.div<{
   position: absolute;
   top: 50%;
   left: 0;
-  border-bottom: 1px solid red;
+  border-bottom: 1px solid
+    ${({ theme }) =>
+      theme.newTheme.color["Component colors/Utility/Error/utility-error-700"]};
   width: 100%;
 `
 
@@ -75,27 +89,30 @@ export const StatusIndicator = styled.div<{
   status: QuoteStatus | LimitCheckStatus | TradeStatus
 }>`
   width: 21px;
-  border-left: 6px solid
-    ${({ status, theme: { accents } }) => {
+  border-left: 2px solid
+    ${({ status, theme }) => {
       if (
         status === TradeStatus.Done ||
         status === ACCEPTED_QUOTE_STATE ||
         status === LimitCheckStatus.Success
       )
-        return accents.positive.base
+        return theme.newTheme.color[
+          "Component colors/Utility/Success/utility-success-700"
+        ]
       else if (
         status === TradeStatus.Rejected ||
         status === REJECTED_WITH_PRICE_QUOTE_STATE ||
         status === REJECTED_WITHOUT_PRICE_QUOTE_STATE ||
         status === LimitCheckStatus.Failure
       ) {
-        return accents.negative.base
+        return theme.newTheme.color[
+          "Component colors/Utility/Error/utility-error-700"
+        ]
       }
       return "inherit"
     }};
 `
 
 export const StatusIndicatorSpacer = styled.div`
-  border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
-  width: 21px;
+  width: ${({ theme }) => theme.newTheme.spacing["lg"]};
 `
