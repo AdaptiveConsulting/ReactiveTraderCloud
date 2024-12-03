@@ -57,11 +57,7 @@ const StatefulTimer = ({ end }: { end?: number }) => {
     }
   }, [timerEnded, end])
 
-  return timerEnded || end === undefined ? (
-    <span />
-  ) : (
-    <SecsTimer grid end={end} />
-  )
+  return timerEnded || end === undefined ? <span /> : <SecsTimer end={end} />
 }
 
 export const rfqColDef: RfqColDef = {
