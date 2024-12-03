@@ -4,7 +4,7 @@ import styled, { css } from "styled-components"
 import { Typography } from "./Typography"
 
 interface Props {
-  variant: "brand" | "primary" | "warning"
+  variant: "brand" | "primary" | "warning" | "outline"
   size: "xxs" | "xs" | "sm" | "lg"
   disabled?: boolean
   onClick: () => void
@@ -50,6 +50,12 @@ const primaryStyle = css`
   ${focused}
 `}
 `
+const outlineStyle = css`
+  ${({ theme }) => `
+  color: ${theme.newTheme.color["Component colors/Components/Buttons/Brand/button-brand-bg"]};
+  border: 1px solid ${theme.newTheme.color["Colors/Border/border-brand"]};
+  `}
+`
 const warningStyle = css`
   ${({ theme }) => `
   color: ${theme.newTheme.color["Colors/Text/text-primary (900)"]};
@@ -67,6 +73,7 @@ const warningStyle = css`
 const _Button = styled.button<Props>`
   padding: 0 ${({ theme }) => theme.newTheme.spacing.xl};
   border-radius: ${({ theme }) => theme.newTheme.radius.full};
+
   ${({ theme, size }) => {
     switch (size) {
       case "xxs":
@@ -90,6 +97,8 @@ const _Button = styled.button<Props>`
         return brandStyle
       case "primary":
         return primaryStyle
+      case "outline":
+        return outlineStyle
       case "warning":
         return warningStyle
     }

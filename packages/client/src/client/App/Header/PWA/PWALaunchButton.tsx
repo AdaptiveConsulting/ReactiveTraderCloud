@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from "react"
 
+import { Button } from "@/client/components/Button"
 import { isiOS } from "@/client/utils"
 
 import { PWABanner } from "./PWAInstallPrompt"
-import { InstallButton } from "./PWAInstallPrompt.styles"
 import { usePWABannerPrompt } from "./usePWABannerPrompt"
 
 export const LaunchButtonInner = ({
@@ -13,9 +13,9 @@ export const LaunchButtonInner = ({
   onClick: () => void
   hasPrompt: boolean
 }) => (
-  <InstallButton onClick={onClick}>
+  <Button variant="outline" size="lg" onClick={onClick}>
     Install{hasPrompt ? " PWA" : ""}
-  </InstallButton>
+  </Button>
 )
 
 interface InstallLaunchProps {
