@@ -6,8 +6,6 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
   color: ${({ theme }) => theme.core.textColor};
   flex: 1;
 
-  overflow-y: hidden;
-
   ${({ inExternalWindow }) =>
     inExternalWindow
       ? `@media (min-width: 640px) {
