@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components"
 
 import { colors } from "@/client/theme"
-import { breathing } from "@/client/utils/styling"
+import { backgroundFlash, breathing } from "@/client/utils/styling"
 import { Direction } from "@/generated/TradingGateway"
 
 import {
@@ -59,7 +59,7 @@ const TableHeadRow = styled.tr`
 `
 
 const highlightBackgroundColor = css`
-  animation: ${({ theme }) => theme.flash} 1s ease-in-out 3;
+  animation: ${backgroundFlash} 1s ease-in-out 3;
 `
 
 const TableBodyRow = styled.tr<{
