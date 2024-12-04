@@ -1,6 +1,7 @@
 import { ReactNode } from "react"
 import styled, { css } from "styled-components"
 
+import { backgroundFlash } from "@/client/utils/styling"
 import {
   ACCEPTED_QUOTE_STATE,
   REJECTED_WITH_PRICE_QUOTE_STATE,
@@ -37,7 +38,7 @@ export const TableHeadRow = styled.div`
 `
 
 export const highlightBackgroundColor = css`
-  animation: ${({ theme }) => theme.flash} 1s ease-in-out 3;
+  animation: ${backgroundFlash} 1s ease-in-out 3;
 `
 
 export const TableBodyRow = styled.div<{
