@@ -1,7 +1,6 @@
 import styled from "styled-components"
 
-import Check from "@/client/components/icons/svg/tick.svg"
-
+import Check from "../../../components/icons/svg/tick.svg"
 import { FlexBox } from "../../FlexBox"
 import { Typography } from "../../Typography"
 
