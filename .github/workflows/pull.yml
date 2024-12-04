@@ -15,7 +15,6 @@ defaults:
 env:
   BUCKET_WEB: reactive-trader-web-builds
   BUCKET_OPENFIN: reactive-trader-openfin-builds
-  BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
   ENVIRONMENT: env
 
 jobs:
@@ -80,20 +79,6 @@ jobs:
             rsync -d -r dist \
             gs://$BUCKET_OPENFIN/pull/${{ github.event.number }}
 
-      - name: Build (Finsemble)
-        env:
-          DOMAIN: https://finsemble.env.reactivetrader.com
-          URL_PATH: /pull/${{ github.event.number }}
-          VITE_BUILD_VERSION: ${{ github.sha }}
-        run: npm run finsemble:build
-
-      - name: Deploy (Finsemble)
-        run: |
-          gsutil -m \
-            -h "Cache-Control: no-cache" \
-            rsync -d -r dist \
-            gs://$BUCKET_FINSEMBLE/pull/${{ github.event.number }}
-
       - name: Find comment
         uses: peter-evans/find-comment@v3
         id: comment
@@ -120,7 +105,6 @@ jobs:
             | OpenFin - Credit    | fins://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-credit.json            |
             | OpenFin - Launcher  | fins://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/launcher.json             |
             | OpenFin - Workspace | fins://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/workspace/config/workspace.json  |
-            | Finsemble           | https://finsemble.env.reactivetrader.com/pull/${{ github.event.number }}                               |
 
             ### Performance
 
@@ -156,7 +140,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: playwright-report
+          name: playwright-report-web
           path: packages/client/playwright-report/
           retention-days: 7
 
@@ -191,7 +175,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: playwright-report
+          name: playwright-report-of-fx
           path: packages/client/playwright-report/
           retention-days: 7
 
@@ -226,6 +210,6 @@ jobs:
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: playwright-report
+          name: playwright-report-of-credit
           path: packages/client/playwright-report/
           retention-days: 7
