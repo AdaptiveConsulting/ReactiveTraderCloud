@@ -1,3 +1,4 @@
+import { Button } from "@/client/components/Button"
 import { AppleShareIcon } from "@/client/components/icons"
 import { Modal } from "@/client/components/Modal"
 
@@ -8,7 +9,6 @@ import {
   ModalWrapper,
   Text,
 } from "./PWAInstallModal.styles"
-import { InstallButton } from "./PWAInstallPrompt.styles"
 
 interface InstallModalProps {
   closeModal: () => void
@@ -23,7 +23,9 @@ export const PWAInstallModal = ({ closeModal }: InstallModalProps) => (
         Tap <Icon>{AppleShareIcon}</Icon> from the browsers menu and select
         &quot;Add to Home Screen&quot;
       </DeviceText>
-      <InstallButton onClick={closeModal}>Close</InstallButton>
+      <Button variant="primary" size="sm" onClick={closeModal}>
+        Close
+      </Button>
     </ModalWrapper>
   </Modal>
 )
