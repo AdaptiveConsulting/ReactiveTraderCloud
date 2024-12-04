@@ -1,12 +1,9 @@
 import styled from "styled-components"
 
-import { theme } from "../theme/uiskTheme"
-
-type Variant = keyof typeof theme.textStyles
-export type Color = keyof typeof theme.color
+import { Color, TextStyles } from "../theme/types"
 
 interface TypographyProps {
-  variant?: Variant
+  variant?: TextStyles
   color?: Color
   allowLineHeight?: boolean
 }
