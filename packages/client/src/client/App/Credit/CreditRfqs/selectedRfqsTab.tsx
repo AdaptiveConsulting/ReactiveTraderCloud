@@ -7,7 +7,7 @@ export enum RfqsTab {
   Live = "Live",
   Expired = "Expired",
   Done = "Done",
-  Cancelled = "Canceled",
+  Cancelled = "Cancelled",
 }
 
 export const RFQS_TABS: RfqsTab[] = Object.values(RfqsTab)
