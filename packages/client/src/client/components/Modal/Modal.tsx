@@ -1,5 +1,6 @@
 import { ReactNode } from "react"
 
+import { Typography } from "../Typography"
 import {
   Body,
   Header,
@@ -29,7 +30,11 @@ export const Modal = ({
     <ModalContainer>
       <ModalOverlay onClick={(e) => onOverlayClick && onOverlayClick(e)} />
       <ModalPanel>
-        {title && <Header>{title}</Header>}
+        {title && (
+          <Header>
+            <Typography variant="Display sm/Regular">{title}</Typography>
+          </Header>
+        )}
         <Body>{children}</Body>
       </ModalPanel>
     </ModalContainer>
