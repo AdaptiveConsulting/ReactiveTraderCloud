@@ -20,10 +20,6 @@ export const chevronIcon = {
   render: () => icons.ChevronIcon,
   name: "ChevronIcon",
 }
-export const crossIcon = {
-  render: () => icons.CrossIcon,
-  name: "CrossIcon",
-}
 export const downloadIcon = {
   render: () => icons.DownloadIcon,
   name: "DownloadIcon",
