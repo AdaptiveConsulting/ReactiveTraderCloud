@@ -3,7 +3,6 @@ import styled from "styled-components"
 import {
   ChartIcon,
   ChevronIcon,
-  CrossIcon,
   DownloadIcon,
   FilterIcon,
   MailIcon,
@@ -60,12 +59,6 @@ export const FontFamilies = () => (
         <ActiveIcon>{<PopInIcon />}</ActiveIcon>
         <ActiveIcon>{<PopInIcon />}</ActiveIcon>
         <DisabledIcon>{<PopInIcon />}</DisabledIcon>
-
-        <H5>Cross</H5>
-        <div>{CrossIcon}</div>
-        <ActiveIcon>{CrossIcon}</ActiveIcon>
-        <ActiveIcon>{CrossIcon}</ActiveIcon>
-        <DisabledIcon>{CrossIcon}</DisabledIcon>
 
         <H5>Minimize-Screen</H5>
         <div>{MinimizeIcon}</div>
