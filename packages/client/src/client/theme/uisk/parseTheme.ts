@@ -1,10 +1,9 @@
 import { cleanKeys } from "./cleanKeys"
 import { resolveTheme, UISK_ThemeModes } from "./generatedTheme"
-import { GeneratedTheme } from "./types"
 
 type Theme = ReturnType<typeof resolveTheme>
 
-export function parseTheme(theme: GeneratedTheme) {
+export function parseTheme(theme: Theme) {
   return {
     color: theme.variables["1. Color modes"],
     radius: setToUnit(cleanKeys(theme.variables["2. Radius"], "radius")),
