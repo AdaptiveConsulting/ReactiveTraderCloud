@@ -1,8 +1,8 @@
 import styled from "styled-components"
 
-import { theme } from "../theme/uiskTheme"
+import { Spacing } from "../theme/types"
 
-export const Line = styled.div<{ height?: keyof typeof theme.spacing }>`
+export const Line = styled.div<{ height?: Spacing }>`
   height: ${({ theme, height }) =>
     height ? theme.newTheme.spacing[height] : "100%"};
   width: 1px;
