@@ -7,7 +7,7 @@ const Background = styled.div`
   height: 100%;
   user-select: none;
 
-  background: ${({ theme }) =>
+  background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-primary_alt"]};
 `
 

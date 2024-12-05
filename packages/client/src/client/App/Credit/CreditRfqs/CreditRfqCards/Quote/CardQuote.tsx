@@ -2,10 +2,8 @@ import { createSignal } from "@react-rxjs/utils"
 import { exhaustMap } from "rxjs/operators"
 
 import { CheckCircle } from "@/client/components/icons/CheckCircle"
-import {
-  Color as TypographyColor,
-  Typography,
-} from "@/client/components/Typography"
+import { Typography } from "@/client/components/Typography"
+import { Color } from "@/client/theme/types"
 import {
   ACCEPTED_QUOTE_STATE,
   DealerBody,
@@ -61,12 +59,15 @@ export const Quote = ({
     open: boolean,
     accepted: boolean,
     priced: boolean,
-  ): TypographyColor => {
+    highlight: boolean,
+  ): Color => {
     if (accepted) {
       return "Colors/Text/text-success-primary (600)"
     } else if (open) {
       if (priced) {
-        return "Colors/Text/text-primary (900)"
+        return highlight
+          ? "Colors/Text/text-black"
+          : "Colors/Text/text-primary (900)"
       }
       return "Colors/Text/text-quaternary (500)"
     } else {
@@ -80,13 +81,13 @@ export const Quote = ({
     priced: boolean,
     highlight: boolean,
     direction: Direction,
-  ): TypographyColor => {
+  ): Color => {
     if (accepted) {
       return "Colors/Text/text-success-primary (600)"
     } else if (open) {
       if (priced) {
         return highlight
-          ? "Colors/Text/text-brand-primary (900)"
+          ? "Colors/Text/text-primary_alt"
           : isBuy(direction)
             ? "Colors/Text/text-buy-primary"
             : "Colors/Text/text-sell-primary"
@@ -114,7 +115,7 @@ export const Quote = ({
       )}
       <Typography
         variant="Text xs/Regular"
-        color={getDealerColor(rfqOpen, accepted, priced)}
+        color={getDealerColor(rfqOpen, accepted, priced, highlight)}
       >
         {dealer?.name ?? "Dealer name not found"}
       </Typography>
