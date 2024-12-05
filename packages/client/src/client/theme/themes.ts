@@ -211,13 +211,13 @@ const lightTheme: Theme = createTheme(
   ThemeName.Light,
   colors.light,
   colors.accents,
-  generateUISKTheme("Light mode"),
+  generateUISKTheme("Light mode") as unknown as UISKTheme,
 )
 const darkTheme: Theme = createTheme(
   ThemeName.Dark,
   colors.dark,
   colors.accents,
-  generateUISKTheme("Dark mode"),
+  generateUISKTheme("Dark mode") as unknown as UISKTheme,
 )
 
 export const themes: Record<ThemeName, Theme> = {

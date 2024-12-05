@@ -29,7 +29,7 @@ const Pending = () => {
             size={14}
             speed={0.8}
             separation={1.5}
-            color="white"
+            color="Colors/Foreground/fg-white"
             type="secondary"
           />
           {"  Executing"}

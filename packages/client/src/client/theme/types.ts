@@ -1,6 +1,6 @@
-import { generateUISKTheme } from "./uisk/parseTheme"
+import { theme } from "./uisk/uiskTheme"
 
-export type Theme = ReturnType<typeof generateUISKTheme>
+export type Theme = typeof theme
 export type Density = keyof Theme["density"]
 export type Spacing = keyof Theme["spacing"]
 export type Width = keyof Theme["width"]
