@@ -5,7 +5,7 @@ import { FaSearch } from "react-icons/fa"
 import { map, withLatestFrom } from "rxjs/operators"
 
 import { TextInput } from "@/client/components/Form/TextInput"
-import { Typography } from "@/client/components/Typography"
+import { Typography } from "@/client/components/library/Typography"
 import {
   creditInstrumentsByCusip$,
   useCreditInstrumentsByCusip,

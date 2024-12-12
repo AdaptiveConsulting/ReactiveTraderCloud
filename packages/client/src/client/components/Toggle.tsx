@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 import { FlexBox } from "@/client/components/FlexBox"
-import { Typography } from "@/client/components/Typography"
+import { Typography } from "@/client/components/library/Typography"
 
 interface Props {
   left: string

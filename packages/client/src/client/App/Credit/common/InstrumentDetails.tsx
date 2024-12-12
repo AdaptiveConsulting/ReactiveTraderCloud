@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-import { Typography } from "@/client/components/Typography"
+import { Typography } from "@/client/components/library/Typography"
 
 import { CusipWithBenchmark } from "./CusipWithBenchmark"
 

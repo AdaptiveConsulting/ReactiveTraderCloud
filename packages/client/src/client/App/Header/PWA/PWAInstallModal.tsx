@@ -1,8 +1,8 @@
 import { Button } from "@/client/components/Button"
 import { Gap } from "@/client/components/Gap"
 import { AppleShareIcon } from "@/client/components/icons"
+import { Typography } from "@/client/components/library/Typography"
 import { Modal } from "@/client/components/Modal"
-import { Typography } from "@/client/components/Typography"
 
 import { Icon, ModalWrapper } from "./PWAInstallModal.styles"
 

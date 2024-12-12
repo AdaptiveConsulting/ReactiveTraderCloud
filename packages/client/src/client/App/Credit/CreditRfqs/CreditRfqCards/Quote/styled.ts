@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 import { Button } from "@/client/components/Button"
-import { Typography } from "@/client/components/Typography"
+import { Typography } from "@/client/components/library/Typography"
 import { Theme } from "@/client/theme"
 import { breathing } from "@/client/utils/styling"
 import { Direction } from "@/generated/TradingGateway"

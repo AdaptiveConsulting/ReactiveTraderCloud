@@ -11,6 +11,7 @@ import { BehaviorSubject, map } from "rxjs"
 import { ThemeProvider as StyledThemeProvider } from "styled-components"
 
 import { ThemeName, themes } from "./themes"
+import { generateUISKCSS } from "./uisk/generateUISKCss"
 
 interface Props {
   storage?: typeof localStorage | typeof sessionStorage
@@ -61,6 +62,7 @@ export const ThemeProvider = ({ storage = localStorage, children }: Props) => {
   // set themeColor in index.html (used for PWA title bar)
   useEffect(() => {
     const head = document.getElementById("themeColor")
+    generateUISKCSS(themeName === ThemeName.Dark ? "Dark mode" : "Light mode")
     head && head.setAttribute("content", themes[themeName].backgroundColor)
   }, [themeName])
 

@@ -1,7 +1,7 @@
 import { memo, useEffect, useLayoutEffect, useRef, useState } from "react"
 import styled, { css, keyframes } from "styled-components"
 
-import { Typography } from "@/client/components/Typography"
+import { Typography } from "@/client/components/library/Typography"
 
 export const TimerWrapper = styled.div`
   display: flex;

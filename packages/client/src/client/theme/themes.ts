@@ -10,7 +10,7 @@ import {
   CorePaletteMap,
 } from "./colors"
 import { Theme as UISKTheme } from "./types"
-import { generateUISKTheme } from "./uisk/parseTheme"
+import { generateUISKTheme } from "./uisk/generateUISKTheme"
 
 export enum ThemeName {
   Light = "light",

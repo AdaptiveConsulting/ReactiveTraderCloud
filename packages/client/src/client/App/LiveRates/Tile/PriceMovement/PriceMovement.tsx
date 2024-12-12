@@ -1,8 +1,8 @@
 import { PropsWithChildren } from "react"
 import { distinctUntilChanged, map } from "rxjs/operators"
 
+import { Typography } from "@/client/components/library/Typography"
 import { Line } from "@/client/components/Line"
-import { Typography } from "@/client/components/Typography"
 import { equals } from "@/client/utils/equals"
 import { getPrice$, PriceMovementType } from "@/services/prices"
 

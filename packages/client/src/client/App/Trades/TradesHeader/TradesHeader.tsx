@@ -1,7 +1,7 @@
 import { Section } from "@/client/App/TearOutSection/state"
 import { supportsTearOut } from "@/client/App/TearOutSection/supportsTearOut"
 import { TearOutComponent } from "@/client/App/TearOutSection/TearOutComponent"
-import { TabBar, TabBarActionConfig } from "@/client/components/TabBar"
+import { TabBar, TabBarActionConfig } from "@/client/components/library/TabBar"
 
 import { AppliedFilters } from "./AppliedFilters"
 import { ExcelButton } from "./ExcelButton"

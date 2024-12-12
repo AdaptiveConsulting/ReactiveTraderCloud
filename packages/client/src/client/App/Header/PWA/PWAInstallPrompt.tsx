@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect } from "react"
 
 import { Button } from "@/client/components/Button"
 import { CrossIcon } from "@/client/components/icons/CrossIcon"
-import { Typography } from "@/client/components/Typography"
+import { Typography } from "@/client/components/library/Typography"
 import { isiOS, isMobileDevice, isPWA } from "@/client/utils"
 
 import { PWAInstallModal } from "./PWAInstallModal"

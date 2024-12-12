@@ -1,5 +1,5 @@
+import { Typography } from "@/client/components/library/Typography"
 import { Loader } from "@/client/components/Loader"
-import { Typography } from "@/client/components/Typography"
 import { customNumberFormatter } from "@/client/utils"
 import {
   ACCEPTED_QUOTE_STATE,

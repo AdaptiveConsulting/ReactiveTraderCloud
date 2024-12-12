@@ -4,7 +4,7 @@ import { exhaustMap } from "rxjs/operators"
 import { Button } from "@/client/components/Button"
 import { BinIcon } from "@/client/components/icons/BinIcon"
 import { CheckCircle } from "@/client/components/icons/CheckCircle"
-import { Typography } from "@/client/components/Typography"
+import { Typography } from "@/client/components/library/Typography"
 import { ACCEPTED_QUOTE_STATE, RfqState } from "@/generated/TradingGateway"
 import {
   cancelCreditRfq$,

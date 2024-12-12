@@ -1,14 +1,17 @@
 import styled from "styled-components"
 
-import { Color, TextStyles } from "../theme/types"
+import { Color } from "../theme/types"
+import { UISK_TextStyleName } from "../theme/uisk/generatedTheme"
 
 interface TypographyProps {
-  variant?: TextStyles
+  variant?: UISK_TextStyleName
   color?: Color
   allowLineHeight?: boolean
 }
 
-export const Typography = styled.div<TypographyProps>`
+export const Typography = styled.div.attrs({
+  className: "typography ",
+})<TypographyProps>`
   ${({ variant, theme }) =>
     variant ? theme.newTheme.textStyles[variant] : null}
   color: ${({ color, theme }) =>

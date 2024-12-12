@@ -7,7 +7,7 @@ import styled from "styled-components"
 import { FlexBox } from "@/client/components/FlexBox"
 import { PopInIcon } from "@/client/components/icons/PopInIcon"
 import { PopOutIcon } from "@/client/components/icons/PopOutIcon"
-import { Typography } from "@/client/components/Typography"
+import { Typography } from "@/client/components/library/Typography"
 import { CurrencyPair } from "@/services/currencyPairs"
 import { getPrice$ } from "@/services/prices"
 

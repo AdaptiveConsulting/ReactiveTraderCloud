@@ -1,5 +1,5 @@
 import { SectionLayout } from "@/client/components/layout/SectionLayout"
-import { Typography } from "@/client/components/Typography"
+import { Typography } from "@/client/components/library/Typography"
 
 import { BubbleChart } from "./BubbleChart"
 import { data$ } from "./data"

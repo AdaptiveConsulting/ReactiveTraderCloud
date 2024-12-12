@@ -1,6 +1,6 @@
 import { memo } from "react"
 
-import { Typography } from "@/client/components/Typography"
+import { Typography } from "@/client/components/library/Typography"
 
 interface CusipWithBenchmarkProps {
   cusip?: string

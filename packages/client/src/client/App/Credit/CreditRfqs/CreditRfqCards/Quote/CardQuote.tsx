@@ -2,7 +2,7 @@ import { createSignal } from "@react-rxjs/utils"
 import { exhaustMap } from "rxjs/operators"
 
 import { CheckCircle } from "@/client/components/icons/CheckCircle"
-import { Typography } from "@/client/components/Typography"
+import { Typography } from "@/client/components/library/Typography"
 import { Color } from "@/client/theme/types"
 import {
   ACCEPTED_QUOTE_STATE,

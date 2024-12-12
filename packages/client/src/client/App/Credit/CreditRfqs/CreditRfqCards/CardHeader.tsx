@@ -1,7 +1,7 @@
 import { memo, PropsWithChildren } from "react"
 
 import { FlexBox } from "@/client/components/FlexBox"
-import { Typography } from "@/client/components/Typography"
+import { Typography } from "@/client/components/library/Typography"
 import { Direction, RfqState } from "@/generated/TradingGateway"
 import { useCreditInstrumentById } from "@/services/credit"
 
