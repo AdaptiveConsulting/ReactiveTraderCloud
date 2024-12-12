@@ -1,9 +1,9 @@
-import { Button } from "@/client/components/Button"
 import { CheckBoxInput } from "@/client/components/Form/CheckBoxInput.tsx/CheckBoxInput"
 import { FormControl } from "@/client/components/Form/FormControl/FormControl"
 import { Label } from "@/client/components/Form/FormControl/Label"
 import { TextInput } from "@/client/components/Form/TextInput"
-import { Toggle } from "@/client/components/Toggle"
+import { Button } from "@/client/components/library/Button"
+import { Toggle } from "@/client/components/library/Toggle/Toggle"
 import { customNumberFormatter } from "@/client/utils"
 import { Direction } from "@/generated/TradingGateway"
 
