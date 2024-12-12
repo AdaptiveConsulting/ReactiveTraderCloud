@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 
 import { Region } from "@/client/components/layout/Region"
-import { TabBar, TabBarActionConfig } from "@/client/components/TabBar"
+import { TabBar, TabBarActionConfig } from "@/client/components/library/TabBar"
 import {
   registerCreditRfqCreatedNotifications,
   unregisterCreditRfqCreatedNotifications,

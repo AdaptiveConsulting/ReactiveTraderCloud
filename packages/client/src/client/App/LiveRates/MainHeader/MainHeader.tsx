@@ -3,7 +3,7 @@ import { map } from "rxjs/operators"
 
 import { supportsTearOut } from "@/client/App/TearOutSection/supportsTearOut"
 import { TearOutComponent } from "@/client/App/TearOutSection/TearOutComponent"
-import { TabBar, TabBarActionConfig } from "@/client/components/TabBar/TabBar"
+import { TabBar, TabBarActionConfig } from "@/client/components/library/TabBar"
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { useIsLimitCheckerRunning } from "@/services/limitChecker/limitChecker"
 

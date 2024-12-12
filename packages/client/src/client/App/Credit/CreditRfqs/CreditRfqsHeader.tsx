@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 import { BinIcon } from "@/client/components/icons/BinIcon"
-import { TabBar, TabBarActionConfig } from "@/client/components/TabBar"
+import { TabBar, TabBarActionConfig } from "@/client/components/library/TabBar"
 import { removeRfqs, useExecutedRfqIds } from "@/services/credit"
 
 import {

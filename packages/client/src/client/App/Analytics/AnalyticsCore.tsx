@@ -2,7 +2,7 @@ import { merge } from "rxjs"
 import styled from "styled-components"
 
 import { Region } from "@/client/components/layout/Region"
-import { TabBar, TabBarActionConfig } from "@/client/components/TabBar"
+import { TabBar, TabBarActionConfig } from "@/client/components/library/TabBar"
 import { createSuspenseOnStale } from "@/client/utils/createSuspenseOnStale"
 import { WithChildren } from "@/client/utils/utilityTypes"
 import { isAnalyticsDataStale$ } from "@/services/analytics"
