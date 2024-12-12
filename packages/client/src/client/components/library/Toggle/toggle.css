@@ -1,0 +1,39 @@
+.toggle-container {
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-full);
+  height: 28px;
+  justify-content: space-between;
+  border: var(--spacing-xxs) solid var(--bg-secondary);
+}
+
+.toggle-container button {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.typography {
+  transition: color 0.5s ease;
+}
+
+.indicator {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  left: 0;
+  background-color: var(--bg-buy-primary);
+  border-radius: var(--radius-full);
+  transition:
+    left 0.5s ease,
+    background-color 0.5s ease;
+}
+
+.toggled {
+  background-color: var(--bg-sell-primary);
+  left: 50%;
+}
