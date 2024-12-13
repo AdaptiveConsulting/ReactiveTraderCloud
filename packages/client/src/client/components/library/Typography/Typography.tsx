@@ -8,7 +8,7 @@ import {
 } from "@/client/theme/uisk/generateUISKCss"
 
 interface TypographyProps {
-  variant?: UISK_TextStyleName
+  variant: UISK_TextStyleName
   color?: Color
   allowLineHeight?: boolean
 }
@@ -25,7 +25,7 @@ export const Typography = ({
     <div
       className={`typography ${className}`}
       style={{
-        color: `var(${colorVar})`,
+        color: colorVar ? `var(${colorVar})` : "inherit",
         lineHeight: allowLineHeight ? undefined : 1,
       }}
     >

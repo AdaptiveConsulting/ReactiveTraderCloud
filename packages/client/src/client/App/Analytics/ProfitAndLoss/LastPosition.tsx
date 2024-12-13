@@ -20,21 +20,20 @@ export const LastPosition = () => {
   const lastPosStr = `${lastPos >= 0 ? "+" : ""}${formatAsWholeNumber(lastPos)}`
 
   return (
-    <Typography variant="Text md/Regular">
-      <FlexBox>
-        USD
-        <StyledTypography
-          color={
-            lastPos >= 0
-              ? "Colors/Border/border-buy"
-              : "Colors/Border/border-sell"
-          }
-          data-testid="lastPosition"
-        >
-          {lastPosStr}
-        </StyledTypography>
-      </FlexBox>
-    </Typography>
+    <FlexBox>
+      <Typography variant="Text md/Regular">USD</Typography>
+      <StyledTypography
+        variant="Text md/Regular"
+        color={
+          lastPos >= 0
+            ? "Colors/Border/border-buy"
+            : "Colors/Border/border-sell"
+        }
+        data-testid="lastPosition"
+      >
+        {lastPosStr}
+      </StyledTypography>
+    </FlexBox>
   )
 }
 

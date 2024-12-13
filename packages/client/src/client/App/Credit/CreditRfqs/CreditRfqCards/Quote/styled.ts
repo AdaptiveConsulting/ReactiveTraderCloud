@@ -1,7 +1,6 @@
 import styled from "styled-components"
 
 import { Button } from "@/client/components/Button"
-import { Typography } from "@/client/components/library/Typography"
 import { Theme } from "@/client/theme"
 import { breathing } from "@/client/utils/styling"
 import { Direction } from "@/generated/TradingGateway"
@@ -75,16 +74,16 @@ interface RowFieldProps {
   priced: boolean
 }
 
-export const Price = styled(Typography)<RowFieldProps>`
+export const Price = styled.div<RowFieldProps>`
   display: flex;
   align-items: center;
   margin-left: auto;
   ${({ open, accepted, passed, priced, theme }) =>
     (passed || (!open && !accepted)) &&
     `
-  text-decoration: line-through;
-  color: ${theme.newTheme.color["Colors/Text/text-disabled"]};
-  ${priced && `margin-right: ${theme.newTheme.spacing.sm}`}
+      text-decoration: line-through;
+      color: ${theme.newTheme.color["Colors/Text/text-disabled"]};
+      ${priced && `margin-right: ${theme.newTheme.spacing.sm}`}
   `}
 
   svg {
