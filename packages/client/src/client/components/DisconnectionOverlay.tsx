@@ -10,24 +10,19 @@ import {
   useConnectionStatus,
 } from "@/services/connection"
 
-// TODO - Use component from styleguide when available
-const Button = styled.button`
-  background-color: ${({ theme }) => theme.button.primary.backgroundColor};
-  color: #ffffff;
-  padding: 5px 9px;
-  border-radius: 4px;
-  font-size: 0.6875rem;
-  margin-top: 20px;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.accents.primary.darker};
-  }
-`
+import { Button } from "./Button"
+import { FlexBox } from "./FlexBox"
+import { Typography } from "./Typography"
 
 type DisconnectedStatus =
   | ConnectionStatus.DISCONNECTED
   | ConnectionStatus.IDLE_DISCONNECTED
   | ConnectionStatus.OFFLINE_DISCONNECTED
+
+const Wrapper = styled(FlexBox)`
+  flex-direction: column;
+  gap: ${({ theme }) => theme.newTheme.spacing.xl};
+`
 
 export const DisconnectionOverlayInner = ({
   connectionStatus,
@@ -38,10 +33,14 @@ export const DisconnectionOverlayInner = ({
 }) => (
   <Modal shouldShow>
     {connectionStatus === ConnectionStatus.IDLE_DISCONNECTED ? (
-      <>
-        <p>You have been disconnected due to inactivity.</p>
-        <Button onClick={onReconnect}>Reconnect</Button>
-      </>
+      <Wrapper>
+        <Typography variant={"Text sm/Regular"}>
+          You have been disconnected due to inactivity.
+        </Typography>
+        <Button variant="outline" size="lg" onClick={onReconnect}>
+          Reconnect
+        </Button>
+      </Wrapper>
     ) : connectionStatus === ConnectionStatus.OFFLINE_DISCONNECTED ? (
       "This device has been detected to be offline.  Connection to the server will resume when a stable internet connection is established."
     ) : (
