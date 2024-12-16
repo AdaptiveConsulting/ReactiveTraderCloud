@@ -3,7 +3,7 @@ import { resolveTheme, UISK_ThemeModes } from "./generatedTheme"
 
 type Theme = ReturnType<typeof resolveTheme>
 
-export function parseTheme(theme: Theme) {
+function parseTheme(theme: Theme) {
   return {
     color: theme.variables["1. Color modes"],
     radius: setToUnit(cleanKeys(theme.variables["2. Radius"], "radius")),
