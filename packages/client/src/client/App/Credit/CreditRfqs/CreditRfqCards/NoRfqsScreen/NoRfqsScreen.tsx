@@ -1,6 +1,10 @@
 import { FC } from "react"
 import styled from "styled-components"
 
+import { FlexBox } from "@/client/components/FlexBox"
+import { Gap } from "@/client/components/Gap"
+import { Typography } from "@/client/components/Typography"
+
 import { RfqsTab, useSelectedRfqsTab } from "../../selectedRfqsTab"
 import { NoCancelledRfqsIcon } from "./svgs/NoCancelledRfqsIcon"
 import { NoDoneRfqsIcon } from "./svgs/NoDoneRfqsIcon"
@@ -9,31 +13,11 @@ import { NoLiveRfqsIcon } from "./svgs/NoLiveRfqsIcon"
 import { NoRfqsIcon } from "./svgs/NoRfqsIcon"
 import { IconProps } from "./svgs/types"
 
-const Wrapper = styled.div`
+const Wrapper = styled(FlexBox)`
   width: 100%;
   height: 100%;
-  display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  color: ${({ theme }) => theme.textColor};
-`
-
-const IconWrapper = styled.div`
-  color: ${({ theme }) => theme.textColor};
-`
-
-const Title = styled.div`
-  font-size: 15px;
-  line-height: 16px;
-  font-weight: 400;
-  margin-bottom: 3px;
-`
-
-const Description = styled.div`
-  font-size: 13px;
-  line-height: 13px;
-  font-weight: 300;
 `
 
 function getTitleForTab(tab: RfqsTab) {
@@ -92,11 +76,17 @@ export const NoRfqsScreen = () => {
 
   return (
     <Wrapper>
-      <IconWrapper>
-        <IconComponent />
-      </IconWrapper>
-      <Title>{getTitleForTab(selectedRfqsTab)}</Title>
-      <Description>{getDescriptionForTab(selectedRfqsTab)}</Description>
+      <IconComponent />
+      <Typography variant="Text lg/Semibold">
+        {getTitleForTab(selectedRfqsTab)}
+      </Typography>
+      <Gap height="xs" />
+      <Typography
+        variant="Text md/Regular"
+        color="Colors/Text/text-tertiary (600)"
+      >
+        {getDescriptionForTab(selectedRfqsTab)}
+      </Typography>
     </Wrapper>
   )
 }
