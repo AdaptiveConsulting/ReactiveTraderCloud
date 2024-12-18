@@ -51,7 +51,6 @@ const InnerElementType = forwardRef<
         ref={ref}
         style={{
           ...style,
-
           minWidth: `${fields.length * 6}rem`,
         }}
       >
