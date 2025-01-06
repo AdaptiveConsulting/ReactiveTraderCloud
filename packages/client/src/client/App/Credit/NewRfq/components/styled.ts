@@ -35,7 +35,7 @@ export const SearchWrapper = styled.div`
 `
 export const SearchResultsWrapper = styled.div`
   position: absolute;
-  top: 30px;
+  top: 35px;
   z-index: 1000;
   width: 100%;
   border-radius: ${({ theme }) => theme.newTheme.radius.sm};
