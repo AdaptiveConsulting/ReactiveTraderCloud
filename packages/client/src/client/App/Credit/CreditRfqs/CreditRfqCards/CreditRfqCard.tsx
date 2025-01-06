@@ -14,6 +14,7 @@ import {
 } from "@/generated/TradingGateway"
 import { useCreditRfqDetails } from "@/services/credit"
 
+import { isRfqTerminated } from "../../common"
 import { CardFooter } from "./CardFooter"
 import { CardHeader } from "./CardHeader"
 import { Quote } from "./Quote/CardQuote"
@@ -83,46 +84,51 @@ export const Card = ({ id, highlight }: { id: number; highlight: boolean }) => {
   if (!rfqDetails) {
     return <Loader ariaLabel="Loading RFQ" />
   }
+  const {
+    state,
+    instrumentId,
+    direction,
+    quantity,
+    quotes,
+    id: rfqId,
+    dealers,
+  } = rfqDetails
+  const terminated = isRfqTerminated(state)
+  const accepted = state === RfqState.Closed
 
   return (
-    <CardContainer
-      live={rfqDetails.state === RfqState.Open}
-      highlight={highlight}
-    >
+    <CardContainer live={state === RfqState.Open} highlight={highlight}>
       <CardHeader
-        direction={rfqDetails.direction}
-        instrumentId={rfqDetails.instrumentId}
-        rfqState={rfqDetails.state}
+        direction={direction}
+        instrumentId={instrumentId}
+        terminated={terminated}
+        accepted={accepted}
       />
-      <Details quantity={rfqDetails.quantity} />
+      <Details quantity={quantity} />
       <QuotesContainer data-testid="quotes">
-        {rfqDetails.dealers
-          .sort(sortByPriceFunc(rfqDetails.quotes, rfqDetails.direction))
-          .map((dealer) => {
-            const quote = rfqDetails.quotes.find(
-              (quote) => quote.dealerId === dealer.id,
-            )
-            if (!quote) {
-              return null
-            }
+        {dealers.sort(sortByPriceFunc(quotes, direction)).map((dealer) => {
+          const quote = quotes.find((quote) => quote.dealerId === dealer.id)
+          if (!quote) {
+            return null
+          }
 
-            // The highest price is the best quote since we do not have partial fills
-            const bestQuote =
-              rfqDetails.state === RfqState.Open &&
-              quote.state.type === PENDING_WITH_PRICE_QUOTE_STATE &&
-              dealer.name == "Adaptive Bank"
-            return (
-              <Quote
-                key={dealer.id}
-                dealer={dealer}
-                quote={quote}
-                rfqId={rfqDetails.id}
-                rfqState={rfqDetails.state}
-                direction={rfqDetails.direction}
-                highlight={bestQuote}
-              />
-            )
-          })}
+          // The highest price is the best quote since we do not have partial fills
+          const bestQuote =
+            state === RfqState.Open &&
+            quote.state.type === PENDING_WITH_PRICE_QUOTE_STATE &&
+            dealer.name == "Adaptive Bank"
+          return (
+            <Quote
+              key={dealer.id}
+              dealer={dealer}
+              quote={quote}
+              rfqId={rfqId}
+              rfqState={state}
+              direction={direction}
+              highlight={bestQuote}
+            />
+          )
+        })}
       </QuotesContainer>
       <CardFooter rfqDetails={rfqDetails} />
     </CardContainer>

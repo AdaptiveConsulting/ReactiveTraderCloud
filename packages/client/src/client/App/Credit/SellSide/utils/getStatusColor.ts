@@ -8,18 +8,22 @@ export const getSellSideStatusColor = (
 ) => {
   switch (status) {
     case SellSideQuoteState.Accepted:
-      return theme.accents.positive.base
+      return theme.newTheme.color[
+        "Component colors/Utility/Success/utility-success-400"
+      ]
     case SellSideQuoteState.Lost:
     case SellSideQuoteState.Rejected:
     case SellSideQuoteState.Passed:
-      return theme.accents.negative.base
+      return theme.newTheme.color[
+        "Component colors/Utility/Error/utility-error-400"
+      ]
     case SellSideQuoteState.Pending:
-      return theme.accents.aware.medium as string
+      return theme.newTheme.color["Colors/Background/bg-warning-secondary"]
     case SellSideQuoteState.New:
-      return theme.accents.aware.darker
+      return theme.newTheme.color["Colors/Background/bg-warning-primary"]
     case SellSideQuoteState.Cancelled:
     case SellSideQuoteState.Expired:
     default:
-      return theme.colors.dark.primary[4]
+      return theme.newTheme.color["Colors/Background/bg-disabled"]
   }
 }

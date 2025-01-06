@@ -15,7 +15,7 @@ const Logo = ({
   ...props
 }: LogoProps) => {
   const widthMultiplier = withText ? 4.375 : 1
-  const viewBox = withText ? "0 0 122 22" : "0 0 28 32"
+  const viewBox = withText ? "0 0 122 22" : "0 0 24 25"
 
   style = {
     width: size * widthMultiplier + "rem",

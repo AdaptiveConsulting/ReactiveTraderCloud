@@ -6,19 +6,20 @@ import { getSellSideStatusColor } from "../utils"
 export const SellSideTradeTicketWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 8px;
-  gap: 8px;
+  padding: ${({ theme }) => theme.newTheme.spacing.md};
+  gap: ${({ theme }) => theme.newTheme.spacing.md};
   height: 100%;
-  background-color: ${({ theme }) => theme.core.lightBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
 `
 
 export const SellSideTradeTicketInnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid ${({ theme }) => theme.primary[4]};
   border-radius: 2px;
   height: 100%;
-  background-color: ${({ theme }) => theme.core.lightBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
 `
 export const Banner = styled.div`
   display: flex;

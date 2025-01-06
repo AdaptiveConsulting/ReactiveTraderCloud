@@ -25,6 +25,7 @@ interface TabBarProps<T> {
   activeItem: T
   handleItemOnClick?: (item: T) => void
   actions?: TabBarActionConfig
+  doNotShowDropdown?: boolean
 }
 
 export const TabBar = <T extends string>({
@@ -32,9 +33,10 @@ export const TabBar = <T extends string>({
   activeItem,
   handleItemOnClick,
   actions,
+  doNotShowDropdown,
 }: TabBarProps<T>) => (
   <Background>
-    <LeftSection isStatic={items.length < 2}>
+    <LeftSection doNotShowDropdown={items.length < 2 || !!doNotShowDropdown}>
       {items.map((item) => (
         <Tab
           active={item === activeItem}
@@ -77,7 +79,7 @@ export const TabBar = <T extends string>({
               </Typography>
             </Action>
           ))}
-      {handleItemOnClick && (
+      {handleItemOnClick && !doNotShowDropdown && (
         <DropdownWrapper>
           <DropdownMenu
             selectedOption={activeItem}

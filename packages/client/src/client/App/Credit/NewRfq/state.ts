@@ -113,9 +113,6 @@ const request$ = rfqRequest$.pipe(
   switchMap(() =>
     state$.pipe(
       take(1),
-      tap(([direction, instrumentId, quantity, dealerIds]) => {
-        console.log(direction, instrumentId, quantity, dealerIds)
-      }),
       switchMap(([direction, instrumentId, quantity, dealerIds]) =>
         createCreditRfq$({
           direction,
