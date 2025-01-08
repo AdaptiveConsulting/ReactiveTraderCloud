@@ -99,7 +99,7 @@
     "next": "14.2.13"
   },
   "optionalDependencies": {
-    "@adaptive-uikit/figma-to-theme": "0.0.1"
+    "@adaptive-uikit/figma-to-theme": "0.0.2"
   },
   "devDependencies": {
     "@adaptive/hydra-web-codegen": "4.70.0",

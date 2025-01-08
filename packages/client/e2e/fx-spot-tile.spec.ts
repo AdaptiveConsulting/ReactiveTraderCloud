@@ -44,7 +44,7 @@ test.describe("Spot Tile", () => {
         .nth(1)
       await expect(blotterTradeID).toHaveText(tradeId)
 
-      await tilePage.locator("[data-testid='tabItem-ALL']").click()
+      await tilePage.locator("[data-testid='tabItem-All']").click()
     })
 
     test("When I buy USD/JPY then a tile displays in green with confirmation message", async () => {
@@ -133,7 +133,7 @@ test.describe("Spot Tile", () => {
 
   test.describe("Toggle between prices and graph views", () => {
     test("When I click the graph icon on the Live Rates bar then I should toggle from graph to price views", async () => {
-      const toggle = tilePage.locator("[data-testid='toggleButton']")
+      const toggle = tilePage.locator("[data-testid='action-toggleTileView']")
 
       // first click, goes into normal mode, should be no graphs
       await toggle.click()
@@ -199,7 +199,7 @@ test.describe("Spot Tile", () => {
         .locator('div[aria-label="Lives Rates Tiles"] > div')
         .count()
       expect(totalNZDTiles).toBe(1)
-      await tilePage.locator("[data-testid='tabItem-ALL']").click()
+      await tilePage.locator("[data-testid='tabItem-All']").click()
     })
   })
 })

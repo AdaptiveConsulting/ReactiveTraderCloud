@@ -8,7 +8,7 @@ export const MovementIconUP = styled(FaSortUp)<{ $show: boolean }>`
     theme.newTheme.color["Colors/Text/text-success-primary (600)"]};
   top: 50%;
   margin-top: -16px;
-`
+` // TODO Dave to confirm new negative and positive colours
 export const MovementIconDown = styled(FaSortDown)<{ $show: boolean }>`
   position: absolute;
   visibility: ${({ $show: show }) => (show ? "visible" : "hidden")};
@@ -16,7 +16,7 @@ export const MovementIconDown = styled(FaSortDown)<{ $show: boolean }>`
     theme.newTheme.color["Colors/Text/text-error-primary (600)"]};
   bottom: 50%;
   margin-bottom: -16px;
-`
+` // TODO Dave to confirm new negative and positive colours
 
 export const MovementValue = styled.div`
   padding: ${({ theme }) => theme.newTheme.spacing.lg} 0;

@@ -52,7 +52,7 @@ const PNLBar = ({
   const base = symbol.slice(0, 3)
   const terms = symbol.slice(3)
   return (
-    <BarContainer>
+    <BarContainer data-testid={`pnlbar-${base + "/" + terms}`}>
       <Typography
         variant="Text xs/Regular"
         color="Colors/Text/text-quaternary (500)"
