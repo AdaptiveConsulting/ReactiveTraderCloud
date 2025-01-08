@@ -52,8 +52,10 @@ export const NewRfqForm = () => {
 
       <Row>
         <FormControl>
-          <Label>Quantity (000)</Label>
+          <Label htmlFor="quantity">Quantity (000)</Label>
           <TextInput
+            name="quantity"
+            id="quantity"
             placeholder="1000"
             onChange={setQuantity}
             value={quantity ? formatter(quantity) : ""}
@@ -61,14 +63,19 @@ export const NewRfqForm = () => {
         </FormControl>
 
         <FormControl>
-          <Label>RFQ Duration</Label>
-          <TextInput placeholder="2 Minutes" disabled />
+          <Label htmlFor="duration">RFQ Duration</Label>
+          <TextInput
+            name="duration"
+            id="duration"
+            placeholder="2 Minutes"
+            disabled
+          />
         </FormControl>
       </Row>
 
       <FormControl>
-        <Label>Fill Type</Label>
-        <TextInput placeholder="All or None" disabled />
+        <Label htmlFor="type">Fill Type</Label>
+        <TextInput name="type" id="type" placeholder="All or None" disabled />
       </FormControl>
 
       <FormControl>

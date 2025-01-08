@@ -37,6 +37,8 @@ ${
 `
 
 interface Props {
+  name?: string
+  id?: string
   disabled?: boolean
   placeholder?: string
   value?: string

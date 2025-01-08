@@ -40,15 +40,18 @@ export const CheckBoxInput = ({ name, checked, onChange }: Props) => {
   return (
     <CheckBoxInputWrapper key={name}>
       <CheckBox
+        id={name}
         checked={checked}
         onChange={({ target }) => onChange(target.checked)}
       />
-      <Typography
-        variant="Text xs/Regular"
-        color="Colors/Text/text-secondary (700)"
-      >
-        {name}
-      </Typography>
+      <label htmlFor={name}>
+        <Typography
+          variant="Text xs/Regular"
+          color="Colors/Text/text-secondary (700)"
+        >
+          {name}
+        </Typography>
+      </label>
     </CheckBoxInputWrapper>
   )
 }

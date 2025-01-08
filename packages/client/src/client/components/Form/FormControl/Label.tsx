@@ -1,15 +1,11 @@
 import styled from "styled-components"
 
-import { Typography } from "../../Typography"
+const LabelText = styled.label(
+  ({ theme }) => theme.newTheme.textStyles["Text xs/Regular"],
+)
 
-const _Label = styled(Typography)`
+export const Label = styled(LabelText)`
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-tertiary (600)"]};
   margin-bottom: ${({ theme }) => theme.newTheme.spacing.xs};
 `
-
-export const Label = (props: React.ComponentProps<typeof Typography>) => (
-  <_Label
-    variant="Text xs/Regular"
-    color="Colors/Text/text-tertiary (600)"
-    {...props}
-  />
-)
