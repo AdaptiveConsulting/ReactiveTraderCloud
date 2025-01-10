@@ -54,7 +54,7 @@ const PNLBar = ({
   return (
     <BarContainer data-testid={`pnlbar-${base + "/" + terms}`}>
       <Typography
-        variant="Text xs/Regular"
+        variant="Text sm/Regular"
         color="Colors/Text/text-quaternary (500)"
         data-testid="symbolLabel"
       >

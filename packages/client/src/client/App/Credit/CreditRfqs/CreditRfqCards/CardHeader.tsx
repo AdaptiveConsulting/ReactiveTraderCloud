@@ -20,7 +20,7 @@ interface CardHeaderProps {
 }
 
 const DirectionTypography = ({ children }: PropsWithChildren) => (
-  <Typography variant="Text xs/Medium" allowLineHeight>
+  <Typography variant="Text sm/Medium" allowLineHeight>
     {children}
   </Typography>
 )
@@ -43,7 +43,7 @@ export const CardHeader = memo(function CardHeader({
         </DirectionLabel>
       )}
       <InstrumentLabelContainer terminated={terminated}>
-        <Typography variant="Text xs/Medium" allowLineHeight>
+        <Typography variant="Text sm/Medium" allowLineHeight>
           {instrument?.name ?? "No name found"}
         </Typography>
         <CusipWithBenchmark

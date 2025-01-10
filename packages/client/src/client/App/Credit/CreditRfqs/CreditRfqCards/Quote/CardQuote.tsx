@@ -114,7 +114,7 @@ export const Quote = ({
         </QuoteDotWrapper>
       )}
       <Typography
-        variant="Text xs/Regular"
+        variant="Text sm/Regular"
         color={getDealerColor(rfqOpen, accepted, priced, highlight)}
       >
         {dealer?.name ?? "Dealer name not found"}
@@ -123,7 +123,7 @@ export const Quote = ({
       <Price open={rfqOpen} accepted={accepted} passed={passed} priced={priced}>
         {accepted && <CheckCircle />}
         <Typography
-          variant={accepted ? "Text xs/Medium" : "Text xs/Regular"}
+          variant={accepted ? "Text sm/Medium" : "Text sm/Regular"}
           color={getPriceColor(rfqOpen, accepted, priced, highlight, direction)}
         >
           {state.payload}

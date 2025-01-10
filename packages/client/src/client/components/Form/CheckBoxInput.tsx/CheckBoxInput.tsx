@@ -46,7 +46,7 @@ export const CheckBoxInput = ({ name, checked, onChange }: Props) => {
       />
       <label htmlFor={name}>
         <Typography
-          variant="Text xs/Regular"
+          variant="Text sm/Regular"
           color="Colors/Text/text-secondary (700)"
         >
           {name}

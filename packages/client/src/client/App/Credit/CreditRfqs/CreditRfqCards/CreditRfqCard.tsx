@@ -24,8 +24,8 @@ const formatter = customNumberFormatter()
 const Details = ({ quantity }: { quantity: number }) => {
   return (
     <DetailsWrapper>
-      <Typography variant="Text xs/Regular">RFQ DETAILS</Typography>
-      <Typography variant="Text xs/Regular">
+      <Typography variant="Text sm/Regular">RFQ DETAILS</Typography>
+      <Typography variant="Text sm/Regular">
         QTY: {formatter(quantity)}
       </Typography>
     </DetailsWrapper>

@@ -87,7 +87,7 @@ export const SecsTimer = ({ end }: { end: number }) => {
 
   return (
     <Typography
-      variant="Text xs/Regular"
+      variant="Text sm/Regular"
       color="Colors/Text/text-primary (900)"
     >
       {timeLeftMins}m {timeLeftSecs}s

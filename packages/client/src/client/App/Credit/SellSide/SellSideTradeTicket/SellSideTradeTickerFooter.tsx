@@ -144,7 +144,7 @@ export const SellSideTradeTicketFooter = ({
           <Gap width="sm" />
           <div>
             <Typography variant="Text sm/Medium">Trade Successful</Typography>
-            <Typography variant="Text xs/Regular">
+            <Typography variant="Text sm/Regular">
               You {isBuy(direction) ? "Bought" : "Sold"} {formatter(quantity)}{" "}
               {instrument?.name ?? "Unknown Instrument"} @
               {quote.state?.type === ACCEPTED_QUOTE_STATE
