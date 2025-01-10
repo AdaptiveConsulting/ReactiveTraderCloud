@@ -3,6 +3,7 @@ import { createSignal } from "@react-rxjs/utils"
 import { timer } from "rxjs"
 import { scan } from "rxjs/operators"
 
+import { Typography } from "@/client/components/Typography"
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { getPriceUpdates$ } from "@/services/prices"
 
@@ -43,8 +44,8 @@ export const Updates = () => {
   const count = useUpdatesPerSecond()
 
   return (
-    <div>
+    <Typography variant="Text sm/Regular">
       UI Updates: <span>{count}/sec</span>
-    </div>
+    </Typography>
   )
 }

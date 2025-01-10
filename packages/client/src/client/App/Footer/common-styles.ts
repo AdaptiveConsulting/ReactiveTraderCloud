@@ -7,8 +7,6 @@ export const Root = styled.div`
   float: right;
   backface-visibility: hidden;
   z-index: 20;
-  font-size: 0.75rem;
-  color: ${(props) => props.theme.textColor};
 `
 
 export const Button = styled.button<{ margin?: string; disabled?: boolean }>`

@@ -9,6 +9,7 @@ export const Header = styled.div`
   align-items: center;
   height: 2rem;
   padding: 0 1rem;
+  gap: ${({ theme }) => theme.newTheme.spacing.sm};
 `
 
 export const Root = styled.div`
@@ -16,14 +17,6 @@ export const Root = styled.div`
   min-height: ${headerHeight};
   max-height: ${headerHeight};
   z-index: 20;
-
-  font-size: 0.75rem;
-
-  color: ${(props) => props.theme.textColor};
-
-  ${Icon} {
-    margin-right: 0.5rem;
-  }
 `
 
 export const ChevronIcon = (props: { expand: boolean }) => (
