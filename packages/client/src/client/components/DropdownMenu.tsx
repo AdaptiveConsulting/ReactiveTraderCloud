@@ -26,7 +26,7 @@ const DropdownLayout = styled(DropdownText)`
 
 const DropdownOptions = styled.div`
   position: absolute;
-  top: 24px;
+  top: 30px;
   left: 0px;
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-primary"]};

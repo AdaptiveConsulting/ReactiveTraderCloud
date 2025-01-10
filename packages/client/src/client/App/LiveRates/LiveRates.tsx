@@ -3,7 +3,6 @@ import { combineKeys } from "@react-rxjs/utils"
 import { lazy, useEffect } from "react"
 import { merge } from "rxjs"
 import { map } from "rxjs/operators"
-import styled from "styled-components"
 
 import { RegionWrapper } from "@/client/components/layout/Region"
 import { Loader } from "@/client/components/Loader"
@@ -16,12 +15,6 @@ currencyPairs$.subscribe()
 combineKeys(currencyPairs$.pipe(map(Object.keys)), (symbol: string) =>
   merge(getHistoricalPrices$(symbol), getPrice$(symbol)),
 ).subscribe()
-
-const LiveRateWrapper = styled(RegionWrapper)`
-  @media (max-width: 480px) {
-    padding-right: 1rem;
-  }
-`
 
 const loader = (
   <Loader
@@ -37,9 +30,9 @@ export const LiveRates = () => {
   }, [])
 
   return (
-    <LiveRateWrapper fallback={loader}>
+    <RegionWrapper fallback={loader}>
       <LiveRatesCore>{loader}</LiveRatesCore>
-    </LiveRateWrapper>
+    </RegionWrapper>
   )
 }
 

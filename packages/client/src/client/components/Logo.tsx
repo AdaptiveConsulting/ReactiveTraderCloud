@@ -79,6 +79,7 @@ const Logo = ({
 
 export default styled(Logo)`
   [fill] {
-    fill: ${(props) => props.theme.core.textColor};
+    fill: ${(props) =>
+      props.theme.newTheme.color["Colors/Text/text-primary (900)"]};
   }
 `
