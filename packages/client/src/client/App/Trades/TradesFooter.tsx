@@ -16,8 +16,8 @@ const TradeFooterText = styled.div(
 const TradesFooterStyled = styled(TradeFooterText)`
   display: flex;
   color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-disabled"]};
-  height: 30px;
-  padding-left: ${({ theme }) => theme.newTheme.spacing.xl};
+  padding: ${({ theme }) => theme.newTheme.spacing.lg};
+  padding-top: ${({ theme }) => theme.newTheme.spacing.sm};
   display: flex;
   align-items: center;
 `
