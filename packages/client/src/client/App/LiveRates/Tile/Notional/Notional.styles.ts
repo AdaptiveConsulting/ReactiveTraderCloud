@@ -39,10 +39,10 @@ export const CurrencyPairSymbol = styled("label")`
 `
 
 export const InputWrapper = styled.div`
-  background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
+  padding-bottom: ${({ theme }) => theme.newTheme.spacing.md};
+
   width: 100%;
-  height: 28px;
+
   display: flex;
   justify-content: center;
   align-items: center;

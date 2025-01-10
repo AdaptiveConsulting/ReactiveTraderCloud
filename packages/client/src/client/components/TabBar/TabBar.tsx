@@ -71,12 +71,7 @@ export const TabBar = <T extends string>({
               data-testid={`action-${name}`}
               disabled={disabled}
             >
-              <Typography
-                variant="Text md/Regular"
-                color="Colors/Text/text-primary (900)"
-              >
-                {inner}
-              </Typography>
+              <Typography variant="Text md/Regular">{inner}</Typography>
             </Action>
           ))}
       {handleItemOnClick && !doNotShowDropdown && (

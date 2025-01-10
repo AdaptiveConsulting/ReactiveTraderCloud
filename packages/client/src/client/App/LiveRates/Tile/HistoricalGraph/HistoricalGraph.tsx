@@ -50,6 +50,7 @@ const LineChartWrapper = styled.div<{ showTimer?: boolean }>`
   width: 45%;
   height: 108px;
   grid-area: chart;
+  padding-left: ${({ theme }) => theme.newTheme.spacing.md};
 `
 
 const Path = styled.path``

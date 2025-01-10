@@ -11,10 +11,14 @@ import { Section } from "./state"
 
 const HeaderTearOutAction = styled.button`
   svg {
-    stroke: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-quaternary (500)"]};
+    fill: ${({ theme }) =>
+      theme.newTheme.color["Colors/Foreground/fg-quinary (400)"]};
   }
   &:hover {
+    svg {
+      fill: ${({ theme }) =>
+        theme.newTheme.color["Colors/Foreground/fg-quinary_hover"]};
+    }
     .tear-out-hover-state {
       fill: #5f94f5;
     }

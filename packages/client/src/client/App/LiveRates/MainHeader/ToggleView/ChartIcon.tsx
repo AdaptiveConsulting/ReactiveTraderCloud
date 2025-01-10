@@ -4,11 +4,7 @@ interface Props {
   width?: number
 }
 
-export const ChartIcon = ({
-  fill = "#7E8188",
-  height = 16,
-  width = 16,
-}: Props) => (
+export const ChartIcon = ({ fill, height = 16, width = 16 }: Props) => (
   <svg
     width={width}
     height={height}

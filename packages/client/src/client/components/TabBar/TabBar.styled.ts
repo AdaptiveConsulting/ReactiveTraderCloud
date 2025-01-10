@@ -67,9 +67,18 @@ export const Action = styled(Tab)<{ size: "sm" | "lg"; disabled?: boolean }>`
   display: flex;
   align-items: center;
   line-height: 0;
-
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+
+  svg {
+    fill: ${({ theme }) =>
+      theme.newTheme.color["Colors/Foreground/fg-quinary (400)"]};
+  }
+
   &:hover {
     cursor: ${({ disabled }) => (disabled ? "auto" : "pointer")};
+    svg {
+      fill: ${({ theme }) =>
+        theme.newTheme.color["Colors/Foreground/fg-quinary_hover"]};
+    }
   }
 `

@@ -28,7 +28,7 @@ export { priceMovement$ }
 const MovementTypography = ({ children }: PropsWithChildren) => (
   <MovementValue>
     <Typography
-      variant="Text xs/Regular"
+      variant="Text sm/Regular"
       color="Colors/Text/text-tertiary (600)"
     >
       {children}

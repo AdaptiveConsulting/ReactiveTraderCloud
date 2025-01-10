@@ -4,6 +4,7 @@ import { map, switchMap } from "rxjs/operators"
 
 import { isBuy } from "@/client/App/Credit/common"
 import { AdaptiveLoader } from "@/client/components/AdaptiveLoader"
+import { Typography } from "@/client/components/Typography"
 import {
   customNumberFormatter,
   DECIMAL_SEPARATOR,
@@ -20,7 +21,6 @@ import { useTileCurrencyPair } from "../Tile.context"
 import { sendExecution } from "../Tile.state"
 import {
   Big,
-  DirectionLabel,
   ExpiredPrice,
   Icon,
   Pip,
@@ -118,9 +118,12 @@ export const PriceButtonInner = ({
       data-testid={`${direction}-${currencyPair.symbol}`}
     >
       <Price disabled={disabled}>
-        <DirectionLabel>
+        <Typography
+          variant="Text sm/Regular"
+          color="Colors/Text/text-secondary (700)"
+        >
           {`${direction} ${currencyPair.base}`.toUpperCase()}
-        </DirectionLabel>
+        </Typography>
         <PriceContainer>
           <Big>{price ? bigFigure : "-"}</Big>
           {price && (
