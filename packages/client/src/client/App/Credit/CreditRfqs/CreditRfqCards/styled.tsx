@@ -98,6 +98,13 @@ export const FooterButton = styled.button`
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-tertiary"]};
   padding: ${({ theme }) => theme.newTheme.spacing.md};
+
+  &:hover {
+    background-color: ${({ theme }) =>
+      theme.newTheme.color[
+        "Component colors/Components/Buttons/Primary/button-primary-bg_hover"
+      ]};
+  }
 `
 
 export const ViewTradeButton = styled(FooterButton)`
