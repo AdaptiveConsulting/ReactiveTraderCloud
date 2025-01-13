@@ -6,7 +6,7 @@ import { Trade } from "@/services/trades"
 import { useColDef, useColFields, useTrades$ } from "../Context"
 import { ColDef, useTableTrades } from "../TradesState"
 
-const Button = styled("button")`
+const Container = styled.div`
   svg {
     fill: ${({ theme }) =>
       theme.newTheme.color["Colors/Text/text-quaternary (500)"]};
@@ -52,11 +52,11 @@ export const ExcelButton = () => {
   const trades = useTableTrades(rows$, colDef)
 
   return (
-    <Button
+    <Container
       onClick={() => downloadCsv(trades, colDef, colFields)}
       aria-label="Export to CSV"
     >
       <Import />
-    </Button>
+    </Container>
   )
 }

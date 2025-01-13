@@ -9,7 +9,7 @@ import { closeWindow } from "@/client/utils/window/closeWindow"
 
 import { Section } from "./state"
 
-const HeaderTearOutAction = styled.button`
+const HeaderTearOutAction = styled.div`
   svg {
     fill: ${({ theme }) =>
       theme.newTheme.color["Colors/Foreground/fg-quinary (400)"]};
