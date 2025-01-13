@@ -19,7 +19,7 @@ import {
 
 export interface PNLBarProps {
   profitOrLossValue: number
-  largetProfitOrLossValue: number
+  largestProfitOrLossValue: number
   symbol: string
 }
 
@@ -36,13 +36,12 @@ const getLogRatio: (max: number, numb: number) => number = (max, numb) => {
 const PNLBar = ({
   symbol,
   profitOrLossValue,
-  largetProfitOrLossValue,
+  largestProfitOrLossValue,
 }: PNLBarProps) => {
   const [hovering, setHovering] = useState(false)
-  const color = profitOrLossValue >= 0 ? "positive" : "negative"
 
   const distance =
-    getLogRatio(largetProfitOrLossValue, profitOrLossValue) *
+    getLogRatio(largestProfitOrLossValue, profitOrLossValue) *
     TRANSLATION_WIDTH *
     (profitOrLossValue >= 0 ? 1 : -1)
 
@@ -67,7 +66,6 @@ const PNLBar = ({
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
             distance={distance}
-            color={color}
           >
             <Typography
               variant="Text xxs/Regular"
@@ -79,7 +77,7 @@ const PNLBar = ({
         </PriceContainer>
         <Bar>
           <CenterLine />
-          <PriceIndicator color={color} distance={distance} />
+          <PriceIndicator distance={distance} />
         </Bar>
       </BarPriceContainer>
     </BarContainer>
