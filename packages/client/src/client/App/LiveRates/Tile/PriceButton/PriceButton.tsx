@@ -20,15 +20,13 @@ import { getRfqPayload$, QuoteState, useIsRfq } from "../Rfq/Rfq.state"
 import { useTileCurrencyPair } from "../Tile.context"
 import { sendExecution } from "../Tile.state"
 import {
-  Big,
   ExpiredPrice,
   Icon,
-  Pip,
   Price,
   PriceButtonDisabledPlaceholder,
   PriceContainer,
+  PriceTypography,
   QuotePriceLoading,
-  Tenth,
   TradeButton,
   Wrapper,
 } from "./PriceButton.styles"
@@ -125,11 +123,26 @@ export const PriceButtonInner = ({
           {`${direction} ${currencyPair.base}`.toUpperCase()}
         </Typography>
         <PriceContainer>
-          <Big>{price ? bigFigure : "-"}</Big>
+          <PriceTypography
+            variant="Text sm/Regular"
+            color="Colors/Text/text-primary (900)"
+          >
+            {price ? bigFigure : "-"}
+          </PriceTypography>
           {price && (
             <>
-              <Pip>{pip}</Pip>
-              <Tenth>{tenth}</Tenth>
+              <PriceTypography
+                variant="Display xl/Regular"
+                color="Colors/Text/text-primary (900)"
+              >
+                {pip}
+              </PriceTypography>
+              <PriceTypography
+                variant="Text sm/Regular"
+                color="Colors/Text/text-primary (900)"
+              >
+                {tenth}
+              </PriceTypography>
             </>
           )}
         </PriceContainer>

@@ -1,6 +1,7 @@
 import styled from "styled-components"
 
-import Check from "../../../components/icons/svg/tick.svg"
+import Check from "@/client/components/icons/svg/tick.svg"
+
 import { FlexBox } from "../../FlexBox"
 import { Typography } from "../../Typography"
 
@@ -26,7 +27,7 @@ const CheckBox = styled.input.attrs({ type: "checkbox" })<{
     checked &&
     `
     background-color: ${theme.newTheme.color["Colors/Background/bg-brand-solid"]};
-    background-image: url(${Check});
+    background-image: url("${Check}");
   `}
 `
 

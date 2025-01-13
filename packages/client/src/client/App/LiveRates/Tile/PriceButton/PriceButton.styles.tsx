@@ -1,6 +1,7 @@
 import styled, { css, DefaultTheme, keyframes } from "styled-components"
 
 import { isBuy } from "@/client/App/Credit/common"
+import { Typography } from "@/client/components/Typography"
 import { Theme } from "@/client/theme/themes"
 import { Direction } from "@/generated/TradingGateway"
 
@@ -151,6 +152,11 @@ export const Tenth = styled(Box)(({ theme }) => ({
   ...inline,
   lineHeight: 0,
 }))
+
+export const PriceTypography = styled(Typography)`
+  display: inline;
+  line-height: 0;
+`
 
 export const Price = styled.div<{ disabled: boolean }>`
   display: flex;

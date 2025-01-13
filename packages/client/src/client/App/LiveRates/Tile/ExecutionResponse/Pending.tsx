@@ -11,13 +11,13 @@ const PendingContainer = styled(OverlayDiv)`
 `
 
 const PendingPill = styled("div")`
-  background-color: ${({ theme }) => theme.accents.primary.base};
+  background-color: ${({ theme }) => theme.newTheme.color["Colors/Background/bg-brand-primary"]};
   margin-auto;
   display: inline-block;
   padding: 1rem 2rem;
   border-radius: 2rem;
   font-size: 0.8rem;
-  color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-primary (900)"]};
 `
 
 const Pending = () => {
