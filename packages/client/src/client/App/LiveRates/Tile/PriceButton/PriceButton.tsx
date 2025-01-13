@@ -123,24 +123,15 @@ export const PriceButtonInner = ({
           {`${direction} ${currencyPair.base}`.toUpperCase()}
         </Typography>
         <PriceContainer>
-          <PriceTypography
-            variant="Text sm/Regular"
-            color="Colors/Text/text-primary (900)"
-          >
+          <PriceTypography variant="Text sm/Regular">
             {price ? bigFigure : "-"}
           </PriceTypography>
           {price && (
             <>
-              <PriceTypography
-                variant="Display xl/Regular"
-                color="Colors/Text/text-primary (900)"
-              >
+              <PriceTypography variant="Display xl/Regular">
                 {pip}
               </PriceTypography>
-              <PriceTypography
-                variant="Text sm/Regular"
-                color="Colors/Text/text-primary (900)"
-              >
+              <PriceTypography variant="Text sm/Regular">
                 {tenth}
               </PriceTypography>
             </>
