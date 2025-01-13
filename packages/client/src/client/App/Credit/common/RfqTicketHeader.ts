@@ -42,9 +42,10 @@ export const DirectionLabel = styled.div<WithDirection & WithTerminated>`
   display: flex;
   text-align: center;
   align-items: center;
-  width: 50px;
-
+  justify-content: center;
+  width: 56px;
   padding: ${({ theme }) => theme.newTheme.spacing.md};
+  height: 100%;
   ${({ direction }) => (isBuy(direction) ? buyBackground : sellBackground)}
 `
 
