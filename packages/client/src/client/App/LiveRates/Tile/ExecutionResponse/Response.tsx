@@ -15,7 +15,7 @@ import {
   TileStates,
   useTileState,
 } from "../Tile.state"
-import Pending from "./Pending"
+import { Pending } from "./Pending"
 import {
   AssetText,
   Button,
