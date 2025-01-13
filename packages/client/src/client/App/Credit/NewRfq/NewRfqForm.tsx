@@ -57,7 +57,7 @@ export const NewRfqForm = () => {
             name="quantity"
             id="quantity"
             placeholder="1000"
-            onChange={setQuantity}
+            onChange={({ target }) => setQuantity(target.value)}
             value={quantity ? formatter(quantity) : ""}
           />
         </FormControl>

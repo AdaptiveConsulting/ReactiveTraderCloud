@@ -127,8 +127,8 @@ const SearchBox = forwardRef<
   return (
     <SearchWrapper {...getComboboxProps()}>
       <TextInput
+        placeholder={"Enter a CUSIP"}
         {...getInputProps({
-          placeholder: "Enter a CUSIP",
           onFocus: () => openMenu(),
           ref: inputRef,
         })}
