@@ -23,11 +23,20 @@ const CheckBox = styled.input.attrs({ type: "checkbox" })<{
   height: 14px;
   border-radius: 4px;
 
+  &:hover {
+    border: 1px solid
+      ${({ theme }) => theme.newTheme.color["Colors/Background/bg-brand-solid"]};
+  }
+
   ${({ theme, checked }) =>
     checked &&
     `
     background-color: ${theme.newTheme.color["Colors/Background/bg-brand-solid"]};
     background-image: url("${Check}");
+
+    &:hover {
+      background-color: ${theme.newTheme.color["Colors/Background/bg-brand-solid_hover"]}
+    }
   `}
 `
 
