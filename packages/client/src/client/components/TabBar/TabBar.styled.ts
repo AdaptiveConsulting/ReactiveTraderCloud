@@ -45,6 +45,13 @@ export const Tab = styled.button<{ active: boolean; isStatic?: boolean }>`
     active ? theme.newTheme.color["Colors/Background/bg-primary_alt"] : "none"};
 
   cursor: ${({ isStatic }) => (isStatic ? "unset" : "pointer")};
+
+  &:hover {
+    background-color: ${({ active, theme }) =>
+      active
+        ? "none"
+        : theme.newTheme.color["Colors/Background/bg-primary_hover"]};
+  }
 `
 
 export const DropdownWrapper = styled.div`
