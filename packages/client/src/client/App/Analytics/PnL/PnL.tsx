@@ -17,13 +17,13 @@ const [usePnL, pnL$] = bind(
       const profitOrLossValues = Object.values(basePnlsDict)
       const max = Math.max(...profitOrLossValues)
       const min = Math.min(...profitOrLossValues)
-      const largetProfitOrLossValue = Math.max(Math.abs(max), Math.abs(min))
+      const largestProfitOrLossValue = Math.max(Math.abs(max), Math.abs(min))
 
       return Object.entries(basePnlsDict).map(
         ([symbol, profitOrLossValue]) => ({
           symbol,
           profitOrLossValue,
-          largetProfitOrLossValue,
+          largestProfitOrLossValue,
         }),
       )
     }),

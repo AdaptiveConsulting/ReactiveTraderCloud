@@ -76,7 +76,7 @@ export const SellSideTradeTicketParameters = ({
           <TextInput
             data-testid="price-input"
             ref={ref}
-            onChange={(value) => setPrice(value)}
+            onChange={({ target }) => setPrice(target.value)}
             value={price.inputValue}
             disabled={state !== RfqState.Open}
             onFocus={(event) => {
