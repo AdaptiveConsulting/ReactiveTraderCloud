@@ -1,6 +1,7 @@
 import styled from "styled-components"
 
 import Popup from "@/client/components/Popup"
+import { Typography } from "@/client/components/Typography"
 
 const buttonHeight = "2rem"
 
@@ -12,34 +13,15 @@ export const ContactUsPopup = styled(Popup)`
 `
 
 const ContactUsContent = styled.div`
-  font-size: 0.75rem;
-  padding: 0.5rem;
-
-  div,
-  a {
-    margin-bottom: 1rem;
-  }
-
-  span,
-  a {
-    display: block;
-  }
-
-  .header {
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-  }
+  padding: ${({ theme }) => theme.newTheme.spacing.md};
 `
 
 export const LogoWrapper = styled.div`
   padding: 1rem 0.5rem 0 0.5rem;
 `
 
-export const Link = styled.span`
-  color: ${({ theme }) => theme.accents.primary.lighter};
+export const Link = styled(Typography)`
   text-decoration: underline;
-  cursor: pointer;
-  margin-bottom: 1rem;
 `
 
 export const Input = styled.input`
