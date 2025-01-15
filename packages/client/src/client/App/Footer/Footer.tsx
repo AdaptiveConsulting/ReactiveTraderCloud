@@ -11,12 +11,16 @@ import { Version } from "./Version"
 
 const AeronLogoWrapper = styled.div`
   margin-right: auto;
+  svg {
+    fill: ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-primary (900)"]};
+  }
 `
 
 export const Footer = () => (
   <StatusBar>
     <AeronLogoWrapper>
-      <AeronLogo height={14} fill="white" />
+      <AeronLogo height={14} />
     </AeronLogoWrapper>
     <Suspense fallback={null}>
       <Stats />
