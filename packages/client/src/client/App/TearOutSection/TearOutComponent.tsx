@@ -25,14 +25,20 @@ const HeaderTearOutAction = styled.div`
   }
 `
 
-export const TearOutComponent = ({ section }: { section: Section }) => {
+interface Props {
+  section: Section
+  width?: number
+  height?: number
+}
+
+export const TearOutComponent = ({ section, width, height }: Props) => {
   const tearOutContext = useContext(TearOutContext)
   return (
     <HeaderTearOutAction
       onClick={() =>
         tearOutContext.isTornOut
           ? closeWindow()
-          : tearOutSection(!tearOutContext.isTornOut, section)
+          : tearOutSection(!tearOutContext.isTornOut, section, width, height)
       }
     >
       {tearOutContext.isTornOut ? <PopInIcon /> : <PopOutIcon />}

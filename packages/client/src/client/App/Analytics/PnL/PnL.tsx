@@ -2,7 +2,7 @@ import { bind } from "@react-rxjs/core"
 import { distinctUntilChanged, map } from "rxjs/operators"
 import styled from "styled-components"
 
-import { SectionLayout } from "@/client/components/layout/SectionLayout"
+import { AnalyticsSectionLayout } from "@/client/components/layout/AnalyticsSectionLayout"
 import { equals } from "@/client/utils/equals"
 import { mapObject } from "@/client/utils/mapObject"
 import { currentPositions$ } from "@/services/analytics"
@@ -32,7 +32,7 @@ const [usePnL, pnL$] = bind(
 
 export { pnL$ }
 
-const PnLSectionLayout = styled(SectionLayout)`
+const PnLSectionLayout = styled(AnalyticsSectionLayout)`
   overflow: hidden;
   padding-bottom: ${({ theme }) => theme.newTheme.spacing.lg};
 `

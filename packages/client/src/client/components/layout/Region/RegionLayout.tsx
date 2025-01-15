@@ -14,6 +14,8 @@ const BodyWrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary_alt"]};
 `
 
 export const RegionLayout = ({ Header, Body, className }: LayoutProps) => {

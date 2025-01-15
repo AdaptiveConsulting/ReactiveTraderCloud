@@ -8,7 +8,7 @@ const Background = styled.div`
   user-select: none;
 
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary_alt"]};
+    theme.newTheme.color["Colors/Background/bg-primary"]};
 `
 
 interface Props {

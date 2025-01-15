@@ -12,6 +12,7 @@ import { TearOutComponent } from "../TearOutSection/TearOutComponent"
 import { PnL, pnL$ } from "./PnL"
 import { Positions, positions$ } from "./Positions"
 import { ProfitAndLoss, profitAndLoss$ } from "./ProfitAndLoss"
+import { ANALYTICS_WIDTH } from "./shared"
 import { AnalyticsStyle } from "./styled"
 
 const analytics$ = merge(pnL$, profitAndLoss$, positions$)
@@ -24,12 +25,14 @@ if (supportsTearOut) {
   actions.push({
     name: "tearOut",
     size: "sm",
-    inner: <TearOutComponent section="analytics" />,
+    inner: (
+      <TearOutComponent width={ANALYTICS_WIDTH + 10} section="analytics" />
+    ),
   })
 }
 
 const AnalyticsRegion = styled(Region)`
-  width: 320px;
+  width: ${ANALYTICS_WIDTH}px;
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-primary"]};
 `
