@@ -25,7 +25,7 @@ export const CardContainer = styled.div<{
   display: flex;
   flex-direction: column;
   border: 2px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-primary"]};
+    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-tertiary"]};
   width: 100%;
   height: 251px;
 
@@ -43,7 +43,8 @@ export const Row = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 8px;
+  padding: ${({ theme }) => theme.newTheme.spacing.md} 0;
+
   width: 100%;
 `
 
@@ -54,6 +55,7 @@ export const DetailsWrapper = styled(Row)`
 `
 
 export const QuotesContainer = styled.div`
+  padding: 0 ${({ theme }) => theme.newTheme.spacing.xs};
   flex: 1;
   overflow-y: auto;
   background-color: ${({ theme }) =>

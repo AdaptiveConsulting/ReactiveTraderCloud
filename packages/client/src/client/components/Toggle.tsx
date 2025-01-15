@@ -68,7 +68,7 @@ export const Toggle = ({ left, right, onChange, isToggled }: Props) => (
         variant="Text md/Semibold"
         color={
           isToggled
-            ? "Colors/Text/text-primary (900)"
+            ? "Colors/Text/text-white"
             : "Colors/Text/text-quaternary (500)"
         }
       >

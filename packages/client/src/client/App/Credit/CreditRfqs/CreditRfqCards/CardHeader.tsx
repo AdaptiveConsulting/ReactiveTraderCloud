@@ -1,4 +1,4 @@
-import { memo, PropsWithChildren } from "react"
+import { memo } from "react"
 
 import { FlexBox } from "@/client/components/FlexBox"
 import { Typography } from "@/client/components/Typography"
@@ -19,12 +19,6 @@ interface CardHeaderProps {
   accepted: boolean
 }
 
-const DirectionTypography = ({ children }: PropsWithChildren) => (
-  <Typography variant="Text sm/Medium" allowLineHeight>
-    {children}
-  </Typography>
-)
-
 export const CardHeader = memo(function CardHeader({
   direction,
   instrumentId,
@@ -37,13 +31,16 @@ export const CardHeader = memo(function CardHeader({
     <FlexBox>
       {isBuy(direction) && (
         <DirectionLabel direction={direction} terminated={terminated}>
-          <DirectionTypography>
+          <Typography
+            variant="Text sm/Medium"
+            color={terminated ? undefined : "Colors/Text/text-white"}
+          >
             You {accepted ? "Bought" : "Buy"}
-          </DirectionTypography>
+          </Typography>
         </DirectionLabel>
       )}
       <InstrumentLabelContainer terminated={terminated}>
-        <Typography variant="Text sm/Medium" allowLineHeight>
+        <Typography variant="Text sm/Medium">
           {instrument?.name ?? "No name found"}
         </Typography>
         <CusipWithBenchmark
@@ -53,9 +50,12 @@ export const CardHeader = memo(function CardHeader({
       </InstrumentLabelContainer>
       {direction === Direction.Sell && (
         <DirectionLabel direction={direction} terminated={terminated}>
-          <DirectionTypography>
+          <Typography
+            variant="Text sm/Medium"
+            color={terminated ? undefined : "Colors/Text/text-white"}
+          >
             You {accepted ? "Sold" : "Sell"}
-          </DirectionTypography>
+          </Typography>
         </DirectionLabel>
       )}
     </FlexBox>
