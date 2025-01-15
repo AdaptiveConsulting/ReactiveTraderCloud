@@ -54,6 +54,8 @@ export default createGlobalStyle`
     line-height: 1rem;
     text-rendering: geometricPrecision;
 
+    color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-primary (900)"]};
+
     .tearOff {
       box-shadow: 1px 4px 10px 0px rgba(0,0,0,0.3);
       outline: 1px dashed #49608C;
