@@ -1,31 +1,30 @@
 import { merge } from "rxjs"
 import styled from "styled-components"
 
-import {
-  AnalyticsLineChartWrapper,
-  ProfitAndLossHeader,
-  Title,
-} from "../styled"
+import { FlexBox } from "@/client/components/FlexBox"
+import { SectionLayout } from "@/client/components/layout/SectionLayout"
+import { Typography } from "@/client/components/Typography"
+
 import { LastPosition, lastPosition$ } from "./LastPosition"
 import { LineChart, lineChart$ } from "./LineChart"
 
-export const ProfitAndLossStyle = styled.div`
-  width: 100%;
-  height: auto;
-  grid-row-start: 1;
-  grid-row-end: 2;
-  grid-column: 1/-1;
+const ProfitAndLossFlexBox = styled(FlexBox)`
+  flex: 1;
+  justifycontent: space-between;
 `
+
 export const ProfitAndLoss = () => (
-  <ProfitAndLossStyle>
-    <ProfitAndLossHeader>
-      <Title>Profit &amp; Loss</Title>
-      <LastPosition />
-    </ProfitAndLossHeader>
-    <AnalyticsLineChartWrapper>
-      <LineChart />
-    </AnalyticsLineChartWrapper>
-  </ProfitAndLossStyle>
+  <SectionLayout
+    Header={
+      <ProfitAndLossFlexBox
+        style={{ flex: 1, justifyContent: "space-between" }}
+      >
+        <Typography variant="Text lg/Regular">Profit &amp; Loss</Typography>
+        <LastPosition />
+      </ProfitAndLossFlexBox>
+    }
+    Body={<LineChart />}
+  />
 )
 
 export const profitAndLoss$ = merge(lastPosition$, lineChart$)

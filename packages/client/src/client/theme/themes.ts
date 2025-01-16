@@ -9,6 +9,7 @@ import {
   CorePalette,
   CorePaletteMap,
 } from "./colors"
+import { theme as newTheme } from "./uiskTheme"
 
 export enum ThemeName {
   Light = "light",
@@ -200,6 +201,8 @@ const createTheme = (
       textColor: primary[2],
     },
   },
+
+  newTheme,
 })
 
 const lightTheme: Theme = createTheme(

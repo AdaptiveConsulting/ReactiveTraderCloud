@@ -25,7 +25,7 @@ test.describe("Spot Tile", () => {
 
   test.describe("Valid Purchase", () => {
     test("When I sell EUR to USD then trade Id shown in tile should match trade Id shown in blotter @smoke", async () => {
-      await tilePage.locator("[data-testid='menuButton-EUR']").click()
+      await tilePage.locator("[data-testid='tabItem-EUR']").click()
 
       const spotTileNotionalInput = tilePage.locator(
         "input[id='notional-input-EURUSD']",
@@ -44,7 +44,7 @@ test.describe("Spot Tile", () => {
         .nth(1)
       await expect(blotterTradeID).toHaveText(tradeId)
 
-      await tilePage.locator("[data-testid='menuButton-ALL']").click()
+      await tilePage.locator("[data-testid='tabItem-All']").click()
     })
 
     test("When I buy USD/JPY then a tile displays in green with confirmation message", async () => {
@@ -133,7 +133,7 @@ test.describe("Spot Tile", () => {
 
   test.describe("Toggle between prices and graph views", () => {
     test("When I click the graph icon on the Live Rates bar then I should toggle from graph to price views", async () => {
-      const toggle = tilePage.locator("[data-testid='toggleButton']")
+      const toggle = tilePage.locator("[data-testid='action-toggleTileView']")
 
       // first click, goes into normal mode, should be no graphs
       await toggle.click()
@@ -159,7 +159,7 @@ test.describe("Spot Tile", () => {
 
   test.describe("Toggle between tile filters", () => {
     test("When I toggle EUR then I should see 4 tiles", async () => {
-      await tilePage.locator("[data-testid='menuButton-EUR']").click()
+      await tilePage.locator("[data-testid='tabItem-EUR']").click()
       const totalEuroTiles = await tilePage
         .locator('div[aria-label="Lives Rates Tiles"] > div')
         .count()
@@ -168,7 +168,7 @@ test.describe("Spot Tile", () => {
     })
 
     test("When I toggle USD then I should see 5 tiles", async () => {
-      await tilePage.locator("[data-testid='menuButton-USD']").click()
+      await tilePage.locator("[data-testid='tabItem-USD']").click()
       const totalUsdTiles = await tilePage
         .locator('div[aria-label="Lives Rates Tiles"] > div')
         .count()
@@ -177,7 +177,7 @@ test.describe("Spot Tile", () => {
     })
 
     test("When I toggle GBP then I should see 2 tiles", async () => {
-      await tilePage.locator("[data-testid='menuButton-GBP']").click()
+      await tilePage.locator("[data-testid='tabItem-GBP']").click()
       const totalGBPTiles = await tilePage
         .locator('div[aria-label="Lives Rates Tiles"] > div')
         .count()
@@ -186,7 +186,7 @@ test.describe("Spot Tile", () => {
     })
 
     test("When I toggle AUD then I should see 2 tiles", async () => {
-      await tilePage.locator("[data-testid='menuButton-AUD']").click()
+      await tilePage.locator("[data-testid='tabItem-AUD']").click()
       const totalAUD = await tilePage
         .locator('div[aria-label="Lives Rates Tiles"] > div')
         .count()
@@ -194,12 +194,12 @@ test.describe("Spot Tile", () => {
     })
 
     test("When I toggle NZD then I should see 1 tile", async () => {
-      await tilePage.locator("[data-testid='menuButton-NZD']").click()
+      await tilePage.locator("[data-testid='tabItem-NZD']").click()
       const totalNZDTiles = await tilePage
         .locator('div[aria-label="Lives Rates Tiles"] > div')
         .count()
       expect(totalNZDTiles).toBe(1)
-      await tilePage.locator("[data-testid='menuButton-ALL']").click()
+      await tilePage.locator("[data-testid='tabItem-All']").click()
     })
   })
 })

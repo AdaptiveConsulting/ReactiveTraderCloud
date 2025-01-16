@@ -98,6 +98,9 @@
     "cookie": "0.x",
     "next": "14.2.13"
   },
+  "optionalDependencies": {
+    "@adaptive-uikit/figma-to-theme": "0.0.2"
+  },
   "devDependencies": {
     "@adaptive/hydra-web-codegen": "4.70.0",
     "@eslint/js": "9.11.1",

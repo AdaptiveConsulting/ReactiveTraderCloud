@@ -45,7 +45,7 @@ File location: `../apps/MainRoute/widgets/workspace/Workspace.tsx`
 
   ![Workspace Header](./images/browser/workspace-header.png) <br/>
 
-  - Navigation items `ALL`, `EUR`, `USD`, `GBP`, `AUD`, and `NZD` can be found on the same file, written as `<NavItem />` components - which are dynamically loaded. It is also segregated by a `<LeftNav>` _styled_ component.
+  - Navigation items `All`, `EUR`, `USD`, `GBP`, `AUD`, and `NZD` can be found on the same file, written as `<NavItem />` components - which are dynamically loaded. It is also segregated by a `<LeftNav>` _styled_ component.
 
   - Tile view buttons (Normal view & Analytics view) are also found on the same file, written as `<NavItem />` components - segregated by a `<RightNav>` _styled_ component.
 

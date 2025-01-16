@@ -2,37 +2,52 @@ import styled from "styled-components"
 
 export const Input = styled.input`
   grid-area: Input;
-  background: none;
   text-align: center;
   outline: none;
   border: none;
   font-size: 0.75rem;
-  width: 80px;
-  padding: 2px 0;
-  color: ${({ theme }) => theme.core.textColor};
-  border-bottom: 1.5px solid ${({ theme }) => theme.primary[5]};
+  width: 83px;
+  height: 28px;
+  margin-left: ${({ theme }) => theme.newTheme.spacing.xs};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary"]};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-secondary (700)"]};
+  border: 1.5px solid
+    ${({ theme }) => theme.newTheme.color["Colors/Border/border-secondary"]};
   caret-color: ${({ theme }) => theme.primary.base};
   &:focus {
     outline: none !important;
-    border-color: ${({ theme }) => theme.accents.primary.base};
+    border-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
   }
   &:disabled {
     opacity: 0.3;
   }
   &.is-invalid {
-    border-bottom-color: ${({ theme }) => theme.accents.negative.base};
+    border-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-error-primary (600)"]};
   }
 `
 
 export const CurrencyPairSymbol = styled("label")`
-  display: inline-block;
-  width: 24px;
+  padding-right: ${({ theme }) => theme.newTheme.spacing.xs};
+  color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-disabled"]};
   opacity: 0.59;
-  font-size: 0.625rem;
+  font-size: 12px;
   line-height: 1.2rem;
 `
 
-export const InputWrapper = styled.div``
+export const InputWrapper = styled.div`
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
+  width: 100%;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+`
 
 export const ErrorMessage = styled.div`
   margin-left: 24px;
@@ -44,8 +59,10 @@ export const ErrorMessage = styled.div`
 `
 
 export const ResetInputValue = styled.button<{ isVisible: boolean }>`
-  background-color: ${({ theme }) => theme.core.lightBackground};
-  border: 2px solid ${({ theme }) => theme.core.darkBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary"]};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-secondary (700)"]};
   display: ${({ isVisible }) => (isVisible ? "inline-flex" : "none")};
   border-radius: 3px;
   margin-left: 8px;

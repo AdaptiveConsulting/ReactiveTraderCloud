@@ -3,7 +3,6 @@ import { of } from "rxjs"
 import { map, switchMap } from "rxjs/operators"
 
 import { AdaptiveLoader } from "@/client/components/AdaptiveLoader"
-import { CenteringContainer } from "@/client/components/CenteringContainer"
 import {
   customNumberFormatter,
   DECIMAL_SEPARATOR,
@@ -26,9 +25,11 @@ import {
   Pip,
   Price,
   PriceButtonDisabledPlaceholder,
+  PriceContainer,
   QuotePriceLoading,
   Tenth,
   TradeButton,
+  Wrapper,
 } from "./PriceButton.styles"
 
 const getPriceByDirection$ = (symbol: string, direction: Direction) =>
@@ -117,16 +118,18 @@ export const PriceButtonInner = ({
       data-testid={`${direction}-${currencyPair.symbol}`}
     >
       <Price disabled={disabled}>
-        <CenteringContainer>
-          <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
+        <DirectionLabel>
+          {`${direction} ${currencyPair.base}`.toUpperCase()}
+        </DirectionLabel>
+        <PriceContainer>
           <Big>{price ? bigFigure : "-"}</Big>
-        </CenteringContainer>
-        {price && (
-          <>
-            <Pip>{pip}</Pip>
-            <Tenth>{tenth}</Tenth>
-          </>
-        )}
+          {price && (
+            <>
+              <Pip>{pip}</Pip>
+              <Tenth>{tenth}</Tenth>
+            </>
+          )}
+        </PriceContainer>
       </Price>
       {isExpired && (
         <ExpiredPrice data-testid="expireLabel">Expired</ExpiredPrice>
@@ -176,10 +179,14 @@ export const AwaitingPriceButton = () => (
 export const PriceButton = ({ direction }: { direction: Direction }) => {
   const rfqState = useRfqState()
 
-  return rfqState.stage === QuoteStateStage.Requested ? (
-    <AwaitingPriceButton />
-  ) : (
-    <PriceButtonContainer direction={direction} rfqQuoteState={rfqState} />
+  return (
+    <Wrapper>
+      {rfqState.stage === QuoteStateStage.Requested ? (
+        <AwaitingPriceButton />
+      ) : (
+        <PriceButtonContainer direction={direction} rfqQuoteState={rfqState} />
+      )}
+    </Wrapper>
   )
 }
 

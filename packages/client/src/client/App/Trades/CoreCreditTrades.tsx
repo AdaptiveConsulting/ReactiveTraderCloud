@@ -6,7 +6,7 @@ import {
 } from "@/client/notifications"
 import { creditTrades$ } from "@/services/trades"
 
-import { TradesGrid } from "./TradesGrid"
+import { GridRegion } from "./GridRegion"
 import { useCreditTradeRowHighlight } from "./TradesState"
 import { creditColDef, creditColFields } from "./TradesState/colConfig"
 
@@ -20,7 +20,7 @@ const CreditTrades = () => {
     }
   }, [])
   return (
-    <TradesGrid
+    <GridRegion
       caption="Reactive Trader Credit Trades Table"
       highlightedRow={highlightedRow}
       columnDefinitions={creditColDef}

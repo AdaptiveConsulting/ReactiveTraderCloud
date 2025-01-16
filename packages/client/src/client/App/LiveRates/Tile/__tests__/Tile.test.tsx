@@ -106,11 +106,11 @@ describe("Tile", () => {
     await renderComponent()
 
     expect(screen.getAllByRole("button")[1].textContent).toBe(
-      `SELL${priceMock.bid}`,
+      `SELL ${currencyPairMock.base}${priceMock.bid}`,
     )
 
     expect(screen.getAllByRole("button")[2].textContent).toBe(
-      `BUY${priceMock.ask}`,
+      `BUY ${currencyPairMock.base}${priceMock.ask}`,
     )
 
     const nextBid = 4.34345
@@ -120,7 +120,7 @@ describe("Tile", () => {
 
     await waitFor(() =>
       expect(screen.getAllByRole("button")[1].textContent).toBe(
-        `SELL${nextBid}`,
+        `SELL ${currencyPairMock.base}${nextBid}`,
       ),
     )
   })
@@ -189,7 +189,7 @@ describe("Tile", () => {
     await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
 
     expect(screen.getAllByRole("button")[1].textContent).toBe(
-      `SELL${priceMock.bid}`,
+      `SELL ${currencyPairMock.base}${priceMock.bid}`,
     )
   })
 
@@ -267,7 +267,7 @@ describe("Tile", () => {
     })
 
     expect(screen.getAllByRole("button")[1].textContent).toBe(
-      `SELL${priceMock.bid}`,
+      `SELL ${currencyPairMock.base}${priceMock.bid}`,
     )
   })
 
@@ -329,7 +329,7 @@ describe("Tile", () => {
     expect(screen.queryByRole("alert")).toBeNull()
 
     expect(screen.getAllByRole("button")[1].textContent).toBe(
-      `SELL${priceMock.bid}`,
+      `SELL ${currencyPairMock.base}${priceMock.bid}`,
     )
   })
 
@@ -397,7 +397,7 @@ describe("Tile", () => {
     expect(screen.queryByRole("alert")).toBeNull()
 
     expect(screen.getAllByRole("button")[1].textContent).toBe(
-      `SELL${priceMock.bid}`,
+      `SELL ${currencyPairMock.base}${priceMock.bid}`,
     )
   })
 

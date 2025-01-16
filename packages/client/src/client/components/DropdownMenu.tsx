@@ -1,60 +1,71 @@
 import { useEffect, useRef, useState } from "react"
 import { FaCheck, FaChevronDown, FaChevronUp } from "react-icons/fa"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
 import { usePopUpMenu } from "@/client/utils/usePopUpMenu"
 
-const DropdownLayout = styled.div`
+const DropdownText = styled.div(
+  ({ theme }) => theme.newTheme.textStyles["Display xs/Regular"],
+)
+
+const DropdownLayout = styled(DropdownText)`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   position: relative;
-  background-color: ${({ theme }) => theme.core.lightBackground};
-  border-radius: 4px;
-  color: ${({ theme }) => theme.core.textColor};
-  font-size: 12px;
-  padding: 8px 15px 5px 15px;
+
+  line-height: 0;
+  margin-block-end: 0;
+
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-secondary (700)"]};
   cursor: pointer;
   transition: all 200ms ease;
+  padding: 0 ${({ theme }) => theme.newTheme.spacing.md};
 `
-const SelectedOption = styled.div`
-  padding-right: 20px;
-`
+
 const DropdownOptions = styled.div`
-  border-radius: 4px;
   position: absolute;
-  top: 40px;
+  top: 24px;
   left: 0px;
-  background-color: ${({ theme }) => theme.primary.base};
-  padding: 6px;
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
   box-shadow: 0 7px 26px 0 rgba(23, 24, 25, 0.5);
   z-index: 100;
-  width: 100%;
 `
 const DropdownOption = styled.div<{ selected: boolean }>`
-  padding: 8px 8px 5px 8px;
-  font-weight: ${({ selected }) => (selected ? "bold" : "normal")};
-  background-color: ${({ selected, theme }) =>
-    selected ? theme.core.activeColor : "inherit"};
-  border-radius: 2px;
-  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: ${({ theme }) => theme.newTheme.density.md};
+  padding: ${({ theme }) =>
+    `${theme.newTheme.spacing["2xl"]} ${theme.newTheme.spacing["lg"]}`};
+  color: ${({ theme, selected }) =>
+    selected
+      ? theme.newTheme.color["Colors/Text/text-brand-primary (900)"]
+      : "inherit"};
 
   &:hover {
-    background-color: ${({ theme }) => theme.core.backgroundHoverColor};
-    font-weight: ${({ selected }) => (selected ? "bold" : "normal")};
-    text-decoration: underline;
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-quaternary"]};
   }
 `
-const AlignedChecked = styled(FaCheck)`
+
+const chevronStyle = css`
   position: relative;
-  left: 20px;
-  top: 2px;
+  font-size: 12px;
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-quaternary_on-brand"]};
+  margin-left: ${({ theme }) => theme.newTheme.spacing.xl};
 `
 const AlignedUp = styled(FaChevronUp)`
-  position: relative;
-  top: 2px;
+  ${chevronStyle}
 `
 const AlignedDown = styled(FaChevronDown)`
-  position: relative;
-  top: 2px;
+  ${chevronStyle}
+`
+const Check = styled(FaCheck)`
+  ${chevronStyle}
 `
 
 interface Props<T extends string> {
@@ -86,7 +97,7 @@ export const DropdownMenu = <T extends string>({
 
   return (
     <DropdownLayout onClick={toggleOpenCloseState}>
-      <SelectedOption>{selected}</SelectedOption>
+      <div>{selected}</div>
       <div>{displayMenu ? <AlignedUp /> : <AlignedDown />}</div>
       {displayMenu && (
         <DropdownOptions ref={ref}>
@@ -97,7 +108,7 @@ export const DropdownMenu = <T extends string>({
               selected={selected === option}
             >
               {option}
-              {selected === option && <AlignedChecked />}
+              {selected === option && <Check />}
             </DropdownOption>
           ))}
         </DropdownOptions>
