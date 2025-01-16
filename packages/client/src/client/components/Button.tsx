@@ -4,9 +4,10 @@ import styled, { css } from "styled-components"
 import { Typography } from "./Typography"
 
 interface Props {
-  variant: "brand" | "primary" | "warning" | "outline"
+  variant: "brand" | "primary" | "warning" | "outline" | "white-outline"
   size: "xxs" | "xs" | "sm" | "lg"
   disabled?: boolean
+  style?: React.CSSProperties
   onClick: () => void
 }
 
@@ -74,6 +75,17 @@ const warningStyle = css`
 `}
 `
 
+const whiteOutlineStyle = css`
+  ${({ theme }) => `
+  color: ${theme.newTheme.color["Colors/Text/text-white"]};
+  border: 1px solid ${theme.newTheme.color["Colors/Text/text-white"]};
+
+  &:hover {
+    opacity: 0.75;
+  }
+`}
+`
+
 const _Button = styled.button<Props>`
   padding: 0 ${({ theme }) => theme.newTheme.spacing.xl};
   border-radius: ${({ theme }) => theme.newTheme.radius.full};
@@ -105,6 +117,8 @@ const _Button = styled.button<Props>`
         return outlineStyle
       case "warning":
         return warningStyle
+      case "white-outline":
+        return whiteOutlineStyle
     }
   }};
 `
