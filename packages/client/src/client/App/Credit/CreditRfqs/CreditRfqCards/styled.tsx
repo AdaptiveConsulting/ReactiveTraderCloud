@@ -55,7 +55,6 @@ export const DetailsWrapper = styled(Row)`
 `
 
 export const QuotesContainer = styled.div`
-  padding: 0 ${({ theme }) => theme.newTheme.spacing.xs};
   flex: 1;
   overflow-y: auto;
   background-color: ${({ theme }) =>

@@ -18,6 +18,7 @@ import { acceptCreditQuote$, useQuoteState } from "@/services/credit"
 import { hasPrice, isBuy } from "../../../common"
 import {
   AcceptButton,
+  Divider,
   Price,
   QuoteDot,
   QuoteDotWrapper,
@@ -99,44 +100,58 @@ export const Quote = ({
   }
 
   return (
-    <QuoteRow
-      quoteActive={acceptable}
-      highlight={highlight}
-      direction={direction}
-    >
-      {(acceptable || state.type === PASSED_QUOTE_STATE) && rfqOpen && (
-        <QuoteDotWrapper>
-          <QuoteDot
-            highlight={highlight}
-            direction={direction}
-            passed={state.type === PASSED_QUOTE_STATE}
-          />
-        </QuoteDotWrapper>
-      )}
-      <Typography
-        variant="Text sm/Regular"
-        color={getDealerColor(rfqOpen, accepted, priced, highlight)}
+    <>
+      <QuoteRow
+        quoteActive={acceptable}
+        highlight={highlight}
+        direction={direction}
       >
-        {dealer?.name ?? "Dealer name not found"}
-      </Typography>
-
-      <Price open={rfqOpen} accepted={accepted} passed={passed} priced={priced}>
-        {accepted && <CheckCircle />}
+        {(acceptable || state.type === PASSED_QUOTE_STATE) && rfqOpen && (
+          <QuoteDotWrapper>
+            <QuoteDot
+              highlight={highlight}
+              direction={direction}
+              passed={state.type === PASSED_QUOTE_STATE}
+            />
+          </QuoteDotWrapper>
+        )}
         <Typography
-          variant={accepted ? "Text sm/Medium" : "Text sm/Regular"}
-          color={getPriceColor(rfqOpen, accepted, priced, highlight, direction)}
+          variant="Text sm/Regular"
+          color={getDealerColor(rfqOpen, accepted, priced, highlight)}
         >
-          {state.payload}
+          {dealer?.name ?? "Dealer name not found"}
         </Typography>
-      </Price>
 
-      <AcceptButton
-        variant="brand"
-        size="xxs"
-        onClick={() => onAcceptRfq(quote.id)}
-      >
-        Accept
-      </AcceptButton>
-    </QuoteRow>
+        <Price
+          open={rfqOpen}
+          accepted={accepted}
+          passed={passed}
+          priced={priced}
+        >
+          {accepted && <CheckCircle />}
+          <Typography
+            variant={accepted ? "Text sm/Medium" : "Text sm/Regular"}
+            color={getPriceColor(
+              rfqOpen,
+              accepted,
+              priced,
+              highlight,
+              direction,
+            )}
+          >
+            {state.payload}
+          </Typography>
+        </Price>
+
+        <AcceptButton
+          variant="brand"
+          size="xxs"
+          onClick={() => onAcceptRfq(quote.id)}
+        >
+          Accept
+        </AcceptButton>
+      </QuoteRow>
+      <Divider />
+    </>
   )
 }
