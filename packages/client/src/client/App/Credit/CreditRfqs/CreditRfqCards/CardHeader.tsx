@@ -2,7 +2,7 @@ import { memo, PropsWithChildren } from "react"
 
 import { FlexBox } from "@/client/components/FlexBox"
 import { Typography } from "@/client/components/Typography"
-import { Direction, RfqState } from "@/generated/TradingGateway"
+import { Direction } from "@/generated/TradingGateway"
 import { useCreditInstrumentById } from "@/services/credit"
 
 import {
@@ -10,13 +10,13 @@ import {
   DirectionLabel,
   InstrumentLabelContainer,
   isBuy,
-  isRfqTerminated,
 } from "../../common"
 
 interface CardHeaderProps {
   direction: Direction
   instrumentId: number
-  rfqState: RfqState
+  terminated: boolean
+  accepted: boolean
 }
 
 const DirectionTypography = ({ children }: PropsWithChildren) => (
@@ -28,11 +28,10 @@ const DirectionTypography = ({ children }: PropsWithChildren) => (
 export const CardHeader = memo(function CardHeader({
   direction,
   instrumentId,
-  rfqState,
+  terminated,
+  accepted,
 }: CardHeaderProps) {
   const instrument = useCreditInstrumentById(instrumentId)
-  const terminated = isRfqTerminated(rfqState)
-  const accepted = rfqState === RfqState.Closed
 
   return (
     <FlexBox>

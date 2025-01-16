@@ -14,7 +14,6 @@ const SellSideWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  background-color: ${({ theme }) => theme.primary[2]};
 `
 
 const SellSidePage = () => {

@@ -1,6 +1,7 @@
 import { Subscribe } from "@react-rxjs/core"
 
 import { Loader } from "@/client/components/Loader"
+import { Typography } from "@/client/components/Typography"
 import { useAdaptiveDealerId } from "@/services/credit"
 
 import { useSelectedRfqId } from "../sellSideState"
@@ -9,7 +10,6 @@ import {
   NoSelectedMessage,
   NoSelectedWrapper,
   NoSelectHeader,
-  SellSideWrapper,
 } from "./SellSideTradeTicket.styles"
 import { SellSideTradeTicketTicketCore } from "./SellSideTradeTicketCore"
 
@@ -23,12 +23,22 @@ const SellSideTradeTicketInner = () => {
   if (rfqId === null) {
     return (
       <NoSelectedWrapper>
-        <NoSelectHeader>No RFQ Selected</NoSelectHeader>
+        <NoSelectHeader>
+          <Typography
+            variant="Text md/Regular"
+            color="Colors/Text/text-primary (900)"
+          >
+            No RFQ Selected
+          </Typography>
+        </NoSelectHeader>
         <NoSelectedMessage>
-          <p>
+          <Typography
+            variant="Text sm/Regular"
+            color="Colors/Text/text-primary (900)"
+          >
             Click an item above to see its full details.
             <br /> You can place bids on RFQs that are still live.
-          </p>
+          </Typography>
         </NoSelectedMessage>
       </NoSelectedWrapper>
     )
@@ -38,9 +48,7 @@ const SellSideTradeTicketInner = () => {
 }
 
 export const SellSideTradeTicket = () => (
-  <SellSideWrapper>
-    <Subscribe fallback={<Loader />} source$={focused$}>
-      <SellSideTradeTicketInner />
-    </Subscribe>
-  </SellSideWrapper>
+  <Subscribe fallback={<Loader />} source$={focused$}>
+    <SellSideTradeTicketInner />
+  </Subscribe>
 )

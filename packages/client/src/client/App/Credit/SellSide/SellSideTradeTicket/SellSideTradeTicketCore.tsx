@@ -1,8 +1,10 @@
 import { Loader } from "@/client/components/Loader"
+import { Typography } from "@/client/components/Typography"
 import { invertDirection } from "@/client/utils"
-import { PENDING_WITHOUT_PRICE_QUOTE_STATE } from "@/generated/TradingGateway"
+import { ACCEPTED_QUOTE_STATE, RfqState } from "@/generated/TradingGateway"
 import { useCreditRfqDetails } from "@/services/credit"
 
+import { CardHeader } from "../../CreditRfqs/CreditRfqCards/CardHeader"
 import { getSellSideQuoteState, SellSideQuoteState } from "../sellSideState"
 import { SellSideTradeTicketFooter } from "./SellSideTradeTickerFooter"
 import {
@@ -11,7 +13,6 @@ import {
   SellSideTradeTicketInnerWrapper,
   SellSideTradeTicketWrapper,
 } from "./SellSideTradeTicketCore.styles"
-import { SellSideTradeTicketHeader } from "./SellSideTradeTicketHeader"
 import { SellSideTradeTicketParameters } from "./SellSideTradeTicketParameters"
 
 const ADAPTIVE_BUYSIDE_NAME = "Adaptive Asset Management"
@@ -63,30 +64,32 @@ export const SellSideTradeTicketTicketCore = ({
 
   const direction = invertDirection(clientDirection)
   const state = getSellSideQuoteState(rfqState, quote?.state)
+  const accepted = quote?.state.type === ACCEPTED_QUOTE_STATE
+  const terminated = rfqState !== RfqState.Open && !accepted
 
   return (
     <SellSideTradeTicketWrapper>
-      <Banner>
-        <Diamond state={state} />
-        {getHeaderMessage(state)}
-      </Banner>
-      <SellSideTradeTicketInnerWrapper>
-        <SellSideTradeTicketHeader
-          direction={direction}
-          instrumentId={instrumentId}
-          rfqState={rfqState}
-          quoteState={
-            quote?.state ?? { type: PENDING_WITHOUT_PRICE_QUOTE_STATE }
-          }
-        />
-        <SellSideTradeTicketParameters
-          selectedRfqId={rfqId}
-          quote={quote}
-          state={rfqState}
-          quantity={quantity}
-        />
-        <SellSideTradeTicketFooter rfqId={rfqId} quote={quote} />
-      </SellSideTradeTicketInnerWrapper>
+      <Typography color="Colors/Text/text-primary (900)">
+        <Banner>
+          <Diamond state={state} />
+          {getHeaderMessage(state)}
+        </Banner>
+        <SellSideTradeTicketInnerWrapper>
+          <CardHeader
+            accepted={accepted}
+            terminated={terminated}
+            direction={direction}
+            instrumentId={instrumentId}
+          />
+          <SellSideTradeTicketParameters
+            selectedRfqId={rfqId}
+            quote={quote}
+            state={rfqState}
+            quantity={quantity}
+          />
+          <SellSideTradeTicketFooter rfqId={rfqId} quote={quote} />
+        </SellSideTradeTicketInnerWrapper>
+      </Typography>
     </SellSideTradeTicketWrapper>
   )
 }

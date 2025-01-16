@@ -9,8 +9,6 @@ const Background = styled.div`
   position: relative;
 `
 
-const HeaderWrapper = styled.div``
-
 const BodyWrapper = styled.div`
   flex: 1;
   display: flex;
@@ -21,7 +19,7 @@ const BodyWrapper = styled.div`
 export const RegionLayout = ({ Header, Body, className }: LayoutProps) => {
   return (
     <Background className={className} role="region">
-      <HeaderWrapper>{Header}</HeaderWrapper>
+      {Header}
       <BodyWrapper>{Body}</BodyWrapper>
     </Background>
   )

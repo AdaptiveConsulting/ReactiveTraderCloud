@@ -4,7 +4,7 @@ import { createGlobalStyle, withTheme } from "styled-components"
 import { Theme } from "./themes"
 
 const getColor = (props: { theme: Theme }) =>
-  rgba(props.theme.secondary[3], 0.2)
+  rgba(props.theme.newTheme.color["Colors/Foreground/fg-secondary (700)"], 0.2)
 
 export const GlobalScrollbarStyle = withTheme(createGlobalStyle`
 body, #root {
@@ -22,7 +22,6 @@ body ::-webkit-scrollbar-thumb {
 
 body {
   scrollbar-color: ${getColor} transparent;
-  background-color: ${({ theme }) => theme.core.darkBackground};
 }
 
 body ::-webkit-scrollbar-thumb {

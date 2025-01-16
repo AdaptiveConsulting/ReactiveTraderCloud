@@ -43,6 +43,8 @@ interface Props {
   placeholder?: string
   value?: string
   onChange?: (value: string) => void
+  onFocus?: React.FocusEventHandler<HTMLInputElement>
+  onBlur?: React.FocusEventHandler<HTMLInputElement>
 }
 
 export const TextInput = React.forwardRef<HTMLInputElement, Props>(

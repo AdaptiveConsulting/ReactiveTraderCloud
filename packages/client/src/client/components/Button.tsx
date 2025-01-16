@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react"
+import React, { PropsWithChildren } from "react"
 import styled, { css } from "styled-components"
 
 import { Typography } from "./Typography"
@@ -105,9 +105,12 @@ const _Button = styled.button<Props>`
   }};
 `
 
-export const Button = ({ children, ...props }: PropsWithChildren<Props>) => {
+export const Button = React.forwardRef<
+  HTMLButtonElement,
+  PropsWithChildren<Props>
+>(function ButtonInner({ children, ...props }, ref) {
   return (
-    <_Button {...props}>
+    <_Button ref={ref} {...props}>
       <Typography
         variant={props.size === "xxs" ? "Text xxs/Regular" : "Text sm/Semibold"}
       >
@@ -115,4 +118,4 @@ export const Button = ({ children, ...props }: PropsWithChildren<Props>) => {
       </Typography>
     </_Button>
   )
-}
+})
