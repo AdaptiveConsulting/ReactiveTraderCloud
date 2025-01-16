@@ -15,6 +15,10 @@ border: ${theme.newTheme.color["Colors/Border/border-secondary"]} solid 1px;
 padding: 0 ${theme.newTheme.spacing.sm};
 margin: 0;
 
+::placeholder {
+  color: ${theme.newTheme.color["Colors/Text/text-placeholder"]};
+}
+
 ${
   !disabled &&
   `
