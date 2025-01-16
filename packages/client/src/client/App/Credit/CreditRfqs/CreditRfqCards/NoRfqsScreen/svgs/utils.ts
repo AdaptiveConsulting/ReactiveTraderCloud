@@ -10,9 +10,9 @@ export const useNoRfqsIconColors = () => {
   return useMemo(() => {
     const theme = themes[themeName]
     return {
-      primary: theme.core.textColor,
-      contrast: theme.colors.spectrum.blue.base,
-      secondary: theme.colors.spectrum.blue.base,
+      primary: theme.newTheme.color["Colors/Text/text-primary (900)"],
+      contrast: theme.newTheme.color["Colors/Text/text-brand-primary (900)"],
+      secondary: theme.newTheme.color["Colors/Text/text-brand-primary (900)"],
     }
   }, [themeName])
 }

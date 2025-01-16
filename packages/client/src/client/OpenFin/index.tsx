@@ -25,9 +25,7 @@ const CreditRfqs = lazy(
   () => import("@/client/App/Credit/CreditRfqs/CreditRfqs"),
 )
 const CreditTrades = lazy(() => import("@/client/App/Trades/CreditTrades"))
-const CreditRfqForm = lazy(
-  () => import("@/client/App/Credit/CreditRfqForm/CreditRfqForm"),
-)
+const CreditRfqForm = lazy(() => import("@/client/App/Credit/NewRfq/NewRfq"))
 const SellSidePage = lazy(() => import("@/client/Web/SellSidePage"))
 
 export const OpenFinApp = () => (

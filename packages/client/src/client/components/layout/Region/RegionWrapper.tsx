@@ -7,20 +7,21 @@ const Background = styled.div`
   height: 100%;
   user-select: none;
 
-  background: ${({ theme }) =>
+  background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-primary_alt"]};
 `
 
 interface Props {
   fallback: React.ReactNode
+  className?: string
 }
 
 export const RegionWrapper = React.forwardRef<
   HTMLDivElement,
   WithChildren & Props
->(function RegionWrapperInner({ fallback, children }, ref) {
+>(function RegionWrapperInner({ fallback, children, className }, ref) {
   return (
-    <Background ref={ref}>
+    <Background className={className} ref={ref}>
       <Suspense fallback={fallback}>{children}</Suspense>
     </Background>
   )

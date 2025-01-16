@@ -8,7 +8,7 @@ import { analytics$ } from "@/services/analytics"
 
 const AnalyticsCore = lazy(() => import("./AnalyticsCore"))
 
-const AnalyticsWrapper = styled.div<{
+const AnalyticsWrapper = styled(RegionWrapper)<{
   hideIfMatches?: string | null
 }>`
   border-left: solid
@@ -41,14 +41,8 @@ export const Analytics = ({ hideIfMatches = "(max-width: 750px)" }: Props) => {
   const shouldMountAnalytics = useHasItBeenVisible(ref)
 
   return (
-    <AnalyticsWrapper ref={ref} hideIfMatches={hideIfMatches}>
-      <RegionWrapper fallback={loader}>
-        {shouldMountAnalytics ? (
-          <AnalyticsCore>{loader}</AnalyticsCore>
-        ) : (
-          loader
-        )}
-      </RegionWrapper>
+    <AnalyticsWrapper ref={ref} hideIfMatches={hideIfMatches} fallback={loader}>
+      {shouldMountAnalytics ? <AnalyticsCore>{loader}</AnalyticsCore> : loader}
     </AnalyticsWrapper>
   )
 }

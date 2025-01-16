@@ -1,15 +1,12 @@
 import { Dispatch, SetStateAction, useEffect } from "react"
 
-import { CrossIcon } from "@/client/components/icons"
+import { Button } from "@/client/components/Button"
+import { CrossIcon } from "@/client/components/icons/CrossIcon"
+import { Typography } from "@/client/components/Typography"
 import { isiOS, isMobileDevice, isPWA } from "@/client/utils"
 
 import { PWAInstallModal } from "./PWAInstallModal"
-import {
-  BannerText,
-  CrossButton,
-  InstallButton,
-  MainBanner,
-} from "./PWAInstallPrompt.styles"
+import { CrossButton, MainBanner } from "./PWAInstallPrompt.styles"
 import { usePWABannerPrompt } from "./usePWABannerPrompt"
 
 export enum PWABanner {
@@ -72,13 +69,18 @@ export const PWAInstallBanner = ({
 
   return (
     <MainBanner isHidden={isHidden}>
-      <CrossButton onClick={closeBanner}>{CrossIcon}</CrossButton>
-      <BannerText>
+      <CrossButton onClick={closeBanner}>{<CrossIcon />}</CrossButton>
+      <Typography
+        variant="Text md/Semibold"
+        color="Colors/Text/text-primary_alt"
+      >
         {isMobileDevice
           ? "Experience Reactive Trader® as an app!"
           : "Experience Reactive Trader® on your desktop!"}
-      </BannerText>
-      <InstallButton onClick={() => installPWA(isiOS)}>Install</InstallButton>
+      </Typography>
+      <Button variant="brand" size="sm" onClick={() => installPWA(isiOS)}>
+        Install
+      </Button>
     </MainBanner>
   )
 }

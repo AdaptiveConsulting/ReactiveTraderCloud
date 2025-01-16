@@ -36,7 +36,7 @@ export function rfqStateToLabel(state: RfqState): string {
     case RfqState.Closed:
       return "You traded with Done"
     case RfqState.Cancelled:
-      return "Request Canceled"
+      return "Request Cancelled"
     default:
       return `Request ${state}`
   }

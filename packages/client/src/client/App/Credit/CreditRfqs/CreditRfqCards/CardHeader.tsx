@@ -1,14 +1,15 @@
-import { memo } from "react"
+import { memo, PropsWithChildren } from "react"
 
+import { FlexBox } from "@/client/components/FlexBox"
+import { Typography } from "@/client/components/Typography"
 import { Direction, RfqState } from "@/generated/TradingGateway"
 import { useCreditInstrumentById } from "@/services/credit"
 
 import {
   CusipWithBenchmark,
-  DirectionContainer,
   DirectionLabel,
   InstrumentLabelContainer,
-  InstrumentName,
+  isBuy,
   isRfqTerminated,
 } from "../../common"
 
@@ -17,6 +18,12 @@ interface CardHeaderProps {
   instrumentId: number
   rfqState: RfqState
 }
+
+const DirectionTypography = ({ children }: PropsWithChildren) => (
+  <Typography variant="Text xs/Medium" allowLineHeight>
+    {children}
+  </Typography>
+)
 
 export const CardHeader = memo(function CardHeader({
   direction,
@@ -28,14 +35,18 @@ export const CardHeader = memo(function CardHeader({
   const accepted = rfqState === RfqState.Closed
 
   return (
-    <DirectionContainer direction={direction} terminated={terminated}>
-      {direction === Direction.Buy && (
+    <FlexBox>
+      {isBuy(direction) && (
         <DirectionLabel direction={direction} terminated={terminated}>
-          <div>YOU {accepted ? "BOUGHT" : "BUY"}</div>
+          <DirectionTypography>
+            You {accepted ? "Bought" : "Buy"}
+          </DirectionTypography>
         </DirectionLabel>
       )}
-      <InstrumentLabelContainer direction={direction} terminated={terminated}>
-        <InstrumentName>{instrument?.name ?? "No name found"}</InstrumentName>
+      <InstrumentLabelContainer terminated={terminated}>
+        <Typography variant="Text xs/Medium" allowLineHeight>
+          {instrument?.name ?? "No name found"}
+        </Typography>
         <CusipWithBenchmark
           cusip={instrument?.cusip}
           benchmark={instrument?.benchmark}
@@ -43,9 +54,11 @@ export const CardHeader = memo(function CardHeader({
       </InstrumentLabelContainer>
       {direction === Direction.Sell && (
         <DirectionLabel direction={direction} terminated={terminated}>
-          <div>YOU {accepted ? "SOLD" : "SELL"}</div>
+          <DirectionTypography>
+            You {accepted ? "Sold" : "Sell"}
+          </DirectionTypography>
         </DirectionLabel>
       )}
-    </DirectionContainer>
+    </FlexBox>
   )
 })
