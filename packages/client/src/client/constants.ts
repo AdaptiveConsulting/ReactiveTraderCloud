@@ -55,6 +55,7 @@ export const HIGHLIGHT_ROW_FLASH_TIME = 3000
 
 export const WEBSITE = "https://weareadaptive.com"
 export const AERON = "https://aeron.io"
+export const EQUITIES = "https://mock-alpaca-demo.adaptivecluster.com"
 export const EMAIL = "sales@weareadaptive.com"
 
 export type SocialPlatform = "Twitter" | "LinkedIn" | "Github"

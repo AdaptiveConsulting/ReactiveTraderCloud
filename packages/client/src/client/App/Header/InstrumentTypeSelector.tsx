@@ -1,7 +1,7 @@
-import { useLocation, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 import { DropdownMenu } from "@/client/components/DropdownMenu"
-import { ROUTES_CONFIG } from "@/client/constants"
+import { EQUITIES, ROUTES_CONFIG } from "@/client/constants"
 import { isMobileDevice } from "@/client/utils"
 
 import { InstrumentTypeSelectorWrapper } from "./Header.styles"
@@ -9,22 +9,30 @@ import { InstrumentTypeSelectorWrapper } from "./Header.styles"
 enum InstrumentType {
   FX = "FX",
   CREDIT = "Credit",
+  EQUITIES = "Equities",
 }
 
 const InstrumentTypeSelector = () => {
-  const location = useLocation()
   const navigate = useNavigate()
+
   const handleInstrumentTypeSelection = (instrumentType: InstrumentType) => {
-    navigate(
-      instrumentType === InstrumentType.CREDIT ? ROUTES_CONFIG.credit : "/",
-    )
+    if (instrumentType === InstrumentType.EQUITIES) {
+      window.location.href = EQUITIES
+    } else {
+      navigate(
+        instrumentType === InstrumentType.CREDIT ? ROUTES_CONFIG.credit : "/",
+      )
+    }
   }
 
+  const instruments = Object.values(InstrumentType)
+
   if (isMobileDevice) return null
+
   return (
     <InstrumentTypeSelectorWrapper>
       <DropdownMenu
-        options={[InstrumentType.FX, InstrumentType.CREDIT]}
+        options={instruments}
         onSelectionChange={(selection) => {
           handleInstrumentTypeSelection(selection as InstrumentType)
         }}
