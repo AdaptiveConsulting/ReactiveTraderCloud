@@ -97,7 +97,11 @@ export const Card = ({ id, highlight }: { id: number; highlight: boolean }) => {
   const accepted = state === RfqState.Closed
 
   return (
-    <CardContainer live={state === RfqState.Open} highlight={highlight}>
+    <CardContainer
+      live={state === RfqState.Open}
+      highlight={highlight}
+      direction={direction}
+    >
       <CardHeader
         direction={direction}
         instrumentId={instrumentId}

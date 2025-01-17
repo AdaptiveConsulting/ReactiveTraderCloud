@@ -1,6 +1,7 @@
 import styled, { css, DefaultTheme, keyframes } from "styled-components"
 
 import { FlexBox } from "@/client/components/FlexBox"
+import { Direction } from "@/generated/TradingGateway"
 
 const cardFlash = ({ theme }: { theme: DefaultTheme }) => keyframes`
   0% {
@@ -21,6 +22,7 @@ const highlightBorderColor = css`
 export const CardContainer = styled.div<{
   live: boolean
   highlight: boolean
+  direction: Direction
 }>`
   display: flex;
   flex-direction: column;
@@ -32,10 +34,10 @@ export const CardContainer = styled.div<{
   ${({ highlight }) => highlight && highlightBorderColor}
 
   &:first-child {
-    ${({ theme, live, highlight }) =>
+    ${({ theme, live, highlight, direction }) =>
       live &&
       !highlight &&
-      `border-color: ${theme.newTheme.color["Colors/Border/border-brand"]}`};
+      `border-color: ${direction === Direction.Buy ? theme.newTheme.color["Colors/Border/border-buy"] : theme.newTheme.color["Colors/Border/border-sell"]}`};
   }
 `
 

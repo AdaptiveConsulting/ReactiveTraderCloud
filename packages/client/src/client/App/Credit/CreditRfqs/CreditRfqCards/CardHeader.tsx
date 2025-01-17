@@ -34,6 +34,7 @@ export const CardHeader = memo(function CardHeader({
           <Typography
             variant="Text sm/Medium"
             color={terminated ? undefined : "Colors/Text/text-white"}
+            allowLineHeight
           >
             You {accepted ? "Bought" : "Buy"}
           </Typography>
@@ -53,6 +54,7 @@ export const CardHeader = memo(function CardHeader({
           <Typography
             variant="Text sm/Medium"
             color={terminated ? undefined : "Colors/Text/text-white"}
+            allowLineHeight
           >
             You {accepted ? "Sold" : "Sell"}
           </Typography>
