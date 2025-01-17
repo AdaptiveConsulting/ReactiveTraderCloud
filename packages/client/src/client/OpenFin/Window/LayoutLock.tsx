@@ -40,6 +40,7 @@ export const LayoutLock: React.FC = () => {
           checkedIcon={
             <IconContainer hover={hover}>
               <LockedIcon />
+              {/* TODO: update this icon */}
             </IconContainer>
           }
           uncheckedIcon={
@@ -48,10 +49,14 @@ export const LayoutLock: React.FC = () => {
             </IconContainer>
           }
           handleDiameter={15}
-          offColor={theme.primary[1]}
-          offHandleColor={theme.accents.primary.base}
-          onColor={theme.primary[1]}
-          onHandleColor={theme.accents.primary.base}
+          offColor={theme.newTheme.color["Colors/Background/bg-secondary"]}
+          offHandleColor={
+            theme.newTheme.color["Colors/Background/bg-brand-primary"]
+          }
+          onColor={theme.newTheme.color["Colors/Background/bg-secondary"]}
+          onHandleColor={
+            theme.newTheme.color["Colors/Background/bg-brand-primary"]
+          }
         />
       ) : (
         <IconContainer hover={hover}>

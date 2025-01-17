@@ -5,8 +5,10 @@ export const Container = styled.div`
   grid-template-rows: 1fr 66px;
   align-items: stretch;
   height: 100%;
-  background: ${({ theme }) => theme.core.alternateBackground};
-  color: ${({ theme }) => theme.core.textColor};
+  background: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-primary (900)"]};
 `
 
 export const Title = styled.div`
@@ -29,7 +31,8 @@ export const Entry = styled.div`
   cursor: pointer;
 
   &:hover {
-    background: ${({ theme }) => theme.core.lightBackground};
+    background: ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-primary_hover"]};
   }
 `
 
@@ -37,7 +40,8 @@ export const Form = styled.div`
   display: grid;
   grid-template-rows: auto 1fr;
   padding: 1rem;
-  border-top: 1px solid ${({ theme }) => theme.core.lightBackground};
+  border-top: 1px solid
+    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-tertiary"]};
 `
 
 export const Fieldset = styled.div`
@@ -49,9 +53,11 @@ export const Fieldset = styled.div`
 export const Input = styled.input`
   display: block;
   padding: 0 0.5rem;
-  background: ${({ theme }) => theme.core.lightBackground};
+  background: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-tertiary"]};
   border: none;
-  color: ${({ theme }) => theme.core.textColor};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-primary (900)"]};
 
   &:focus {
     outline: none;
