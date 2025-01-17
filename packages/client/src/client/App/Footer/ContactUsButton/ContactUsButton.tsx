@@ -1,10 +1,10 @@
 import { useRef } from "react"
 
-import { MailIcon } from "@/client/components/icons"
+import { Button } from "@/client/components/Button"
 import Logo from "@/client/components/Logo"
 import { usePopUpMenu } from "@/client/utils/usePopUpMenu"
 
-import { Button, Root } from "../common-styles"
+import { Root } from "../common-styles"
 import { ContactUs } from "./ContactUs"
 import { FollowUs } from "./FollowUs"
 import { ContactUsPopup, LogoWrapper } from "./styled"
@@ -30,11 +30,12 @@ const ContactUsButton = () => {
   return (
     <Root ref={ref}>
       <Button
+        variant="primary"
+        size="sm"
         onClick={() => setDisplayMenu((prev) => !prev)}
         data-qa="contact-us-button"
-        margin={"0 0.7rem 0 0"}
       >
-        <MailIcon height="1" width="1" active={displayMenu} />
+        {/* <MailIcon height="1" width="1" active={displayMenu} /> TODO: Refactor button to allow icons */}
         Get in touch
       </Button>
 

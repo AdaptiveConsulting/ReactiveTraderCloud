@@ -13,7 +13,6 @@ export const AppHeaderWrapper = styled.div`
 `
 
 export const AppHeaderRoot = styled.div`
-  width: calc(100% - 2rem);
   max-width: 100%;
   height: var(--header-height, 3.5rem);
   padding: 0 ${({ theme }) => theme.newTheme.spacing.lg};

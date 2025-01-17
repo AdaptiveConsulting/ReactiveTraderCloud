@@ -7,8 +7,6 @@ export const Root = styled.div`
   float: right;
   backface-visibility: hidden;
   z-index: 20;
-  font-size: 0.75rem;
-  color: ${(props) => props.theme.textColor};
 `
 
 export const Button = styled.button<{ margin?: string; disabled?: boolean }>`
@@ -27,12 +25,14 @@ export const Button = styled.button<{ margin?: string; disabled?: boolean }>`
 `
 
 export const Background = styled.div`
-  background-color: ${({ theme }) => theme.core.alternateBackground};
-  color: ${({ theme }) => theme.core.textColor};
-  height: 100%;
-  width: 100%;
-  padding: 1rem;
-  margin: 0;
   position: absolute;
-  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+  border-radius: ${({ theme }) => theme.newTheme.radius.lg};
+  background: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
+  border: 1px solid
+    ${({ theme }) => theme.newTheme.color["Colors/Border/border-primary"]};
 `

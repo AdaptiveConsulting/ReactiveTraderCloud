@@ -82,7 +82,7 @@ export const TableBodyStrikeThrough = styled.div<{
   left: 0;
   border-bottom: 1px solid
     ${({ theme }) =>
-      theme.newTheme.color["Component colors/Utility/Error/utility-error-700"]};
+      theme.newTheme.color["Component colors/Utility/Red/utility-red-400"]};
   width: 100%;
 `
 
@@ -90,7 +90,7 @@ export const StatusIndicator = styled.div<{
   status: QuoteStatus | LimitCheckStatus | TradeStatus
 }>`
   width: 21px;
-  border-left: 2px solid
+  border-left: 4px solid
     ${({ status, theme }) => {
       if (
         status === TradeStatus.Done ||
@@ -98,7 +98,7 @@ export const StatusIndicator = styled.div<{
         status === LimitCheckStatus.Success
       )
         return theme.newTheme.color[
-          "Component colors/Utility/Success/utility-success-700"
+          "Component colors/Utility/Success/utility-success-500"
         ]
       else if (
         status === TradeStatus.Rejected ||
@@ -107,7 +107,7 @@ export const StatusIndicator = styled.div<{
         status === LimitCheckStatus.Failure
       ) {
         return theme.newTheme.color[
-          "Component colors/Utility/Error/utility-error-700"
+          "Component colors/Utility/Red/utility-red-400"
         ]
       }
       return "inherit"

@@ -22,8 +22,8 @@ export async function initApp() {
 
   root.render(
     <StrictMode>
-      <GlobalStyle />
       <ThemeProvider>
+        <GlobalStyle />
         <GlobalScrollbarStyle />
         <MainApp />
       </ThemeProvider>

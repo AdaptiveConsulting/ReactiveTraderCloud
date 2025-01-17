@@ -11,8 +11,8 @@ export function browserUnsupported() {
   const root = createRoot(container!)
   root.render(
     <StrictMode>
-      <GlobalStyle />
       <ThemeProvider>
+        <GlobalStyle />
         <GlobalScrollbarStyle />
         <Modal
           title="Sorry, but it appears your browser version is not supported"

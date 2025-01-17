@@ -6,12 +6,11 @@ export const PopupContainer = styled.div<{ open: boolean }>`
   z-index: 5;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
-  border-radius: 0.25rem;
-  background: ${({ theme }) => theme.core.alternateBackground};
-  box-shadow:
-    0 0.05rem 0.05rem rgba(0, 0, 0, 0.05),
-    0 1rem 3rem -1rem ${(props) => props.theme.overlay.backgroundColor};
+  border-radius: ${({ theme }) => theme.newTheme.radius.md};
+  background: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
+  border: 1px solid
+    ${({ theme }) => theme.newTheme.color["Colors/Border/border-primary"]};
 `
 
 export const PopupPanel = styled.div<{ minWidth?: string }>`
@@ -20,8 +19,6 @@ export const PopupPanel = styled.div<{ minWidth?: string }>`
 
   position: relative;
   z-index: 1;
-
-  color: ${({ theme }) => theme.core.textColor};
 `
 
 export const Body = styled.div`

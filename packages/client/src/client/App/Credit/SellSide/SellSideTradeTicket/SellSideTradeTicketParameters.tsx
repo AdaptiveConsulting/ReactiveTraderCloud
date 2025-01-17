@@ -47,7 +47,7 @@ const Parameter = ({
       {label}
     </Typography>
     <Gap height="sm" />
-    {value && <Typography variant="Text xs/Regular">{value}</Typography>}
+    {value && <Typography variant="Text sm/Regular">{value}</Typography>}
     {children}
   </div>
 )
@@ -76,7 +76,7 @@ export const SellSideTradeTicketParameters = ({
           <TextInput
             data-testid="price-input"
             ref={ref}
-            onChange={(value) => setPrice(value)}
+            onChange={({ target }) => setPrice(target.value)}
             value={price.inputValue}
             disabled={state !== RfqState.Open}
             onFocus={(event) => {
@@ -88,17 +88,17 @@ export const SellSideTradeTicketParameters = ({
         ) : sellSideQuoteState === SellSideQuoteState.Pending ? (
           <>
             <Typography
-              variant="Text xs/Regular"
+              variant="Text sm/Regular"
               color="Colors/Text/text-brand-primary (900)"
             >
               {(quote?.state as PendingWithPriceQuoteState)?.payload}
             </Typography>
-            <Typography variant="Text xs/Regular italic">
+            <Typography variant="Text sm/Regular italic">
               Awaiting Response
             </Typography>
           </>
         ) : (
-          <Typography variant="Text xs/Regular">
+          <Typography variant="Text sm/Regular">
             {hasPrice(quote?.state) && quote?.state.payload}
           </Typography>
         )}

@@ -14,9 +14,9 @@ export const MainBanner = styled.div<{ isHidden: boolean }>`
 
 export const CrossButton = styled.div`
   svg {
-    height: 12px;
-    stroke: ${({ theme }) =>
-      theme.newTheme.color["Colors/Foreground/fg-primary (900)"]};
+    height: 10px;
+    fill: ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-primary_alt"]};
   }
   &:hover {
     cursor: pointer;

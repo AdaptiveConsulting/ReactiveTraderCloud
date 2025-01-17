@@ -1,6 +1,7 @@
 import styled from "styled-components"
 
-import Check from "../../../components/icons/svg/tick.svg"
+import Check from "@/client/components/icons/svg/tick.svg"
+
 import { FlexBox } from "../../FlexBox"
 import { Typography } from "../../Typography"
 
@@ -22,11 +23,20 @@ const CheckBox = styled.input.attrs({ type: "checkbox" })<{
   height: 14px;
   border-radius: 4px;
 
+  &:hover {
+    border: 1px solid
+      ${({ theme }) => theme.newTheme.color["Colors/Background/bg-brand-solid"]};
+  }
+
   ${({ theme, checked }) =>
     checked &&
     `
     background-color: ${theme.newTheme.color["Colors/Background/bg-brand-solid"]};
-    background-image: url(${Check});
+    background-image: url("${Check}");
+
+    &:hover {
+      background-color: ${theme.newTheme.color["Colors/Background/bg-brand-solid_hover"]}
+    }
   `}
 `
 
@@ -46,7 +56,7 @@ export const CheckBoxInput = ({ name, checked, onChange }: Props) => {
       />
       <label htmlFor={name}>
         <Typography
-          variant="Text xs/Regular"
+          variant="Text sm/Regular"
           color="Colors/Text/text-secondary (700)"
         >
           {name}

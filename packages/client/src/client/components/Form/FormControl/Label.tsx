@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 const LabelText = styled.label(
-  ({ theme }) => theme.newTheme.textStyles["Text xs/Regular"],
+  ({ theme }) => theme.newTheme.textStyles["Text sm/Regular"],
 )
 
 export const Label = styled(LabelText)`

@@ -2,7 +2,6 @@ import styled from "styled-components"
 
 import { FlexBox } from "@/client/components/FlexBox"
 import { Line } from "@/client/components/Line"
-import { AccentPaletteMap } from "@/client/theme"
 
 const FlexDiv = styled.div`
   display: flex;
@@ -28,13 +27,11 @@ export const PriceContainer = styled(FlexDiv).attrs(
 `
 
 export const PriceLabel = styled.div<{
-  color: keyof AccentPaletteMap
   distance: number
 }>`
   align-self: center;
   padding-bottom: ${({ theme }) => theme.newTheme.spacing.sm};
   transition: transform 0.2s;
-  color: ${({ theme }) => theme.newTheme.color["Colors/Border/border-buy"]};
 
   &:hover {
     transform: scale(1.64);
@@ -47,7 +44,6 @@ const barLength = 180
 const indicatorWidth = 5
 
 export const PriceIndicator = styled.div<{
-  color: keyof AccentPaletteMap
   distance: number
 }>`
   height: 100%;

@@ -1,10 +1,9 @@
-import { rgba } from "polished"
 import { createGlobalStyle, withTheme } from "styled-components"
 
 import { Theme } from "./themes"
 
 const getColor = (props: { theme: Theme }) =>
-  rgba(props.theme.newTheme.color["Colors/Foreground/fg-secondary (700)"], 0.2)
+  props.theme.newTheme.color["Colors/Background/bg-tertiary"]
 
 export const GlobalScrollbarStyle = withTheme(createGlobalStyle`
 body, #root {

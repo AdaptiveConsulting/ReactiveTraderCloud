@@ -8,14 +8,18 @@ const Background = styled.div`
   padding: 0 ${({ theme }) => theme.newTheme.spacing.xl};
   padding-top: ${({ theme }) => theme.newTheme.spacing.xl};
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
+    theme.newTheme.color["Colors/Background/bg-primary_alt"]};
 `
 
 const BodyWrapper = styled.div`
   padding-top: ${({ theme }) => theme.newTheme.spacing["2xl"]};
 `
 
-export const SectionLayout = ({ Header, Body, className }: LayoutProps) => (
+export const AnalyticsSectionLayout = ({
+  Header,
+  Body,
+  className,
+}: LayoutProps) => (
   <Background className={className}>
     <Typography
       variant="Text lg/Regular"

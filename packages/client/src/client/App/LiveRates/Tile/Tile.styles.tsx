@@ -2,8 +2,6 @@ import styled from "styled-components"
 
 import { DeliveryDate, HeaderAction } from "./Header/TileHeader"
 
-export const AnalyticsPricesFirstCol = "20%"
-
 export const PriceControlWrapper = styled.div<{ isAnalyticsView: boolean }>`
   flex: 1;
   display: flex;
@@ -45,7 +43,7 @@ export const InputTimerStyle = styled.div<{ isAnalyticsView: boolean }>`
       align-items: flex-start;
       `
       : `
-      `}
+      `};
 `
 
 export const PanelItem = styled.div<{ shouldMoveDate: boolean }>`
@@ -60,7 +58,7 @@ export const PanelItem = styled.div<{ shouldMoveDate: boolean }>`
 
     ${DeliveryDate} {
       margin-right: ${({ shouldMoveDate, theme }) =>
-        shouldMoveDate ? theme.newTheme.spacing.lg : "0"};
+        shouldMoveDate ? theme.newTheme.spacing["2xl"] : "0"};
     }
   }
 `
@@ -92,7 +90,7 @@ export const Main = styled.div`
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-primary"]};
   border: 2px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-primary"]};
+    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary"]};
 
   &:hover,
   .tile-hover & {

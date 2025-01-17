@@ -2,7 +2,7 @@ import { merge } from "rxjs"
 import styled from "styled-components"
 
 import { FlexBox } from "@/client/components/FlexBox"
-import { SectionLayout } from "@/client/components/layout/SectionLayout"
+import { AnalyticsSectionLayout } from "@/client/components/layout/AnalyticsSectionLayout"
 import { Typography } from "@/client/components/Typography"
 
 import { LastPosition, lastPosition$ } from "./LastPosition"
@@ -14,7 +14,7 @@ const ProfitAndLossFlexBox = styled(FlexBox)`
 `
 
 export const ProfitAndLoss = () => (
-  <SectionLayout
+  <AnalyticsSectionLayout
     Header={
       <ProfitAndLossFlexBox
         style={{ flex: 1, justifyContent: "space-between" }}

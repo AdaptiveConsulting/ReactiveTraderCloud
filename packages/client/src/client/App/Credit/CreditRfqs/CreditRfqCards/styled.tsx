@@ -1,6 +1,7 @@
 import styled, { css, DefaultTheme, keyframes } from "styled-components"
 
 import { FlexBox } from "@/client/components/FlexBox"
+import { Direction } from "@/generated/TradingGateway"
 
 const cardFlash = ({ theme }: { theme: DefaultTheme }) => keyframes`
   0% {
@@ -21,21 +22,22 @@ const highlightBorderColor = css`
 export const CardContainer = styled.div<{
   live: boolean
   highlight: boolean
+  direction: Direction
 }>`
   display: flex;
   flex-direction: column;
   border: 2px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-primary"]};
+    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-tertiary"]};
   width: 100%;
   height: 251px;
 
   ${({ highlight }) => highlight && highlightBorderColor}
 
   &:first-child {
-    ${({ theme, live, highlight }) =>
+    ${({ theme, live, highlight, direction }) =>
       live &&
       !highlight &&
-      `border-color: ${theme.newTheme.color["Colors/Border/border-brand"]}`};
+      `border-color: ${direction === Direction.Buy ? theme.newTheme.color["Colors/Border/border-buy"] : theme.newTheme.color["Colors/Border/border-sell"]}`};
   }
 `
 
@@ -43,7 +45,8 @@ export const Row = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 8px;
+  padding: ${({ theme }) => theme.newTheme.spacing.md} 0;
+
   width: 100%;
 `
 
@@ -98,6 +101,13 @@ export const FooterButton = styled.button`
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-tertiary"]};
   padding: ${({ theme }) => theme.newTheme.spacing.md};
+
+  &:hover {
+    background-color: ${({ theme }) =>
+      theme.newTheme.color[
+        "Component colors/Components/Buttons/Primary/button-primary-bg_hover"
+      ]};
+  }
 `
 
 export const ViewTradeButton = styled(FooterButton)`

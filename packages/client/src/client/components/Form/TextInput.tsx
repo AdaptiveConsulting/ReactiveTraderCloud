@@ -15,6 +15,10 @@ border: ${theme.newTheme.color["Colors/Border/border-secondary"]} solid 1px;
 padding: 0 ${theme.newTheme.spacing.sm};
 margin: 0;
 
+::placeholder {
+  color: ${theme.newTheme.color["Colors/Text/text-placeholder"]};
+}
+
 ${
   !disabled &&
   `
@@ -42,20 +46,13 @@ interface Props {
   disabled?: boolean
   placeholder?: string
   value?: string
-  onChange?: (value: string) => void
+  onChange?: React.ChangeEventHandler<HTMLInputElement>
   onFocus?: React.FocusEventHandler<HTMLInputElement>
   onBlur?: React.FocusEventHandler<HTMLInputElement>
 }
 
 export const TextInput = React.forwardRef<HTMLInputElement, Props>(
-  function InputTest({ onChange, value, ...props }, ref) {
-    return (
-      <_TextInput
-        onChange={({ target }) => onChange?.(target.value)}
-        value={value}
-        ref={ref}
-        {...props}
-      />
-    )
+  function InputTest({ value, ...props }, ref) {
+    return <_TextInput value={value} ref={ref} {...props} />
   },
 )

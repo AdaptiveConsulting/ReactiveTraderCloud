@@ -24,8 +24,8 @@ const formatter = customNumberFormatter()
 const Details = ({ quantity }: { quantity: number }) => {
   return (
     <DetailsWrapper>
-      <Typography variant="Text xs/Regular">RFQ DETAILS</Typography>
-      <Typography variant="Text xs/Regular">
+      <Typography variant="Text sm/Regular">RFQ DETAILS</Typography>
+      <Typography variant="Text sm/Regular">
         QTY: {formatter(quantity)}
       </Typography>
     </DetailsWrapper>
@@ -97,7 +97,11 @@ export const Card = ({ id, highlight }: { id: number; highlight: boolean }) => {
   const accepted = state === RfqState.Closed
 
   return (
-    <CardContainer live={state === RfqState.Open} highlight={highlight}>
+    <CardContainer
+      live={state === RfqState.Open}
+      highlight={highlight}
+      direction={direction}
+    >
       <CardHeader
         direction={direction}
         instrumentId={instrumentId}

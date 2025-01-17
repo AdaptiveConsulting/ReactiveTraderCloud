@@ -4,6 +4,7 @@ import { map, switchMap } from "rxjs/operators"
 
 import { isBuy } from "@/client/App/Credit/common"
 import { AdaptiveLoader } from "@/client/components/AdaptiveLoader"
+import { Typography } from "@/client/components/Typography"
 import {
   customNumberFormatter,
   DECIMAL_SEPARATOR,
@@ -19,16 +20,13 @@ import { getRfqPayload$, QuoteState, useIsRfq } from "../Rfq/Rfq.state"
 import { useTileCurrencyPair } from "../Tile.context"
 import { sendExecution } from "../Tile.state"
 import {
-  Big,
-  DirectionLabel,
   ExpiredPrice,
   Icon,
-  Pip,
   Price,
   PriceButtonDisabledPlaceholder,
   PriceContainer,
+  PriceTypography,
   QuotePriceLoading,
-  Tenth,
   TradeButton,
   Wrapper,
 } from "./PriceButton.styles"
@@ -118,15 +116,24 @@ export const PriceButtonInner = ({
       data-testid={`${direction}-${currencyPair.symbol}`}
     >
       <Price disabled={disabled}>
-        <DirectionLabel>
+        <Typography
+          variant="Text sm/Regular"
+          color="Colors/Text/text-secondary (700)"
+        >
           {`${direction} ${currencyPair.base}`.toUpperCase()}
-        </DirectionLabel>
+        </Typography>
         <PriceContainer>
-          <Big>{price ? bigFigure : "-"}</Big>
+          <PriceTypography variant="Text sm/Regular">
+            {price ? bigFigure : "-"}
+          </PriceTypography>
           {price && (
             <>
-              <Pip>{pip}</Pip>
-              <Tenth>{tenth}</Tenth>
+              <PriceTypography variant="Display xl/Regular">
+                {pip}
+              </PriceTypography>
+              <PriceTypography variant="Text sm/Regular">
+                {tenth}
+              </PriceTypography>
             </>
           )}
         </PriceContainer>

@@ -10,7 +10,7 @@ const renderComponent = (symbol: string, basePnl: number, maxVal: number) =>
       <PNLBar
         symbol={symbol}
         profitOrLossValue={basePnl}
-        largetProfitOrLossValue={maxVal}
+        largestProfitOrLossValue={maxVal}
       />
     </TestThemeProvider>,
   )

@@ -15,5 +15,6 @@ export const Typography = styled.div<TypographyProps>`
     color ? theme.newTheme.color[color] : "inherit"};
 
   margin-block-end: 0;
-  ${({ allowLineHeight }) => (allowLineHeight ? undefined : `line-height: 1`)};
+  ${({ allowLineHeight }) =>
+    allowLineHeight ? undefined : `line-height: normal`};
 `

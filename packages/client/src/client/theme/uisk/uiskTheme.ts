@@ -96,7 +96,7 @@ export const theme = {
     "Colors/Effects/Shadows/shadow-xl_02": "#13131608",
     "Colors/Effects/Shadows/shadow-skeumorphic-inner": "#1313160d",
     "Colors/Effects/Shadows/shadow-skeumorphic-inner-border": "#13131640",
-    "Colors/Effects/Focus rings/focus-ring": "#2e90fa",
+    "Colors/Effects/Focus rings/focus-ring": "#8184f8",
     "Colors/Effects/Focus rings/focus-ring-error": "#a50e28",
     "Component colors/Utility/Blue/utility-blue-600": "#53b1fd",
     "Component colors/Utility/Blue/utility-blue-700": "#84caff",
@@ -233,10 +233,10 @@ export const theme = {
     "Component colors/Utility/Gray blue/utility-gray-blue-400": "#3e4784",
     "Component colors/Utility/Gray blue/utility-gray-blue-300": "#363f72",
     "Component colors/Components/Tooltips/tooltip-supporting-text": "#d6d6d6",
-    "Component colors/Components/Buttons/Brand/button-brand-bg": "#8184f8",
+    "Component colors/Components/Buttons/Brand/button-brand-bg": "#676ac6",
     "Component colors/Components/Buttons/Brand/button-brand-bg_hover":
       "#4d4f95",
-    "Component colors/Components/Buttons/Brand/button-brand-fg": "#000000",
+    "Component colors/Components/Buttons/Brand/button-brand-fg": "#ffffff",
     "Component colors/Components/Buttons/Brand/button-brand-fg_hover":
       "#ffffff",
     "Component colors/Components/Buttons/Secondary/button-secondary-bg":

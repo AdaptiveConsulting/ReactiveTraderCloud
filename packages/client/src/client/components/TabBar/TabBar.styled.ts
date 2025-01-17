@@ -30,21 +30,32 @@ export const RightSection = styled.ul`
   list-style: none;
 `
 
-export const Tab = styled.button<{ active: boolean; isStatic?: boolean }>`
+const TabBarButton = styled.button<{ active: boolean }>`
   height: 100%;
-  width: ${({ theme }) => theme.newTheme.spacing["9xl"]};
-  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   list-style-type: none;
   text-decoration: none;
-
   background-color: ${({ active, theme }) =>
     active ? theme.newTheme.color["Colors/Background/bg-primary_alt"] : "none"};
+`
+
+export const Tab = styled(TabBarButton)<{
+  isStatic?: boolean
+}>`
+  width: ${({ theme }) => theme.newTheme.spacing["9xl"]};
+  display: flex;
 
   cursor: ${({ isStatic }) => (isStatic ? "unset" : "pointer")};
+
+  &:hover {
+    background-color: ${({ active, theme }) =>
+      active
+        ? "none"
+        : theme.newTheme.color["Colors/Background/bg-primary_hover"]};
+  }
 `
 
 export const DropdownWrapper = styled.div`
@@ -61,15 +72,27 @@ export const DropdownWrapper = styled.div`
   }
 `
 
-export const Action = styled(Tab)<{ size: "sm" | "lg"; disabled?: boolean }>`
+export const Action = styled(TabBarButton)<{
+  size: "sm" | "lg"
+  disabled?: boolean
+}>`
   width: ${({ theme, size }) =>
     size === "sm" ? theme.newTheme.density.md : "auto"};
   display: flex;
   align-items: center;
   line-height: 0;
-
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+
+  svg {
+    fill: ${({ theme }) =>
+      theme.newTheme.color["Colors/Foreground/fg-quinary (400)"]};
+  }
+
   &:hover {
     cursor: ${({ disabled }) => (disabled ? "auto" : "pointer")};
+    svg {
+      fill: ${({ theme }) =>
+        theme.newTheme.color["Colors/Foreground/fg-quinary_hover"]};
+    }
   }
 `

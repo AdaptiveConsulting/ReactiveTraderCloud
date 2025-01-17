@@ -30,10 +30,8 @@ function getBuySellHighlightRowBackgroundColor(
 }
 
 export const QuoteRow = styled(Row)<QuoteRowProps>`
-  height: ${({ theme }) => theme.newTheme.density.md};
-  border-bottom: 1px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-tertiary"]};
-
+  height: ${({ theme }) => theme.newTheme.density.lg};
+  padding: 0 ${({ theme }) => theme.newTheme.spacing.xs};
   background-color: ${({ theme, highlight, direction }) =>
     highlight ? getBuySellHighlightRowBackgroundColor(theme, direction) : null};
 
@@ -42,6 +40,13 @@ export const QuoteRow = styled(Row)<QuoteRowProps>`
       display: ${({ quoteActive }) => (quoteActive ? "block" : null)};
     }
   }
+`
+
+export const Divider = styled.div`
+  height: 1px;
+  margin: 0 ${({ theme }) => theme.newTheme.spacing.xs};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-tertiary"]};
 `
 
 export const QuoteDotWrapper = styled.div`

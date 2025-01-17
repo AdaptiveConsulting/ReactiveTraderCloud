@@ -4,9 +4,10 @@ import styled, { css } from "styled-components"
 import { Typography } from "./Typography"
 
 interface Props {
-  variant: "brand" | "primary" | "warning" | "outline"
+  variant: "brand" | "primary" | "warning" | "outline" | "white-outline"
   size: "xxs" | "xs" | "sm" | "lg"
   disabled?: boolean
+  style?: React.CSSProperties
   onClick: () => void
 }
 
@@ -52,8 +53,12 @@ const primaryStyle = css`
 `
 const outlineStyle = css`
   ${({ theme }) => `
-  color: ${theme.newTheme.color["Component colors/Components/Buttons/Brand/button-brand-bg"]};
+  color: ${theme.newTheme.color["Colors/Text/text-brand-primary (900)"]};
   border: 1px solid ${theme.newTheme.color["Colors/Border/border-brand"]};
+
+  &:hover {
+    opacity: 0.65;
+  }
   `}
 `
 const warningStyle = css`
@@ -67,6 +72,17 @@ const warningStyle = css`
     border: 1px solid ${theme.newTheme.color["Colors/Border/border-warning_subtle"]};
   }
   ${focused}
+`}
+`
+
+const whiteOutlineStyle = css`
+  ${({ theme }) => `
+  color: ${theme.newTheme.color["Colors/Text/text-white"]};
+  border: 1px solid ${theme.newTheme.color["Colors/Text/text-white"]};
+
+  &:hover {
+    opacity: 0.75;
+  }
 `}
 `
 
@@ -101,6 +117,8 @@ const _Button = styled.button<Props>`
         return outlineStyle
       case "warning":
         return warningStyle
+      case "white-outline":
+        return whiteOutlineStyle
     }
   }};
 `

@@ -2699,7 +2699,7 @@ const collection6: UISK_Collection6 = {
         "Colors/Effects/Shadows/shadow-xl_02": "#13131608",
         "Colors/Effects/Shadows/shadow-skeumorphic-inner": "#1313160d",
         "Colors/Effects/Shadows/shadow-skeumorphic-inner-border": "#13131640",
-        "Colors/Effects/Focus rings/focus-ring": "#2e90fa",
+        "Colors/Effects/Focus rings/focus-ring": "#8184f8",
         "Colors/Effects/Focus rings/focus-ring-error": "#a50e28",
         "Component colors/Utility/Blue/utility-blue-600": "#53b1fd",
         "Component colors/Utility/Blue/utility-blue-700": "#84caff",
@@ -2845,10 +2845,10 @@ const collection6: UISK_Collection6 = {
         "Component colors/Utility/Gray blue/utility-gray-blue-300": "#363f72",
         "Component colors/Components/Tooltips/tooltip-supporting-text":
           "#d6d6d6",
-        "Component colors/Components/Buttons/Brand/button-brand-bg": "#8184f8",
+        "Component colors/Components/Buttons/Brand/button-brand-bg": "#676ac6",
         "Component colors/Components/Buttons/Brand/button-brand-bg_hover":
           "#4d4f95",
-        "Component colors/Components/Buttons/Brand/button-brand-fg": "#000000",
+        "Component colors/Components/Buttons/Brand/button-brand-fg": "#ffffff",
         "Component colors/Components/Buttons/Brand/button-brand-fg_hover":
           "#ffffff",
         "Component colors/Components/Buttons/Secondary/button-secondary-bg":
@@ -2982,18 +2982,18 @@ const collection6: UISK_Collection6 = {
         "Colors/Text/text-tertiary_on-brand": "#c0c2fc",
         "Colors/Text/text-quaternary_on-brand": "#4d4f95",
         "Colors/Text/text-brand-tertiary_alt": "#676ac6",
-        "Colors/Border/border-secondary": "#f5f5f5",
+        "Colors/Border/border-secondary": "#e5e5e5",
         "Colors/Border/border-error_subtle": "#d14159",
-        "Colors/Border/border-primary": "#e5e5e5",
-        "Colors/Border/border-brand": "#27284a",
+        "Colors/Border/border-primary": "#d6d6d6",
+        "Colors/Border/border-brand": "#4d4f95",
         "Colors/Border/border-disabled": "#d6d6d6",
         "Colors/Border/border-error": "#a50e28",
         "Colors/Border/border-disabled_subtle": "#e5e5e5",
         "Colors/Border/border-tertiary": "#f5f5f5",
         "Colors/Border/border-brand_alt": "#676ac6",
-        "Colors/Background/bg-primary": "#f5f5f5",
+        "Colors/Background/bg-primary": "#ffffff",
         "Colors/Background/bg-tertiary": "#f5f5f5",
-        "Colors/Background/bg-brand-primary": "#e6e6fe",
+        "Colors/Background/bg-brand-primary": "#676ac6",
         "Colors/Background/bg-error-secondary": "#f3d0d6",
         "Colors/Background/bg-warning-primary": "#fffaeb",
         "Colors/Background/bg-warning-secondary": "#fef0c7",
@@ -3014,7 +3014,7 @@ const collection6: UISK_Collection6 = {
         "Colors/Background/bg-secondary": "#f7f7f7",
         "Colors/Background/bg-disabled_subtle": "#f7f7f7",
         "Colors/Background/bg-quaternary": "#e5e5e5",
-        "Colors/Background/bg-primary_alt": "#ffffff",
+        "Colors/Background/bg-primary_alt": "#fcfcfc",
         "Colors/Background/bg-brand-primary_alt": "#e6e6fe",
         "Colors/Background/bg-secondary_alt": "#f7f7f7",
         "Colors/Background/bg-overlay": "#0f0f0f",
@@ -3203,10 +3203,10 @@ const collection6: UISK_Collection6 = {
         "Component colors/Utility/Gray blue/utility-gray-blue-300": "#b3b8db",
         "Component colors/Components/Tooltips/tooltip-supporting-text":
           "#d6d6d6",
-        "Component colors/Components/Buttons/Brand/button-brand-bg": "#27284a",
+        "Component colors/Components/Buttons/Brand/button-brand-bg": "#676ac6",
         "Component colors/Components/Buttons/Brand/button-brand-bg_hover":
           "#4d4f95",
-        "Component colors/Components/Buttons/Brand/button-brand-fg": "#000000",
+        "Component colors/Components/Buttons/Brand/button-brand-fg": "#ffffff",
         "Component colors/Components/Buttons/Brand/button-brand-fg_hover":
           "#ffffff",
         "Component colors/Components/Buttons/Secondary/button-secondary-bg":
