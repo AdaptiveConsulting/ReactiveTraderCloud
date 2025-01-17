@@ -2,66 +2,67 @@ import { Meta } from "@storybook/react"
 import styled from "styled-components"
 
 import { PnLInner } from "./PnL"
+import { PNLBarProps } from "./PNLBar"
 
 export default {
   title: "Analytics/PnL",
   component: PnLInner,
 } as Meta<typeof PnLInner>
 
-const data = [
+const data: (PNLBarProps & { key: string })[] = [
   {
     key: "NZDUSD",
     symbol: "NZDUSD",
-    basePnl: -849.4217864553628,
-    maxVal: 1785.9428620191757,
+    profitOrLossValue: -849.4217864553628,
+    largestProfitOrLossValue: 1785.9428620191757,
   },
   {
     key: "USDJPY",
     symbol: "USDJPY",
-    basePnl: -782.8171632662416,
-    maxVal: 1785.9428620191757,
+    profitOrLossValue: -782.8171632662416,
+    largestProfitOrLossValue: 1785.9428620191757,
   },
   {
     key: "GBPJPY",
     symbol: "GBPJPY",
-    basePnl: 0,
-    maxVal: 1785.9428620191757,
+    profitOrLossValue: 0,
+    largestProfitOrLossValue: 1785.9428620191757,
   },
   {
     key: "EURJPY",
     symbol: "EURJPY",
-    basePnl: 165.24650467711035,
-    maxVal: 1785.9428620191757,
+    profitOrLossValue: 165.24650467711035,
+    largestProfitOrLossValue: 1785.9428620191757,
   },
   {
     key: "EURCAD",
     symbol: "EURCAD",
-    basePnl: 0,
-    maxVal: 1785.9428620191757,
+    profitOrLossValue: 0,
+    largestProfitOrLossValue: 1785.9428620191757,
   },
   {
     key: "EURUSD",
     symbol: "EURUSD",
-    basePnl: 0,
-    maxVal: 1785.9428620191757,
+    profitOrLossValue: 0,
+    largestProfitOrLossValue: 1785.9428620191757,
   },
   {
     key: "EURAUD",
     symbol: "EURAUD",
-    basePnl: 0,
-    maxVal: 1785.9428620191757,
+    profitOrLossValue: 0,
+    largestProfitOrLossValue: 1785.9428620191757,
   },
   {
     key: "GBPUSD",
     symbol: "GBPUSD",
-    basePnl: -1785.9428620191757,
-    maxVal: 1785.9428620191757,
+    profitOrLossValue: -1785.9428620191757,
+    largestProfitOrLossValue: 1785.9428620191757,
   },
   {
     key: "AUDUSD",
     symbol: "AUDUSD",
-    basePnl: 0,
-    maxVal: 1785.9428620191757,
+    profitOrLossValue: 0,
+    largestProfitOrLossValue: 1785.9428620191757,
   },
 ]
 

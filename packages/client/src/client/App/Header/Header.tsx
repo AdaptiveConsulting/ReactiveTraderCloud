@@ -1,7 +1,9 @@
 import { ReactNode, useState } from "react"
 
+import { Line } from "@/client/components/Line"
 import Logo from "@/client/components/Logo"
 import { WEBSITE } from "@/client/constants"
+import { isMobileDevice } from "@/client/utils"
 
 import {
   AppHeaderRoot,
@@ -38,6 +40,23 @@ export const defaultLogo = (
   </LogoWrapper>
 )
 
+const symbolLogo = (
+  <LogoWrapper>
+    <Logo
+      size={1.75}
+      role="button"
+      onClick={() => {
+        window.gtag("event", "outbound_click", {
+          destination: WEBSITE,
+        })
+        window.open(WEBSITE)
+      }}
+      withText={false}
+      data-qa="header__root-logo"
+    />
+  </LogoWrapper>
+)
+
 export const defaultFiller = <Fill aria-hidden={true} />
 
 const DefaultSwitches = () => {
@@ -67,9 +86,9 @@ const Header = ({ logo, filler, controls, switches }: HeaderProps) => {
   return (
     <AppHeaderWrapper role="banner" aria-label="Reactive Trader Header">
       <AppHeaderRoot>
-        {logo || defaultLogo}
-        {filler || defaultFiller}
-
+        {logo || (isMobileDevice ? symbolLogo : defaultLogo)}
+        <Line height="4xl" />
+        {filler}
         <HeaderNav>
           {switches || <DefaultSwitches />}
           {controls || defaultControls}

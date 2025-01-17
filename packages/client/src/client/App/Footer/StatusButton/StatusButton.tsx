@@ -1,7 +1,9 @@
+import { Gap } from "@/client/components/Gap"
+import { Typography } from "@/client/components/Typography"
 import { ConnectionStatus, useConnectionStatus } from "@/services/connection"
 
-import { Button, Root } from "../common-styles"
-import { StatusCircle, StatusLabel } from "./styled"
+import { Root } from "../common-styles"
+import { StatusCircle } from "./styled"
 
 export const StatusButtonInner = ({ status }: { status: ConnectionStatus }) => {
   const appStatus =
@@ -12,12 +14,11 @@ export const StatusButtonInner = ({ status }: { status: ConnectionStatus }) => {
 
   return (
     <Root>
-      <Button disabled>
-        <StatusCircle status={appStatus} />
-        <StatusLabel>
-          {appStatus[0].toUpperCase() + appStatus.slice(1).toLowerCase()}
-        </StatusLabel>
-      </Button>
+      <StatusCircle status={appStatus} />
+      <Gap width="xs" />
+      <Typography variant="Text sm/Regular">
+        {appStatus[0].toUpperCase() + appStatus.slice(1).toLowerCase()}
+      </Typography>
     </Root>
   )
 }

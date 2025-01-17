@@ -63,16 +63,13 @@ test.describe("Credit", () => {
         .first()
         .click()
 
-      const quantity = newRfqPage.getByTestId("quantity")
+      const quantity = newRfqPage.getByLabel("Quantity (000)")
       await quantity.pressSequentially("2")
       await quantity.blur()
 
-      await newRfqPage.locator("span").getByText(/All/).click()
+      await newRfqPage.getByLabel(/All/).click()
 
-      await newRfqPage
-        .locator("span")
-        .getByText(/Adaptive Bank/)
-        .click()
+      await newRfqPage.getByLabel(/Adaptive Bank/).click()
 
       await newRfqPage
         .locator("button")
@@ -83,7 +80,7 @@ test.describe("Credit", () => {
       await rfqsPage.getByText(/Live/).first().click()
 
       // Wait for first quote response
-      await expect(firstQuote).not.toContainText("Awaiting response", {
+      await expect(firstQuote).not.toContainText(/Awaiting response/, {
         timeout: ElementTimeout.LONG,
       })
 
@@ -100,7 +97,7 @@ test.describe("Credit", () => {
         },
       )
 
-      await rfqsPage.locator("li").getByText(/All/).nth(0).click()
+      await rfqsPage.locator("div").getByText(/All/).nth(0).click()
       const btnTxt = await rfqsPage
         .getByTestId("view-trade")
         .first()
@@ -128,13 +125,10 @@ test.describe("Credit", () => {
         .first()
         .click()
 
-      const quantity = newRfqPage.getByTestId("quantity")
+      const quantity = newRfqPage.getByLabel("Quantity (000)")
       await quantity.pressSequentially("2")
 
-      await newRfqPage
-        .locator("span")
-        .getByText(/Adaptive Bank/)
-        .click()
+      await newRfqPage.getByLabel(/Adaptive Bank/).click()
 
       const pagePromise = context.waitForEvent("page", {
         predicate: (page) => page.url().includes("credit-sellside"),
@@ -163,13 +157,10 @@ test.describe("Credit", () => {
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage.getByTestId("search-result-item").nth(5).click()
 
-      const quantity = newRfqPage.getByTestId("quantity")
+      const quantity = newRfqPage.getByLabel("Quantity (000)")
       await quantity.pressSequentially("2")
 
-      await newRfqPage
-        .locator("span")
-        .getByText(/Adaptive Bank/)
-        .click()
+      await newRfqPage.getByLabel(/Adaptive Bank/).click()
 
       const pagePromise = context.waitForEvent("page", {
         predicate: (page) => page.url().includes("credit-sellside"),

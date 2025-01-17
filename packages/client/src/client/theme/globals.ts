@@ -49,10 +49,12 @@ import { createGlobalStyle } from "styled-components"
 // white status bar with white text when switching to light theme
 export default createGlobalStyle`
   :root, body {
-    font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Work Sans', 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 16px;
     line-height: 1rem;
     text-rendering: geometricPrecision;
+
+    color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-primary (900)"]};
 
     .tearOff {
       box-shadow: 1px 4px 10px 0px rgba(0,0,0,0.3);

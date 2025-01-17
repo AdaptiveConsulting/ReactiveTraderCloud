@@ -1,15 +1,17 @@
 import styled from "styled-components"
 
-import { AccentPaletteMap } from "@/client/theme"
+import { FlexBox } from "@/client/components/FlexBox"
+import { Line } from "@/client/components/Line"
 
 const FlexDiv = styled.div`
   display: flex;
   flex-direction: column;
 `
 
-export const BarChart = styled.div`
-  display: flex;
-  backface-visibility: hidden;
+export const BarContainer = styled(FlexBox)`
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: ${({ theme }) => theme.newTheme.spacing.md};
 `
 
 export const PriceContainer = styled(FlexDiv).attrs(
@@ -21,27 +23,15 @@ export const PriceContainer = styled(FlexDiv).attrs(
 )<{ distance: number }>`
   width: 100%;
   transition: transform 0.5s;
-  font-size: 11px;
   transition-timing-function: ${({ theme }) => theme.motion.easing};
 `
 
-export const Offset = styled.div`
-  flex: 0 1 20px;
-`
-export const OriginTickWrapper = styled(FlexDiv)`
-  width: 100%;
-  height: 20px;
-`
-
 export const PriceLabel = styled.div<{
-  color: keyof AccentPaletteMap
   distance: number
 }>`
   align-self: center;
-  height: 1.1rem;
+  padding-bottom: ${({ theme }) => theme.newTheme.spacing.sm};
   transition: transform 0.2s;
-  color: ${({ theme, color }) => theme.accents[color].base};
-  padding-bottom: 0px;
 
   &:hover {
     transform: scale(1.64);
@@ -50,35 +40,42 @@ export const PriceLabel = styled.div<{
       12px;
   }
 `
-export const DiamondShape = styled.div<{
-  color: keyof AccentPaletteMap
+const barLength = 180
+const indicatorWidth = 5
+
+export const PriceIndicator = styled.div<{
+  distance: number
 }>`
-  align-self: center;
-  width: 6px;
-  height: 6px;
-  transform: rotate(45deg);
-  background-color: ${({ theme, color }) => theme.accents[color].base};
+  height: 100%;
+  width: ${indicatorWidth}px;
+
+  transition: transform 0.5s;
+  transform: translate(
+    ${({ distance }) => {
+      const translationToCenterOfBar = barLength / 2 - indicatorWidth / 2
+      const translationDistanceAlongBar =
+        distance === -Infinity ? 0 : (barLength / 100) * distance
+      return `calc(${translationToCenterOfBar}px + ${translationDistanceAlongBar}px)`
+    }}
+  );
+
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Border/border-buy"]};
 `
-export const Label = styled.div`
-  flex: 0 0 60px;
-  align-self: center;
-  opacity: 0.6;
-  font-size: 11px;
-  color: ${({ theme }) => theme.core.textColor};
-`
+
 export const BarPriceContainer = styled.div`
-  width: 100%;
+  width: ${barLength}px;
 `
-const bgColor = "#444c5f"
+
 export const Bar = styled.div`
-  background-color: ${bgColor};
-  height: 0.125rem;
+  position: relative;
   width: 100%;
-  border: 1px solid ${bgColor};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-tertiary"]};
+  height: ${indicatorWidth}px;
 `
-export const OriginTick = styled.div`
-  width: 1.6px;
-  height: 5px;
-  background-color: ${bgColor};
-  border: 1px solid ${bgColor};
+
+export const CenterLine = styled(Line)`
+  position: absolute;
+  left: ${barLength / 2 - 1}px;
 `

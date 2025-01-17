@@ -1,7 +1,10 @@
 import { format } from "date-fns"
-import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa"
+import { FaExclamationTriangle } from "react-icons/fa"
 import styled from "styled-components"
 
+import { Button } from "@/client/components/Button"
+import { CheckCircle } from "@/client/components/icons/CheckCircle"
+import { Typography } from "@/client/components/Typography"
 import { formatNumber } from "@/client/utils"
 import { Direction } from "@/generated/TradingGateway"
 import { CurrencyPair } from "@/services/currencyPairs"
@@ -15,40 +18,33 @@ import {
   TileStates,
   useTileState,
 } from "../Tile.state"
-import Pending from "./Pending"
+import { Pending } from "./Pending"
 import {
-  AssetText,
-  Button,
   CurrencyPairDiv,
   ExecutionStatusAlertContainer,
-  TradeIdDiv,
-  TradeMessageDiv,
 } from "./Response.styles"
 
 const BackgroundColored = styled.span`
-  background-color: ${({ theme }) => theme.white};
-  color: ${({ theme }) => theme.colors.accents.positive.base};
-  font-weight: 900;
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-success-primary (600)"]};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Foreground/fg-white"]};
+  font-weight: 700;
+  padding: 0 ${({ theme }) => theme.newTheme.spacing.xs};
 `
 const BoldSpan = styled.span`
-  font-weight: 900;
+  font-weight: 700;
 `
 const BoldItalicSpan = styled.span`
-  font-weight: 900;
+  font-weight: 700;
   font-style: italic;
 `
 
-const AlignedCheck = styled(FaCheckCircle)`
-  padding-right: 4px;
-  vertical-align: middle;
-  font-size: 1.5em;
+const AlignedCheck = styled(CheckCircle)`
+  fill: ${({ theme }) => theme.newTheme.color["Colors/Text/text-white"]};
 `
 
-const AlignedTriangle = styled(FaExclamationTriangle)`
-  padding-right: 4px;
-  vertical-align: middle;
-  font-size: 1.5em;
-`
+const AlignedTriangle = styled(FaExclamationTriangle)``
 
 const pastTenseDirection: Record<Direction, string> = {
   [Direction.Buy]: "bought",
@@ -81,13 +77,10 @@ const getExecutionMessage = (
   return (
     <>
       {`You ${pastTenseDirection[direction]} `}
-      <BackgroundColored>{`${base} ${formatNumber(
-        notional,
-      )}`}</BackgroundColored>
+      <BackgroundColored>{`${base} ${formatNumber(notional)}`}</BackgroundColored>
       {` at a rate of `}
       <BackgroundColored>{`${spotRate}`}</BackgroundColored>
       {` for `}
-      <br></br>
       <BoldItalicSpan>
         {terms} {formatNumber(notional * spotRate)}
       </BoldItalicSpan>
@@ -115,26 +108,36 @@ const ExecutionMessage = ({
   const isSuccessful =
     tileState.status === TileStates.Finished &&
     tileState.trade.status === ExecutionStatus.Done
+
   return (
     <ExecutionStatusAlertContainer state={tileState} role="dialog">
       <CurrencyPairDiv>
         {isSuccessful ? <AlignedCheck /> : <AlignedTriangle />}
-        <AssetText>
+        <Typography variant="Text xl/Bold">
           {base}/{terms}
-        </AssetText>
+        </Typography>
       </CurrencyPairDiv>
-      <TradeIdDiv>
+      <Typography variant="Text lg/Bold">
         {tradeId && (
           <>
             Trade ID: <span data-testid="trade-id">{tradeId}</span>
           </>
         )}
-      </TradeIdDiv>
-      <TradeMessageDiv role="alert">
+      </Typography>
+      <Typography
+        variant="Text lg/Regular"
+        color="Colors/Text/text-white"
+        role="alert"
+      >
         {getExecutionMessage(tileState, base, terms)}
-      </TradeMessageDiv>
+      </Typography>
       {!isWaiting && (
-        <Button onClick={onClose} success={isSuccessful}>
+        <Button
+          variant="white-outline"
+          size="xs"
+          onClick={onClose}
+          style={{ marginTop: "auto" }}
+        >
           Close
         </Button>
       )}
@@ -146,6 +149,7 @@ export const executionResponse$ = getTileState$
 export const ExecutionResponse = () => {
   const currencyPair = useTileCurrencyPair()
   const tileState = useTileState(currencyPair.symbol)
+
   const props = {
     currencyPair,
     tileState,

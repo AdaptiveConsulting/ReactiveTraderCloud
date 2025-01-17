@@ -1,10 +1,9 @@
-import { rgba } from "polished"
 import { createGlobalStyle, withTheme } from "styled-components"
 
 import { Theme } from "./themes"
 
 const getColor = (props: { theme: Theme }) =>
-  rgba(props.theme.secondary[3], 0.2)
+  props.theme.newTheme.color["Colors/Background/bg-tertiary"]
 
 export const GlobalScrollbarStyle = withTheme(createGlobalStyle`
 body, #root {
@@ -22,7 +21,6 @@ body ::-webkit-scrollbar-thumb {
 
 body {
   scrollbar-color: ${getColor} transparent;
-  background-color: ${({ theme }) => theme.core.darkBackground};
 }
 
 body ::-webkit-scrollbar-thumb {

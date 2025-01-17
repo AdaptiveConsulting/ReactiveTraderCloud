@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react"
-import { FaFilter, FaTimes } from "react-icons/fa"
+import { FaTimes } from "react-icons/fa"
 import styled from "styled-components"
+
+import { FilterEdit } from "@/client/components/icons/FilterEdit"
 
 import { onQuickFilterInput } from "../TradesState"
 
@@ -13,25 +15,23 @@ const QuickFilterStyle = styled("div")`
 `
 
 const QuickFilterInput = styled("input")`
-  opacity: 0.59;
-  border: none;
-  color: ${({ theme }) => theme.core.textColor};
-  box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.core.textColor};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-primary (900)"]};
   width: 100%;
-  font-size: 0.75rem;
   height: 1.25rem;
-  padding: 0 0.875rem 0 0.375rem;
+  padding: 0 ${({ theme }) => theme.newTheme.spacing.sm};
   outline: none;
   user-select: text;
+  border-bottom: 1px solid
+    ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-brand-primary (900)"]};
+  opacity: 0.5;
 
   &:hover {
     opacity: 1;
-    box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.accents.primary.lighter};
   }
 
   &:focus {
-    box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.accents.primary.base};
-    color: ${({ theme }) => theme.core.textColor};
     opacity: 1;
   }
 
@@ -42,21 +42,24 @@ const QuickFilterInput = styled("input")`
 `
 
 const QuickFilterIcon = styled("div")`
-  width: 0.875rem;
-  margin: 0 0.25rem;
-  opacity: 0.59;
   cursor: pointer;
+
+  svg {
+    fill: ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-quaternary (500)"]};
+  }
 `
 
 const QuickFilterClearIcon = styled("i")`
   width: 0.6875rem;
   position: absolute;
-  right: 0.75rem;
+  right: 0;
 
   i {
     opacity: 0.59;
     cursor: pointer;
-    color: ${({ theme }) => theme.core.textColor};
+    color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-primary (900)"]};
   }
 `
 
@@ -74,7 +77,7 @@ export const QuickFilter = () => {
       aria-label="Search by text across all trade fields"
     >
       <QuickFilterIcon onClick={() => quickFilterInput.current?.focus()}>
-        <FaFilter aria-hidden="true" />
+        <FilterEdit />
       </QuickFilterIcon>
       <QuickFilterInput
         ref={quickFilterInput}

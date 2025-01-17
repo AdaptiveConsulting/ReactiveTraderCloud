@@ -1,4 +1,4 @@
-import styled, { DefaultTheme } from "styled-components"
+import styled from "styled-components"
 
 import { OverlayDiv } from "@/client/components/OverlayDiv"
 import { ExecutionStatus } from "@/services/executions"
@@ -12,63 +12,33 @@ export const ExecutionStatusAlertContainer = styled(OverlayDiv)<{
     switch (state.status) {
       case TileStates.Finished:
         return state.trade.status === ExecutionStatus.Done
-          ? theme.colors.accents.positive.darker
-          : theme.colors.accents.negative.darker
+          ? theme.newTheme.color["Colors/Background/bg-success-primary"]
+          : theme.newTheme.color["Colors/Background/bg-error-primary"]
       case TileStates.TooLong:
-        return theme.colors.accents.aware.darker
+        return theme.newTheme.color["Colors/Background/bg-warning-primary"]
       case TileStates.Timeout:
       case TileStates.CreditExceeded:
-        return theme.colors.accents.negative.darker
+        return theme.newTheme.color["Colors/Background/bg-error-primary"]
       default:
         return ""
     }
   }};
   display: flex;
   flex-direction: column;
-  font-weight: bolder;
-  justify-content: space-evenly;
-  color: ${({ theme }) => theme.white};
+  gap: ${({ theme }) => theme.newTheme.spacing.sm};
+  padding: ${({ theme }) => theme.newTheme.spacing.xl}
+    ${({ theme }) => theme.newTheme.spacing.lg};
+  padding-bottom: ${({ theme }) => theme.newTheme.spacing.md};
   // Solution to stack flex child ontop of another, height is not respected in safari
   // margin-left: -100%;
   position: absolute;
 `
 
-export const TradeIdDiv = styled.div`
-  margin: 0 1.25rem;
-  text-align: center;
-  font-weight: 900;
-  font-size: 0.9rem;
-`
-
-export const TradeMessageDiv = styled.div`
-  font-size: 0.8rem;
-  line-height: 1.5rem;
-  margin: 0 1.25rem;
-  display: -webkit-box;
-  -webkit-box-pack: center;
-  -webkit-box-align: center;
-`
-
-export const Button = styled("button")<{
-  success: boolean
-  theme: DefaultTheme
-}>`
-  background-color: ${({ success, theme }) =>
-    success ? theme.accents.positive.base : theme.accents.negative.base};
-  border-radius: 2rem;
-  margin: 0 auto;
-  padding: 0.5rem 0;
-  text-align: center;
-  width: 15%;
-  font-size: 0.8rem;
-`
-
 export const CurrencyPairDiv = styled.div`
-  margin: 0 1.25rem;
-  font-weight: 900;
-  font-size: 0.9rem;
-`
-
-export const AssetText = styled.span`
-  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.newTheme.spacing.sm};
+  svg {
+    fill: ${({ theme }) => theme.newTheme.color["Colors/Text/text-white"]};
+  }
 `

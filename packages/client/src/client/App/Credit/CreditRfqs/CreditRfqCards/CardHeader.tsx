@@ -1,41 +1,49 @@
 import { memo } from "react"
 
-import { Direction, RfqState } from "@/generated/TradingGateway"
+import { FlexBox } from "@/client/components/FlexBox"
+import { Typography } from "@/client/components/Typography"
+import { Direction } from "@/generated/TradingGateway"
 import { useCreditInstrumentById } from "@/services/credit"
 
 import {
   CusipWithBenchmark,
-  DirectionContainer,
   DirectionLabel,
   InstrumentLabelContainer,
-  InstrumentName,
-  isRfqTerminated,
+  isBuy,
 } from "../../common"
 
 interface CardHeaderProps {
   direction: Direction
   instrumentId: number
-  rfqState: RfqState
+  terminated: boolean
+  accepted: boolean
 }
 
 export const CardHeader = memo(function CardHeader({
   direction,
   instrumentId,
-  rfqState,
+  terminated,
+  accepted,
 }: CardHeaderProps) {
   const instrument = useCreditInstrumentById(instrumentId)
-  const terminated = isRfqTerminated(rfqState)
-  const accepted = rfqState === RfqState.Closed
 
   return (
-    <DirectionContainer direction={direction} terminated={terminated}>
-      {direction === Direction.Buy && (
+    <FlexBox>
+      {isBuy(direction) && (
         <DirectionLabel direction={direction} terminated={terminated}>
-          <div>YOU {accepted ? "BOUGHT" : "BUY"}</div>
+          <Typography
+            variant="Text sm/Medium"
+            color={terminated ? undefined : "Colors/Text/text-white"}
+            allowLineHeight
+          >
+            You {accepted ? "Bought" : "Buy"}
+          </Typography>
         </DirectionLabel>
       )}
-      <InstrumentLabelContainer direction={direction} terminated={terminated}>
-        <InstrumentName>{instrument?.name ?? "No name found"}</InstrumentName>
+      <InstrumentLabelContainer terminated={terminated}>
+        <Typography variant="Text sm/Medium">
+          {instrument?.name ?? "No name found"}
+        </Typography>
         <CusipWithBenchmark
           cusip={instrument?.cusip}
           benchmark={instrument?.benchmark}
@@ -43,9 +51,15 @@ export const CardHeader = memo(function CardHeader({
       </InstrumentLabelContainer>
       {direction === Direction.Sell && (
         <DirectionLabel direction={direction} terminated={terminated}>
-          <div>YOU {accepted ? "SOLD" : "SELL"}</div>
+          <Typography
+            variant="Text sm/Medium"
+            color={terminated ? undefined : "Colors/Text/text-white"}
+            allowLineHeight
+          >
+            You {accepted ? "Sold" : "Sell"}
+          </Typography>
         </DirectionLabel>
       )}
-    </DirectionContainer>
+    </FlexBox>
   )
 })

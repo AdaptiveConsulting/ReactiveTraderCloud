@@ -4,8 +4,10 @@ import { forwardRef, useRef } from "react"
 import { map } from "rxjs/operators"
 import styled from "styled-components"
 
+import { FlexBox } from "@/client/components/FlexBox"
 import { PopInIcon } from "@/client/components/icons/PopInIcon"
 import { PopOutIcon } from "@/client/components/icons/PopOutIcon"
+import { Typography } from "@/client/components/Typography"
 import { CurrencyPair } from "@/services/currencyPairs"
 import { getPrice$ } from "@/services/prices"
 
@@ -13,31 +15,35 @@ import { tearOut } from "../TearOut/state"
 import { useTileContext } from "../Tile.context"
 
 export const DeliveryDate = styled.div`
-  color: ${({ theme }) => theme.core.textColor};
-  font-size: 0.625rem;
-  line-height: 1rem;
-  opacity: 0.59;
-  margin-left: auto;
   transition: margin-right 0.2s;
 `
-const HeaderWrapper = styled.div`
-  display: flex;
-  align-items: center;
+const HeaderWrapper = styled(FlexBox)`
   position: relative;
-`
-const TileSymbol = styled.div`
-  color: ${({ theme }) => theme.core.textColor};
-  font-size: 0.8125rem;
-  line-height: 1rem;
+  justify-content: space-between;
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary"]};
+  padding: ${({ theme }) =>
+    `${theme.newTheme.spacing.md} ${theme.newTheme.spacing["3xl"]} `};
+  padding-left: ${({ theme }) => theme.newTheme.spacing.md};
+  padding-right: ${({ theme }) => theme.newTheme.spacing.md};
 `
 export const HeaderAction = styled.button`
   position: absolute;
-  right: -4px;
-  top: -5px;
+  right: 6px;
+  top: 6px;
   opacity: 0;
   transition: opacity 0.2s;
 
+  svg {
+    fill: ${({ theme }) =>
+      theme.newTheme.color["Colors/Foreground/fg-quinary (400)"]};
+  }
+
   &:hover {
+    svg {
+      fill: ${({ theme }) =>
+        theme.newTheme.color["Colors/Foreground/fg-quinary_hover"]};
+    }
     .tear-out-hover-state {
       fill: #5f94f5;
     }
@@ -71,10 +77,22 @@ export const HeaderInner = forwardRef<HTMLDivElement, HeaderProps>(
 
     return (
       <HeaderWrapper ref={ref}>
-        <TileSymbol data-qa="tile-header__tile-symbol">
+        <Typography
+          variant="Text sm/Regular"
+          color="Colors/Text/text-tertiary (600)"
+          data-qa="tile-header__tile-symbol"
+        >
           {base}/{terms}
-        </TileSymbol>
-        <DeliveryDate data-qa="tile-header__delivery-date">{date}</DeliveryDate>
+        </Typography>
+        <DeliveryDate>
+          <Typography
+            variant="Text sm/Regular"
+            color="Colors/Text/text-tertiary (600)"
+            data-qa="tile-header__delivery-date"
+          >
+            {date}
+          </Typography>
+        </DeliveryDate>
         {canTearOut && (
           <HeaderAction
             onClick={onClick}

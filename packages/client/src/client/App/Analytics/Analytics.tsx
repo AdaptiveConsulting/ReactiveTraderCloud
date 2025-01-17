@@ -1,26 +1,25 @@
-import { lazy, Suspense, useRef } from "react"
+import { lazy, useRef } from "react"
 import styled from "styled-components"
 
+import { RegionWrapper } from "@/client/components/layout/Region"
 import { Loader } from "@/client/components/Loader"
 import { useHasItBeenVisible } from "@/client/utils/useHasItBeenVisible"
 import { analytics$ } from "@/services/analytics"
 
 const AnalyticsCore = lazy(() => import("./AnalyticsCore"))
 
-const AnalyticsWrapper = styled.div<{ hideIfMatches?: string | null }>`
-  height: 100%;
-  flex: 0 0 371px;
-  padding: 0.5rem 1rem 0.5rem 0;
-  user-select: none;
-  overflow: hidden;
-  background: ${({ theme }) => theme.core.darkBackground};
-
+const AnalyticsWrapper = styled(RegionWrapper)<{
+  hideIfMatches?: string | null
+}>`
+  border-left: solid
+    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-primary"]}
+    ${({ theme }) => theme.newTheme.spacing.sm};
   ${({ hideIfMatches }) =>
     hideIfMatches
       ? ` @media ${hideIfMatches} {
        display: none;
        } `
-      : ""}
+      : ""};
 `
 
 analytics$.subscribe()
@@ -42,14 +41,8 @@ export const Analytics = ({ hideIfMatches = "(max-width: 750px)" }: Props) => {
   const shouldMountAnalytics = useHasItBeenVisible(ref)
 
   return (
-    <AnalyticsWrapper ref={ref} hideIfMatches={hideIfMatches}>
-      <Suspense fallback={loader}>
-        {shouldMountAnalytics ? (
-          <AnalyticsCore>{loader}</AnalyticsCore>
-        ) : (
-          loader
-        )}
-      </Suspense>
+    <AnalyticsWrapper ref={ref} hideIfMatches={hideIfMatches} fallback={loader}>
+      {shouldMountAnalytics ? <AnalyticsCore>{loader}</AnalyticsCore> : loader}
     </AnalyticsWrapper>
   )
 }

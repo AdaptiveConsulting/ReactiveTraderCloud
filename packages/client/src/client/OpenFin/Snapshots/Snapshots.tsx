@@ -1,6 +1,8 @@
 import OpenFin from "@openfin/core"
 import { useState } from "react"
 
+import { Button } from "@/client/components/Button"
+
 import {
   applySnapshotFromStorage,
   AppName,
@@ -9,7 +11,6 @@ import {
   useAppNameForSnapshots,
 } from "../utils/layout"
 import {
-  Button,
   Container,
   Empty,
   Entry,
@@ -100,7 +101,9 @@ const SnapshotForm = ({ onSubmit }: FormProps) => {
           placeholder="Name"
         />
 
-        <Button onClick={handleSubmit}>Save</Button>
+        <Button variant="brand" size="sm" onClick={handleSubmit}>
+          Save
+        </Button>
       </Fieldset>
     </Form>
   )

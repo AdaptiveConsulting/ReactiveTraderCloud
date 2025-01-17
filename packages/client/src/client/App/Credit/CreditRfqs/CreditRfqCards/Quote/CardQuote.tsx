@@ -1,7 +1,9 @@
 import { createSignal } from "@react-rxjs/utils"
-import { FaCheckCircle } from "react-icons/fa"
 import { exhaustMap } from "rxjs/operators"
 
+import { CheckCircle } from "@/client/components/icons/CheckCircle"
+import { Typography } from "@/client/components/Typography"
+import { Color } from "@/client/theme/types"
 import {
   ACCEPTED_QUOTE_STATE,
   DealerBody,
@@ -13,10 +15,10 @@ import {
 } from "@/generated/TradingGateway"
 import { acceptCreditQuote$, useQuoteState } from "@/services/credit"
 
-import { hasPrice } from "../../../common"
+import { hasPrice, isBuy } from "../../../common"
 import {
-  AcceptQuoteButton,
-  DealerName,
+  AcceptButton,
+  Divider,
   Price,
   QuoteDot,
   QuoteDotWrapper,
@@ -54,38 +56,102 @@ export const Quote = ({
   const accepted = state.type === ACCEPTED_QUOTE_STATE
   const passed = quote.state.type === PASSED_QUOTE_STATE
 
+  const getDealerColor = (
+    open: boolean,
+    accepted: boolean,
+    priced: boolean,
+    highlight: boolean,
+  ): Color => {
+    if (accepted) {
+      return "Colors/Text/text-success-primary (600)"
+    } else if (open) {
+      if (priced) {
+        return highlight
+          ? "Colors/Text/text-black"
+          : "Colors/Text/text-primary (900)"
+      }
+      return "Colors/Text/text-quaternary (500)"
+    } else {
+      return "Colors/Text/text-disabled"
+    }
+  }
+
+  const getPriceColor = (
+    open: boolean,
+    accepted: boolean,
+    priced: boolean,
+    highlight: boolean,
+    direction: Direction,
+  ): Color => {
+    if (accepted) {
+      return "Colors/Text/text-success-primary (600)"
+    } else if (open) {
+      if (priced) {
+        return highlight
+          ? "Colors/Text/text-primary_alt"
+          : isBuy(direction)
+            ? "Colors/Text/text-buy-primary"
+            : "Colors/Text/text-sell-primary"
+      }
+      return "Colors/Text/text-quaternary (500)"
+    } else {
+      return "Colors/Text/text-disabled"
+    }
+  }
+
   return (
-    <QuoteRow
-      quoteActive={acceptable}
-      highlight={highlight}
-      direction={direction}
-    >
-      {(acceptable || state.type === PASSED_QUOTE_STATE) && rfqOpen && (
-        <QuoteDotWrapper>
-          <QuoteDot
-            highlight={highlight}
-            direction={direction}
-            passed={state.type === PASSED_QUOTE_STATE}
-          />
-        </QuoteDotWrapper>
-      )}
-      <DealerName open={rfqOpen} accepted={accepted} priced={priced}>
-        {dealer?.name ?? "Dealer name not found"}
-      </DealerName>
-      <Price
-        open={rfqOpen}
-        accepted={accepted}
-        passed={passed}
-        priced={priced}
+    <>
+      <QuoteRow
+        quoteActive={acceptable}
         highlight={highlight}
         direction={direction}
       >
-        {accepted && <FaCheckCircle size={16} />}
-        {state.payload}
-      </Price>
-      <AcceptQuoteButton onClick={() => onAcceptRfq(quote.id)}>
-        Accept
-      </AcceptQuoteButton>
-    </QuoteRow>
+        {(acceptable || state.type === PASSED_QUOTE_STATE) && rfqOpen && (
+          <QuoteDotWrapper>
+            <QuoteDot
+              highlight={highlight}
+              direction={direction}
+              passed={state.type === PASSED_QUOTE_STATE}
+            />
+          </QuoteDotWrapper>
+        )}
+        <Typography
+          variant="Text sm/Regular"
+          color={getDealerColor(rfqOpen, accepted, priced, highlight)}
+        >
+          {dealer?.name ?? "Dealer name not found"}
+        </Typography>
+
+        <Price
+          open={rfqOpen}
+          accepted={accepted}
+          passed={passed}
+          priced={priced}
+        >
+          {accepted && <CheckCircle />}
+          <Typography
+            variant={accepted ? "Text sm/Medium" : "Text sm/Regular"}
+            color={getPriceColor(
+              rfqOpen,
+              accepted,
+              priced,
+              highlight,
+              direction,
+            )}
+          >
+            {state.payload}
+          </Typography>
+        </Price>
+
+        <AcceptButton
+          variant="brand"
+          size="xxs"
+          onClick={() => onAcceptRfq(quote.id)}
+        >
+          Accept
+        </AcceptButton>
+      </QuoteRow>
+      <Divider />
+    </>
   )
 }

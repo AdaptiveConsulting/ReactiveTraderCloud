@@ -16,14 +16,17 @@ const LoadableStyle = styled.div<Props>`
   height: 100%;
   min-height: ${({ minHeight = "100%" }) => minHeight};
   border-radius: 0.1875rem;
-  background-color: ${({ theme }) => theme.core.lightBackground};
-  color: ${({ theme }) => theme.core.textColor};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-primary (900)"]};
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  opacity: ${({ opacity }) => opacity ?? "0.59"};
-  fill: ${({ theme }) => theme.core.textColor};
+  opacity: ${({ opacity }) => opacity ?? ".59"};
+  fill: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-primary (900)"]};
 `
 
 export const Loader = ({ size, ...props }: Props) => (

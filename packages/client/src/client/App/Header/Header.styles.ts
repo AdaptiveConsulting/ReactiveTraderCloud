@@ -1,6 +1,8 @@
 import styled from "styled-components"
 
 export const LogoWrapper = styled.div`
+  line-height: 0;
+  padding-right: ${({ theme }) => theme.newTheme.spacing["2xl"]};
   &:hover {
     cursor: pointer;
   }
@@ -11,32 +13,27 @@ export const AppHeaderWrapper = styled.div`
 `
 
 export const AppHeaderRoot = styled.div`
-  width: calc(100% - 2rem);
   max-width: 100%;
-
   height: var(--header-height, 3.5rem);
-
-  margin: 0.25rem 1rem;
+  padding: 0 ${({ theme }) => theme.newTheme.spacing.lg};
 
   display: flex;
-  justify-content: space-between;
   align-items: center;
 
-  background-color: ${({ theme }) => theme.core.darkBackground};
-  border-bottom: 1px solid ${({ theme }) => theme.core.dividerColor};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
   color: ${({ theme }) => theme.core.textColor};
 
   position: relative;
   z-index: 5;
-
-  box-shadow: 0 0.125rem 0 ${({ theme }) => theme.core.darkBackground};
 `
 
 export const HeaderNav = styled.div`
+  flex: 1;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  height: 2rem;
+  padding-left: ${({ theme }) => theme.newTheme.spacing["xl"]};
 `
 
 export const Fill = styled.div`
@@ -52,4 +49,8 @@ export const Fill = styled.div`
   font-size: 0.625rem;
   -webkit-app-region: drag;
   cursor: -webkit-grab;
+`
+
+export const InstrumentTypeSelectorWrapper = styled.div`
+  margin-right: auto;
 `

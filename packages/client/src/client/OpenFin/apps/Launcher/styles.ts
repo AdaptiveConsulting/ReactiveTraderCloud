@@ -27,8 +27,10 @@ export const RootContainer = styled.div`
   height: 100%;
   width: 100%;
   overflow: hidden;
-  background-color: ${({ theme }) => theme.core.darkBackground};
-  color: ${({ theme }) => theme.core.textColor};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-primary (900)"]};
 `
 
 export const RootLauncherContainer = styled(RootContainer)`
@@ -47,7 +49,8 @@ export const LauncherContainer = styled.div<{ showResponsePanel: boolean }>`
   max-height: 56px;
   height: 100%;
   width: 100%;
-  background-color: ${({ theme }) => theme.core.lightBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
   display: flex;
   align-items: center;
   border-radius: ${({ showResponsePanel }) =>
@@ -75,7 +78,7 @@ export const LogoLauncherContainer = styled(IconContainer)`
 
 export const IconTitle = styled.span`
   position: absolute;
-  bottom: 2px;
+  bottom: 0;
   right: 0;
   left: 0;
   font-size: 9px;
@@ -98,16 +101,20 @@ export const SearchButtonContainer = styled(ButtonContainer)<{
   height: auto;
   width: 40px;
   border-radius: 0 3px 3px 0;
-  background-color: ${({ isSearchVisible }) =>
-    isSearchVisible ? "#5f94f5" : ""};
+  background-color: ${({ isSearchVisible, theme }) =>
+    isSearchVisible
+      ? theme.newTheme.color["Colors/Background/bg-secondary"]
+      : ""};
   ${appRegionNoDrag};
 `
 
 export const LogoContainer = styled(IconContainer)`
   width: 50%;
-  background-color: ${({ theme }) => theme.core.lightBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
   .svg-icon {
-    fill: ${({ theme }) => theme.core.textColor};
+    fill: ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-primary (900)"]};
   }
   ${appRegionDrag};
 `
@@ -115,7 +122,8 @@ export const LogoContainer = styled(IconContainer)`
 const controlButtonHoverStyle = css`
   &:hover {
     svg path:last-child {
-      fill: #5f94f5;
+      fill: ${({ theme }) =>
+        theme.newTheme.color["Colors/Background/bg-brand-primary"]};
     }
   }
 `
@@ -171,14 +179,16 @@ export const SearchContainer = styled.div<{ visible?: boolean }>`
 export const Input = styled.input`
   width: 100%;
   height: 45px;
-  background: ${({ theme }) => theme.core.darkBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
   outline: none;
   border-radius: 3px 0 0 3px;
   font-size: 1rem;
   font-weight: 400;
   caret-color: transparent;
   transition: all 0.3s ease;
-  color: ${({ theme }) => theme.textColor};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-primary (900)"]};
 
   &::placeholder {
     opacity: 0.6;
@@ -191,7 +201,8 @@ export const CancelButton = styled.button`
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.core.lightBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
   cursor: pointer;
   z-index: 2;
 
@@ -204,7 +215,8 @@ export const CancelButton = styled.button`
 
 export const Response = styled.div`
   font-size: 1rem;
-  background: ${({ theme }) => theme.core.darkBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
   padding: 0.75rem;
 `
 

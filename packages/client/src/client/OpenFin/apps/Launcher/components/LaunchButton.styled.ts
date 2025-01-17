@@ -8,7 +8,7 @@ export const StyledButton = styled.button<{
 }>`
   width: 40px;
   height: ${({ active }) => (active ? "40px" : "45px")};
-  font-size: 1.5rem;
+
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -18,16 +18,20 @@ export const StyledButton = styled.button<{
   position: relative;
 
   border-radius: 4px;
-  background-color: ${({ iconHoverBackground, active }) =>
-    active ? iconHoverBackground : "inherited"};
+  background-color: ${({ theme, active }) =>
+    active
+      ? theme.newTheme.color["Colors/Background/bg-primary"]
+      : "inherited"};
 
   svg {
-    fill: ${({ iconFill }) => iconFill};
+    fill: ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-primary (900)"]};
   }
 
   &:hover {
     height: 45px;
-    background-color: ${({ iconHoverBackground }) => iconHoverBackground};
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-brand-primary"]};
     justify-content: ${({ title }) =>
       title === "Search ecosystem" ? "center" : "start"};
     padding-top: ${({ title }) =>

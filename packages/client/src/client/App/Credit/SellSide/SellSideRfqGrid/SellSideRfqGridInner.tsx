@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components"
 
-import { colors } from "@/client/theme"
-import { breathing } from "@/client/utils/styling"
+import { Typography } from "@/client/components/Typography"
+import { backgroundFlash, breathing } from "@/client/utils/styling"
 import { Direction } from "@/generated/TradingGateway"
 
 import {
@@ -21,45 +21,52 @@ export const QuoteDot = styled.div`
   height: 4px;
   width: 4px;
   border-radius: 4px;
-  background-color: ${({ theme }) => theme.accents.primary.base};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
   animation: ${breathing} 1s linear infinite;
 `
 
 const TableWrapper = styled.div`
   height: 100%;
-  overflow-x: scroll;
-  overflow-y: scroll;
-  contain: content;
+  overflow-x: auto;
+  overflow-y: auto;
+  contain: strict;
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
 `
+
 const Table = styled.table`
-  background-color: ${({ theme }) => theme.core.lightBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
   position: relative;
   width: 100%;
-  border-collapse: separate;
+  border-collapse: seperate;
   border-spacing: 0;
   .visually-hidden {
     display: none;
   }
 `
 const TableHead = styled.thead`
-  font-size: 10px;
-  text-transform: uppercase;
-  top: 0;
-  position: sticky;
   z-index: 1;
+  height: 20px;
 `
+
 const TableBody = styled.tbody`
   position: relative;
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
   z-index: 0;
 `
 
 const TableHeadRow = styled.tr`
   vertical-align: center;
-  height: 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 `
 
 const highlightBackgroundColor = css`
-  animation: ${({ theme }) => theme.flash} 1s ease-in-out 3;
+  animation: ${backgroundFlash} 1s ease-in-out 3;
 `
 
 const TableBodyRow = styled.tr<{
@@ -67,24 +74,28 @@ const TableBodyRow = styled.tr<{
   highlight?: boolean
   selected?: boolean
 }>`
-  &:nth-child(even) {
-    background-color: ${({ theme }) => theme.core.darkBackground};
-  }
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
   &:hover {
     cursor: pointer;
-    background-color: ${({ theme }) => theme.core.alternateBackground};
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-active"]};
   }
-  height: 24px;
+
+  border-bottom: 1px solid
+    ${({ theme }) => theme.newTheme.color["Colors/Border/border-secondary"]};
+  height: 28px;
   max-height: 24px;
   ${({ selected }) => {
     return (
       selected &&
       css`
-        background-color: ${({ theme }) => theme.primary[3]} !important;
+        background-color: ${({ theme }) =>
+          theme.newTheme.color["Colors/Background/bg-active"]} !important;
       `
     )
   }}
-  ${({ highlight }) => highlight && highlightBackgroundColor}
+  ${({ highlight }) => highlight && highlightBackgroundColor};
 `
 
 const TableBodyCell = styled.td<{
@@ -92,37 +103,38 @@ const TableBodyCell = styled.td<{
   crossed?: boolean
   direction?: Direction | undefined
 }>`
-  font-size: 11px;
   text-align: ${({ align = "left" }) => align};
   padding-right: ${({ align: numeric }) => (numeric ? "1.6rem;" : "0.1rem;")};
   position: relative;
+
   &:before {
     content: " ";
     display: ${({ crossed }) => (crossed ? "block" : "none")};
     position: absolute;
     top: 50%;
     left: 0;
-    border-bottom: 1px solid red;
     width: 100%;
   }
 `
 
 const StatusIndicator = styled.td<{ status: SellSideQuoteState }>`
   width: 18px;
-  padding-right: 4px;
-  border-left: 6px solid
+    padding-right: 4px;
+  border-left: ${({ theme }) => theme.newTheme.spacing.xs} solid
     ${({ status, theme }) => getSellSideStatusColor(status, theme)}};
+  width: 18px;
 `
 
 const StatusIndicatorSpacer = styled.th<{ header?: boolean }>`
-  width: 18px;
   top: 0;
   position: sticky;
-  background-color: ${({ theme, header }) =>
-    header ? theme.core.darkBackground : theme.core.lightBackground};
-  border-bottom: 0.25rem solid
-    ${({ theme, header }) =>
-      header ? theme.core.lightBackground : theme.core.darkBackground};
+  border-left: solid
+    ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-secondary_subtle"]}
+    ${({ theme }) => theme.newTheme.spacing.xs};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
+  z-index: 2;
 `
 
 export interface RfqGridInner {
@@ -184,15 +196,6 @@ export const RfqGridInner = ({ caption }: RfqGridInner) => {
                   return (
                     <TableBodyCell
                       key={field as string}
-                      style={{
-                        color:
-                          field === "direction"
-                            ? (row[field as ColKey] as Direction) ===
-                              Direction.Buy
-                              ? colors.spectrum.uniqueCollections.Buy.base
-                              : colors.spectrum.uniqueCollections.Sell.base
-                            : "inherit",
-                      }}
                       align={
                         columnDefinition.align ??
                         (columnDefinition.filterType === "number"
@@ -200,7 +203,19 @@ export const RfqGridInner = ({ caption }: RfqGridInner) => {
                           : "left")
                       }
                     >
-                      {columnDefinition.valueFormatter?.(value) ?? value}
+                      <Typography
+                        variant="Text sm/Regular"
+                        color={
+                          field === "direction"
+                            ? (row[field as ColKey] as Direction) ===
+                              Direction.Buy
+                              ? "Colors/Text/text-buy-primary"
+                              : "Colors/Text/text-sell-primary"
+                            : "Colors/Text/text-secondary (700)"
+                        }
+                      >
+                        {columnDefinition.valueFormatter?.(value) ?? value}
+                      </Typography>
                     </TableBodyCell>
                   )
                 })}
@@ -213,15 +228,19 @@ export const RfqGridInner = ({ caption }: RfqGridInner) => {
             ))
           ) : (
             <TableBodyRow>
-              <StatusIndicatorSpacer aria-hidden={true} />
               <TableBodyCell colSpan={rfqColFields.length}>
-                No{" "}
-                {filter == SellSideQuotesTab.All
-                  ? ""
-                  : filter === SellSideQuotesTab.Closed
-                    ? "closed "
-                    : "live "}
-                RFQs in queue
+                <Typography
+                  variant="Text sm/Regular"
+                  color="Colors/Text/text-primary (900)"
+                >
+                  No{" "}
+                  {filter == SellSideQuotesTab.All
+                    ? ""
+                    : filter === SellSideQuotesTab.Closed
+                      ? "closed "
+                      : "live "}
+                  RFQs in queue
+                </Typography>
               </TableBodyCell>
             </TableBodyRow>
           )}

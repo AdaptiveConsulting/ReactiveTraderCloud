@@ -11,7 +11,6 @@ export const ModalContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
 `
 
 export const ModalOverlay = styled.div`
@@ -23,12 +22,14 @@ export const ModalOverlay = styled.div`
 
   opacity: 0.75;
 
-  background: ${({ theme }) => theme.overlay.backgroundColor};
+  background: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
 `
 
 export const ModalPanel = styled.div`
-  padding: 1rem 1.5rem;
+  padding: ${({ theme }) => theme.newTheme.spacing["4xl"]};
   margin: 0 1rem;
+  border-radius: ${({ theme }) => theme.newTheme.radius.lg};
 
   width: max-content;
   min-width: 16rem;
@@ -37,18 +38,20 @@ export const ModalPanel = styled.div`
   position: relative;
   z-index: 1;
 
-  background: ${({ theme }) => theme.core.lightBackground};
-  color: ${({ theme }) => theme.core.textColor};
-  border-radius: 0.25rem;
+  background: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary"]};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+
   box-shadow:
     0 1px 2px rgba(0, 0, 0, 0.05),
-    0 1rem 3rem -1rem ${(props) => darken(0.1, props.theme.overlay.backgroundColor)};
+    0 1rem 3rem -1rem ${(props) => darken(0.1, props.theme.newTheme.color["Colors/Background/bg-primary"])};
 `
 
 export const Header = styled.div`
-  font-size: 1rem;
-  line-height: 3rem;
-  box-shadow: 0 1px 0 ${({ theme }) => theme.core.textColor};
+  padding-bottom: ${({ theme }) => theme.newTheme.spacing.xs};
+  border-bottom: 1px solid
+    ${({ theme }) => theme.newTheme.color["Colors/Text/text-primary (900)"]};
 `
 
 export const Body = styled.div`

@@ -24,7 +24,7 @@ const LoginControls = () => (
         <AdaptiveLoader
           ariaLabel="Loading user information"
           size={18}
-          color={"white"}
+          color={"Colors/Foreground/fg-white"}
         />
       </LoadingButton>
     }

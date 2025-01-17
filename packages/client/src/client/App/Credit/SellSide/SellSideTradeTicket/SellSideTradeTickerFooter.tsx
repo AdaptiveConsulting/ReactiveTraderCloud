@@ -2,6 +2,10 @@ import { createSignal } from "@react-rxjs/utils"
 import { FaCheckCircle, FaThumbsDown } from "react-icons/fa"
 import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
 
+import { Button } from "@/client/components/Button"
+import { FlexBox } from "@/client/components/FlexBox"
+import { Gap } from "@/client/components/Gap"
+import { Typography } from "@/client/components/Typography"
 import {
   customNumberFormatter,
   invertDirection,
@@ -9,7 +13,6 @@ import {
 } from "@/client/utils"
 import {
   ACCEPTED_QUOTE_STATE,
-  Direction,
   PASSED_QUOTE_STATE,
   PENDING_WITHOUT_PRICE_QUOTE_STATE,
   QuoteBody,
@@ -21,19 +24,10 @@ import {
   useCreditRfqDetails,
 } from "@/services/credit"
 
-import { CreditRfqTimer, isRfqTerminated } from "../../common"
+import { CreditRfqTimer, isBuy, isRfqTerminated } from "../../common"
 import { price$, usePrice } from "../sellSideState"
 import { useIsFocused } from "../utils/useIsFocused"
-import {
-  Accepted,
-  FooterWrapper,
-  Missed,
-  PassButton,
-  SendQuoteButton,
-  Terminated,
-  TimerWrapper,
-  TradeDetails,
-} from "./SellSideTradeTicketFooter.styles"
+import { FooterWrapper, TimerWrapper } from "./SellSideTradeTicketFooter.styles"
 
 const [sendQuoteId$, sendQuote] = createSignal<number>()
 
@@ -106,12 +100,14 @@ export const SellSideTradeTicketFooter = ({
     <FooterWrapper accepted={accepted} missed={missed}>
       {state === RfqState.Open && !passed && (
         <>
-          <PassButton
+          <Button
+            variant="primary"
+            size="sm"
             disabled={disablePass}
             onClick={() => quote && passQuote(quote.id)}
           >
             Pass
-          </PassButton>
+          </Button>
           <TimerWrapper>
             {state !== RfqState.Open ? null : (
               <CreditRfqTimer
@@ -121,47 +117,51 @@ export const SellSideTradeTicketFooter = ({
               />
             )}
           </TimerWrapper>
-          <SendQuoteButton
+          <Button
+            variant="brand"
+            size="sm"
             ref={clickElementRef}
-            direction={direction}
             onClick={() => quote && sendQuote(quote.id)}
             disabled={disableSend}
           >
             Send Quote
-          </SendQuoteButton>
+          </Button>
         </>
       )}
       {(isRfqTerminated(state) || passed) && (
-        <Terminated>
+        <Typography variant="Text sm/Regular">
           Request{" "}
           {passed
             ? "Passed"
             : state === RfqState.Cancelled
-              ? "Canceled"
+              ? "Cancelled"
               : "Expired"}
-        </Terminated>
+        </Typography>
       )}
       {accepted && (
-        <Accepted>
+        <FlexBox>
           <FaCheckCircle size={11} />
+          <Gap width="sm" />
           <div>
-            <div>Trade Successful</div>
-            <TradeDetails>
-              You {direction === Direction.Buy ? "Bought" : "Sold"}{" "}
-              {formatter(quantity)} {instrument?.name ?? "Unknown Instrument"} @
+            <Typography variant="Text sm/Medium">Trade Successful</Typography>
+            <Typography variant="Text sm/Regular">
+              You {isBuy(direction) ? "Bought" : "Sold"} {formatter(quantity)}{" "}
+              {instrument?.name ?? "Unknown Instrument"} @
               {quote.state?.type === ACCEPTED_QUOTE_STATE
-                ? `$${quote.state.payload}`
+                ? ` ${quote.state.payload}`
                 : null}
-              `
-            </TradeDetails>
+            </Typography>
           </div>
-        </Accepted>
+        </FlexBox>
       )}
       {missed && (
-        <Missed>
+        <Typography
+          variant="Text sm/Regular"
+          color="Colors/Text/text-error-primary (600)"
+        >
           <FaThumbsDown size={11} />
           Traded Away
-        </Missed>
+        </Typography>
       )}
     </FooterWrapper>
   )

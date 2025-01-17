@@ -3,8 +3,8 @@ import { combineKeys } from "@react-rxjs/utils"
 import { useEffect } from "react"
 import { combineLatest, merge } from "rxjs"
 import { map } from "rxjs/operators"
-import styled from "styled-components"
 
+import { GridLayout } from "@/client/components/layout/GridLayout"
 import { currencyPairs$ } from "@/services/currencyPairs"
 
 import { ALL_CURRENCIES, selectedCurrency$ } from "./selectedCurrency"
@@ -12,12 +12,6 @@ import { getInitView, TileView, useSelectedTileView } from "./selectedView"
 import { Tile, tile$ } from "./Tile"
 import { handleTearOut } from "./Tile/TearOut/handleTearOut"
 import { tearOutState$, useTearOutEntry } from "./Tile/TearOut/state"
-
-const PanelItems = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  grid-gap: 0.25rem;
-`
 
 export const [useFilteredCurrencyPairs, filteredCurrencyPairs$] = bind(
   combineLatest([currencyPairs$, selectedCurrency$, tearOutState$]).pipe(
@@ -64,7 +58,7 @@ export const Tiles = () => {
   }, [tearOutEntry])
 
   return (
-    <PanelItems role="region" aria-label="Lives Rates Tiles">
+    <GridLayout role="region" aria-label="Lives Rates Tiles">
       {currencyPairs.map((currencyPair) => (
         <Tile
           key={currencyPair.symbol}
@@ -72,6 +66,6 @@ export const Tiles = () => {
           isAnalytics={selectedView === TileView.Analytics}
         />
       ))}
-    </PanelItems>
+    </GridLayout>
   )
 }

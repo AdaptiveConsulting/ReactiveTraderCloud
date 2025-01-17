@@ -1,6 +1,8 @@
 import { memo, ReactNode } from "react"
 import styled, { keyframes } from "styled-components"
 
+import { Color } from "../theme/types"
+
 const ANIMATION_SPEED = 2
 const BAR_NUMBER = 4
 const bars: number[] = Array(BAR_NUMBER)
@@ -26,7 +28,7 @@ interface BarProps {
   moveDistance: number
   speed: number
   type: LoaderType
-  color?: string
+  color?: Color
 }
 
 const Bar = styled("rect")<BarProps>`
@@ -34,7 +36,10 @@ const Bar = styled("rect")<BarProps>`
     ${({ speed }) => speed}s infinite;
   animation-delay: ${({ order, speed }) =>
     order * (speed / 1.3 / BAR_NUMBER) - speed * 0.6}s;
-  fill: ${({ theme, color }) => color ?? theme.core.textColor};
+  fill: ${({ theme, color }) =>
+    color
+      ? theme.newTheme.color[color]
+      : theme.newTheme.color["Colors/Text/text-primary (900)"]};
   will-change: transform;
 `
 
@@ -54,7 +59,7 @@ export const AdaptiveLoader = memo(function AdaptiveLoader({
   type?: LoaderType
   separation?: number
   speed?: number
-  color?: string
+  color?: Color
   children?: ReactNode
 }) {
   const sizeNum = Number(size)

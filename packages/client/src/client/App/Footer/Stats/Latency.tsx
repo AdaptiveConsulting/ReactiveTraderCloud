@@ -2,6 +2,7 @@ import { bind } from "@react-rxjs/core"
 import { EMPTY, timer } from "rxjs"
 import { catchError, map, scan, switchMap } from "rxjs/operators"
 
+import { Typography } from "@/client/components/Typography"
 import { EchoService } from "@/generated/TradingGateway"
 import { withConnection } from "@/services/withConnection"
 
@@ -45,8 +46,8 @@ export const [useLatencyHistory, latencyHistory$] = bind(
 export const Latency = () => {
   const latency = useLatency()
   return latency ? (
-    <div>
+    <Typography variant="Text sm/Regular">
       UI Latency: <span>{latency}ms</span>
-    </div>
+    </Typography>
   ) : null
 }

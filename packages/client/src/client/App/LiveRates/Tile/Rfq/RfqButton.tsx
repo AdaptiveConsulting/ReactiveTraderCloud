@@ -6,7 +6,6 @@ import { OverlayDiv } from "@/client/components/OverlayDiv"
 import { useIsNotionalValid } from "../Notional/Notional"
 import { useTileCurrencyPair } from "../Tile.context"
 import { TileStates, useTileState } from "../Tile.state"
-import { AnalyticsPricesFirstCol } from "../Tile.styles"
 import {
   onCancelRfq,
   onQuoteRequest,
@@ -22,7 +21,10 @@ const RFQButtonComponent = styled.button<{
   textWrap: boolean
   isAnalytics: boolean
 }>`
-  background-color: ${({ theme }) => theme.accents.primary.base};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color[
+      "Component colors/Components/Buttons/Brand/button-brand-bg"
+    ]};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,8 +37,16 @@ const RFQButtonComponent = styled.button<{
   font-weight: 300;
   font-stretch: normal;
   color: ${({ theme }) => theme.white};
+
+  &:hover {
+    background-color: ${({ theme }) =>
+      theme.newTheme.color[
+        "Component colors/Components/Buttons/Brand/button-brand-bg_hover"
+      ]};
+  }
+
   &:disabled {
-    background-color: ${({ theme }) => theme.accents.primary.darker};
+    opacity: 0.8;
     cursor: default;
   }
 `
@@ -80,9 +90,7 @@ export const RfqButtonInner = ({
   buttonText,
 }: RFQButtonProps) => {
   return (
-    <RfqButtonContainer
-      left={isAnalytics ? `calc(${AnalyticsPricesFirstCol} / 2)` : 0}
-    >
+    <RfqButtonContainer>
       <CenteringContainer>
         <RFQButtonComponent
           disabled={disabled}

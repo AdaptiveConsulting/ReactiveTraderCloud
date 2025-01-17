@@ -4,14 +4,14 @@ import { test } from "./fixtures"
 import { ElementTimeout, isOpenFin } from "./utils"
 
 const currencyPairs = [
-  "EURUSD",
-  "USDJPY",
-  "GBPUSD",
-  "GBPJPY",
-  "EURJPY",
-  "AUDUSD",
-  "NZDUSD",
-  "EURCAD",
+  "EUR/USD",
+  "USD/JPY",
+  "GBP/USD",
+  "GBP/JPY",
+  "EUR/JPY",
+  "AUD/USD",
+  "NZD/USD",
+  "EUR/CAD",
 ]
 
 const currencies = ["NZD", "USD", "JPY", "GBP", "EUR", "CAD", "AUD"]
@@ -64,7 +64,7 @@ test.describe("Analytics panel", () => {
 
       await expect(pnlLocator).toHaveAttribute(
         "color",
-        pnlValue < 0 ? "negative" : "positive",
+        pnlValue < 0 ? "Colors/Border/border-sell" : "Colors/Border/border-buy",
       )
     })
   })
@@ -108,20 +108,14 @@ test.describe("Analytics panel", () => {
 
   test.describe("PnL section", () => {
     test("PnL value is displayed for each currencies", async () => {
-      const pnlSection = analyticsPage
-        .locator("div")
-        .filter({ has: analyticsPage.locator("div", { hasText: "PnL" }) })
-        .last()
-
       for (const currencypair of currencyPairs) {
-        const amountString = await pnlSection
-          .locator("div", {
-            hasText: currencypair,
-          })
-          .first()
+        const amountString = await analyticsPage
+          .getByTestId(`pnlbar-${currencypair}`)
           .getByTestId("priceLabel")
           .textContent()
+
         const regexp = RegExp(`[-,.0-9km]`, "g")
+
         expect(
           amountString,
           `amount for ${currencypair} doesn't match abbreviated numerical pattern`,

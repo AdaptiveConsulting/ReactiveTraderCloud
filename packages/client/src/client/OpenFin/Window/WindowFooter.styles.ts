@@ -4,4 +4,5 @@ export const Controls = styled.div`
   margin-right: 0.5rem;
   display: flex;
   align-items: center;
+  gap: ${({ theme }) => theme.newTheme.spacing.sm};
 `

@@ -15,7 +15,7 @@ import { tradesMock } from "@/services/trades/__mocks__/_trades"
 import FxTrades from "../CoreFxTrades"
 import * as TableTrades from "../TradesState/tableTrades"
 
-vi.mock("../TradesGrid/utils")
+vi.mock("../GridRegion/utils")
 vi.mock("@openfin/core", () => ({
   fin: undefined,
 }))

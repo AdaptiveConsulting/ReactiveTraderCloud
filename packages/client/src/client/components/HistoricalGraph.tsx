@@ -8,7 +8,8 @@ const LineChartWrapper = styled.div<{ showTimer?: boolean }>`
 const Path = styled.path``
 const Svg = styled.svg`
   &:hover ${Path} {
-    stroke: #5f94f5;
+    stroke: ${({ theme }) =>
+      theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
   }
 `
 

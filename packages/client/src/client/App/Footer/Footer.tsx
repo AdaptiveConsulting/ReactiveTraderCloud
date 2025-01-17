@@ -1,5 +1,6 @@
 import { Suspense } from "react"
 
+import { Aeron } from "./Aeron"
 import ContactUsButton from "./ContactUsButton"
 import { Stats } from "./Stats"
 import StatusBar from "./StatusBar"
@@ -8,6 +9,7 @@ import { Version } from "./Version"
 
 export const Footer = () => (
   <StatusBar>
+    <Aeron />
     <Suspense fallback={null}>
       <Stats />
     </Suspense>

@@ -9,6 +9,8 @@ import {
   CorePalette,
   CorePaletteMap,
 } from "./colors"
+import { Theme as UISKTheme } from "./types"
+import { generateUISKTheme } from "./uisk/generateUISKTheme"
 
 export enum ThemeName {
   Light = "light",
@@ -86,6 +88,7 @@ const createTheme = (
   name: ThemeName,
   { primary, secondary, core }: CorePaletteMap,
   accents: AccentPaletteMap,
+  newTheme: UISKTheme,
 ) => ({
   name,
   core,
@@ -200,17 +203,21 @@ const createTheme = (
       textColor: primary[2],
     },
   },
+
+  newTheme,
 })
 
 const lightTheme: Theme = createTheme(
   ThemeName.Light,
   colors.light,
   colors.accents,
+  generateUISKTheme("Light mode") as unknown as UISKTheme,
 )
 const darkTheme: Theme = createTheme(
   ThemeName.Dark,
   colors.dark,
   colors.accents,
+  generateUISKTheme("Dark mode") as unknown as UISKTheme,
 )
 
 export const themes: Record<ThemeName, Theme> = {

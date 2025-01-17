@@ -1,14 +1,10 @@
+import { Button } from "@/client/components/Button"
+import { Gap } from "@/client/components/Gap"
 import { AppleShareIcon } from "@/client/components/icons"
 import { Modal } from "@/client/components/Modal"
+import { Typography } from "@/client/components/Typography"
 
-import {
-  DeviceText,
-  Icon,
-  MainTitle,
-  ModalWrapper,
-  Text,
-} from "./PWAInstallModal.styles"
-import { InstallButton } from "./PWAInstallPrompt.styles"
+import { Icon, ModalWrapper } from "./PWAInstallModal.styles"
 
 interface InstallModalProps {
   closeModal: () => void
@@ -17,13 +13,27 @@ interface InstallModalProps {
 export const PWAInstallModal = ({ closeModal }: InstallModalProps) => (
   <Modal shouldShow>
     <ModalWrapper>
-      <MainTitle>Install Reactive Trader</MainTitle>
-      <Text>This must be done manually</Text>
-      <DeviceText>
+      <Typography variant="Display sm/Regular">
+        Install Reactive Trader
+      </Typography>
+      <Gap height="lg" />
+      <Typography
+        variant="Text sm/Regular"
+        color="Colors/Text/text-secondary (700)"
+      >
+        This must be done manually
+      </Typography>
+      <Typography
+        variant="Text sm/Regular"
+        color="Colors/Text/text-secondary (700)"
+      >
         Tap <Icon>{AppleShareIcon}</Icon> from the browsers menu and select
         &quot;Add to Home Screen&quot;
-      </DeviceText>
-      <InstallButton onClick={closeModal}>Close</InstallButton>
+      </Typography>
+      <Gap height="md" />
+      <Button variant="outline" size="lg" onClick={closeModal}>
+        Close
+      </Button>
     </ModalWrapper>
   </Modal>
 )

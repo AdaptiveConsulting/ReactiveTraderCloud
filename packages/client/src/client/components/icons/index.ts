@@ -1,7 +1,6 @@
 export { default as AppleShareIcon } from "./AppleShareIcon"
 export { default as ChartIcon } from "./ChartIcon"
 export { default as ChevronIcon } from "./ChevronIcon"
-export { default as CrossIcon } from "./CrossIcon"
 export { default as DownloadIcon } from "./DownloadIcon"
 export { default as ExpandIcon } from "./ExpandIcon"
 export { default as FilterIcon } from "./FilterIcon"
