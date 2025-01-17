@@ -10,7 +10,6 @@ const NewRfqWrapper = styled(RegionWrapper)`
   border-left: ${({ theme }) =>
       theme.newTheme.color["Colors/Background/bg-primary"]}
     solid ${({ theme }) => theme.newTheme.spacing.sm};
-  width: ${({ theme }) => theme.newTheme.width["xs"]};
 `
 
 const loader = (
