@@ -1,21 +1,19 @@
 import { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
-import styled from "styled-components"
 
-import { Button } from "@/client/App/Footer/common-styles"
+import { Button } from "@/client/components/Button"
 import { constructUrl } from "@/client/utils/constructUrl"
 
-import { PlatformLockedStatusIcon } from "../icons/PlatformLockedStatusIcon"
 import { createOpenFinPopup, Offset, showOpenFinPopup } from "../utils/window"
 
-const IconContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1rem;
-  height: 1rem;
-  margin-right: 0.5rem;
-`
+// const IconContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   width: 1rem;
+//   height: 1rem;
+//   margin-right: 0.5rem;
+// `
 
 const snapshotWindowInfo = {
   name: "snapshots",
@@ -45,10 +43,10 @@ export const SnapshotButton = () => {
   }
 
   return (
-    <Button onClick={handleShowPopup}>
-      <IconContainer>
+    <Button variant="primary" size="sm" onClick={handleShowPopup}>
+      {/* <IconContainer>
         <PlatformLockedStatusIcon />
-      </IconContainer>
+      </IconContainer> TODO add icon support to button */}
       Snapshots
     </Button>
   )

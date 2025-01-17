@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 
-import {
-  Background,
-  Button as OpenFinButton,
-} from "@/client/App/Footer/common-styles"
+import { Background } from "@/client/App/Footer/common-styles"
 import { ContactUs } from "@/client/App/Footer/ContactUsButton/ContactUs"
 import { FollowUs } from "@/client/App/Footer/ContactUsButton/FollowUs"
 import { LogoWrapper } from "@/client/App/Footer/ContactUsButton/styled"
-import { MailIcon } from "@/client/components/icons"
+import { Button } from "@/client/components/Button"
 import Logo from "@/client/components/Logo"
 import {
   createOpenFinPopup,
@@ -16,29 +13,7 @@ import {
 } from "@/client/OpenFin/utils/window"
 import { constructUrl } from "@/client/utils/constructUrl"
 
-const Wrapper = styled(Background)`
-  &&& {
-    font-size: 1rem;
-
-    .header {
-      font-size: 1.25rem;
-    }
-
-    span {
-      font-size: 1rem;
-      line-height: 1.25;
-    }
-  }
-`
-
-const Button = styled(OpenFinButton)`
-  margin: "0 0.7rem 0 0";
-  &:hover {
-    [fill] {
-      fill: ${({ theme }) => theme.accents.primary.base};
-    }
-  }
-`
+const Wrapper = styled(Background)``
 
 export const OpenFinContactDisplay = () => (
   <Wrapper>
@@ -50,7 +25,7 @@ export const OpenFinContactDisplay = () => (
   </Wrapper>
 )
 
-const baseWin = { name: "contact", height: 445, width: 245 }
+const baseWin = { name: "contact", height: 375, width: 245 }
 const pathname = constructUrl("/contact")
 
 const ContactUsButton = () => {
@@ -68,8 +43,13 @@ const ContactUsButton = () => {
   }, [])
 
   return (
-    <Button onClick={showPopup} data-qa="contact-us-button">
-      <MailIcon height="1" width="1" active={showing} />
+    <Button
+      variant="primary"
+      size="sm"
+      onClick={showPopup}
+      data-qa="contact-us-button"
+    >
+      {/* <MailIcon height="1" width="1" active={showing} /> TODO add icon support to button component */}
       Get in touch
     </Button>
   )

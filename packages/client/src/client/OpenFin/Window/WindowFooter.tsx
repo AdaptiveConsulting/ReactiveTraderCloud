@@ -1,3 +1,4 @@
+import { Aeron } from "@/client/App/Footer/Aeron"
 import StatusBar from "@/client/App/Footer/StatusBar"
 import { StatusButton } from "@/client/App/Footer/StatusButton"
 import { Version } from "@/client/App/Footer/Version"
@@ -12,6 +13,7 @@ export const WindowFooter = () => {
   const showSnapshots = isReactiveTraderPlatformPrimary()
   return (
     <StatusBar>
+      <Aeron />
       <Controls>
         <Version />
         <OpenFinLogo />
