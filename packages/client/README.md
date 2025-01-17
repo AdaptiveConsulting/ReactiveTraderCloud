@@ -169,12 +169,12 @@ Working with OpenFin workspace locally using the OpenFin CLI ...
 
 `npm run openfin:dev` as above to serve RT apps, views and the workspace platform
 
-`npm run workspace:run` to launch workspace (when running local dev server, you'll see the "provider" window first)
+`npm run openfin:run:workspace` to launch workspace (when running local dev server, you'll see the "provider" window first)
 
 As a shortcut, to run the local dev server and client in one command, use
 
 ```sh
-npm run workspace:start
+npm run openfin:start:workspace
 ```
 
 #### Configs
@@ -262,7 +262,6 @@ npm run openfin:start:launcher
 ```
 
 and launch all of the apps from the launcher
-(RA E2E tests need to be run from the RA repo)
 
 ```sh
 npm run e2e:openfin -- --workers=1

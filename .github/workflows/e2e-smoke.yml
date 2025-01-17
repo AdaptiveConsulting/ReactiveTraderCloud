@@ -2,7 +2,7 @@ name: Reactive Trader Prod Daily E2E
 
 on:
   schedule:
-    - cron: "55 8 * * *"
+    - cron: "30 8 * * 1-5"
 
 defaults:
   run:

@@ -2,7 +2,7 @@ name: Reactive Trader Dev Weekday E2E
 
 on:
   schedule:
-    - cron: "55 8 * * 1-5"
+    - cron: "45 8 * * 1-5"
 
 defaults:
   run:
