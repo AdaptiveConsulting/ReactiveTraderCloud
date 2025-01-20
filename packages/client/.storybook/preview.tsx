@@ -34,8 +34,8 @@ export const parameters = {
 export const decorators = [
   (Story) => (
     <>
-      <GlobalStyle />
       <ThemeProvider theme={useDarkMode() ? themes.dark : themes.light}>
+        <GlobalStyle />
         <StyledStory>
           <Content>
             <Story />
@@ -52,12 +52,15 @@ const StyledStory = styled.div`
   padding: 0;
   width: 100%;
   height: 100%;
-  background-color: ${(p) => p.theme.core.darkBackground};
-  color: ${(p) => p.theme.core.textColor};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-primary (900)"]};
   transition:
-    background-color ${(p) => p.theme.motion.duration}ms
-      ${(p) => p.theme.motion.easing},
-    color ${(p) => p.theme.motion.duration}ms ${(p) => p.theme.motion.easing};
+    background-color ${({ theme }) => theme.motion.duration}ms
+      ${({ theme }) => theme.motion.easing},
+    color ${({ theme }) => theme.motion.duration}ms
+      ${({ theme }) => theme.motion.easing};
 `
 
 const Content = styled.div`
