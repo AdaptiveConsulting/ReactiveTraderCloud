@@ -18,7 +18,6 @@ import CreditPage from "./CreditPage"
 import { FxPage } from "./FxPage"
 import MainLayout from "./MainLayout"
 
-const StyleguidePage = lazy(() => import("@/client/styleguide"))
 const SellSidePage = lazy(() => import("./SellSidePage"))
 
 export const WebApp = () => {
@@ -83,14 +82,14 @@ export const WebApp = () => {
         )}
         <Route path={ROUTES_CONFIG.tile} element={<TornOutTileWrapper />} />
 
-        <Route
+        {/* <Route
           path={ROUTES_CONFIG.styleguide}
           element={
             <Suspense fallback={<Loader />}>
               <StyleguidePage />
             </Suspense>
           }
-        />
+        /> TODO: either remove if UISK takes this role, or refactor with new branding */}
 
         {canUseAdmin && (
           <Route path={ROUTES_CONFIG.admin} element={<Admin />} />
