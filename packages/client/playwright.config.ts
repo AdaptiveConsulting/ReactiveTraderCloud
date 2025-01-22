@@ -14,9 +14,9 @@ const config: PlaywrightTestConfig = {
         ...devices["Desktop Chrome"],
         channel: "chrome",
         //Artifacts
-        screenshot: "only-on-failure",
-        video: "retain-on-failure",
-        trace: "retain-on-failure",
+        screenshot: "on",
+        video: "on",
+        trace: "on",
         headless: true,
       },
     },
