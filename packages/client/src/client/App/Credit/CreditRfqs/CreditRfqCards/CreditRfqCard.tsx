@@ -18,16 +18,21 @@ import { isRfqTerminated } from "../../common"
 import { CardFooter } from "./CardFooter"
 import { CardHeader } from "./CardHeader"
 import { Quote } from "./Quote/CardQuote"
-import { CardContainer, DetailsWrapper, QuotesContainer } from "./styled"
+import {
+  CardContainer,
+  DetailsWrapper,
+  QuantityTypography,
+  QuotesContainer,
+} from "./styled"
 
 const formatter = customNumberFormatter()
 const Details = ({ quantity }: { quantity: number }) => {
   return (
     <DetailsWrapper>
       <Typography variant="Text sm/Regular">RFQ DETAILS</Typography>
-      <Typography variant="Text sm/Regular">
+      <QuantityTypography variant="Text sm/Regular">
         QTY: {formatter(quantity)}
-      </Typography>
+      </QuantityTypography>
     </DetailsWrapper>
   )
 }

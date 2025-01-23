@@ -230,3 +230,8 @@ export const parseQuantity = (rawValue: string): number =>
   Number(rawValue.replace(filterRegExp, "").replace(decimalRegExp, "."))
 
 export const adjustUserCreditQuantity = (value: number): number => value * 1000
+
+const MAX_INPUT_VALUE = 100000000
+
+export const applyMaximum = (value: number): number =>
+  Math.min(value, MAX_INPUT_VALUE)
