@@ -11,6 +11,7 @@ import {
   withLatestFrom,
 } from "rxjs/operators"
 
+import { customNumberFormatter } from "@/client/utils"
 import {
   DealerBody,
   Direction,
@@ -247,6 +248,8 @@ export const creditQuotes$ = creditRfqsById$.pipe(
 
 const INACTIVE_PASSED_QUOTE_STATE = "inactivePassedQuoteState"
 
+const formatter = customNumberFormatter()
+
 export const [useQuoteState] = bind((dealerId, rfqId) =>
   creditQuotes$.pipe(
     map((quotes) =>
@@ -274,7 +277,7 @@ export const [useQuoteState] = bind((dealerId, rfqId) =>
         default:
           return {
             type: quote.state.type,
-            payload: `$${quote.state.payload}`,
+            payload: `$${formatter(quote.state.payload)}`,
           }
       }
     }),

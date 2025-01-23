@@ -15,7 +15,11 @@ import {
 } from "rxjs"
 
 import { CREDIT_RFQ_EXPIRY_SECONDS } from "@/client/constants"
-import { createApplyCharacterMultiplier, parseQuantity } from "@/client/utils"
+import {
+  applyMaximum,
+  createApplyCharacterMultiplier,
+  parseQuantity,
+} from "@/client/utils"
 import {
   ACK_CREATE_RFQ_RESPONSE,
   DealerBody,
@@ -72,7 +76,7 @@ const quantity$ = prepareStream$(_quantity$, "").pipe(
     const numValue = Math.trunc(Math.abs(parseQuantity(quantity)))
     const lastChar = quantity.slice(-1).toLowerCase()
     const value = applyCharacterMultiplier(numValue, lastChar)
-    return !Number.isNaN(value) ? value : 0
+    return !Number.isNaN(value) ? applyMaximum(value) : 0
   }),
 )
 const dealerIds$ = merge(
