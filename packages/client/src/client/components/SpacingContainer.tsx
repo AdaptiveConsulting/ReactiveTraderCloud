@@ -57,26 +57,22 @@ export const SpacingContainer = styled.div<SpacingProps>`
     const { marginX, marginY, paddingX, paddingY } = props
 
     const customSpacingStyles = {
-      ...(paddingX &&
-        Object.fromEntries([
-          ["paddingLeft", mapSpacingCss(paddingX)],
-          ["paddingRight", mapSpacingCss(paddingX)],
-        ])),
-      ...(paddingY &&
-        Object.fromEntries([
-          ["paddingTop", mapSpacingCss(paddingY)],
-          ["paddingBottom", mapSpacingCss(paddingY)],
-        ])),
-      ...(marginX &&
-        Object.fromEntries([
-          ["marginLeft", mapSpacingCss(marginX)],
-          ["marginRight", mapSpacingCss(marginX)],
-        ])),
-      ...(marginY &&
-        Object.fromEntries([
-          ["marginTop", mapSpacingCss(marginY)],
-          ["marginBottom", mapSpacingCss(marginY)],
-        ])),
+      ...(paddingX && {
+        paddingLeft: mapSpacingCss(paddingX),
+        paddingRight: mapSpacingCss(paddingX),
+      }),
+      ...(paddingY && {
+        paddingTop: mapSpacingCss(paddingY),
+        paddingBottom: mapSpacingCss(paddingY),
+      }),
+      ...(marginX && {
+        marginLeft: mapSpacingCss(marginX),
+        marginRight: mapSpacingCss(marginX),
+      }),
+      ...(marginY && {
+        marginTop: mapSpacingCss(marginY),
+        marginBottom: mapSpacingCss(marginY),
+      }),
     }
 
     const marginStyles = Object.fromEntries(
