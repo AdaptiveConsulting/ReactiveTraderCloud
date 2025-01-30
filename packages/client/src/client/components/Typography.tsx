@@ -1,20 +1,21 @@
-import styled from "styled-components"
+import styled, { css, CSSProperties } from "styled-components"
 
 import { Color, TextStyles } from "../theme/types"
+import { SpacingContainer, SpacingProps } from "./SpacingContainer"
 
-interface TypographyProps {
+interface TypographyProps extends SpacingProps {
   variant?: TextStyles
   color?: Color
   allowLineHeight?: boolean
+  textTransform?: CSSProperties["textTransform"]
 }
 
-export const Typography = styled.div<TypographyProps>`
+export const Typography = styled(SpacingContainer)<TypographyProps>`
   ${({ variant, theme }) =>
     variant ? theme.newTheme.textStyles[variant] : null}
   color: ${({ color, theme }) =>
     color ? theme.newTheme.color[color] : "inherit"};
-
-  margin-block-end: 0;
   ${({ allowLineHeight }) =>
-    allowLineHeight ? undefined : `line-height: normal`};
+    allowLineHeight ? undefined : `line-height: normal;`}
+  ${({ textTransform }) => css({ textTransform })}
 `
