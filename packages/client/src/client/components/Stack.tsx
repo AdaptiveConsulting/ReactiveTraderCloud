@@ -1,9 +1,9 @@
 import styled, { css, CSSProperties } from "styled-components"
 
 import { Spacing } from "../theme/types"
-import { SpacingContainer, SpacingProps } from "./SpacingContainer"
+import { Box, BoxProps } from "./Box"
 
-interface StackProps extends SpacingProps {
+interface StackProps extends BoxProps {
   direction?: CSSProperties["flexDirection"]
   wrap?: CSSProperties["flexWrap"]
   flow?: CSSProperties["flexFlow"]
@@ -13,7 +13,7 @@ interface StackProps extends SpacingProps {
   gap?: Spacing | number
 }
 
-export const Stack = styled(SpacingContainer)<StackProps>`
+export const Stack = styled(Box)<StackProps>`
   display: flex;
 
   ${({

@@ -3,8 +3,8 @@ import styled, { css } from "styled-components"
 import { Spacing as ThemeSpacing } from "../theme/types"
 
 // add custom css properties here
-const customMarginPropNames = ["marginX", "marginY"] as const
-const customPaddingPropNames = ["paddingX", "paddingY"] as const
+type CustomMarginPropNames = ["marginX", "marginY"]
+type CustomPaddingPropNames = ["paddingX", "paddingY"]
 
 // add existing css properties here
 const marginPropNames = [
@@ -13,7 +13,6 @@ const marginPropNames = [
   "marginBottom",
   "marginLeft",
   "marginRight",
-  ...customMarginPropNames,
 ] as const
 
 const paddingPropNames = [
@@ -22,36 +21,28 @@ const paddingPropNames = [
   "paddingBottom",
   "paddingLeft",
   "paddingRight",
-  ...customPaddingPropNames,
 ] as const
 
-type MarginKeys = (typeof marginPropNames)[number]
-type PaddingKeys = (typeof paddingPropNames)[number]
-
+type MarginKeys = [...typeof marginPropNames, ...CustomMarginPropNames][number]
+type PaddingKeys = [
+  ...typeof paddingPropNames,
+  ...CustomPaddingPropNames,
+][number]
 type MarginProps = { [k in MarginKeys]?: ThemeSpacing | number }
-
 type PaddingProps = { [k in PaddingKeys]?: ThemeSpacing | number }
-export type SpacingProps = MarginProps & PaddingProps
+export type BoxProps = MarginProps & PaddingProps
 
-export const SpacingContainer = styled.div<SpacingProps>`
+export const Box = styled.div<BoxProps>`
   ${({ theme, ...props }) => {
     const mapSpacingCss = (prop?: ThemeSpacing | number) =>
       prop && (typeof prop === "number" ? prop : theme.newTheme.spacing[prop])
 
-    const marginProps = Object.entries(props).filter(
-      ([name]) =>
-        marginPropNames.includes(name as (typeof marginPropNames)[number]) &&
-        !customMarginPropNames.includes(
-          name as (typeof customMarginPropNames)[number],
-        ),
+    const marginProps = Object.entries(props).filter(([name]) =>
+      marginPropNames.includes(name as (typeof marginPropNames)[number]),
     )
 
-    const paddingProps = Object.entries(props).filter(
-      ([name]) =>
-        paddingPropNames.includes(name as (typeof paddingPropNames)[number]) &&
-        !customPaddingPropNames.includes(
-          name as (typeof customPaddingPropNames)[number],
-        ),
+    const paddingProps = Object.entries(props).filter(([name]) =>
+      paddingPropNames.includes(name as (typeof paddingPropNames)[number]),
     )
 
     const { marginX, marginY, paddingX, paddingY } = props
