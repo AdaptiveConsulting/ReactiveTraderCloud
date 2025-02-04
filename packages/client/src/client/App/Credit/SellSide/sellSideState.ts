@@ -11,6 +11,7 @@ import {
 
 import { HIGHLIGHT_ROW_FLASH_TIME } from "@/client/constants"
 import {
+  applyMaximum,
   DECIMAL_SEPARATOR,
   DECIMAL_SEPARATOR_REGEXP,
   invertDirection,
@@ -216,8 +217,10 @@ export const [usePrice, price$] = bind(
 
         const truncated = formatter(inputQuantityAsNumber)
 
-        const value = Number(
-          truncated.replace(filterRegExp, "").replace(decimalRegExp, "."),
+        const value = applyMaximum(
+          Number(
+            truncated.replace(filterRegExp, "").replace(decimalRegExp, "."),
+          ),
         )
 
         return {

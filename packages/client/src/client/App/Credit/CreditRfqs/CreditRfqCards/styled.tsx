@@ -1,6 +1,7 @@
 import styled, { css, DefaultTheme, keyframes } from "styled-components"
 
 import { FlexBox } from "@/client/components/FlexBox"
+import { Typography } from "@/client/components/Typography"
 import { Direction } from "@/generated/TradingGateway"
 
 const cardFlash = ({ theme }: { theme: DefaultTheme }) => keyframes`
@@ -51,6 +52,9 @@ export const Row = styled.div`
 `
 
 export const DetailsWrapper = styled(Row)`
+  white-space: nowrap;
+  display: flex;
+  gap: ${({ theme }) => theme.newTheme.spacing["4xl"]};
   padding: ${({ theme }) => theme.newTheme.spacing.xs};
   background: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-quaternary"]};
@@ -125,4 +129,9 @@ export const CloseRfqButton = styled(FooterButton)`
       theme.newTheme.color["Colors/Text/text-brand-tertiary (600)"]};
     margin-right: ${({ theme }) => theme.newTheme.spacing.md};
   }
+`
+
+export const QuantityTypography = styled(Typography)`
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
