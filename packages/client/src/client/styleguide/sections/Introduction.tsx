@@ -1,10 +1,10 @@
 import styled from "styled-components"
 
 import Logo from "@/client/components/Logo"
+import { Typography } from "@/client/components/Typography"
 
 import designTownPNGURL from "../assets/design-town.png"
-import { H1, H3 } from "../elements"
-import { Paragraph, SectionBlock } from "../styled"
+import { SectionBlock } from "../styled"
 import { SectionProps } from "../styled/SectionBlock"
 
 const Flex = styled.div`
@@ -17,6 +17,9 @@ const Flex = styled.div`
 const Content = styled.div`
   flex: 1 1 100%;
   max-width: 24rem;
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.newTheme.spacing.md};
 `
 
 const Background = styled.div`
@@ -30,30 +33,23 @@ const Background = styled.div`
   background-size: contain;
 `
 
-const H3Intro = styled(H3)`
-  margin: 0.5rem 0 1rem 0;
-`
-
 const Introduction = (props: SectionProps) => (
-  <>
-    <SectionBlock {...props}>
-      <Flex>
-        <Content>
-          <Logo />
-          <H3Intro>Design Systems</H3Intro>
-          <H1>Adaptive UI Library</H1>
-          <Paragraph>
-            A quicker, more consistent and collaborative way to design and build
-            complex UI&apos;s.
-          </Paragraph>
-        </Content>
-        <Background />
-      </Flex>
-    </SectionBlock>
-    <div>
-      <SectionBlock colorScheme="secondary" mh={0.125 / 5} py={0} />
-    </div>
-  </>
+  <SectionBlock {...props}>
+    <Flex>
+      <Content>
+        <Logo />
+        <Typography variant="Display md/Regular">Design Systems</Typography>
+        <Typography variant="Display xl/Bold">
+          {"Adaptive UI Library".toUpperCase()}
+        </Typography>
+        <Typography variant="Text lg/Regular">
+          A quicker, more consistent and collaborative way to design and build
+          complex UI&apos;s.
+        </Typography>
+      </Content>
+      <Background />
+    </Flex>
+  </SectionBlock>
 )
 
 export default Introduction

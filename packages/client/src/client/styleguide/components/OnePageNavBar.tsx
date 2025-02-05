@@ -10,9 +10,9 @@ import { Link } from "react-router-dom"
 import styled, { css } from "styled-components"
 
 import Logo from "@/client/components/Logo"
+import { Typography } from "@/client/components/Typography"
 import { useScrollToHashElement } from "@/client/utils"
 
-import { H2 } from "../elements"
 import { Flex } from "../styled"
 import { mapMarginPaddingProps } from "../styled/mapMarginPaddingProps"
 
@@ -107,7 +107,9 @@ const OnePageNavBar = (props: OnePageNavBarProps) => {
         <FlexWrapper justifyContent="space-between" alignItems="center">
           <LogoContainer onClick={() => scrollToSection(0)}>
             <Logo />
-            <TextHeader>Design Systems Library UI</TextHeader>
+            <Typography variant="Display sm/Regular">
+              Design Systems Library UI
+            </Typography>
           </LogoContainer>
           <div>
             <FlexWrapper justifyContent="flex-start" alignItems="center">
@@ -120,7 +122,12 @@ const OnePageNavBar = (props: OnePageNavBarProps) => {
                       className={isActive(section.path)}
                       onClick={() => setCurrentSection(section.title)}
                     >
-                      {section.title}
+                      <Typography
+                        variant="Text xl/Regular"
+                        color="Colors/Text/text-primary (900)"
+                      >
+                        {section.title}
+                      </Typography>
                     </OnePageNavLink>
                   ),
               )}
@@ -131,7 +138,13 @@ const OnePageNavBar = (props: OnePageNavBarProps) => {
       {currentSection && (
         <TitleBar className={isSticky ? "sticky" : ""}>
           <FlexWrapper justifyContent="space-between" alignItems="center">
-            <TitleHeading>{currentSection}</TitleHeading>
+            <Typography
+              variant="Display md/Regular"
+              textTransform="uppercase"
+              color="Colors/Text/text-brand-primary (900)"
+            >
+              {currentSection}
+            </Typography>
           </FlexWrapper>
         </TitleBar>
       )}
@@ -139,26 +152,14 @@ const OnePageNavBar = (props: OnePageNavBarProps) => {
   )
 }
 
-const TextHeader = styled.p`
-  ${({ theme }) =>
-    css({
-      color: theme.secondary.base,
-    })};
-  margin: 0;
-`
-
 const LogoContainer = styled.div`
   cursor: pointer;
 `
 
 const OnePageNavLink = styled(Link)`
-  ${({ theme }) =>
-    css({
-      color: theme.secondary.base,
-    })};
   text-decoration: none;
   padding: 9px 0;
-  margin-right: 16px;
+  margin-right: ${({ theme }) => theme.newTheme.spacing.xl};
   border-bottom: 3px solid transparent;
 
   &:hover,
@@ -166,12 +167,13 @@ const OnePageNavLink = styled(Link)`
     border-bottom: 3px solid white;
     ${({ theme }) =>
       css({
-        borderBottom: `3px solid ${theme.accents.primary.base}`,
+        borderBottom: `3px solid ${theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]}`,
       })};
   }
 `
 
 const FlexWrapper = styled(Flex)`
+  align-items: center;
   flex-flow: row wrap;
   width: 100%;
   margin: 0 auto;
@@ -187,8 +189,8 @@ const NavBarBleed = styled(NavBar)`
   ${({ theme }) =>
     css({
       transition: "background-color ease-out 0.15s",
-      backgroundColor: theme.core.secondaryStyleGuideBackground,
-      borderBottom: `2px solid ${theme.core.primaryStyleGuideBackground}`,
+      backgroundColor: theme.newTheme.color["Colors/Background/bg-primary_alt"],
+      borderBottom: `2px solid ${theme.newTheme.color["Colors/Border/border-tertiary"]}`,
     })};
 
   display: flex;
@@ -237,16 +239,6 @@ const NavBarBleed = styled(NavBar)`
   }
 `
 
-const TitleHeading = styled(H2)`
-  text-transform: uppercase;
-  font-weight: normal;
-  margin: 0.5rem 0;
-  ${({ theme }) =>
-    css({
-      color: theme.accents.primary.base,
-    })};
-`
-
 const TitleBar = styled(NavBarBleed)`
   display: none;
   height: 50px;
@@ -258,7 +250,7 @@ const TitleBar = styled(NavBarBleed)`
   @media all and (min-width: 768px) {
     &.sticky {
       top: 76px;
-      display: block;
+      display: flex;
     }
   }
 `
