@@ -1,6 +1,7 @@
 import { ReactElement } from "react"
 import styled from "styled-components"
 
+import { Typography } from "@/client/components/Typography"
 import { ThemeName, ThemeStorageSwitch, useTheme } from "@/client/theme"
 
 import { Block } from "../styled"
@@ -11,7 +12,12 @@ export const FloatingTools = () => {
   return (
     <Root>
       <Bar>
-        <Label>Show {isDark ? "Light" : "Dark"} theme </Label>
+        <Label
+          variant="Text xs/Regular"
+          color="Colors/Text/text-secondary (700)"
+        >
+          Show {isDark ? "Light" : "Dark"} theme{" "}
+        </Label>
         <ThemeStorageSwitch handleDiameter={18} />
       </Bar>
     </Root>
@@ -25,7 +31,9 @@ interface RootProps {
 const Root: React.FC<RootProps> = ({ children }: RootProps) => {
   return (
     <>
-      <Block bg={(t) => t.primary[2]} />
+      <Block
+        bg={(t) => t.newTheme.color["Colors/Background/bg-secondary_subtle"]}
+      />
       {children}
     </>
   )
@@ -34,8 +42,8 @@ const Root: React.FC<RootProps> = ({ children }: RootProps) => {
 const Bar = styled((props) => (
   <Block
     px={3}
-    bg={(t) => t.primary[1]}
-    fg={(t) => t.secondary[3]}
+    bg={(t) => t.newTheme.color["Colors/Background/bg-secondary_subtle"]}
+    fg={(t) => t.newTheme.color["Colors/Foreground/fg-secondary (700)"]}
     {...props}
   />
 ))`
@@ -47,17 +55,13 @@ const Bar = styled((props) => (
   left: 0;
   right: 0;
   z-index: 100;
-  opacity: 0.85;
   min-height: 2.5rem;
   max-height: 2.5rem;
 `
 
-const Label = styled.label`
+const Label = styled(Typography)`
   text-transform: uppercase;
-  letter-spacing: 0.0625rem;
-  font-size: 0.5rem;
   padding-right: 0.5rem;
-  text-align: right;
 `
 
 export default FloatingTools

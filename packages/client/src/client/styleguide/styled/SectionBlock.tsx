@@ -23,14 +23,17 @@ export interface SectionProps extends BlockProps, MarginPaddingProps {
 
 const colorSchemes: { [scheme in ColorSchemeName]: ThemeSelectorPair } = {
   primary: {
-    bg: (t) => t.core.primaryStyleGuideBackground,
-    fg: (t) => t.secondary.base,
+    bg: (t) => t.newTheme.color["Colors/Background/bg-primary"],
+    fg: (t) => t.newTheme.color["Colors/Text/text-primary (900)"],
   },
   secondary: {
-    bg: (t) => t.core.secondaryStyleGuideBackground,
-    fg: (t) => t.secondary[1],
+    bg: (t) => t.newTheme.color["Colors/Background/bg-secondary_subtle"],
+    fg: (t) => t.newTheme.color["Colors/Text/text-primary (900)"],
   },
-  inverted: { bg: (t) => t.secondary[3], fg: (t) => t.primary[1] },
+  inverted: {
+    bg: (t) => t.newTheme.color["Colors/Background/bg-primary-solid"],
+    fg: (t) => t.newTheme.color["Colors/Text/text-primary_alt"],
+  },
 }
 
 export class SectionBlock extends Component<SectionProps, { error?: boolean }> {
@@ -78,8 +81,6 @@ export const SectionBleed = styled(Block)<SectionProps>`
 
   min-height: ${({ mh = 4 }) => mh * 5}rem;
   margin: 0;
-
-  font-size: 0.875rem;
 
   padding-left: 1rem;
   padding-right: 1rem;
@@ -144,6 +145,7 @@ export const SectionBody = styled.div`
   }
   ${H2} {
     font-weight: normal;
-    color: ${({ theme }) => theme.accents.primary.base};
+    color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-brand-primary (900)"]};
   }
 `
