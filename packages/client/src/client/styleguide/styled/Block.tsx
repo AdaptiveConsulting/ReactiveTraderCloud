@@ -14,8 +14,20 @@ export const Block = styled.div<BlockProps>`
   ${({ theme, bg, fg }) =>
     css({
       transition: bg ? "background-color ease-out 0.15s" : undefined,
-      backgroundColor: bg && getThemeColor(theme, bg, theme.primary.base),
-      color: fg && getThemeColor(theme, fg, theme.secondary.base),
+      backgroundColor:
+        bg &&
+        getThemeColor(
+          theme,
+          bg,
+          theme.newTheme.color["Colors/Background/bg-primary"],
+        ),
+      color:
+        fg &&
+        getThemeColor(
+          theme,
+          fg,
+          theme.newTheme.color["Colors/Text/text-primary (900)"],
+        ),
     })};
 
   ${mapTextProps};

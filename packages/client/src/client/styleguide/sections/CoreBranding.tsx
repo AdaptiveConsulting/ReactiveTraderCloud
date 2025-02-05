@@ -8,104 +8,115 @@ import styled, {
   StyledComponent,
 } from "styled-components"
 
-import {
-  AccentPaletteMap,
-  colors,
-  Theme,
-  ThemeName,
-  useTheme,
-} from "@/client/theme"
+import { Gap } from "@/client/components/Gap"
+import { Typography } from "@/client/components/Typography"
+import { colors, Theme, ThemeName, useTheme } from "@/client/theme"
+import { Color } from "@/client/theme/types"
+import { UISK_Variables } from "@/client/theme/uisk/generatedTheme"
 
-import { H2, H3 } from "../elements"
-import { Block, BlockProps, Paragraph, SectionBlock, Text } from "../styled"
-
-const { primary, ...others } = colors.accents
+import { Block, BlockProps, SectionBlock, Text } from "../styled"
 
 export const CoreBranding = () => {
   const { themeName } = useTheme()
 
+  const theme =
+    themeName === ThemeName.Dark ? colors.newThemeDark : colors.newThemeLight
+
   return (
     <>
-      <SectionBlock colorScheme="secondary" mh={2}>
-        <H2 pt={2}>COLOUR</H2>
-        <H3>Core UI</H3>
-        <Paragraph>
+      <SectionBlock colorScheme="secondary" mh={2} pt={2}>
+        <Typography
+          variant="Display md/Regular"
+          textTransform="uppercase"
+          color="Colors/Text/text-brand-primary (900)"
+          allowLineHeight
+        >
+          Colour
+        </Typography>
+        <Typography
+          variant="Display xs/Regular"
+          allowLineHeight
+          marginBottom="sm"
+        >
+          Core UI
+        </Typography>
+        <Typography variant="Text lg/Regular">
           Core color control the general look and feel of the application and
           make up 90% of the overall UI aesthetic. When switching from a light
           to a dark theme these are the key color that change.
-        </Paragraph>
+        </Typography>
 
-        <ThemePalettes
-          theme={themeName === ThemeName.Dark ? colors.dark : colors.light}
-        />
+        <ThemePalettes theme={theme} />
 
         <Separator />
 
         <QuadrantLayout>
           <span>
-            <H3>Brand / Accent Colours</H3>
-            <Paragraph mb={0} pr={3}>
+            <Typography
+              variant="Display xs/Regular"
+              marginBottom="sm"
+              allowLineHeight
+            >
+              Brand / Accent Colours
+            </Typography>
+            <Typography variant="Text lg/Regular">
               Brand colors aim to communicate a companies visual ownership of
               the digital product.
-            </Paragraph>
+            </Typography>
           </span>
-          <DominantAccentPalettes dominant={primary} />
+          <DominantAccentPalettes theme={theme} />
         </QuadrantLayout>
 
         <Separator />
 
         <QuadrantLayout>
           <span>
-            <H3>Accents & Functional colors</H3>
-            <Paragraph mb={3} pr={3}>
+            <Typography
+              variant="Display xs/Regular"
+              marginBottom="sm"
+              allowLineHeight
+            >
+              Accents & Functional colors
+            </Typography>
+            <Typography variant="Text lg/Regular">
               Accent colors inject focus points in to the UI and are used to
               give the UI character and guide users attention. These colors
               often work with the brand helping to retain the ‘feeling’ of being
               from the same organisation but not always.
-            </Paragraph>
+            </Typography>
           </span>
 
-          <AccentPalettes accents={others} />
+          <AccentPalettes theme={theme} />
         </QuadrantLayout>
 
         <Separator />
 
         <QuadrantLayout>
           <span>
-            <H3>Unique Collections</H3>
-            <Paragraph pr={3}>
+            <Typography
+              variant="Display xs/Regular"
+              marginBottom="sm"
+              allowLineHeight
+            >
+              Unique Collections
+            </Typography>
+            <Typography variant="Text lg/Regular" marginBottom="sm">
               Create separate references for key areas of the application such
               as trading directions.
-            </Paragraph>
-            <Paragraph pr={3}>
-              <i>
-                Note: Why are some colours the same but named differently?
-                Answer: These colours will be chosen and used in different
-                situations allowing key functional colours and branding to be
-                changed independantly of one another.
-              </i>
-            </Paragraph>
+            </Typography>
+            <Gap height="sm" />
+            <Typography variant="Text lg/Regular italic" marginBottom="sm">
+              Note: Why are some colours the same but named differently?
+            </Typography>
+            <Typography variant="Text lg/Regular italic">
+              Answer: These colours will be chosen and used in different
+              situations allowing key functional colours and branding to be
+              changed independantly of one another.
+            </Typography>
           </span>
 
           <span>
-            <UniquePalettes
-              palettes={{
-                "Trading-Sell": {
-                  base: colors.spectrum.uniqueCollections.Sell.base,
-                  1: colors.spectrum.uniqueCollections.Sell.lighter,
-                  2: colors.spectrum.uniqueCollections.Sell.darker,
-                },
-              }}
-            />
-            <UniquePalettes
-              palettes={{
-                "Trading-Buy": {
-                  base: colors.spectrum.uniqueCollections.Buy.base,
-                  1: colors.spectrum.uniqueCollections.Buy.lighter,
-                  2: colors.spectrum.uniqueCollections.Buy.darker,
-                },
-              }}
-            />
+            <UniquePalettes theme={theme} />
           </span>
         </QuadrantLayout>
       </SectionBlock>
@@ -114,8 +125,9 @@ export const CoreBranding = () => {
 }
 
 const Separator = styled.div`
-  height: 2px;
-  background-color: ${({ theme }) => theme.core.primaryStyleGuideBackground};
+  height: 1px;
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Border/border-primary"]};
 `
 
 const PaletteLayout = ({
@@ -123,14 +135,16 @@ const PaletteLayout = ({
   fg,
   label: paletteLabel,
   palette,
-  include = ["base", 1, 2, 3, 4, 5],
+  include,
+  base,
   codes = {},
 }: {
   grid?: StyledComponent<React.ComponentType<any>, Theme, any>
   fg: string
   label: string
   palette: any
-  include?: any[]
+  include: Color[]
+  base?: Array<number>
   codes?: object
 }) => {
   if (!SwatchGrid) {
@@ -145,11 +159,10 @@ const PaletteLayout = ({
           justifyContent: "center",
         }
 
-        if (key === "base") {
-          themeForCss.gridArea = key
+        if (base?.includes(i) && i === 0) {
+          themeForCss.gridArea = "base"
         }
-
-        if (key === 1) {
+        if (base?.includes(i) && i === 1) {
           themeForCss.gridArea = "base1"
         }
 
@@ -157,7 +170,7 @@ const PaletteLayout = ({
           <Swatch
             key={key}
             extra={css(themeForCss)}
-            label={`${paletteLabel} ${key === "base" ? "" : `-${i}`}`}
+            label={`${paletteLabel}${i === 0 ? "" : `-${i}`}`}
             value={color}
             // @ts-ignore
             code={codes[key] || key}
@@ -253,20 +266,44 @@ const CoreSwatchGrid = styled.div`
   }
 `
 
-const ThemePalettes = ({ theme: { primary, secondary } }: { theme: any }) => {
+type Colors = UISK_Variables["1. Color modes"]
+
+const ThemePalettes = ({ theme }: { theme: Colors }) => {
+  const bgPalette: Color[] = [
+    "Colors/Background/bg-primary",
+    "Colors/Background/bg-primary_alt",
+    "Colors/Background/bg-secondary",
+    "Colors/Background/bg-tertiary",
+    "Colors/Background/bg-quaternary",
+    "Colors/Background/bg-secondary-solid",
+  ]
+
+  const fgPalette: Color[] = [
+    "Colors/Foreground/fg-primary (900)",
+    "Colors/Foreground/fg-secondary (700)",
+    "Colors/Foreground/fg-tertiary (600)",
+    "Colors/Foreground/fg-quaternary (500)",
+    "Colors/Foreground/fg-quinary (400)",
+    "Colors/Foreground/fg-senary (300)",
+  ]
+
   return (
     <ThemeRow>
       <PaletteLayout
         grid={CoreSwatchGrid}
-        label="Core-Primary"
-        palette={primary}
-        fg={secondary.base}
+        label="Background"
+        palette={theme}
+        fg={theme["Colors/Text/text-primary (900)"]}
+        include={bgPalette}
+        base={[0, 1]}
       />
       <PaletteLayout
         grid={CoreSwatchGrid}
-        label="Core-Secondary"
-        palette={secondary}
-        fg={primary.base}
+        label="Foreground"
+        palette={theme}
+        fg={theme["Colors/Text/text-primary_alt"]}
+        include={fgPalette}
+        base={[0, 1]}
       />
     </ThemeRow>
   )
@@ -304,36 +341,61 @@ const QuadrantLayout = styled.div`
   }
 `
 
-const DominantAccentPalettes = ({ dominant }: { dominant: object }) => {
+const DominantAccentPalettes = ({ theme }: { theme: Colors }) => {
+  const brandPalette: Color[] = [
+    "Colors/Background/bg-brand-secondary",
+    "Colors/Background/bg-brand-primary",
+    "Colors/Text/text-brand-primary (900)",
+  ]
   return (
     <AccentRowGrid>
       <PaletteLayout
         key="dominant"
         grid={DominantAccentSwatchGrid}
-        label="Accent-Primary"
-        palette={dominant}
+        label="Brand"
+        palette={theme}
         fg="#FFF"
-        include={["base", "darker", "lighter"]}
+        include={brandPalette}
+        base={[0]}
       />
     </AccentRowGrid>
   )
 }
 
-const AccentPalettes = ({
-  accents,
-}: {
-  accents: Omit<AccentPaletteMap, "primary">
-}) => {
+type KeyedPalettes = { [k: string]: Color[] }
+
+const AccentPalettes = ({ theme }: { theme: Colors }) => {
+  const accents: KeyedPalettes = {
+    positive: [
+      "Component colors/Utility/Data/utility-data-positive-100",
+      "Component colors/Utility/Data/utility-data-positive-300",
+      "Component colors/Utility/Data/utility-data-positive-500",
+      "Component colors/Utility/Data/utility-data-positive-700",
+    ],
+    warning: [
+      "Colors/Background/bg-warning-primary",
+      "Colors/Background/bg-warning-secondary",
+      "Component colors/Utility/Warning/utility-warning-300",
+      "Colors/Foreground/fg-warning-secondary",
+    ],
+    error: [
+      "Colors/Text/text-error-primary (600)",
+      "Colors/Background/bg-error-secondary",
+      "Component colors/Utility/Error/utility-error-300",
+      "Colors/Foreground/fg-error-primary",
+    ],
+  }
+
   return (
     <AccentRowGrid>
-      {Object.keys(accents).map((accentName) => (
+      {Object.entries(accents).map(([name, accent]) => (
         <PaletteLayout
-          key={accentName}
+          key={name}
           grid={AccentSwatchGrid}
-          label={`Accent-${accentName}`}
-          palette={accents[accentName as "positive" | "aware" | "negative"]}
-          fg="#000"
-          include={["base", "darker", "medium", "lighter"]}
+          label={`Accent-${name}`}
+          palette={theme}
+          fg={name === "error" ? "#fff" : "#000"}
+          include={accent}
         />
       ))}
     </AccentRowGrid>
@@ -363,17 +425,29 @@ const DominantAccentSwatchGrid = styled.div`
   grid-template-areas: "base darker lighter";
 `
 
-const UniquePalettes = ({ palettes }: { palettes: any }) => {
+const UniquePalettes = ({ theme }: { theme: Colors }) => {
+  const palettes: KeyedPalettes = {
+    sell: [
+      "Colors/Text/text-sell-primary",
+      "Colors/Background/bg-sell-primary",
+      "Colors/Background/bg-sell-primary_hover",
+    ],
+    buy: [
+      "Colors/Text/text-buy-primary",
+      "Colors/Background/bg-buy-primary",
+      "Colors/Background/bg-buy-primary_hover",
+    ],
+  }
   return (
     <UniqueRowGrid>
-      {Object.keys(palettes).map((label) => (
+      {Object.entries(palettes).map(([label, palette]) => (
         <PaletteLayout
           key={label}
           grid={UniqueSwatchGrid}
           label={label}
-          palette={palettes[label]}
-          fg="#000"
-          include={["base", "1", "2"]}
+          palette={theme}
+          fg="#fff"
+          include={palette}
         />
       ))}
     </UniqueRowGrid>
