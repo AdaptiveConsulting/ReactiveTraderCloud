@@ -8,13 +8,24 @@ import styled, {
   StyledComponent,
 } from "styled-components"
 
-import { Gap } from "@/client/components/Gap"
 import { Typography } from "@/client/components/Typography"
 import { colors, Theme, ThemeName, useTheme } from "@/client/theme"
 import { Color } from "@/client/theme/types"
 import { UISK_Variables } from "@/client/theme/uisk/generatedTheme"
 
-import { Block, BlockProps, SectionBlock, Text } from "../styled"
+import { H2, H3, P } from "../elements"
+import { BlockProps, SectionBlock } from "../styled"
+import {
+  AccentRowGrid,
+  AccentSwatchGrid,
+  CoreSwatchGrid,
+  DominantAccentSwatchGrid,
+  QuadrantLayout,
+  SwatchColor,
+  ThemeRow,
+  UniqueRowGrid,
+  UniqueSwatchGrid,
+} from "./CoreBranding.styled"
 
 const CoreBranding = () => {
   const { themeName } = useTheme()
@@ -24,27 +35,14 @@ const CoreBranding = () => {
 
   return (
     <>
-      <SectionBlock colorScheme="secondary" mh={2} pt={2}>
-        <Typography
-          variant="Display md/Regular"
-          textTransform="uppercase"
-          color="Colors/Text/text-brand-primary (900)"
-          allowLineHeight
-        >
-          Colour
-        </Typography>
-        <Typography
-          variant="Display xs/Regular"
-          allowLineHeight
-          marginBottom="sm"
-        >
-          Core UI
-        </Typography>
-        <Typography variant="Text lg/Regular">
+      <SectionBlock colorScheme="secondary">
+        <H2>Colour</H2>
+        <H3>Core UI</H3>
+        <P>
           Core color control the general look and feel of the application and
           make up 90% of the overall UI aesthetic. When switching from a light
           to a dark theme these are the key color that change.
-        </Typography>
+        </P>
 
         <ThemePalettes theme={theme} />
 
@@ -52,17 +50,11 @@ const CoreBranding = () => {
 
         <QuadrantLayout>
           <span>
-            <Typography
-              variant="Display xs/Regular"
-              marginBottom="sm"
-              allowLineHeight
-            >
-              Brand / Accent Colours
-            </Typography>
-            <Typography variant="Text lg/Regular">
+            <H3>Brand / Accent Colours</H3>
+            <P>
               Brand colors aim to communicate a companies visual ownership of
               the digital product.
-            </Typography>
+            </P>
           </span>
           <DominantAccentPalettes theme={theme} />
         </QuadrantLayout>
@@ -71,19 +63,13 @@ const CoreBranding = () => {
 
         <QuadrantLayout>
           <span>
-            <Typography
-              variant="Display xs/Regular"
-              marginBottom="sm"
-              allowLineHeight
-            >
-              Accents & Functional colors
-            </Typography>
-            <Typography variant="Text lg/Regular">
+            <H3>Accents & Functional colors</H3>
+            <P>
               Accent colors inject focus points in to the UI and are used to
               give the UI character and guide users attention. These colors
               often work with the brand helping to retain the ‘feeling’ of being
               from the same organisation but not always.
-            </Typography>
+            </P>
           </span>
 
           <AccentPalettes theme={theme} />
@@ -93,26 +79,19 @@ const CoreBranding = () => {
 
         <QuadrantLayout>
           <span>
-            <Typography
-              variant="Display xs/Regular"
-              marginBottom="sm"
-              allowLineHeight
-            >
-              Unique Collections
-            </Typography>
-            <Typography variant="Text lg/Regular" marginBottom="sm">
+            <H3>Unique Collections</H3>
+            <P>
               Create separate references for key areas of the application such
               as trading directions.
-            </Typography>
-            <Gap height="sm" />
-            <Typography variant="Text lg/Regular italic" marginBottom="sm">
+            </P>
+            <P variant="Text md/Regular italic" marginY="sm">
               Note: Why are some colours the same but named differently?
-            </Typography>
-            <Typography variant="Text lg/Regular italic">
+            </P>
+            <P variant="Text md/Regular italic">
               Answer: These colours will be chosen and used in different
               situations allowing key functional colours and branding to be
               changed independantly of one another.
-            </Typography>
+            </P>
           </span>
 
           <span>
@@ -210,63 +189,14 @@ export const Swatch = ({
   ...props
 }: SwatchProps) => (
   <SwatchElement p={1} bg={bg} fg={fg} {...props}>
-    <Text fontSize={0.75} fontWeight="bold" textTransform="capitalize">
+    <Typography variant="Text md/Semibold" textTransform="capitalize">
       {label}
-    </Text>
-    <Text fontSize={0.75} textTransform="uppercase">
+    </Typography>
+    <Typography variant="Text sm/Regular" textTransform="uppercase">
       {value}
-    </Text>
+    </Typography>
   </SwatchElement>
 )
-
-export const SwatchColor = styled(Block)<SwatchColorProps>`
-  line-height: 1.25rem;
-
-  display: flex;
-  justify-content: flex-end;
-  flex-flow: column nowrap;
-  padding-right: 5px;
-
-  ${({ extra }) => extra};
-`
-
-export const LargeSwatchColor = styled(SwatchColor)<SwatchColorProps>`
-  width: 14rem;
-  height: 10rem;
-  margin: 1.5rem 0;
-
-  display: flex;
-  justify-content: flex-end;
-  flex-flow: column nowrap;
-
-  border-radius: 0.5rem;
-`
-
-const CoreSwatchGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(4, 5rem);
-  grid-template-areas:
-    "base 2"
-    "base 3"
-    "base1 4"
-    "base1 5";
-
-  overflow: hidden;
-  border-radius: 0.5rem;
-
-  ${SwatchColor} {
-    border-radius: initial;
-  }
-
-  @media all and (min-width: 640px) {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 10rem 7rem;
-    grid-template-areas:
-      "base base base1 base1"
-      "2 3 4 5";
-  }
-`
 
 type Colors = UISK_Variables["1. Color modes"]
 
@@ -310,38 +240,6 @@ const ThemePalettes = ({ theme }: { theme: Colors }) => {
     </ThemeRow>
   )
 }
-
-const ThemeRow = styled.div`
-  margin: 2rem 0;
-
-  display: grid;
-  grid-gap: 0.5rem;
-  @media all and (min-width: 640px) {
-    grid-template-columns: 1fr 1fr;
-
-    ${CoreSwatchGrid}:first-child {
-      border-radius: 0.5rem 0.5rem 0.5rem 0.5rem !important;
-    }
-
-    ${CoreSwatchGrid}:last-child {
-      border-radius: 0.5rem 0.5rem 0.5rem 0.5rem !important;
-    }
-  }
-`
-
-const QuadrantLayout = styled.div`
-  margin: 30px 0px;
-  display: grid;
-  grid-row-gap: 1rem;
-  grid-column-gap: 0.5rem;
-
-  grid-template-rows: auto;
-  grid-template-columns: 1fr 1fr;
-
-  @media all and (max-width: 800px) {
-    grid-template-columns: auto;
-  }
-`
 
 const DominantAccentPalettes = ({ theme }: { theme: Colors }) => {
   const brandPalette: Color[] = [
@@ -404,29 +302,6 @@ const AccentPalettes = ({ theme }: { theme: Colors }) => {
   )
 }
 
-const AccentRowGrid = styled.div`
-  display: grid;
-  grid-gap: 0.5rem;
-  grid-template-columns: 1fr;
-  grid-template-rows: 6rem;
-`
-
-const AccentSwatchGrid = styled.div`
-  border-radius: 1rem;
-  overflow: hidden;
-  display: grid;
-  grid-template-rows: 6rem;
-  grid-template-areas: "base darker medium lighter";
-`
-
-const DominantAccentSwatchGrid = styled.div`
-  border-radius: 1rem;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 49% 26% 25%;
-  grid-template-areas: "base darker lighter";
-`
-
 const UniquePalettes = ({ theme }: { theme: Colors }) => {
   const palettes: KeyedPalettes = {
     sell: [
@@ -455,20 +330,3 @@ const UniquePalettes = ({ theme }: { theme: Colors }) => {
     </UniqueRowGrid>
   )
 }
-
-const UniqueRowGrid = styled.div`
-  display: grid;
-  grid-gap: 0.5rem;
-  grid-template-columns: 75%;
-  margin-bottom: 1rem;
-`
-
-const UniqueSwatchGrid = styled.div`
-  border-radius: 1rem;
-  overflow: hidden;
-  height: min-content;
-  display: grid;
-  grid-template-rows: 6rem;
-  grid-template-columns: 40% 30% 30%;
-  grid-template-areas: "base 1 2";
-`
