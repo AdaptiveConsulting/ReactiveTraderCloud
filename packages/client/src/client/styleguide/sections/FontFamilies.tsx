@@ -1,8 +1,8 @@
 import { Typography } from "@/client/components/Typography"
 import { Spacing, TextStyles } from "@/client/theme/types"
 
-import { H3 } from "../elements"
-import { Paragraph, SectionBlock } from "../styled"
+import { H2, H3 } from "../elements"
+import { SectionBlock } from "../styled"
 import {
   CharacterLine,
   FontFamilySampleGrid,
@@ -39,22 +39,12 @@ const CHARACTERS = [
 export const FontFamilies = () => (
   <>
     <SectionBlock>
-      <Typography
-        marginTop="2xl"
-        variant="Display md/Regular"
-        textTransform="uppercase"
-        color="Colors/Text/text-brand-primary (900)"
-        allowLineHeight
-      >
-        Typography
-      </Typography>
-      <Typography variant="Display sm/Regular" allowLineHeight>
-        Work Sans
-      </Typography>
+      <H2>Typography</H2>
+      <H3>Work Sans</H3>
 
       <FontFamilySample />
 
-      <H3>Font Sizes & Style Usage</H3>
+      <H3 paddingY="lg">Font Sizes & Style Usage</H3>
 
       {CATEGORIES.map((category) => (
         <Table key={category}>
@@ -103,15 +93,15 @@ export const FontFamilies = () => (
       ))}
     </SectionBlock>
     <SectionBlock mh={0} py={0}>
-      <Paragraph>
-        <i>
-          *Means there will often be regular, bold, medium, italic, underline
-          styles available The above are the core set of available fonts and
-          their styles. You should feel free to deviate to some degree, for
+      <Typography variant="Text sm/Regular italic">
+        {`*Means there will often be regular, bold, medium, italic, underline
+          styles available.
+          The above are the core set of available fonts and
+          their styles.
+          You should feel free to deviate to some degree, for
           example using a body style then amending the weight to bold, italic
-          underlined etc.
-        </i>
-      </Paragraph>
+          underlined etc.`}
+      </Typography>
     </SectionBlock>
   </>
 )
