@@ -3,7 +3,7 @@ import { exhaustMap } from "rxjs/operators"
 
 import { Button } from "@/client/components/Button"
 import { BinIcon } from "@/client/components/icons/BinIcon"
-import { CheckCircle } from "@/client/components/icons/CheckCircle"
+import { CheckCircleIcon } from "@/client/components/icons/CheckCircleIcon"
 import { Typography } from "@/client/components/Typography"
 import { ACCEPTED_QUOTE_STATE, RfqState } from "@/generated/TradingGateway"
 import {
@@ -49,7 +49,7 @@ export const AcceptedFooterContent = ({
 
   return (
     <>
-      <CheckCircle />
+      {CheckCircleIcon}
       <Typography
         variant="Text xxs/Regular"
         color="Colors/Text/text-success-primary (600)"
@@ -81,7 +81,7 @@ export const TerminatedFooterContent = ({
   state: RfqState
 }) => (
   <CloseRfqButton onClick={() => removeRfqs([rfqId])}>
-    <BinIcon />
+    {BinIcon}
     <Typography
       variant="Text xxs/Regular"
       color="Colors/Text/text-secondary (700)"

@@ -93,7 +93,7 @@ export const Price = styled(Typography)<RowFieldProps>`
   `}
 
   svg {
-    fill: ${({ theme }) =>
+    color: ${({ theme }) =>
       theme.newTheme.color["Colors/Text/text-success-primary (600)"]};
     margin-right: 4px;
   }

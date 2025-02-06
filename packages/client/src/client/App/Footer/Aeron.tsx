@@ -24,6 +24,6 @@ export const Aeron = () => (
     >
       Powered by
     </Typography>
-    <AeronLogo height={10} />
+    {AeronLogo}
   </AeronLogoWrapper>
 )

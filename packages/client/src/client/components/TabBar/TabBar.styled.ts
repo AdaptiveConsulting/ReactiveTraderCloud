@@ -83,16 +83,13 @@ export const Action = styled(TabBarButton)<{
   line-height: 0;
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
 
-  svg {
-    fill: ${({ theme }) =>
-      theme.newTheme.color["Colors/Foreground/fg-quinary (400)"]};
-  }
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Foreground/fg-quinary (400)"]};
 
   &:hover {
     cursor: ${({ disabled }) => (disabled ? "auto" : "pointer")};
-    svg {
-      fill: ${({ theme }) =>
-        theme.newTheme.color["Colors/Foreground/fg-quinary_hover"]};
+    color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Foreground/fg-quinary_hover"]};
     }
   }
 `

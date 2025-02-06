@@ -69,7 +69,7 @@ export const PWAInstallBanner = ({
 
   return (
     <MainBanner isHidden={isHidden}>
-      <CrossButton onClick={closeBanner}>{<CrossIcon />}</CrossButton>
+      <CrossButton onClick={closeBanner}>{CrossIcon}</CrossButton>
       <Typography
         variant="Text md/Semibold"
         color="Colors/Text/text-primary_alt"
