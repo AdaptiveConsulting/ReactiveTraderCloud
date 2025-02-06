@@ -31,10 +31,6 @@ const StyledDropdown = styled(Button)<DropdownStyleProps>`
   color: ${({ theme }) => theme.dropdown.textColor};
   min-width: 80px;
 
-  svg > path {
-    fill: ${({ theme }) => theme.dropdown.textColor};
-  }
-
   & > span {
     width: 100%;
     display: flex;

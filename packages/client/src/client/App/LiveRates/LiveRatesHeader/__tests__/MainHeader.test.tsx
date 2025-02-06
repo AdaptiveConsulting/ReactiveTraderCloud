@@ -8,7 +8,7 @@ import { ccppMock } from "@/services/currencyPairs/__mocks__/_ccpp"
 
 import { liveRates$ } from "../../LiveRatesCore"
 import { Tiles } from "../../Tiles"
-import { MainHeader } from ".."
+import { LiveRatesHeader } from ".."
 
 vi.mock("@/services/currencyPairs/currencyPairs")
 vi.mock("../../Tile/Tile.tsx")
@@ -36,7 +36,7 @@ const renderComponent = async () =>
     render(
       <TestThemeProvider>
         <Subscribe source$={liveRates$} fallback="No data">
-          <MainHeader />
+          <LiveRatesHeader />
           <Tiles />
         </Subscribe>
       </TestThemeProvider>,

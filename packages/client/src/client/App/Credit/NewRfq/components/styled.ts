@@ -22,11 +22,13 @@ export const IconWrapper = styled.div`
   margin-left: 5px;
   height: 30px;
   width: 30px;
-  color: ${({ theme }) => theme.secondary[5]};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-quaternary (500)"]};
 
   &:hover {
     cursor: pointer;
-    color: ${({ theme }) => theme.accents.primary.base};
+    color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-brand-primary (900)"]};
   }
 `
 

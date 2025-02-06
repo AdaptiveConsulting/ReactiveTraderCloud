@@ -1,5 +1,3 @@
-import styled from "styled-components"
-
 import { BinIcon } from "@/client/components/icons/BinIcon"
 import { TabBar, TabBarActionConfig } from "@/client/components/TabBar"
 import { removeRfqs, useExecutedRfqIds } from "@/services/credit"
@@ -10,11 +8,6 @@ import {
   useSelectedRfqsTab,
 } from "./selectedRfqsTab"
 
-const BinButton = styled(BinIcon)`
-  fill: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-quaternary (500)"]};
-`
-
 export const CreditRfqsHeader = () => {
   const rfqState = useSelectedRfqsTab()
   const executedRfqIds = useExecutedRfqIds()
@@ -22,7 +15,7 @@ export const CreditRfqsHeader = () => {
   const actions: TabBarActionConfig = [
     {
       name: "clearRfqs",
-      inner: <BinButton />,
+      inner: BinIcon,
       onClick: () => removeRfqs(executedRfqIds),
       disabled: executedRfqIds.length === 0,
     },
