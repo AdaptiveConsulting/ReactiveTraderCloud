@@ -68,6 +68,7 @@ export const NewRfqForm = () => {
             name="duration"
             id="duration"
             placeholder="2 Minutes"
+            comboBox
             disabled
           />
         </FormControl>
@@ -75,7 +76,13 @@ export const NewRfqForm = () => {
 
       <FormControl>
         <Label htmlFor="type">Fill Type</Label>
-        <TextInput name="type" id="type" placeholder="All or None" disabled />
+        <TextInput
+          name="type"
+          id="type"
+          placeholder="All or None"
+          comboBox
+          disabled
+        />
       </FormControl>
 
       <FormControl>
