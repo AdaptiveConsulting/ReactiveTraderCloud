@@ -26,6 +26,7 @@ const LoadableStyle = styled.div<Props>`
   flex-direction: column;
   fill: ${({ theme }) =>
     theme.newTheme.color["Colors/Text/text-primary (900)"]};
+  opacity: ${({ opacity }) => (opacity ? opacity : "1")};
 `
 
 export const Loader = ({ size, ...props }: Props) => (

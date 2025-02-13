@@ -66,7 +66,7 @@ export const AdaptiveLoader = memo(function AdaptiveLoader({
   const barHeight = sizeNum * 0.7
   const barWidth = barHeight / 4
   const separationDistance =
-    separation !== undefined ? separation : sizeNum / 18
+    separation !== undefined ? separation : sizeNum / 12
   const moveDistance = barHeight / 3
   const totalBarWidth =
     barWidth * BAR_NUMBER + separationDistance * (BAR_NUMBER - 1)
