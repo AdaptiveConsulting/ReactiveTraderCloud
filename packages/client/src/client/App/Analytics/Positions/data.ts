@@ -86,7 +86,7 @@ export const nodes$: Observable<BubbleChartNode[]> = currentPositions$.pipe(
       positionsData.forEach((dataObj: CCYPosition) => {
         const color =
           dataObj.baseTradedAmount > 0
-            ? theme.newTheme.color["Colors/Border/border-buy"]
+            ? theme.newTheme.color["Colors/Border/border-buy"] //TODO refactor during analytics work
             : theme.newTheme.color["Colors/Border/border-sell"]
 
         newAcc[dataObj.symbol] = Object.assign(
