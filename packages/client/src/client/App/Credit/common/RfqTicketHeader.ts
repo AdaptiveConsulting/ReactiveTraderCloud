@@ -12,17 +12,6 @@ interface WithTerminated {
   terminated: boolean
 }
 
-export const DirectionContainer = styled.div<WithDirection & WithTerminated>`
-  display: flex;
-  flex: 0 0 48px;
-  background-color: ${({ theme, direction, terminated }) =>
-    terminated
-      ? theme.primary[2]
-      : direction === Direction.Buy
-        ? "rgba(76, 118, 196, 0.15)"
-        : "rgba(167, 39, 64, 0.15)"};
-`
-
 const buyBackground = css<WithTerminated>`
   background-color: ${({ theme, terminated }) =>
     terminated
@@ -59,9 +48,4 @@ export const InstrumentLabelContainer = styled.div<WithTerminated>`
   padding-left: ${({ theme }) => theme.newTheme.spacing.md};
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-tertiary"]};
-`
-
-export const InstrumentName = styled.div`
-  font-size: 13px;
-  font-weight: 600;
 `

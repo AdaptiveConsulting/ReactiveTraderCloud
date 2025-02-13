@@ -86,7 +86,7 @@ const whiteOutlineStyle = css`
 `}
 `
 
-const _Button = styled.button<Props>`
+const ButtonStyled = styled.button<Props>`
   padding: 0 ${({ theme }) => theme.newTheme.spacing.xl};
   border-radius: ${({ theme }) => theme.newTheme.radius.full};
 
@@ -128,12 +128,12 @@ export const Button = React.forwardRef<
   PropsWithChildren<Props>
 >(function ButtonInner({ children, ...props }, ref) {
   return (
-    <_Button ref={ref} {...props}>
+    <ButtonStyled ref={ref} {...props}>
       <Typography
         variant={props.size === "xxs" ? "Text xxs/Regular" : "Text sm/Semibold"}
       >
         {children}
       </Typography>
-    </_Button>
+    </ButtonStyled>
   )
 })

@@ -37,6 +37,7 @@ import {
   processCreditRfqWithAcceptedQuote,
   processFxExecution,
 } from "./notificationsUtils"
+import { colors } from "./theme"
 import { constructUrl } from "./utils/constructUrl"
 
 // OF Notification Service now requires explicit register()
@@ -109,8 +110,8 @@ const createNotificationTemplate = (
             createText("messageTradeDirection", 12, {
               fontWeight: "bold",
               backgroundColor: isBuy(direction)
-                ? "rgb(45, 149, 255)"
-                : "rgb(255, 39, 75)",
+                ? colors.newThemeDark["Colors/Text/text-buy-primary"]
+                : colors.newThemeDark["Colors/Text/text-sell-primary"],
               borderRadius: "10px",
               padding: "0 5px",
             }),
