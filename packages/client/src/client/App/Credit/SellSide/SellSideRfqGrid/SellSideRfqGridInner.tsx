@@ -28,8 +28,7 @@ export const QuoteDot = styled.div`
 
 const TableWrapper = styled.div`
   height: 100%;
-  overflow-x: auto;
-  overflow-y: auto;
+  overflow: auto;
   contain: strict;
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-primary"]};
@@ -40,7 +39,7 @@ const Table = styled.table`
     theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
   position: relative;
   width: 100%;
-  border-collapse: seperate;
+  border-collapse: separate;
   border-spacing: 0;
   .visually-hidden {
     display: none;

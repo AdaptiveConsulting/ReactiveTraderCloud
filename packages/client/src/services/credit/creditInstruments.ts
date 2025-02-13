@@ -73,7 +73,7 @@ export const [useCreditInstruments, creditInstruments$] = bind(
 )
 
 export const [useCreditInstrumentById, creditInstrumentById$] = bind(
-  (instrumentId?: number) =>
+  (instrumentId: number) =>
     creditInstruments$.pipe(
       map((creditInstruments) =>
         creditInstruments.find((instrument) => instrument.id === instrumentId),

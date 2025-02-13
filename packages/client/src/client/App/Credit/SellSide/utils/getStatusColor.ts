@@ -16,7 +16,7 @@ export const getSellSideStatusColor = (
     case SellSideQuoteState.Passed:
       return theme.newTheme.color[
         "Component colors/Utility/Error/utility-error-400"
-      ]
+      ] // TODO talk to UX about getting a more semantic color for passed
     case SellSideQuoteState.Pending:
       return theme.newTheme.color["Colors/Background/bg-warning-secondary"]
     case SellSideQuoteState.New:
