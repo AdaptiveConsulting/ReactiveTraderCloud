@@ -34,19 +34,11 @@ export const HeaderAction = styled.button`
   opacity: 0;
   transition: opacity 0.2s;
 
-  svg {
-    fill: ${({ theme }) =>
-      theme.newTheme.color["Colors/Foreground/fg-quinary (400)"]};
-  }
-
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Foreground/fg-quinary (400)"]};
   &:hover {
-    svg {
-      fill: ${({ theme }) =>
-        theme.newTheme.color["Colors/Foreground/fg-quinary_hover"]};
-    }
-    .tear-out-hover-state {
-      fill: #5f94f5;
-    }
+    color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Foreground/fg-quinary_hover"]};
   }
 `
 

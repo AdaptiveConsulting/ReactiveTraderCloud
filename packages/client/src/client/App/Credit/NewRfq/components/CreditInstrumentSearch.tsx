@@ -1,10 +1,10 @@
 import { bind } from "@react-rxjs/core"
 import { useCombobox } from "downshift"
 import { forwardRef, useMemo, useState } from "react"
-import { FaSearch } from "react-icons/fa"
 import { map, withLatestFrom } from "rxjs/operators"
 
 import { TextInput } from "@/client/components/Form/TextInput"
+import { SearchIcon } from "@/client/components/icons"
 import { Typography } from "@/client/components/Typography"
 import {
   creditInstrumentsByCusip$,
@@ -55,9 +55,7 @@ export const CreditInstrumentSearch = () => {
           <SearchBox onChange={setInstrumentId} ref={inputRef} />
         )}
       </InputWrapper>
-      <IconWrapper onClick={showAndResetInput}>
-        <FaSearch size="0.75em" />
-      </IconWrapper>
+      <IconWrapper onClick={showAndResetInput}>{<SearchIcon />}</IconWrapper>
     </InstrumentSearchWrapper>
   )
 }

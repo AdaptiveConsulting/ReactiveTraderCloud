@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-import Logo from "@/client/components/Logo"
+import Logo from "@/client/components/logos/AdaptiveLogo"
 
 import designTownPNGURL from "../assets/design-town.png"
 import { H1, H3 } from "../elements"

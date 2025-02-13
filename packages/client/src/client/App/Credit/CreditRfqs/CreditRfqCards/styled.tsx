@@ -84,9 +84,9 @@ export const CardFooterWrapper = styled(FlexBox)`
   padding: ${({ theme }) => theme.newTheme.spacing.md};
   background: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-success-primary (600)"]};
   svg {
-    fill: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-success-primary (600)"]};
     margin-right: ${({ theme }) => theme.newTheme.spacing.xs};
   }
 `
@@ -124,11 +124,8 @@ export const CloseRfqButton = styled(FooterButton)`
   padding: ${({ theme }) => theme.newTheme.spacing.xs}
     ${({ theme }) => theme.newTheme.spacing.md};
   border-radius: ${({ theme }) => theme.newTheme.radius.xs};
-  svg {
-    fill: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-brand-tertiary (600)"]};
-    margin-right: ${({ theme }) => theme.newTheme.spacing.md};
-  }
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-brand-tertiary (600)"]};
 `
 
 export const QuantityTypography = styled(Typography)`

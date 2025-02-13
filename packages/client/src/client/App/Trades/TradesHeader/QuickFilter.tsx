@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { FaTimes } from "react-icons/fa"
 import styled from "styled-components"
 
-import { FilterEdit } from "@/client/components/icons/FilterEdit"
+import { FilterEditIcon } from "@/client/components/icons/FilterEditIcon"
 
 import { onQuickFilterInput } from "../TradesState"
 
@@ -41,15 +41,6 @@ const QuickFilterInput = styled("input")`
   }
 `
 
-const QuickFilterIcon = styled("div")`
-  cursor: pointer;
-
-  svg {
-    fill: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-quaternary (500)"]};
-  }
-`
-
 const QuickFilterClearIcon = styled("i")`
   width: 0.6875rem;
   position: absolute;
@@ -76,9 +67,9 @@ export const QuickFilter = () => {
       role="search"
       aria-label="Search by text across all trade fields"
     >
-      <QuickFilterIcon onClick={() => quickFilterInput.current?.focus()}>
-        <FilterEdit />
-      </QuickFilterIcon>
+      <div onClick={() => quickFilterInput.current?.focus()}>
+        {<FilterEditIcon />}
+      </div>
       <QuickFilterInput
         ref={quickFilterInput}
         type="search"

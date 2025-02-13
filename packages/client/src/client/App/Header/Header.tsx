@@ -1,7 +1,7 @@
 import { ReactNode, useState } from "react"
 
 import { Line } from "@/client/components/Line"
-import Logo from "@/client/components/Logo"
+import Logo from "@/client/components/logos/AdaptiveLogo"
 import { WEBSITE } from "@/client/constants"
 import { isMobileDevice } from "@/client/utils"
 

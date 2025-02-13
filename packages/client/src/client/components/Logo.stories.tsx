@@ -1,6 +1,6 @@
 import { Meta } from "@storybook/react"
 
-import Logo from "./Logo"
+import Logo from "./logos/AdaptiveLogo"
 
 export default {
   title: "Components/Logo",

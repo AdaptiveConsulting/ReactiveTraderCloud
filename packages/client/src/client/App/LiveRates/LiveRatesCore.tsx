@@ -8,7 +8,7 @@ import {
 } from "@/client/notifications"
 import { WithChildren } from "@/client/utils/utilityTypes"
 
-import { MainHeader, mainHeader$ } from "./MainHeader"
+import { LiveRatesHeader, mainHeader$ } from "./LiveRatesHeader"
 import { Tiles, tiles$ } from "./Tiles"
 
 export const liveRates$ = merge(tiles$, mainHeader$)
@@ -25,7 +25,7 @@ const LiveRates = ({ children }: WithChildren) => {
     <Region
       source$={liveRates$}
       fallback={children}
-      Header={<MainHeader />}
+      Header={<LiveRatesHeader />}
       Body={<Tiles />}
     />
   )

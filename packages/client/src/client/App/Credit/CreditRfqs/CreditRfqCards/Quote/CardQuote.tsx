@@ -1,7 +1,7 @@
 import { createSignal } from "@react-rxjs/utils"
 import { exhaustMap } from "rxjs/operators"
 
-import { CheckCircle } from "@/client/components/icons/CheckCircle"
+import { CheckCircleIcon } from "@/client/components/icons/CheckCircleIcon"
 import { Typography } from "@/client/components/Typography"
 import { Color } from "@/client/theme/types"
 import {
@@ -128,7 +128,7 @@ export const Quote = ({
           passed={passed}
           priced={priced}
         >
-          {accepted && <CheckCircle />}
+          {accepted && <CheckCircleIcon />}
           <Typography
             variant={accepted ? "Text sm/Medium" : "Text sm/Regular"}
             color={getPriceColor(

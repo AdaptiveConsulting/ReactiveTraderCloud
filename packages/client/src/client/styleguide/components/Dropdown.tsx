@@ -16,7 +16,7 @@ export const Dropdown = (props: DropdownStyleProps) => {
   return (
     <StyledDropdown {...rest} intent="mute">
       <span>{title}</span>
-      {ChevronIcon}
+      {<ChevronIcon />}
     </StyledDropdown>
   )
 }
@@ -30,10 +30,6 @@ const StyledDropdown = styled(Button)<DropdownStyleProps>`
         : theme.dropdown.backgroundColor};
   color: ${({ theme }) => theme.dropdown.textColor};
   min-width: 80px;
-
-  svg > path {
-    fill: ${({ theme }) => theme.dropdown.textColor};
-  }
 
   & > span {
     width: 100%;

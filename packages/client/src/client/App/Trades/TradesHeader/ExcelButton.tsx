@@ -1,17 +1,8 @@
-import styled from "styled-components"
-
-import { Import } from "@/client/components/icons/Import"
+import { DownloadIcon } from "@/client/components/icons"
 import { Trade } from "@/services/trades"
 
 import { useColDef, useColFields, useTrades$ } from "../Context"
 import { ColDef, useTableTrades } from "../TradesState"
-
-const Container = styled.div`
-  svg {
-    fill: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-quaternary (500)"]};
-  }
-`
 
 const downloadCsv = (
   trades: Trade[],
@@ -52,11 +43,11 @@ export const ExcelButton = () => {
   const trades = useTableTrades(rows$, colDef)
 
   return (
-    <Container
+    <div
       onClick={() => downloadCsv(trades, colDef, colFields)}
       aria-label="Export to CSV"
     >
-      <Import />
-    </Container>
+      {<DownloadIcon />}
+    </div>
   )
 }

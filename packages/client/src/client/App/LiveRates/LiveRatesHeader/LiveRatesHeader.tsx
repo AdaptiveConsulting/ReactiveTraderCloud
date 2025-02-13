@@ -3,6 +3,7 @@ import { map } from "rxjs/operators"
 
 import { supportsTearOut } from "@/client/App/TearOutSection/supportsTearOut"
 import { TearOutComponent } from "@/client/App/TearOutSection/TearOutComponent"
+import { ChartIcon } from "@/client/components/icons"
 import { TabBar, TabBarActionConfig } from "@/client/components/TabBar/TabBar"
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { useIsLimitCheckerRunning } from "@/services/limitChecker/limitChecker"
@@ -19,7 +20,6 @@ import {
   useSelectedTileView,
 } from "../selectedView"
 import { LimitCheckerIndicator } from "./LimitCheckerIndicator"
-import { ChartIcon } from "./ToggleView/ChartIcon"
 
 const [useCurrencies, mainHeader$] = bind(
   currencyPairs$.pipe(
@@ -33,7 +33,7 @@ const [useCurrencies, mainHeader$] = bind(
 
 export { mainHeader$ }
 
-export const MainHeader = () => {
+export const LiveRatesHeader = () => {
   const currencies = useCurrencies()
   const currency = useSelectedCurrency()
   const isLimitCheckerRunning = useIsLimitCheckerRunning()

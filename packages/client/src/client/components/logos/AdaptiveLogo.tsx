@@ -7,7 +7,7 @@ interface LogoProps extends SVGAttributes<Element> {
   withText?: boolean
 }
 
-const Logo = ({
+const AdaptiveLogo = ({
   fill = "#000",
   size = 2,
   style,
@@ -77,7 +77,7 @@ const Logo = ({
   )
 }
 
-export default styled(Logo)`
+export default styled(AdaptiveLogo)`
   [fill] {
     fill: ${(props) =>
       props.theme.newTheme.color["Colors/Text/text-primary (900)"]};

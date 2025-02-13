@@ -5,12 +5,8 @@ import {
   ChevronIcon,
   DownloadIcon,
   FilterIcon,
-  MailIcon,
-  MaximizeIcon,
-  MinimizeIcon,
   PopInIcon,
   PopOutIcon,
-  UndockIcon,
 } from "@/client/components/icons"
 
 import { H2, H3, H5 } from "../elements"
@@ -37,16 +33,16 @@ export const FontFamilies = () => (
         <H5>Disabled</H5>
 
         <H5>Download</H5>
-        <div>{DownloadIcon}</div>
-        <ActiveIcon>{DownloadIcon}</ActiveIcon>
-        <ActiveIcon>{DownloadIcon}</ActiveIcon>
-        <DisabledIcon>{DownloadIcon}</DisabledIcon>
+        <div>{<DownloadIcon />}</div>
+        <ActiveIcon>{<DownloadIcon />}</ActiveIcon>
+        <ActiveIcon>{<DownloadIcon />}</ActiveIcon>
+        <DisabledIcon>{<DownloadIcon />}</DisabledIcon>
 
         <H5>Filter</H5>
-        <div>{FilterIcon}</div>
-        <ActiveIcon>{FilterIcon}</ActiveIcon>
-        <ActiveIcon>{FilterIcon}</ActiveIcon>
-        <DisabledIcon>{FilterIcon}</DisabledIcon>
+        <div>{<FilterIcon />}</div>
+        <ActiveIcon>{<FilterIcon />}</ActiveIcon>
+        <ActiveIcon>{<FilterIcon />}</ActiveIcon>
+        <DisabledIcon>{<FilterIcon />}</DisabledIcon>
 
         <H5>Pop Out</H5>
         <div>{<PopOutIcon />}</div>
@@ -60,65 +56,17 @@ export const FontFamilies = () => (
         <ActiveIcon>{<PopInIcon />}</ActiveIcon>
         <DisabledIcon>{<PopInIcon />}</DisabledIcon>
 
-        <H5>Minimize-Screen</H5>
-        <div>{MinimizeIcon}</div>
-        <ActiveIcon>{MinimizeIcon}</ActiveIcon>
-        <ActiveIcon>{MinimizeIcon}</ActiveIcon>
-        <DisabledIcon>{MinimizeIcon}</DisabledIcon>
-
-        <H5>Maximize-Screen</H5>
-        <div>{MaximizeIcon}</div>
-        <ActiveIcon>{MaximizeIcon}</ActiveIcon>
-        <ActiveIcon>{MaximizeIcon}</ActiveIcon>
-        <DisabledIcon>{MaximizeIcon}</DisabledIcon>
-
         <H5>Chevron</H5>
-        <div>{ChevronIcon}</div>
-        <ActiveIcon>{ChevronIcon}</ActiveIcon>
-        <ActiveIcon>{ChevronIcon}</ActiveIcon>
-        <DisabledWholeIcon>{ChevronIcon}</DisabledWholeIcon>
-
-        <H5>Undock</H5>
-        <div>
-          <UndockIcon />
-        </div>
-        <ActiveIconInverse>
-          <UndockIcon />
-        </ActiveIconInverse>
-        <ActiveIconInverse>
-          <UndockIcon />
-        </ActiveIconInverse>
-        <DisabledIcon>
-          <UndockIcon />
-        </DisabledIcon>
+        <div>{<ChevronIcon />}</div>
+        <ActiveIcon>{<ChevronIcon />}</ActiveIcon>
+        <ActiveIcon>{<ChevronIcon />}</ActiveIcon>
+        <DisabledWholeIcon>{<ChevronIcon />}</DisabledWholeIcon>
 
         <H5>Chart</H5>
-        <div>
-          <ChartIcon height={20} width={20} />
-        </div>
-        <ActiveIcon>
-          <ChartIcon height={20} width={20} />
-        </ActiveIcon>
-        <ActiveIcon>
-          <ChartIcon height={20} width={20} />
-        </ActiveIcon>
-        <DisabledIcon>
-          <ChartIcon height={20} width={20} />
-        </DisabledIcon>
-
-        <H5>Mail</H5>
-        <div>
-          <MailIcon height={1} width={1} />
-        </div>
-        <ActiveIcon>
-          <MailIcon height={1} width={1} />
-        </ActiveIcon>
-        <ActiveIcon>
-          <MailIcon height={1} width={1} />
-        </ActiveIcon>
-        <DisabledIcon>
-          <MailIcon height={1} width={1} />
-        </DisabledIcon>
+        <div>{<ChartIcon />}</div>
+        <ActiveIcon>{<ChartIcon />}</ActiveIcon>
+        <ActiveIcon>{<ChartIcon />}</ActiveIcon>
+        <DisabledIcon>{<ChartIcon />}</DisabledIcon>
       </IconGrid>
     </SectionBlock>
   </>
@@ -134,11 +82,6 @@ const IconGrid = styled(Text)<TextProps>`
 
 const ActiveIcon = styled.div`
   svg path:last-child {
-    fill: #5f94f5;
-  }
-`
-const ActiveIconInverse = styled.div`
-  svg path:nth-child(3) {
     fill: #5f94f5;
   }
 `

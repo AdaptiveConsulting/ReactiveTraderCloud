@@ -81,7 +81,7 @@ export const WindowControls = ({ close, minimize, maximize, popIn }: Props) => {
           onClick={popIn}
           data-qa="openfin-chrome__popin"
         >
-          <PopInIcon />
+          {<PopInIcon />}
         </Control>
       )}
 

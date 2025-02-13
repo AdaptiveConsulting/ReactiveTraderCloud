@@ -1,11 +1,12 @@
 import { useRef, useState } from "react"
-import { FaFilter, FaLongArrowAltDown, FaLongArrowAltUp } from "react-icons/fa"
 import styled from "styled-components"
 
+import { ArrowDownIcon } from "@/client/components/icons/ArrowDownIcon"
+import { ArrowUpIcon } from "@/client/components/icons/ArrowUpIcon"
+import { FilterIcon } from "@/client/components/icons/FilterIcon"
 import { usePopUpMenu } from "@/client/utils"
 
 import { useColDef } from "../Context"
-import type { SortDirection } from "../TradesState"
 import { useTableSort } from "../TradesState"
 import { CreditColField, FxColField } from "../TradesState/colConfig"
 import { DateColField } from "../TradesState/filterState/dateFilterState"
@@ -52,34 +53,6 @@ const TableHeadCell = styled.div<{
   }
 `
 
-const AlignedFilterIcon = styled(FaFilter)<{
-  "aria-label"?: string
-  role?: string
-}>`
-  margin-top: 0.1rem;
-`
-
-const AlignedUpArrow = styled(FaLongArrowAltUp)`
-  margin-top: 0.1rem;
-`
-
-const AlignedDownArrow = styled(FaLongArrowAltDown)`
-  margin-top: 0.1rem;
-`
-
-const AlignedArrow = ({
-  sortDirection,
-  ariaLabel,
-}: {
-  sortDirection: SortDirection
-  ariaLabel: string
-}) =>
-  sortDirection === "ASC" ? (
-    <AlignedUpArrow role="sort" aria-label={ariaLabel} />
-  ) : (
-    <AlignedDownArrow role="sort" aria-label={ariaLabel} />
-  )
-
 interface Props<T extends FxColField | CreditColField> {
   field: T
   isLast: boolean
@@ -117,21 +90,25 @@ export const TableHeadCellContainer = <T extends FxColField | CreditColField>({
     >
       {headerName}
       {tableSort.field === field && tableSort.direction !== undefined ? (
-        <AlignedArrow
-          sortDirection={tableSort.direction}
-          ariaLabel={`Update trades blotter sort on ${headerName} field`}
-        />
+        <div
+          role="sort"
+          aria-label={`Update trades blotter sort on ${headerName} field`}
+        >
+          {tableSort.direction === "ASC" ? <ArrowUpIcon /> : <ArrowDownIcon />}
+        </div>
       ) : (
         <span className="spacer" aria-hidden={true} />
       )}
       {showFilter ? (
-        <AlignedFilterIcon
+        <div
           aria-label={`Open ${headerName} field filter pop up`}
           role="button"
           onClick={() => {
             setDisplayMenu((current) => !current)
           }}
-        />
+        >
+          {<FilterIcon />}
+        </div>
       ) : (
         <span className="spacer" aria-hidden={true} />
       )}

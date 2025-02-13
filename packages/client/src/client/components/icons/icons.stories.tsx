@@ -12,53 +12,63 @@ export const appleShareIcon = {
   render: () => icons.AppleShareIcon,
   name: "AppleShareIcon",
 }
+export const arrowDownIcon = {
+  render: () => icons.ArrowDownIcon({}),
+  name: "ArrowDownIcon",
+}
+export const arrowUpIcon = {
+  render: () => icons.ArrowUpIcon({}),
+  name: "ArrowUpIcon",
+}
+export const binIcon = {
+  render: () => icons.BinIcon({}),
+  name: "BinIcon",
+}
 export const chartIcon = {
-  render: () => <icons.ChartIcon />,
+  render: () => icons.ChartIcon({}),
   name: "ChartIcon",
 }
+export const checkCircleIcon = {
+  render: () => icons.CheckCircleIcon({}),
+  name: "CheckCircleIcon",
+}
 export const chevronIcon = {
-  render: () => icons.ChevronIcon,
+  render: () => icons.ChevronIcon({}),
   name: "ChevronIcon",
 }
+export const crossIcon = {
+  render: () => icons.CrossIcon({}),
+  name: "CrossIcon",
+}
+export const darkThemeIcon = {
+  render: () => icons.DarkThemeIcon({}),
+  name: "DarkThemeIcon",
+}
+export const lightThemeIcon = {
+  render: () => icons.LightThemeIcon({}),
+  name: "LightThemeIcon",
+}
 export const downloadIcon = {
-  render: () => icons.DownloadIcon,
+  render: () => icons.DownloadIcon({}),
   name: "DownloadIcon",
 }
-export const expandIcon = {
-  render: () => <icons.ExpandIcon />,
-  name: "ExpandIcon",
+export const filterEditIcon = {
+  render: () => icons.FilterEditIcon({}),
+  name: "FilterEditIcon",
 }
 export const filterIcon = {
-  render: () => icons.FilterIcon,
+  render: () => icons.FilterIcon({}),
   name: "FilterIcon",
 }
-export const logoIcon = {
-  render: (args: { width: number; height: number }) => (
-    <icons.LogoIcon {...args} />
-  ),
-  name: "LogoIcon",
-}
-export const mailIcon = {
-  render: (args: { fill: string; size: number }) => (
-    <icons.MailIcon {...args} />
-  ),
-  name: "MailIcon",
-}
-export const maximizeIcon = {
-  render: () => icons.MaximizeIcon,
-  name: "MaximizeIcon",
-}
 export const popInIcon = {
-  render: () => <icons.PopInIcon />,
+  render: () => icons.PopInIcon({}),
   name: "PopInIcon",
 }
 export const popOutIcon = {
-  render: () => <icons.PopOutIcon />,
+  render: () => icons.PopOutIcon({}),
   name: "PopOutIcon",
 }
-export const unDockIcon = {
-  render: (args: { width: number; height: number }) => (
-    <icons.UndockIcon {...args} />
-  ),
-  name: "UndockIcon",
+export const searchIcon = {
+  render: () => icons.SearchIcon({}),
+  name: "SearchIcon",
 }
