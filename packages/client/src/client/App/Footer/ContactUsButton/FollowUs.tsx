@@ -14,7 +14,7 @@ const Row = ({
   <>
     <Typography variant="Text md/Regular">{label}</Typography>
     <Link
-      variant="Text sm/Regular"
+      variant="Text sm/Regular underlined"
       color="Component colors/Utility/Blue dark/utility-blue-dark-500"
       onClick={onClick}
     >

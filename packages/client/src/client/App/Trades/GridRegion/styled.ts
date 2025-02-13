@@ -82,7 +82,9 @@ export const TableBodyStrikeThrough = styled.div<{
   left: 0;
   border-bottom: 1px solid
     ${({ theme }) =>
-      theme.newTheme.color["Component colors/Utility/Red/utility-red-400"]};
+      theme.newTheme.color[
+        "Component colors/Utility/Red/utility-red-400"
+      ]}; // TODO talk to UX about getting better error reds
   width: 100%;
 `
 
@@ -107,7 +109,7 @@ export const StatusIndicator = styled.div<{
         status === LimitCheckStatus.Failure
       ) {
         return theme.newTheme.color[
-          "Component colors/Utility/Red/utility-red-400"
+          "Component colors/Utility/Red/utility-red-400" // TODO talk to UX about getting better error reds
         ]
       }
       return "inherit"

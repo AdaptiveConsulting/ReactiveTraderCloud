@@ -1,7 +1,7 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 
-import { GlobalScrollbarStyle, ThemeProvider } from "@/client/theme"
+import { ThemeProvider } from "@/client/theme"
 import GlobalStyle from "@/client/theme/globals"
 
 import { Modal } from "./components/Modal"
@@ -13,7 +13,6 @@ export function browserUnsupported() {
     <StrictMode>
       <ThemeProvider>
         <GlobalStyle />
-        <GlobalScrollbarStyle />
         <Modal
           title="Sorry, but it appears your browser version is not supported"
           shouldShow

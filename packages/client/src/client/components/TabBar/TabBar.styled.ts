@@ -81,7 +81,10 @@ export const Action = styled(TabBarButton)<{
   display: flex;
   align-items: center;
   line-height: 0;
-  opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+  opacity: ${({ disabled }) =>
+    disabled
+      ? 0.3
+      : 1}; // TODO talk to ux about getting a dark enough colour for this disabled state
 
   color: ${({ theme }) =>
     theme.newTheme.color["Colors/Foreground/fg-quinary (400)"]};

@@ -6,7 +6,7 @@ import { checkTradingGatewayCompatibility } from "@/services/tradingGatewayCompa
 
 import { ENVIRONMENT } from "./constants"
 import { getMainApp } from "./main"
-import { GlobalScrollbarStyle, GlobalStyle, ThemeProvider } from "./theme"
+import { GlobalStyle, ThemeProvider } from "./theme"
 
 const MainApp = getMainApp()
 
@@ -24,7 +24,6 @@ export async function initApp() {
     <StrictMode>
       <ThemeProvider>
         <GlobalStyle />
-        <GlobalScrollbarStyle />
         <MainApp />
       </ThemeProvider>
     </StrictMode>,

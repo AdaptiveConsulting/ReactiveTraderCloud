@@ -57,7 +57,7 @@ const outlineStyle = css`
   border: 1px solid ${theme.newTheme.color["Colors/Border/border-brand"]};
 
   &:hover {
-    opacity: 0.65;
+    opacity: 0.65; // TODO Talk to UX about getting border hover colors
   }
   `}
 `
@@ -81,7 +81,7 @@ const whiteOutlineStyle = css`
   border: 1px solid ${theme.newTheme.color["Colors/Text/text-white"]};
 
   &:hover {
-    opacity: 0.75;
+    opacity: 0.75; // TODO Talk to UX about getting border hover colors
   }
 `}
 `

@@ -10,7 +10,6 @@ export type {
 } from "./colors"
 export { colors, dark } from "./colors"
 export { default as GlobalStyle } from "./globals"
-export { GlobalScrollbarStyle } from "./GlobalScrollbarStyle"
 export { ThemeConsumer, ThemeProvider, useTheme } from "./ThemeContext"
 export type {
   ColorProps,

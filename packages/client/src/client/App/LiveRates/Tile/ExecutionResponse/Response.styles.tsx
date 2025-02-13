@@ -29,8 +29,6 @@ export const ExecutionStatusAlertContainer = styled(OverlayDiv)<{
   padding: ${({ theme }) => theme.newTheme.spacing.xl}
     ${({ theme }) => theme.newTheme.spacing.lg};
   padding-bottom: ${({ theme }) => theme.newTheme.spacing.md};
-  // Solution to stack flex child ontop of another, height is not respected in safari
-  // margin-left: -100%;
   position: absolute;
 `
 
