@@ -139,7 +139,7 @@ test.describe("Credit", () => {
 
       const sellSidePage = await pagePromise
       await expect(
-        sellSidePage.locator("div").getByText("New RFQ"),
+        sellSidePage.locator("div").getByText("New RFQ").first(),
       ).toBeVisible({ timeout: ElementTimeout.NORMAL })
 
       await sellSidePage.getByTestId("price-input").pressSequentially("100")
