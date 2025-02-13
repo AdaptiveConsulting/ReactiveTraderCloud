@@ -53,7 +53,7 @@ const expandedLauncherWidth = 600
 const Logo = ({ active }: { active: boolean }) => (
   <LogoLauncherContainer>
     {useIsNlpIntentLoading() ? (
-      <Loader size={21} opacity={1} />
+      <Loader size={21} />
     ) : (
       <LogoIcon width={1.2} height={1.2} active={active} />
     )}

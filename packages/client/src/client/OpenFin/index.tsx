@@ -37,7 +37,7 @@ export const OpenFinApp = () => (
         path={ROUTES_CONFIG.launcher}
         element={
           <ThemeProvider theme={themes[ThemeName.Dark]}>
-            <Suspense fallback={<Loader opacity={1} />}>
+            <Suspense fallback={<Loader />}>
               <Launcher />
             </Suspense>
           </ThemeProvider>

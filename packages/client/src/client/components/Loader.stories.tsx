@@ -9,7 +9,6 @@ export default {
 
 export const Loader = {
   args: {
-    opacity: 0.8,
     size: 40,
   },
 }
