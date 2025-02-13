@@ -16,7 +16,7 @@ export const Dropdown = (props: DropdownStyleProps) => {
   return (
     <StyledDropdown {...rest} intent="mute">
       <span>{title}</span>
-      {ChevronIcon}
+      {<ChevronIcon />}
     </StyledDropdown>
   )
 }

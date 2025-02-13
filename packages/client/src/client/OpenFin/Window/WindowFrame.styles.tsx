@@ -5,7 +5,9 @@ import { PopOutIcon } from "../../components/icons/PopOutIcon"
 import { ExitIcon } from "../icons/ExitIcon"
 
 const exitIconString = encodeURIComponent(renderToStaticMarkup(<ExitIcon />))
-const popoutIconString = encodeURIComponent(renderToStaticMarkup(PopOutIcon))
+const popoutIconString = encodeURIComponent(
+  renderToStaticMarkup(<PopOutIcon />),
+)
 
 export const FrameRoot = styled.div`
   position: absolute;

@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 import { FlexBox } from "@/client/components/FlexBox"
-import { AeronLogo } from "@/client/components/icons/AeronLogo"
+import { AeronLogo } from "@/client/components/logos/AeronLogo"
 import { Typography } from "@/client/components/Typography"
 import { AERON } from "@/client/constants"
 

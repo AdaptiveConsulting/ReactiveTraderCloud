@@ -34,7 +34,7 @@ export const TearOutComponent = ({ section, width, height }: Props) => {
           : tearOutSection(!tearOutContext.isTornOut, section, width, height)
       }
     >
-      {tearOutContext.isTornOut ? PopInIcon : PopOutIcon}
+      {tearOutContext.isTornOut ? <PopInIcon /> : <PopOutIcon />}
     </HeaderTearOutAction>
   )
 }

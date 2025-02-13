@@ -128,7 +128,7 @@ export const Quote = ({
           passed={passed}
           priced={priced}
         >
-          {accepted && CheckCircleIcon}
+          {accepted && <CheckCircleIcon />}
           <Typography
             variant={accepted ? "Text sm/Medium" : "Text sm/Regular"}
             color={getPriceColor(

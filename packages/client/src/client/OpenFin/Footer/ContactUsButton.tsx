@@ -6,7 +6,7 @@ import { ContactUs } from "@/client/App/Footer/ContactUsButton/ContactUs"
 import { FollowUs } from "@/client/App/Footer/ContactUsButton/FollowUs"
 import { LogoWrapper } from "@/client/App/Footer/ContactUsButton/styled"
 import { Button } from "@/client/components/Button"
-import Logo from "@/client/components/Logo"
+import Logo from "@/client/components/logos/AdaptiveLogo"
 import {
   createOpenFinPopup,
   showOpenFinPopup,

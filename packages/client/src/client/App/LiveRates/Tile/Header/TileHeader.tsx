@@ -94,7 +94,7 @@ export const HeaderInner = forwardRef<HTMLDivElement, HeaderProps>(
                 : "Tear out into standalone window"
             }
           >
-            {isTornOut ? PopInIcon : PopOutIcon}
+            {isTornOut ? <PopInIcon /> : <PopOutIcon />}
           </HeaderAction>
         )}
       </HeaderWrapper>

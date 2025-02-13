@@ -1,4 +1,3 @@
-export { AeronLogo } from "./AeronLogo"
 export { AppleShareIcon } from "./AppleShareIcon"
 export { ArrowDownIcon } from "./ArrowDownIcon"
 export { ArrowUpIcon } from "./ArrowUpIcon"

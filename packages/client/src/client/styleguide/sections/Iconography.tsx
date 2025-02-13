@@ -33,40 +33,40 @@ export const FontFamilies = () => (
         <H5>Disabled</H5>
 
         <H5>Download</H5>
-        <div>{DownloadIcon}</div>
-        <ActiveIcon>{DownloadIcon}</ActiveIcon>
-        <ActiveIcon>{DownloadIcon}</ActiveIcon>
-        <DisabledIcon>{DownloadIcon}</DisabledIcon>
+        <div>{<DownloadIcon />}</div>
+        <ActiveIcon>{<DownloadIcon />}</ActiveIcon>
+        <ActiveIcon>{<DownloadIcon />}</ActiveIcon>
+        <DisabledIcon>{<DownloadIcon />}</DisabledIcon>
 
         <H5>Filter</H5>
-        <div>{FilterIcon}</div>
-        <ActiveIcon>{FilterIcon}</ActiveIcon>
-        <ActiveIcon>{FilterIcon}</ActiveIcon>
-        <DisabledIcon>{FilterIcon}</DisabledIcon>
+        <div>{<FilterIcon />}</div>
+        <ActiveIcon>{<FilterIcon />}</ActiveIcon>
+        <ActiveIcon>{<FilterIcon />}</ActiveIcon>
+        <DisabledIcon>{<FilterIcon />}</DisabledIcon>
 
         <H5>Pop Out</H5>
-        <div>{PopOutIcon}</div>
-        <ActiveIcon>{PopOutIcon}</ActiveIcon>
-        <ActiveIcon>{PopOutIcon}</ActiveIcon>
-        <DisabledIcon>{PopOutIcon}</DisabledIcon>
+        <div>{<PopOutIcon />}</div>
+        <ActiveIcon>{<PopOutIcon />}</ActiveIcon>
+        <ActiveIcon>{<PopOutIcon />}</ActiveIcon>
+        <DisabledIcon>{<PopOutIcon />}</DisabledIcon>
 
         <H5>Pop In</H5>
-        <div>{PopInIcon}</div>
-        <ActiveIcon>{PopInIcon}</ActiveIcon>
-        <ActiveIcon>{PopInIcon}</ActiveIcon>
-        <DisabledIcon>{PopInIcon}</DisabledIcon>
+        <div>{<PopInIcon />}</div>
+        <ActiveIcon>{<PopInIcon />}</ActiveIcon>
+        <ActiveIcon>{<PopInIcon />}</ActiveIcon>
+        <DisabledIcon>{<PopInIcon />}</DisabledIcon>
 
         <H5>Chevron</H5>
-        <div>{ChevronIcon}</div>
-        <ActiveIcon>{ChevronIcon}</ActiveIcon>
-        <ActiveIcon>{ChevronIcon}</ActiveIcon>
-        <DisabledWholeIcon>{ChevronIcon}</DisabledWholeIcon>
+        <div>{<ChevronIcon />}</div>
+        <ActiveIcon>{<ChevronIcon />}</ActiveIcon>
+        <ActiveIcon>{<ChevronIcon />}</ActiveIcon>
+        <DisabledWholeIcon>{<ChevronIcon />}</DisabledWholeIcon>
 
         <H5>Chart</H5>
-        <div>{ChartIcon}</div>
-        <ActiveIcon>{ChartIcon}</ActiveIcon>
-        <ActiveIcon>{ChartIcon}</ActiveIcon>
-        <DisabledIcon>{ChartIcon}</DisabledIcon>
+        <div>{<ChartIcon />}</div>
+        <ActiveIcon>{<ChartIcon />}</ActiveIcon>
+        <ActiveIcon>{<ChartIcon />}</ActiveIcon>
+        <DisabledIcon>{<ChartIcon />}</DisabledIcon>
       </IconGrid>
     </SectionBlock>
   </>

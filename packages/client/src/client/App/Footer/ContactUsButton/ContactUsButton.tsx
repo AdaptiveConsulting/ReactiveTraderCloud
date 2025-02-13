@@ -1,7 +1,7 @@
 import { useRef } from "react"
 
 import { Button } from "@/client/components/Button"
-import Logo from "@/client/components/Logo"
+import Logo from "@/client/components/logos/AdaptiveLogo"
 import { usePopUpMenu } from "@/client/utils/usePopUpMenu"
 
 import { Root } from "../common-styles"

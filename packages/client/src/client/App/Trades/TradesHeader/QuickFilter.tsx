@@ -68,7 +68,7 @@ export const QuickFilter = () => {
       aria-label="Search by text across all trade fields"
     >
       <div onClick={() => quickFilterInput.current?.focus()}>
-        {FilterEditIcon}
+        {<FilterEditIcon />}
       </div>
       <QuickFilterInput
         ref={quickFilterInput}

@@ -43,7 +43,7 @@ export const LiveRatesHeader = () => {
   const actions: TabBarActionConfig = [
     {
       name: "toggleTileView",
-      inner: ChartIcon,
+      inner: <ChartIcon />,
       active: tileView === TileView.Analytics,
       onClick: onToggleSelectedView,
     },

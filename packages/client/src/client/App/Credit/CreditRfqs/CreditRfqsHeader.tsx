@@ -1,4 +1,4 @@
-import { BinIcon } from "@/client/components/icons/BinIcon"
+import { BinIcon } from "@/client/components/icons"
 import { TabBar, TabBarActionConfig } from "@/client/components/TabBar"
 import { removeRfqs, useExecutedRfqIds } from "@/services/credit"
 
@@ -15,7 +15,7 @@ export const CreditRfqsHeader = () => {
   const actions: TabBarActionConfig = [
     {
       name: "clearRfqs",
-      inner: BinIcon,
+      inner: <BinIcon />,
       onClick: () => removeRfqs(executedRfqIds),
       disabled: executedRfqIds.length === 0,
     },

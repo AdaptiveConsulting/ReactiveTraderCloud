@@ -47,7 +47,7 @@ export const ExcelButton = () => {
       onClick={() => downloadCsv(trades, colDef, colFields)}
       aria-label="Export to CSV"
     >
-      {DownloadIcon}
+      {<DownloadIcon />}
     </div>
   )
 }

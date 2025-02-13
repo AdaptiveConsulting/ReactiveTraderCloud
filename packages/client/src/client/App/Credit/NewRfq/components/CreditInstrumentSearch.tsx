@@ -55,7 +55,7 @@ export const CreditInstrumentSearch = () => {
           <SearchBox onChange={setInstrumentId} ref={inputRef} />
         )}
       </InputWrapper>
-      <IconWrapper onClick={showAndResetInput}>{SearchIcon}</IconWrapper>
+      <IconWrapper onClick={showAndResetInput}>{<SearchIcon />}</IconWrapper>
     </InstrumentSearchWrapper>
   )
 }

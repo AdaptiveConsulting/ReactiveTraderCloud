@@ -94,7 +94,7 @@ export const TableHeadCellContainer = <T extends FxColField | CreditColField>({
           role="sort"
           aria-label={`Update trades blotter sort on ${headerName} field`}
         >
-          {tableSort.direction === "ASC" ? ArrowUpIcon : ArrowDownIcon}
+          {tableSort.direction === "ASC" ? <ArrowUpIcon /> : <ArrowDownIcon />}
         </div>
       ) : (
         <span className="spacer" aria-hidden={true} />
@@ -107,7 +107,7 @@ export const TableHeadCellContainer = <T extends FxColField | CreditColField>({
             setDisplayMenu((current) => !current)
           }}
         >
-          {FilterIcon}
+          {<FilterIcon />}
         </div>
       ) : (
         <span className="spacer" aria-hidden={true} />

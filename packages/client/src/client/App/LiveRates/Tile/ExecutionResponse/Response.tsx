@@ -1,9 +1,9 @@
 import { format } from "date-fns"
-import { FaExclamationTriangle } from "react-icons/fa"
 import styled from "styled-components"
 
 import { Button } from "@/client/components/Button"
 import { CheckCircleIcon } from "@/client/components/icons/CheckCircleIcon"
+import { WarningIcon } from "@/client/components/icons/WarningIcon"
 import { Typography } from "@/client/components/Typography"
 import { formatNumber } from "@/client/utils"
 import { Direction } from "@/generated/TradingGateway"
@@ -39,8 +39,6 @@ const BoldItalicSpan = styled.span`
   font-weight: 700;
   font-style: italic;
 `
-
-const AlignedTriangle = styled(FaExclamationTriangle)``
 
 const pastTenseDirection: Record<Direction, string> = {
   [Direction.Buy]: "bought",
@@ -108,7 +106,7 @@ const ExecutionMessage = ({
   return (
     <ExecutionStatusAlertContainer state={tileState} role="dialog">
       <CurrencyPairDiv>
-        {isSuccessful ? CheckCircleIcon : <AlignedTriangle />}
+        {isSuccessful ? <CheckCircleIcon /> : <WarningIcon />}
         <Typography variant="Text xl/Bold">
           {base}/{terms}
         </Typography>

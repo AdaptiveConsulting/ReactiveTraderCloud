@@ -48,10 +48,10 @@ const ThemeStorageSwitch = ({
           onChange={handleChange}
           checked={isDarkTheme}
           checkedIcon={
-            <IconContainer hover={hover}>{DarkThemeIcon}</IconContainer>
+            <IconContainer hover={hover}>{<DarkThemeIcon />}</IconContainer>
           }
           uncheckedIcon={
-            <IconContainer hover={hover}>{LightThemeIcon}</IconContainer>
+            <IconContainer hover={hover}>{<LightThemeIcon />}</IconContainer>
           }
           handleDiameter={props.handleDiameter || 15}
           offColor={theme.newTheme.color["Colors/Background/bg-secondary"]}
@@ -65,7 +65,7 @@ const ThemeStorageSwitch = ({
           {...props}
         />
       ) : (
-        <IconContainer hover={hover}>{Icon}</IconContainer>
+        <IconContainer hover={hover}>{<Icon />}</IconContainer>
       )}
     </SwitchContainer>
   )

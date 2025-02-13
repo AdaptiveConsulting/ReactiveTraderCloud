@@ -49,7 +49,7 @@ export const AcceptedFooterContent = ({
 
   return (
     <>
-      {CheckCircleIcon}
+      {<CheckCircleIcon />}
       <Typography
         variant="Text xxs/Regular"
         color="Colors/Text/text-success-primary (600)"
@@ -81,7 +81,7 @@ export const TerminatedFooterContent = ({
   state: RfqState
 }) => (
   <CloseRfqButton onClick={() => removeRfqs([rfqId])}>
-    {BinIcon}
+    {<BinIcon />}
     <Typography
       variant="Text xxs/Regular"
       color="Colors/Text/text-secondary (700)"
