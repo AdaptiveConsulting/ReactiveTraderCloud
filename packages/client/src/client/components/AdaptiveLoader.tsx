@@ -63,10 +63,10 @@ export const AdaptiveLoader = memo(function AdaptiveLoader({
   children?: ReactNode
 }) {
   const sizeNum = Number(size)
-  const barHeight = sizeNum * 0.75
+  const barHeight = sizeNum * 0.7
   const barWidth = barHeight / 4
   const separationDistance =
-    (separation !== undefined ? separation : sizeNum / 25) - 0.5
+    separation !== undefined ? separation : sizeNum / 18
   const moveDistance = barHeight / 3
   const totalBarWidth =
     barWidth * BAR_NUMBER + separationDistance * (BAR_NUMBER - 1)

@@ -24,7 +24,6 @@ const LoadableStyle = styled.div<Props>`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  opacity: ${({ opacity }) => opacity ?? ".59"};
   fill: ${({ theme }) =>
     theme.newTheme.color["Colors/Text/text-primary (900)"]};
 `
