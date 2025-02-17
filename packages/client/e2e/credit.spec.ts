@@ -1,9 +1,10 @@
-import { expect, Page } from "@playwright/test"
+import { BrowserContext, expect, Page } from "@playwright/test"
 
 import { test } from "./fixtures"
-import { ElementTimeout, isOpenFin, TestTimeout } from "./utils"
+import { ExpectTimeout, isOpenFin } from "./utils"
 
 test.describe("Credit", () => {
+  let browserContext: BrowserContext
   let newRfqPage: Page
   let rfqsPage: Page
   let rfqBlotterPage: Page
@@ -35,6 +36,10 @@ test.describe("Credit", () => {
     }
   })
 
+  test.beforeEach(async ({ context }) => {
+    browserContext = context
+  })
+
   test.afterEach(async ({ context }, workerInfo) => {
     if (isOpenFin(workerInfo)) {
       const subWindowFrame = context
@@ -49,137 +54,139 @@ test.describe("Credit", () => {
     }
   })
 
-  test.describe("New RFQ", () => {
-    test.setTimeout(TestTimeout.EXTENDED)
+  const createRFQStep = async (
+    symbol: string,
+    quantity: string,
+    triggerSellSide: boolean = true,
+  ) => {
+    await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
+    await newRfqPage
+      .getByTestId("search-result-item")
+      .getByText(symbol)
+      .first()
+      .click()
+    await newRfqPage.getByLabel("Quantity (000)").pressSequentially(quantity)
 
-    test("Create RFQ for GOOGL @smoke", async () => {
-      const firstQuote = rfqsPage.getByTestId("quotes").locator("div").first()
-      const acceptButton = firstQuote.getByText(/Accept/)
-
-      await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
-      await newRfqPage
-        .getByTestId("search-result-item")
-        .getByText("GOOGL")
-        .first()
-        .click()
-
-      const quantity = newRfqPage.getByLabel("Quantity (000)")
-      await quantity.pressSequentially("2")
-      await quantity.blur()
-
+    if (!triggerSellSide) {
+      // if we want to avoid popping up the sell side window (should be minority of tests)
+      // select all, then the click on Adaptive Bank below will switch off the sell side for that test
       await newRfqPage.getByLabel(/All/).click()
+    }
+    await newRfqPage.getByLabel(/Adaptive Bank/).click()
 
-      await newRfqPage.getByLabel(/Adaptive Bank/).click()
+    const pagePromise = triggerSellSide
+      ? browserContext.waitForEvent("page", {
+          predicate: (page) => page.url().includes("credit-sellside"),
+        })
+      : Promise.resolve()
 
-      await newRfqPage
-        .locator("button")
-        .getByText(/Send RFQ/)
-        .click()
+    await newRfqPage
+      .locator("button")
+      .getByText(/Send RFQ/)
+      .click()
 
-      // Navigate to Live
-      await rfqsPage.getByText(/Live/).first().click()
+    return pagePromise
+  }
 
-      // Wait for first quote response
-      await expect(firstQuote).not.toContainText(/Awaiting response/, {
-        timeout: ElementTimeout.LONG,
-      })
+  test("Create RFQ for GOOGL @smoke", async () => {
+    await test.step("Create RFQ for 1000 GOOGL", () =>
+      createRFQStep("GOOGL", "1", false))
 
-      // retry clicking on accept button until timeout
-      const retryTimeout = ElementTimeout.NORMAL
+    // Navigate to Live
+    await rfqsPage.getByText(/Live/).first().click()
 
-      await expect(async () => {
-        await firstQuote.hover()
-        await acceptButton.click()
-      }, `Click on quote Accept within ${retryTimeout} seconds`).toPass({
-        intervals: [250],
-        timeout: retryTimeout,
-      })
+    const firstQuote = rfqsPage
+      .getByTestId(/^rfq-/)
+      .first()
+      .getByTestId("quotes")
+      .locator("div")
+      .first()
 
-      await rfqsPage.locator("div").getByText(/All/).nth(0).click()
-      const btnTxt = await rfqsPage
-        .getByTestId("view-trade")
-        .first()
-        .innerText()
-
-      await rfqsPage.getByTestId("view-trade").first().click()
-
-      const tradeId = btnTxt.split(" ")[2]
-      const blotterId = await rfqBlotterPage
-        .locator("div")
-        .getByText(tradeId, { exact: true })
-        .first()
-        .innerText()
-
-      expect(tradeId).toEqual(blotterId)
+    // Wait for first quote response
+    await expect(firstQuote).not.toContainText(/Awaiting response/, {
+      timeout: ExpectTimeout.LONG,
     })
+
+    const acceptButton = firstQuote.getByText(/Accept/)
+
+    await expect(async () => {
+      await firstQuote.hover()
+      await acceptButton.click()
+    }, `Click on quote Accept within ${ExpectTimeout.MEDIUM} seconds`).toPass({
+      intervals: [250],
+      timeout: ExpectTimeout.MEDIUM,
+    })
+
+    // Navigate back to All RFQs
+    await rfqsPage.getByText(/All/).nth(0).click()
+
+    const btnTxt = await rfqsPage.getByTestId("view-trade").first().innerText()
+
+    await rfqsPage.getByTestId("view-trade").first().click()
+
+    const tradeId = btnTxt.split(" ")[2]
+    const blotterId = await rfqBlotterPage
+      .locator("div")
+      .getByText(tradeId, { exact: true })
+      .first()
+      .innerText()
+
+    expect(tradeId).toEqual(blotterId)
   })
 
-  test.describe("Sell side", () => {
-    test("Sell side ticket", async ({ context }) => {
-      await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
-      await newRfqPage
-        .getByTestId("search-result-item")
-        .getByText("GOOGL")
-        .first()
-        .click()
+  test("Create RFQ with Sell side", async () => {
+    const pagePromise = test.step("Create RFQ for 2000 AMZN", () =>
+      createRFQStep("AMZN", "2"))
+    const sellSidePage = await (pagePromise as Promise<Page>)
 
-      const quantity = newRfqPage.getByLabel("Quantity (000)")
-      await quantity.pressSequentially("2")
+    const rfqTestId = await rfqsPage
+      .getByTestId(/^rfq-/)
+      .first()
+      .getAttribute("data-testid")
 
-      await newRfqPage.getByLabel(/Adaptive Bank/).click()
+    expect(rfqTestId, "Find the right RFQ Tile").not.toBeNull()
 
-      const pagePromise = context.waitForEvent("page", {
-        predicate: (page) => page.url().includes("credit-sellside"),
-      })
+    await expect(
+      sellSidePage.locator("div").getByText("New RFQ").first(),
+    ).toBeVisible()
 
-      await newRfqPage
-        .locator("button")
-        .getByText(/Send RFQ/)
-        .click()
+    await sellSidePage.getByTestId("price-input").pressSequentially("100")
 
-      const sellSidePage = await pagePromise
-      await expect(
-        sellSidePage.locator("div").getByText("New RFQ").first(),
-      ).toBeVisible({ timeout: ElementTimeout.NORMAL })
+    await sellSidePage.keyboard.press("Enter")
 
-      await sellSidePage.getByTestId("price-input").pressSequentially("100")
+    const firstQuote = rfqsPage
+      .getByTestId(rfqTestId!)
+      .getByTestId("quotes")
+      .locator("div")
+      .first()
 
-      await sellSidePage.keyboard.press("Enter")
-
-      await expect(rfqsPage.getByTestId("quotes").first()).toContainText("$100")
-    })
+    await expect(firstQuote).toContainText("$100")
   })
 
-  test.describe("Respond to RFQ with Pass", () => {
-    test("Passing a newly created RFQ", async ({ context }) => {
-      await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
-      await newRfqPage.getByTestId("search-result-item").nth(5).click()
+  test("Respond to quote with Pass in Sell Side", async () => {
+    const pagePromise = test.step("Create RFQ for 3000 BAC", () =>
+      createRFQStep("BAC", "3"))
+    const sellSidePage = await (pagePromise as Promise<Page>)
 
-      const quantity = newRfqPage.getByLabel("Quantity (000)")
-      await quantity.pressSequentially("2")
+    const rfqTestId = await rfqsPage
+      .getByTestId(/^rfq-/)
+      .first()
+      .getAttribute("data-testid")
 
-      await newRfqPage.getByLabel(/Adaptive Bank/).click()
+    expect(rfqTestId, "Find the right RFQ Tile").not.toBeNull()
 
-      const pagePromise = context.waitForEvent("page", {
-        predicate: (page) => page.url().includes("credit-sellside"),
-      })
+    await expect(
+      sellSidePage.locator("div").getByText("New RFQ").first(),
+    ).toBeVisible()
 
-      await newRfqPage
-        .locator("button")
-        .getByText(/Send RFQ/)
-        .click()
+    await sellSidePage.getByRole("button", { name: "Pass" }).click()
 
-      const sellSidePage = await pagePromise
-      await expect(
-        sellSidePage.locator("div").getByText("New RFQ"),
-      ).toBeVisible({ timeout: ElementTimeout.NORMAL })
+    const firstQuote = rfqsPage
+      .getByTestId(rfqTestId!)
+      .getByTestId("quotes")
+      .locator("div")
+      .first()
 
-      await sellSidePage.getByRole("button", { name: "Pass" }).click()
-
-      await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
-        "Passed",
-        { timeout: ElementTimeout.NORMAL },
-      )
-    })
+    await expect(firstQuote).toContainText("Passed")
   })
 })

@@ -21,7 +21,7 @@ jobs:
   build:
     name: Multi E2E
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     if: ${{ !github.event.pull_request.head.repo.fork }}
 
     steps:

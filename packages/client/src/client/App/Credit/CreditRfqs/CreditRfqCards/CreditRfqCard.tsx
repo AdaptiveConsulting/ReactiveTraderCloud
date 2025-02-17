@@ -106,6 +106,7 @@ export const Card = ({ id, highlight }: { id: number; highlight: boolean }) => {
       live={state === RfqState.Open}
       highlight={highlight}
       direction={direction}
+      data-testid={`rfq-${rfqId}`}
     >
       <CardHeader
         direction={direction}

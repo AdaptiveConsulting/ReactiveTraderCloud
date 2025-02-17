@@ -1,19 +1,10 @@
 import { expect, Page } from "@playwright/test"
-// import { fxColDef, fxColFields } from "../src/App/Trades/TradesState/colConfig"
-// import { FxTrade } from "../src/services/trades"
 import fs from "fs"
 
 import { test } from "./fixtures"
-import { ElementTimeout, isOpenFin } from "./utils"
+import { isOpenFin } from "./utils"
 
-const getTradeIDColIndex = () => {
-  // const tradeIndex = fxColFields.indexOf(
-  //   fxColDef.tradeId as unknown as keyof FxTrade,
-  // )
-  // // + 1 to account for status indicator
-  // return tradeIndex + 1
-  return 1
-}
+const TRADE_ID_COLUMN_INDEX = 1 // account for trade state (colour bar) column
 
 const getTradeIDCellContent = (
   page: Page,
@@ -23,13 +14,13 @@ const getTradeIDCellContent = (
     .locator('[role="grid"] > div')
     .nth(rowIndex)
     .locator("div")
-    .nth(getTradeIDColIndex())
+    .nth(TRADE_ID_COLUMN_INDEX)
     .textContent()
 }
 
 const getTradeIDFromCSV = (csvRows: string | string[]): string => {
-  // get index 1 to account for header row
-  const firstRowFields = csvRows[1].split(",")
+  const FIRST_TRADE_ROW_INDEX = 1 // account for header row
+  const firstRowFields = csvRows[FIRST_TRADE_ROW_INDEX].split(",")
   const tradeField = firstRowFields[0]
   return tradeField
 }
@@ -77,7 +68,6 @@ test.describe("Trade Blotter", () => {
       .pressSequentially("1m")
 
     // circumvent low occurences of false negative. if it fails on 1st attempt then we retry until timeout
-    const retryTimeout = ElementTimeout.NORMAL
     await expect(async () => {
       await tilePage.locator("input[id='notional-input-EURUSD']").clear()
       await tilePage
@@ -92,11 +82,7 @@ test.describe("Trade Blotter", () => {
       const newRow = blotterPage.getByTestId(`trades-grid-row-${tradeID}`)
 
       await expect(newRow).toHaveCSS("animation", /1s ease-in-out/)
-    }, `Unable to retry clicking on accept button within ${retryTimeout} seconds`).toPass(
-      {
-        timeout: retryTimeout,
-      },
-    )
+    }, `Trade then test blotter flash`).toPass()
   })
 
   test("when user clicks on the header of any column, it should sort it (depending on number of clicks, can be ascending or descending)", async () => {
@@ -147,7 +133,6 @@ test.describe("Trade Blotter", () => {
     await downloadButton.click()
     const download = await downloadPromise
     await download.saveAs("e2e/test-data/blotter-data.csv")
-    //read the downloaded file, use readFileSync because it is synchronous
     let csvRows: Array<string> | string
     try {
       csvRows = fs
@@ -186,7 +171,6 @@ test.describe("Trade Blotter", () => {
 
     await download.saveAs("e2e/test-data/filtered-data.csv")
 
-    //read the downloaded file, use readFileSync because it is synchronous
     let filteredCSVRows: Array<string> | string
     try {
       filteredCSVRows = fs

@@ -1,7 +1,7 @@
 import { expect, Page } from "@playwright/test"
 
 import { test } from "./fixtures"
-import { ElementTimeout, isOpenFin } from "./utils"
+import { isOpenFin } from "./utils"
 
 test.describe("Spot Tile", () => {
   let tilePage: Page
@@ -82,6 +82,9 @@ test.describe("Spot Tile", () => {
     })
   })
 
+  const SPOT_TILE_RFQ_TIMEOUT = 10500
+  const SPOT_RFQ_REQUOTE_TIMEOUT = 100
+
   test.describe("High notional RFQ", () => {
     test("When I initiate RFQ on NZD/USD then it should display fixed prices for buy/sell and after 10 secs, and a requote button appears", async () => {
       await tilePage.locator("[data-testid='rfqButton']").click()
@@ -89,10 +92,12 @@ test.describe("Spot Tile", () => {
       await expect(tilePage.getByTestId("rfqTimer")).toBeVisible()
       await tilePage.getByTestId("rfqTimer").waitFor({
         state: "hidden",
-        timeout: ElementTimeout.SPOT_TILE_RFQ_TIMEOUT,
+        timeout: SPOT_TILE_RFQ_TIMEOUT,
       })
       const requoteBtn = tilePage.getByText(/Requote/)
-      await expect(requoteBtn).toBeVisible({ timeout: 100 })
+      await expect(requoteBtn).toBeVisible({
+        timeout: SPOT_RFQ_REQUOTE_TIMEOUT,
+      })
     })
   })
 
