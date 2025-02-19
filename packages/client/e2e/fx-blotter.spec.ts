@@ -5,6 +5,7 @@ import { test } from "./fixtures"
 import { isOpenFin } from "./utils"
 
 const TRADE_ID_COLUMN_INDEX = 1 // account for trade state (colour bar) column
+const FIRST_TRADE_ROW_INDEX = 1 // account for header row
 
 const getTradeIDCellContent = (
   page: Page,
@@ -19,7 +20,6 @@ const getTradeIDCellContent = (
 }
 
 const getTradeIDFromCSV = (csvRows: string | string[]): string => {
-  const FIRST_TRADE_ROW_INDEX = 1 // account for header row
   const firstRowFields = csvRows[FIRST_TRADE_ROW_INDEX].split(",")
   const tradeField = firstRowFields[0]
   return tradeField

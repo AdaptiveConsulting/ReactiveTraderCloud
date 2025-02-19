@@ -20,7 +20,7 @@ jobs:
   build:
     name: Build & deploy
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     if: github.repository_owner == 'AdaptiveConsulting'
 

@@ -12,7 +12,7 @@ jobs:
   e2e:
     name: End-to-end smoke test against RT Prod
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     if: github.repository_owner == 'AdaptiveConsulting'
 
