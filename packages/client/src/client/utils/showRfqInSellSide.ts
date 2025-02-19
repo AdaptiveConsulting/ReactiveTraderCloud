@@ -10,24 +10,21 @@ let windowReference: Window | undefined
 export const showRfqInSellSide = async (rfqId: number | null) => {
   const route =
     ROUTES_CONFIG.sellSide + (rfqId ? `?${RFQ_ID_PARAM}=${rfqId}` : "")
-  if (windowReference) {
+
+  if (!windowReference || windowReference.closed) {
+    console.info(
+      `No ss win ref, or win closed => open new win for RFQ ID ${rfqId} ..`,
+    )
+    windowReference = await openWindow({
+      url: constructUrl(route),
+      name: "AdaptiveBankCreditRFQ",
+      displayName: "Adaptive Bank RFQ Queue",
+      width: 615,
+      height: 400,
+    })
+  } else {
     console.info(`Got ss win ref, push new RFQ ID ${rfqId} to history ..`)
     windowReference.focus()
     windowReference.history.pushState({}, "", route)
-  } else {
-    console.info(`No ss win ref, open new win for RFQ ID ${rfqId} ..`)
-    windowReference = await openWindow(
-      {
-        url: constructUrl(route),
-        name: "AdaptiveBankCreditRFQ",
-        displayName: "Adaptive Bank RFQ Queue",
-        width: 615,
-        height: 400,
-      },
-      () => {
-        console.info(`closing ss win ..`)
-        windowReference = undefined
-      },
-    )
   }
 }

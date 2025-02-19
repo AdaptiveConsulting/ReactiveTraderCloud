@@ -6,18 +6,19 @@ export function openWindow(
   config: WindowConfig,
   onClose?: () => void,
 ): Promise<Window | undefined> {
-  const { name, width, height, x, y, center, url } = config
-  const prevWindow = openPopoutWindows[openPopoutWindows.length - 1]
-  const windowReferencePosition = prevWindow
-    ? { left: prevWindow.screenX, top: prevWindow.screenY }
-    : undefined
+  const REFERENCE_OFFSET = 50
+  const { name, url, width, height, x, y, center } = config
 
-  const { left, top } = calculatePosition(
-    center,
-    width,
-    height,
-    windowReferencePosition,
-  )
+  // get rid of any windows that are no longer in use (Win proxy refs remain, just need to check "closed" prop)
+  openPopoutWindows = openPopoutWindows.filter((window) => !window.closed)
+
+  const prevWindow = openPopoutWindows[openPopoutWindows.length - 1]
+  const { left, top } = prevWindow
+    ? {
+        left: prevWindow.screenX + REFERENCE_OFFSET,
+        top: prevWindow.screenY + REFERENCE_OFFSET,
+      }
+    : calculatePosition(center, width, height)
 
   openPopoutWindows.forEach((window) => {
     window.focus()
@@ -39,9 +40,6 @@ export function openWindow(
       setTimeout(() => {
         if (win.closed) {
           onClose()
-          openPopoutWindows = openPopoutWindows.filter(
-            (window) => !window.closed,
-          )
         } else {
           // needs to be re-set after window reload
           setUnloadListener()
@@ -59,16 +57,9 @@ export function openWindow(
   return Promise.resolve(win || undefined)
 }
 
-function calculatePosition(
-  center = "parent",
-  width: number,
-  height: number,
-  reference?: { top: number; left: number },
-) {
+function calculatePosition(center = "parent", width: number, height: number) {
   let left = 0
   let top = 0
-  const LEFT_POSITION_OFFSET = 50
-  const TOP_POSITION_OFFSET = 50
 
   if (center === "parent") {
     if (!window.top) {
@@ -93,12 +84,7 @@ function calculatePosition(
     top = windowHeight / 2 - height / 2 + screenTop
   }
 
-  return reference
-    ? {
-        left: reference.left + LEFT_POSITION_OFFSET,
-        top: reference.top + TOP_POSITION_OFFSET,
-      }
-    : { left, top }
+  return { left, top }
 }
 
 interface WindowFeatures {

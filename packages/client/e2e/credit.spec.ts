@@ -9,7 +9,11 @@ test.describe("Credit", () => {
   let rfqsPage: Page
   let rfqBlotterPage: Page
 
-  test.beforeAll(async ({ context, creditPagesRec }, workerInfo) => {
+  test.beforeAll(async ({ creditPagesRec }, workerInfo) => {
+    newRfqPage = creditPagesRec["credit-new-rfq"]
+    rfqsPage = creditPagesRec["credit-rfqs"]
+    rfqBlotterPage = creditPagesRec["credit-blotter"]
+
     if (isOpenFin(workerInfo)) {
       const mainWindow = creditPagesRec["mainWindow"]
 
@@ -17,22 +21,11 @@ test.describe("Credit", () => {
         window.fin.Window.getCurrentSync().maximize()
       })
 
-      newRfqPage = creditPagesRec["credit-new-rfq"]
-      rfqsPage = creditPagesRec["credit-rfqs"]
-      rfqBlotterPage = creditPagesRec["credit-blotter"]
-
       newRfqPage.setViewportSize({ width: 1280, height: 1024 })
       rfqsPage.setViewportSize({ width: 1280, height: 1024 })
       rfqBlotterPage.setViewportSize({ width: 1280, height: 1024 })
     } else {
-      const pages = context.pages()
-
-      newRfqPage = pages.length > 0 ? pages[0] : await context.newPage()
-
       await newRfqPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}/credit`)
-
-      rfqsPage = newRfqPage
-      rfqBlotterPage = newRfqPage
     }
   })
 
