@@ -108,8 +108,6 @@ export const truncatedDecimalNumberFormatter = (
 ): NumberFormatter =>
   numberFormatter({
     maximumFractionDigits: precision,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore // has not made it into types yet - or support grid in MDN seemingly! - but works
     roundingMode: "trunc",
   })
 

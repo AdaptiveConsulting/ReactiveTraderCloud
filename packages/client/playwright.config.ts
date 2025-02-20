@@ -21,7 +21,7 @@ const config: PlaywrightTestConfig = {
         //Artifacts
         screenshot: "only-on-failure",
         video: "retain-on-failure",
-        trace: "on",
+        trace: "retain-on-failure",
       },
     },
     {

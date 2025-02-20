@@ -7,7 +7,7 @@ export function openWindow(
   onClose?: () => void,
 ): Promise<Window | undefined> {
   const REFERENCE_OFFSET = 50
-  const { name, url, width, height, x, y, center } = config
+  const { name, url, width, height, x, y } = config
 
   // get rid of any windows that are no longer in use (Win proxy refs remain, just need to check "closed" prop)
   openPopoutWindows = openPopoutWindows.filter((window) => !window.closed)
@@ -18,7 +18,14 @@ export function openWindow(
         left: prevWindow.screenX + REFERENCE_OFFSET,
         top: prevWindow.screenY + REFERENCE_OFFSET,
       }
-    : calculatePosition(center, width, height)
+    : {
+        left: window.top
+          ? window.top.screenX + window.top.outerWidth / 2 - width / 2
+          : 0,
+        top: window.top
+          ? window.top.screenY + window.top.outerHeight / 2 - height / 2
+          : 0,
+      }
 
   openPopoutWindows.forEach((window) => {
     window.focus()
@@ -30,8 +37,8 @@ export function openWindow(
     toWindowFeatures({
       width,
       height,
-      left: x ?? left,
-      top: y ?? top,
+      screenX: x ?? left,
+      screenY: y ?? top,
     }),
   )
 
@@ -57,52 +64,18 @@ export function openWindow(
   return Promise.resolve(win || undefined)
 }
 
-function calculatePosition(center = "parent", width: number, height: number) {
-  let left = 0
-  let top = 0
-
-  if (center === "parent") {
-    if (!window.top) {
-      throw new Error("Unable to calculate window position")
-    }
-    left = window.top.outerWidth / 2 + window.top.screenX - width / 2
-    top = window.top.outerHeight / 2 + window.top.screenY - height / 2
-  } else if (center === "screen") {
-    const screenLeft = window.screenLeft
-    const screenTop = window.screenTop
-    const windowWidth = window.innerWidth
-      ? window.innerWidth
-      : document.documentElement.clientWidth
-        ? document.documentElement.clientWidth
-        : screen.width
-    const windowHeight = window.innerHeight
-      ? window.innerHeight
-      : document.documentElement.clientHeight
-        ? document.documentElement.clientHeight
-        : screen.height
-    left = windowWidth / 2 - width / 2 + screenLeft
-    top = windowHeight / 2 - height / 2 + screenTop
-  }
-
-  return { left, top }
-}
-
 interface WindowFeatures {
   width?: number
   height?: number
-  left?: number
-  top?: number
+  screenX?: number
+  screenY?: number
 }
 
 function toWindowFeatures(windowFeatures: WindowFeatures) {
   return Object.keys(windowFeatures)
     .reduce<string[]>((features, name) => {
       const value = windowFeatures[name as keyof WindowFeatures]
-      if (typeof value === "boolean") {
-        features.push(`${name}=${value ? "yes" : "no"}`)
-      } else {
-        features.push(`${name}=${value}`)
-      }
+      features.push(`${name}=${value}`)
       return features
     }, [])
     .join(",")
