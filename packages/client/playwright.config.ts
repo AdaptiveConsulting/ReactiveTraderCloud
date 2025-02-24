@@ -4,9 +4,14 @@ import { TestTimeout } from "./e2e/utils"
 
 const config: PlaywrightTestConfig = {
   testDir: "./e2e",
-  /* Maximum time one test can run for. */
-  timeout: TestTimeout.NORMAL,
   workers: 1,
+  // Maximum time allowed for each test
+  timeout: TestTimeout.NORMAL,
+  expect: {
+    // Maximum time for expect, default 5s
+    // see  https://playwright.dev/docs/test-configuration#expect-options
+    // timeout: ExpectTimeout.MEDIUM,
+  },
   projects: [
     {
       name: "web",
@@ -17,7 +22,6 @@ const config: PlaywrightTestConfig = {
         screenshot: "only-on-failure",
         video: "retain-on-failure",
         trace: "retain-on-failure",
-        headless: true,
       },
     },
     {

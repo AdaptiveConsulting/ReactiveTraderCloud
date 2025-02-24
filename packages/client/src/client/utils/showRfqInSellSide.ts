@@ -10,10 +10,8 @@ let windowReference: Window | undefined
 export const showRfqInSellSide = async (rfqId: number | null) => {
   const route =
     ROUTES_CONFIG.sellSide + (rfqId ? `?${RFQ_ID_PARAM}=${rfqId}` : "")
-  if (windowReference) {
-    windowReference.focus()
-    windowReference.history.pushState({}, "", route)
-  } else {
+
+  if (!windowReference || windowReference.closed) {
     windowReference = await openWindow(
       {
         url: constructUrl(route),
@@ -26,5 +24,8 @@ export const showRfqInSellSide = async (rfqId: number | null) => {
         windowReference = undefined
       },
     )
+  } else {
+    windowReference.focus()
+    windowReference.history.pushState({}, "", route)
   }
 }

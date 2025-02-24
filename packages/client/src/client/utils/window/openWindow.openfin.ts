@@ -42,8 +42,7 @@ export async function openWindow(
   const hasChildWindows = childWindows && childWindows.length
   const hasCoordinates = config.x !== undefined && config.y !== undefined
   const windowName = config.name || generateRandomName()
-  const centered =
-    (!hasChildWindows && !hasCoordinates) || config.center === "screen"
+  const centered = !hasChildWindows && !hasCoordinates
 
   const platform = await fin.Platform.getCurrent()
   const options: OpenFin.PlatformWindowCreationOptions = {

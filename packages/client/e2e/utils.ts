@@ -3,10 +3,9 @@ import { expect, Locator, WorkerInfo } from "@playwright/test"
 export const isOpenFin = (workerInfo: WorkerInfo) =>
   workerInfo.project.name === "openfin"
 
-export enum ElementTimeout {
-  NORMAL = 15000,
+export enum ExpectTimeout {
+  MEDIUM = 15000,
   LONG = 30000,
-  SPOT_TILE_RFQ_TIMEOUT = 10500,
 }
 export enum TestTimeout {
   NORMAL = 60000,

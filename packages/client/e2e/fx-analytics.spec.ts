@@ -1,7 +1,7 @@
 import { expect, Page } from "@playwright/test"
 
 import { test } from "./fixtures"
-import { ElementTimeout, isOpenFin } from "./utils"
+import { ExpectTimeout, isOpenFin } from "./utils"
 
 const currencyPairs = [
   "EUR/USD",
@@ -47,7 +47,7 @@ test.describe("Analytics panel", () => {
       const initialPnlAmount = await pnlLocator.textContent()
 
       await expect(pnlLocator).not.toContainText(initialPnlAmount ?? "", {
-        timeout: ElementTimeout.NORMAL,
+        timeout: ExpectTimeout.MEDIUM,
       })
     })
 

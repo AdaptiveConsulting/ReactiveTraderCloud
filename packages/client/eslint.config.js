@@ -21,7 +21,13 @@ export default [
   {
     // these are global ignores, cascading down to each config block, which can have its own
     // more targeted ignores, if necessary
-    ignores: ["dist", "coverage", "*.config.js"],
+    ignores: [
+      "dist",
+      "test-results",
+      "coverage",
+      "playwright-report",
+      "*.config.js",
+    ],
   },
 
   // ESLint's own core recommended rules

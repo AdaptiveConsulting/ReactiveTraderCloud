@@ -8,7 +8,6 @@ export interface WindowConfig {
   minWidth?: number
   maxHeight?: number
   maxWidth?: number
-  center?: "parent" | "screen"
   x?: number
   y?: number
   saveWindowState?: boolean
