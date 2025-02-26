@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-import { colors, Theme } from "@/client/theme"
+import { Theme } from "@/client/theme"
 
 import type { NumFilterContent } from "../../TradesState"
 import { ComparatorType } from "../../TradesState"
@@ -10,18 +10,26 @@ export const ComparatorSelectOuter = styled.div`
   display: block;
   position: relative;
   width: 10rem;
-  background-color: ${({ theme }) => theme.core.lightBackground};
-  color: ${({ theme }) => theme.core.textColor};
-  font-size: 12px;
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-secondary"]};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-primary (900)"]};
   outline: none;
   padding: 8px 15px 5px 10px;
   cursor: pointer;
   transition: all 200ms ease;
   text-transform: none;
   text-align: left;
-  border-bottom: 1px solid ${colors.spectrum.blue.base};
+  border-bottom: 1px solid
+    ${({ theme }) => theme.newTheme.color["Colors/Border/border-brand"]};
+
+  &:hover {
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-secondary_hover"]};
+  }
 `
-const textColor = ({ theme }: { theme: Theme }) => theme.textColor
+const textColor = ({ theme }: { theme: Theme }) =>
+  theme.newTheme.color["Colors/Text/text-primary (900)"]
 
 const ComparatorSelectInner = styled.select`
   color: ${textColor};
@@ -47,7 +55,8 @@ const ComparatorSelectInner = styled.select`
     5px 5px;
 
   option {
-    background-color: ${({ theme }) => theme.core.lightBackground};
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-secondary"]};
   }
 `
 

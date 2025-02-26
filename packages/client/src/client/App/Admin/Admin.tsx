@@ -8,7 +8,7 @@ import { withSubscriber } from "@/client/utils/withSubscriber"
 import { ThroughputAdminService } from "@/generated/TradingGateway"
 
 const Wrapper = styled.div`
-  background: ${({ theme }) => theme.white};
+  background: white;
   height: 100%;
   padding: 20px;
 `
@@ -69,7 +69,7 @@ const InputSlider = styled.input`
 const ResultMessage = styled.div<{ validResult: boolean }>`
   background-color: ${({ validResult, theme }) =>
     validResult ? theme.accents.positive.base : theme.accents.negative.base};
-  color: ${({ theme }) => theme.white};
+  color: white;
   padding: 0.5rem;
   font-size: 0.65rem;
 `

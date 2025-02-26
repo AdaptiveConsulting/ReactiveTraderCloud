@@ -11,7 +11,8 @@ export const TimerWrapper = styled.div`
 `
 
 export const TimeLeft = styled.div`
-  color: ${({ theme }) => theme.textColor};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-primary (900)"]};
   font-size: 10px;
   opacity: 0.6;
   white-space: nowrap;

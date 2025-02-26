@@ -1,7 +1,8 @@
 import styled from "styled-components"
 
 export const Wrapper = styled.div`
-  color: ${(props) => props.theme.textColor};
+  color: ${(props) =>
+    props.theme.newTheme.color["Colors/Text/text-primary (900)"]};
   opacity: 0.59;
   font-size: 0.65rem;
   margin-right: 0.7rem;

@@ -15,7 +15,7 @@ export const Input = styled.input`
     theme.newTheme.color["Colors/Text/text-secondary (700)"]};
   border: 1.5px solid
     ${({ theme }) => theme.newTheme.color["Colors/Border/border-secondary"]};
-  caret-color: ${({ theme }) => theme.primary.base};
+
   &:focus {
     outline: none !important;
     border-color: ${({ theme }) =>

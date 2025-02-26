@@ -8,7 +8,8 @@ export const Control = styled.div<{ accent: TouchableIntentName }>`
   justify-content: center;
   align-self: center;
 
-  color: ${(props) => props.theme.secondary.base};
+  color: ${(props) =>
+    props.theme.newTheme.color["Colors/Text/text-primary (900)"]};
 
   &:hover {
     svg {

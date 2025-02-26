@@ -12,17 +12,6 @@ interface WithTerminated {
   terminated: boolean
 }
 
-export const DirectionContainer = styled.div<WithDirection & WithTerminated>`
-  display: flex;
-  flex: 0 0 48px;
-  background-color: ${({ theme, direction, terminated }) =>
-    terminated
-      ? theme.primary[2]
-      : direction === Direction.Buy
-        ? "rgba(76, 118, 196, 0.15)"
-        : "rgba(167, 39, 64, 0.15)"};
-`
-
 const buyBackground = css<WithTerminated>`
   background-color: ${({ theme, terminated }) =>
     terminated

@@ -39,11 +39,13 @@ export const Table = styled.table`
       }
 
       &:nth-child(odd) {
-        background-color: ${({ theme }) => theme.core.lightBackground};
+        background-color: ${({ theme }) =>
+          theme.newTheme.color["Colors/Background/bg-secondary"]};
       }
 
       &:hover {
-        background-color: ${({ theme }) => theme.core.alternateBackground};
+        background-color: ${({ theme }) =>
+          theme.newTheme.color["Colors/Background/bg-secondary_hover"]};
 
         button {
           opacity: 1;
@@ -111,7 +113,8 @@ export const LoadingWrapper = styled.div`
 
 export const Response = styled.div`
   font-size: 1rem;
-  background: ${({ theme }) => theme.core.darkBackground};
+  background: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
   padding: 0.75rem;
 `
 
@@ -147,7 +150,8 @@ export const IntentActions = styled(IntentActionWrapper)`
   button {
     cursor: pointer;
     padding: 0.75rem 1.5rem;
-    background-color: ${({ theme }) => theme.core.lightBackground};
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-secondary"]};
     &:first-of-type {
       border-radius: 3px 0 0 3px;
     }
@@ -163,7 +167,8 @@ export const IntentActions = styled(IntentActionWrapper)`
 export const Input = styled.input`
   width: 100%;
   height: 45px;
-  background: ${({ theme }) => theme.core.darkBackground};
+  background: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
   outline: none;
   border-radius: 3px 0 0 3px;
   font-size: 1rem;
@@ -172,7 +177,8 @@ export const Input = styled.input`
   transition: all 0.3s ease;
 
   &::placeholder {
-    color: ${({ theme }) => theme.textColor};
+    color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-primary (900)"]};
     opacity: 0.6;
   }
 `
@@ -183,7 +189,7 @@ export const CancelButton = styled.button`
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.core.lightBackground};
+  background-color: ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary"]}};
   cursor: pointer;
   z-index: 2;
 
@@ -229,7 +235,8 @@ export const NlpExecutionContainer = styled.div`
   width: 100%;
   max-width: 100%;
   height: 100%;
-  background-color: ${({ theme }) => theme.core.darkBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
   padding-top: 4px; // top loading bar
   padding: 1rem;
   display: flex;
@@ -242,7 +249,7 @@ export const NlpExecutionActionContainer = styled.div`
   button {
     cursor: pointer;
     padding: 0.75rem 1.5rem;
-    background-color: ${({ theme }) => theme.core.lightBackground};
+    background-color: ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary"]}};
     &:first-of-type {
       border-radius: 3px 0 0 3px;
     }
@@ -272,6 +279,6 @@ export const Pill = styled.div`
   padding: 0.2rem 0.4rem;
   display: inline-block;
   background-color: #5f94f5;
-  color: ${({ theme }) => theme.core.lightBackground};
+  color: ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary"]}};
   border-radius: 0.2rem;
 `

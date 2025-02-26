@@ -24,11 +24,4 @@ export const Link = styled(Typography)`
   text-decoration: underline;
   cursor: pointer;
 `
-
-export const Input = styled.input`
-  margin-bottom: 1rem;
-  width: 100%;
-  cursor: pointer;
-  color: ${({ theme }) => theme.core.textColor};
-`
 export const ContactUsContentResolver = ContactUsContent

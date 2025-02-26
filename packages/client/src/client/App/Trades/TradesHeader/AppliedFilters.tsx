@@ -1,37 +1,26 @@
-import { FaTimes } from "react-icons/fa"
 import styled from "styled-components"
+
+import { CrossIcon } from "@/client/components/icons"
+import { Typography } from "@/client/components/Typography"
 
 import { useColDef, useTrades$ } from "../Context"
 import { onFilterReset, useFilterFields } from "../TradesState"
 
-const FilterButton = styled("button")`
-  opacity: 0.59;
-  height: 1em;
-  line-height: 1em;
-`
-const FilterField = styled("div")`
+const FilterField = styled.div`
   display: flex;
   align-items: normal;
-  font-size: 0.6875rem;
-  text-transform: uppercase;
-  background-color: ${({ theme }) => theme.core.lightBackground};
-  margin-left: 0.5rem;
-  border-radius: 0.25rem;
-  height: 1.25rem;
-  padding: 0 0.375rem;
-  cursor: default;
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-tertiary"]};
+
+  border-radius: ${({ theme }) => theme.newTheme.radius.xs};
+  padding: 0 ${({ theme }) => theme.newTheme.spacing.sm};
+  cursor: pointer;
   align-items: center;
 
   &:hover {
-    background-color: ${({ theme }) => theme.core.alternateBackground};
-    ${FilterButton} {
-      opacity: 1;
-    }
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-quaternary"]};
   }
-`
-
-const FilterName = styled("div")`
-  padding-right: 0.625rem;
 `
 
 export const AppliedFilters = () => {
@@ -41,11 +30,11 @@ export const AppliedFilters = () => {
   return (
     <>
       {filterFields.map((field) => (
-        <FilterField key={field}>
-          <FilterName>{colDef[field].headerName}</FilterName>
-          <FilterButton data-testid="filter-button">
-            <FaTimes onClick={() => onFilterReset(field)} />
-          </FilterButton>
+        <FilterField key={field} onClick={() => onFilterReset(field)}>
+          <Typography variant="Text sm/Regular" paddingRight="md">
+            {colDef[field].headerName}
+          </Typography>
+          <CrossIcon height={8} />
         </FilterField>
       ))}
     </>
