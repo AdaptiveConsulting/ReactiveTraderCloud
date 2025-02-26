@@ -1,14 +1,14 @@
 import { createRef, useEffect } from "react"
 import styled, { createGlobalStyle } from "styled-components"
 
-import FloatingTools from "./components/FloatingsTools"
-import OnePageNavBar from "./components/OnePageNavBar"
-import Atoms from "./sections/Atoms"
-import CoreBranding from "./sections/CoreBranding"
-import FontFamilies from "./sections/FontFamilies"
-import Iconography from "./sections/Iconography"
-import Introduction from "./sections/Introduction"
-import Molecules from "./sections/Molecules"
+import { FloatingTools } from "./components/FloatingsTools"
+import { OnePageNavBar } from "./components/OnePageNavBar"
+import { Atoms } from "./sections/Atoms"
+import { CoreBranding } from "./sections/CoreBranding"
+import { FontFamilies } from "./sections/FontFamilies"
+import { Iconography } from "./sections/Iconography"
+import { Introduction } from "./sections/Introduction"
+import { Molecules } from "./sections/Molecules"
 import { Block } from "./styled"
 
 const sections: Array<{

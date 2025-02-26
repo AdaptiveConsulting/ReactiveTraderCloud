@@ -6,9 +6,6 @@ import { isOpenFin } from "./utils"
 dotenv.config({ path: ".env.development" })
 dotenv.config()
 
-// ensures all window objects we interact with in our spec have fin tyepdefs
-export * from "../openfinGlobal"
-
 type FXPage = "mainWindow" | "fx-tiles" | "fx-blotter" | "fx-analytics"
 type CreditPage =
   | "credit-new-rfq"

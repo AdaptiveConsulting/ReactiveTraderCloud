@@ -408,12 +408,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
             if (id.includes("node_modules/@openfin")) {
               return "vendor-openfin"
             }
-            if (id.includes("node_modules/react")) {
-              // includes react, react-dom, react/jsx-runtime
-              // and some React-related sundries, beginning with react..:
-              // react-select, react-is, react-router etc
-              return "vendor-react"
-            }
             if (id.includes("node_modules")) {
               return "vendor"
             }
