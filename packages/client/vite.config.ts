@@ -286,27 +286,15 @@ const injectScriptIntoHtml = (
 }
 
 const injectWebServiceWorkerPlugin = (mode: string, baseUrl: string) =>
-  injectManifest(
-    {
-      swSrc: "./src/client/Web/sw.js",
-      swDest: "./dist/sw.js",
-      dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
-      globDirectory: "dist",
-      mode,
-      modifyURLPrefix: {
-        assets: `${baseUrl}/assets`,
-      },
+  injectManifest({
+    swSrc: "./src/client/Web/sw.js",
+    swDest: "./dist/sw.js",
+    dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
+    globDirectory: "dist",
+    modifyURLPrefix: {
+      assets: `${baseUrl}/assets`,
     },
-    ({ swDest, count }) => {
-      console.log(
-        "Created service worker: ",
-        swDest,
-        "- injected ",
-        count,
-        " files",
-      )
-    },
-  )
+  })
 
 const fontFacePreload = Unfonts({
   google: {
@@ -417,8 +405,14 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
         input,
         output: {
           manualChunks: (id: string) => {
-            if (id.includes("@openfin/workspace")) {
-              return "openfin-ws"
+            if (id.includes("node_modules/@openfin")) {
+              return "vendor-openfin"
+            }
+            if (id.includes("node_modules/react")) {
+              // includes react, react-dom, react/jsx-runtime
+              // and some React-related sundries, beginning with react..:
+              // react-select, react-is, react-router etc
+              return "vendor-react"
             }
             if (id.includes("node_modules")) {
               return "vendor"
