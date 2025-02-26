@@ -36,7 +36,8 @@ const ComparatorSelectInner = styled.select`
   width: 105%;
 
   /* caret */
-  background-image: linear-gradient(45deg, transparent 50%, ${textColor} 50%),
+  background-image:
+    linear-gradient(45deg, transparent 50%, ${textColor} 50%),
     linear-gradient(135deg, ${textColor} 50%, transparent 50%);
   background-position:
     calc(100% - 5px) center,

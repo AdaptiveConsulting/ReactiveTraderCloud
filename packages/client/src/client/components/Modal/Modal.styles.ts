@@ -45,7 +45,12 @@ export const ModalPanel = styled.div`
 
   box-shadow:
     0 1px 2px rgba(0, 0, 0, 0.05),
-    0 1rem 3rem -1rem ${(props) => darken(0.1, props.theme.newTheme.color["Colors/Background/bg-primary"])};
+    0 1rem 3rem -1rem
+      ${(props) =>
+        darken(
+          0.1,
+          props.theme.newTheme.color["Colors/Background/bg-primary"],
+        )};
 `
 
 export const Header = styled.div`
