@@ -12,7 +12,7 @@ import {
 import { H2, H3, H5 } from "../elements"
 import { Paragraph, SectionBlock, Text, TextProps } from "../styled"
 
-export const FontFamilies = () => (
+export const Iconography = () => (
   <>
     <SectionBlock colorScheme="secondary" py={0} pt={2} mh={0}>
       <H2 pt={4}>Iconography</H2>
@@ -97,5 +97,3 @@ const DisabledIcon = styled.div`
     fill: #535760;
   }
 `
-
-export default FontFamilies

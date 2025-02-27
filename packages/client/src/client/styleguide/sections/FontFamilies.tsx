@@ -122,16 +122,9 @@ const FontFamilySample = ({ fontFamily, ...props }: { fontFamily: string }) => (
     <div>
       <Heading>Characters</Heading>
       <CharacterMap>
-        {CHARACTERS.map(
-          (line) =>
-            <CharacterLine key={line}>{line}</CharacterLine> || (
-              <>
-                <CharacterLine>{line.slice(0, line.length / 2)}</CharacterLine>{" "}
-                <CharacterLine>{line.slice(line.length / 2)}</CharacterLine>
-                {"\n"}
-              </>
-            ),
-        )}
+        {CHARACTERS.map((line) => (
+          <CharacterLine key={line}>{line}</CharacterLine>
+        ))}
       </CharacterMap>
     </div>
   </FontFamilySampleGrid>
@@ -199,5 +192,3 @@ const FontSizeGrid = styled.div<{ children: ReactNode }>`
   padding: 0.5rem 1rem;
   align-items: baseline;
 `
-
-export default FontFamilies

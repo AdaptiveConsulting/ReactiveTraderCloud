@@ -40,19 +40,25 @@ export default [
   //   see node_modules/typescript-eslint/dist/configs/base.js
   //   "base" contains the parser/plugin config, so we don't have to include that manually below
   ...pluginTypescriptEslint.configs.recommended,
-  // https://github.com/jsx-eslint/eslint-plugin-react
-  // ESLint v9 - https://github.com/jsx-eslint/eslint-plugin-react/pull/3759
+
+  // https://github.com/jsx-eslint/eslint-plugin-react?tab=readme-ov-file#flat-configs
+  // all flat configs include "plugins" entry and "parserOptions"
   pluginReact.configs.flat.recommended,
   pluginReact.configs.flat["jsx-runtime"],
+
+  // https://github.com/import-js/eslint-plugin-import
+  //
+  pluginImport.flatConfigs.recommended,
+  pluginImport.flatConfigs.typescript,
+
+  // all files - main block, with no "files" restriction
   {
     plugins: {
       // https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks
-      // compat with ESLint v9, see https://github.com/facebook/react/issues/28313
-      // recent "compatibility" PR does not address flat config at all, so still on "hacked" eslint config
-      // also need to use "rc" version - been rc for 5mths! - otherwise peer deps complaints
+      // full flat config support coming in 5.2.0, will then be able to configure as pluginReact, as:
+      //   pluginReactHooks.configs["recommended-latest"],
       "react-hooks": pluginReactHooks,
-      // https://github.com/import-js/eslint-plugin-import
-      import: pluginImport,
+
       // https://github.com/lydell/eslint-plugin-simple-import-sort
       "simple-import-sort": pluginSimpleImportSort,
     },
@@ -64,6 +70,7 @@ export default [
       },
     },
     linterOptions: {
+      // useful to help clear up old eslint comments that are no longer applicable
       reportUnusedDisableDirectives: "error",
     },
     settings: {
@@ -71,8 +78,9 @@ export default [
         version: "detect",
       },
     },
-    // note: many tseslint rules require the base eslint rule to be disabled
     rules: {
+      // note: many typescript-eslint rules require the base eslint rule to be disabled
+      //
       // https://typescript-eslint.io/rules/no-unused-vars/
       // with options to ignore _-prefixed args
       "no-unused-vars": "off",
@@ -103,9 +111,10 @@ export default [
       // per example: https://github.com/lydell/eslint-plugin-simple-import-sort#example-configuration
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
-      "import/first": "error",
-      "import/newline-after-import": "error",
-      "import/no-duplicates": "error",
+
+      // import already switches off import/named as TypeScript compiler already covers this
+      // need to suppress no-unresolved, as it cannot cope with the vite aliasing :rolleyes:
+      "import/no-unresolved": "off",
 
       // https://github.com/jsx-eslint/eslint-plugin-react/issues/3796
       "react/prop-types": "off",

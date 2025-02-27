@@ -23,7 +23,7 @@ type LabelProps = {
 const InputGroup = styled.div`
   align-items: center;
   display: grid;
-  grid-template-columns: max-content 1fr;
+  grid-template-columns: auto 1fr;
   column-gap: 4px;
   position: relative;
   & input[type="number"]::-webkit-inner-spin-button,

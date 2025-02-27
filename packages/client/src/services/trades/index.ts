@@ -4,4 +4,3 @@ export * from "./trades"
 export type { CreditTrade, FxTrade, Trade } from "./types"
 export { TradeStatus } from "./types"
 export { tradesTestData }
-export { creditTrades$ } from "./trades"

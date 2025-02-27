@@ -12,7 +12,7 @@ import SpreadGrid from "../components/SpreadGrid"
 import { H2, H3 } from "../elements"
 import { Paragraph, SectionBlock } from "../styled"
 
-const Atoms = () => {
+export const Atoms = () => {
   return (
     <>
       <SectionBlock py={0} pt={2} mh={0}>
@@ -56,8 +56,6 @@ const Atoms = () => {
     </>
   )
 }
-
-export default Atoms
 
 const AtomsContainer = styled.div`
   display: grid;

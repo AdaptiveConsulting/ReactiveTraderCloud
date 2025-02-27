@@ -1,3 +1,4 @@
+import { fin } from "@openfin/core"
 import { BrowserContext, expect, Page } from "@playwright/test"
 
 import { test } from "./fixtures"
@@ -18,7 +19,7 @@ test.describe("Credit", () => {
       const mainWindow = creditPagesRec["mainWindow"]
 
       await mainWindow.evaluate(async () => {
-        window.fin.Window.getCurrentSync().maximize()
+        fin.Window.getCurrentSync().maximize()
       })
 
       newRfqPage.setViewportSize({ width: 1280, height: 1024 })

@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 import { ChevronIcon } from "@/client/components/icons"
 
-import Button from "./Button"
+import { Button } from "./Button"
 
 export interface DropdownStyleProps {
   active?: boolean
@@ -38,5 +38,3 @@ const StyledDropdown = styled(Button)<DropdownStyleProps>`
     align-items: center;
   }
 `
-
-export default Dropdown

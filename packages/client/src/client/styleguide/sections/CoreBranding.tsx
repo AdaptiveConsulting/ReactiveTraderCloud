@@ -21,7 +21,7 @@ import { Block, BlockProps, Paragraph, SectionBlock, Text } from "../styled"
 
 const { primary, ...others } = colors.accents
 
-const CoreBranding = () => {
+export const CoreBranding = () => {
   const { themeName } = useTheme()
 
   return (
@@ -112,8 +112,6 @@ const CoreBranding = () => {
     </>
   )
 }
-
-export default CoreBranding
 
 const Separator = styled.div`
   height: 2px;

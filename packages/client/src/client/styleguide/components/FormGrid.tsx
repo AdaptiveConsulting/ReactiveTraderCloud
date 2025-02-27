@@ -5,8 +5,7 @@ import { Input } from "./Input"
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 100px);
-  grid-column-gap: 2rem;
-  grid-row-gap: 0.5rem;
+  gap: 0.5rem 2rem;
   align-items: center;
   margin-top: 1rem;
   margin-bottom: 3rem;
@@ -72,12 +71,7 @@ const FormGrid = () => {
       <div>Figures</div>
       <Input type="number" placeholder="Prompt" label="" />
       <HoveredInput type="number" placeholder="Value" label="" />
-      <ActiveNumberInput
-        type="number"
-        placeholder="Prompt"
-        value="10"
-        label=""
-      />
+      <ActiveNumberInput type="number" placeholder="Prompt" label="" />
       <Input type="number" placeholder="Prompt" value="10" disabled label="" />
 
       <div>Text</div>

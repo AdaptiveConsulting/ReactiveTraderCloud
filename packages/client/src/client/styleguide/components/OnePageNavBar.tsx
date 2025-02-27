@@ -34,7 +34,7 @@ const DEFAULT_OFFSET = 130
 const isActive = (to: string): string =>
   window.location.hash === `#${to}` ? "active" : ""
 
-const OnePageNavBar = (props: OnePageNavBarProps) => {
+export const OnePageNavBar = (props: OnePageNavBarProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const { sections } = props
   const [scrollTop, setScrollTop] = useState(window.scrollY)
@@ -262,5 +262,3 @@ const TitleBar = styled(NavBarBleed)`
     }
   }
 `
-
-export default OnePageNavBar

@@ -2,7 +2,7 @@ import SpotTilesGrid from "../components/SpotTilesGrid"
 import { H2 } from "../elements"
 import { Paragraph, SectionBlock } from "../styled"
 
-const Molecules = () => (
+export const Molecules = () => (
   <>
     <SectionBlock colorScheme="secondary" py={0} pt={2} mh={0}>
       <H2 pt={4}>Molecules</H2>
@@ -16,5 +16,3 @@ const Molecules = () => (
     </SectionBlock>
   </>
 )
-
-export default Molecules

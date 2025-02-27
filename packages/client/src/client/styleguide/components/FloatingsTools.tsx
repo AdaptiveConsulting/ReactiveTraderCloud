@@ -59,5 +59,3 @@ const Label = styled.label`
   padding-right: 0.5rem;
   text-align: right;
 `
-
-export default FloatingTools
