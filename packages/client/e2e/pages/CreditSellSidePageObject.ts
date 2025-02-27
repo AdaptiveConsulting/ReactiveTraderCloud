@@ -1,0 +1,21 @@
+import { Page } from "@playwright/test"
+
+export class CreditSellSidePageObject {
+  constructor(readonly page: Page) {}
+
+  get firstNewRfqInGrid() {
+    return this.page.locator("div").getByText("New RFQ").first()
+  }
+
+  get priceField() {
+    return this.page.getByTestId("price-input")
+  }
+
+  get passButton() {
+    return this.page.getByRole("button", { name: "Pass" })
+  }
+
+  submitQuote() {
+    return this.page.keyboard.press("Enter")
+  }
+}

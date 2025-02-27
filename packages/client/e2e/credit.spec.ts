@@ -1,32 +1,36 @@
-import { fin } from "@openfin/core"
 import { BrowserContext, expect, Page } from "@playwright/test"
 
 import { test } from "./fixtures"
+import {
+  CreditBlotterPageObject,
+  CreditNewRfqPageObject,
+  CreditRfqTilesPageObject,
+  CreditSellSidePageObject,
+} from "./pages"
 import { ExpectTimeout, isOpenFin } from "./utils"
 
-test.describe("Credit", () => {
-  let browserContext: BrowserContext
-  let newRfqPage: Page
-  let rfqsPage: Page
-  let rfqBlotterPage: Page
+let browserContext: BrowserContext
+let mainPage: Page
+let newRfqPage: CreditNewRfqPageObject
+let rfqsPage: CreditRfqTilesPageObject
+let rfqBlotterPage: CreditBlotterPageObject
 
+test.describe("Credit", () => {
   test.beforeAll(async ({ creditPagesRec }, workerInfo) => {
-    newRfqPage = creditPagesRec["credit-new-rfq"]
-    rfqsPage = creditPagesRec["credit-rfqs"]
-    rfqBlotterPage = creditPagesRec["credit-blotter"]
+    mainPage = creditPagesRec.mainPage
+    newRfqPage = creditPagesRec.newRfqPO
+    rfqsPage = creditPagesRec.rfqsPO
+    rfqBlotterPage = creditPagesRec.blotterPO
 
     if (isOpenFin(workerInfo)) {
-      const mainWindow = creditPagesRec["mainWindow"]
-
-      await mainWindow.evaluate(async () => {
-        fin.Window.getCurrentSync().maximize()
+      await mainPage.evaluate(async () => {
+        // eslint-disable-next-line
+        // @ts-ignore
+        window.fin.Window.getCurrentSync().maximize()
       })
-
-      newRfqPage.setViewportSize({ width: 1280, height: 1024 })
-      rfqsPage.setViewportSize({ width: 1280, height: 1024 })
-      rfqBlotterPage.setViewportSize({ width: 1280, height: 1024 })
+      rfqsPage.page.setViewportSize({ width: 1280, height: 1024 })
     } else {
-      await newRfqPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}/credit`)
+      await mainPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}/credit`)
     }
   })
 
@@ -53,20 +57,17 @@ test.describe("Credit", () => {
     quantity: string,
     triggerSellSide: boolean = true,
   ) => {
-    await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
-    await newRfqPage
-      .getByTestId("search-result-item")
-      .getByText(symbol)
-      .first()
-      .click()
-    await newRfqPage.getByLabel("Quantity (000)").pressSequentially(quantity)
+    await newRfqPage.cusipInput.click()
+    await newRfqPage.firstCusipEntryForSymbol(symbol).click()
+
+    await newRfqPage.quantityField.pressSequentially(quantity)
 
     if (!triggerSellSide) {
       // if we want to avoid popping up the sell side window (should be minority of tests)
       // select all, then the click on Adaptive Bank below will switch off the sell side for that test
-      await newRfqPage.getByLabel(/All/).click()
+      await newRfqPage.page.getByLabel(/All/).click()
     }
-    await newRfqPage.getByLabel(/Adaptive Bank/).click()
+    await newRfqPage.adaptiveBankToggle.click()
 
     const pagePromise = triggerSellSide
       ? browserContext.waitForEvent("page", {
@@ -74,10 +75,7 @@ test.describe("Credit", () => {
         })
       : Promise.resolve()
 
-    await newRfqPage
-      .locator("button")
-      .getByText(/Send RFQ/)
-      .click()
+    await newRfqPage.sendRFQButton.click()
 
     return pagePromise
   }
@@ -86,101 +84,63 @@ test.describe("Credit", () => {
     await test.step("Create RFQ for 1000 GOOGL", () =>
       createRFQStep("GOOGL", "1", false))
 
-    // Navigate to Live
-    await rfqsPage.getByText(/Live/).first().click()
+    await rfqsPage.selectLiveRfqsFilter()
 
-    const firstQuote = rfqsPage
-      .getByTestId(/^rfq-/)
-      .first()
-      .getByTestId("quotes")
-      .locator("div")
-      .first()
-
-    // Wait for first quote response
-    await expect(firstQuote).not.toContainText(/Awaiting response/, {
+    await expect(rfqsPage.firstQuote).not.toContainText(/Awaiting response/, {
       timeout: ExpectTimeout.LONG,
     })
 
-    const acceptButton = firstQuote.getByText(/Accept/)
-
     await expect(async () => {
-      await firstQuote.hover()
-      await acceptButton.click()
+      await rfqsPage.firstQuote.hover()
+      await rfqsPage.firstAcceptButton.click()
     }, `Click on quote Accept within ${ExpectTimeout.MEDIUM} seconds`).toPass({
       intervals: [250],
       timeout: ExpectTimeout.MEDIUM,
     })
 
-    // Navigate back to All RFQs
-    await rfqsPage.getByText(/All/).nth(0).click()
+    await rfqsPage.selectAllRfqsFilter()
 
-    const btnTxt = await rfqsPage.getByTestId("view-trade").first().innerText()
+    const viewTradeButtonLabel = await rfqsPage.firstViewTradeButton.innerText()
+    const tradeIdFromTile = viewTradeButtonLabel.split(" ")[2]
 
-    await rfqsPage.getByTestId("view-trade").first().click()
+    await rfqsPage.firstViewTradeButton.click()
 
-    const tradeId = btnTxt.split(" ")[2]
-    const blotterId = await rfqBlotterPage
-      .locator("div")
-      .getByText(tradeId, { exact: true })
-      .first()
+    const tradeIdInBlotter = await rfqBlotterPage
+      .blotterCellForTradeId(tradeIdFromTile)
       .innerText()
 
-    expect(tradeId).toEqual(blotterId)
+    expect(tradeIdFromTile).toEqual(tradeIdInBlotter)
   })
 
-  test("Create RFQ with Sell side", async () => {
-    const pagePromise = test.step("Create RFQ for 2000 AMZN", () =>
-      createRFQStep("AMZN", "2"))
-    const sellSidePage = await (pagePromise as Promise<Page>)
+  test("Sell side ticket", async () => {
+    const sellSidePage = (await test.step("Create RFQ for 2000 AMZN", () =>
+      createRFQStep("AMZN", "2"))) as Page
+    const sellSidePO = new CreditSellSidePageObject(sellSidePage)
 
-    const rfqTestId = await rfqsPage
-      .getByTestId(/^rfq-/)
-      .first()
-      .getAttribute("data-testid")
+    const rfqTestId = await rfqsPage.firstRfqTile.getAttribute("data-testid")
 
-    expect(rfqTestId, "Find the right RFQ Tile").not.toBeNull()
+    await expect(sellSidePO.firstNewRfqInGrid).toBeVisible()
 
-    await expect(
-      sellSidePage.locator("div").getByText("New RFQ").first(),
-    ).toBeVisible()
+    await sellSidePO.priceField.pressSequentially("100")
 
-    await sellSidePage.getByTestId("price-input").pressSequentially("100")
+    await sellSidePO.submitQuote()
 
-    await sellSidePage.keyboard.press("Enter")
-
-    const firstQuote = rfqsPage
-      .getByTestId(rfqTestId!)
-      .getByTestId("quotes")
-      .locator("div")
-      .first()
-
-    await expect(firstQuote).toContainText("$100")
+    await expect(rfqsPage.firstQuoteForRfqId(rfqTestId!)).toContainText("$100")
   })
 
   test("Respond to quote with Pass in Sell Side", async () => {
-    const pagePromise = test.step("Create RFQ for 3000 BAC", () =>
-      createRFQStep("BAC", "3"))
-    const sellSidePage = await (pagePromise as Promise<Page>)
+    const sellSidePage = (await test.step("Create RFQ for 2000 AMZN", () =>
+      createRFQStep("AMZN", "2"))) as Page
+    const sellSidePO = new CreditSellSidePageObject(sellSidePage)
 
-    const rfqTestId = await rfqsPage
-      .getByTestId(/^rfq-/)
-      .first()
-      .getAttribute("data-testid")
+    const rfqTestId = await rfqsPage.firstRfqTile.getAttribute("data-testid")
 
-    expect(rfqTestId, "Find the right RFQ Tile").not.toBeNull()
+    await expect(sellSidePO.firstNewRfqInGrid).toBeVisible()
 
-    await expect(
-      sellSidePage.locator("div").getByText("New RFQ").first(),
-    ).toBeVisible()
+    await sellSidePO.passButton.click()
 
-    await sellSidePage.getByRole("button", { name: "Pass" }).click()
-
-    const firstQuote = rfqsPage
-      .getByTestId(rfqTestId!)
-      .getByTestId("quotes")
-      .locator("div")
-      .first()
-
-    await expect(firstQuote).toContainText("Passed")
+    await expect(rfqsPage.firstQuoteForRfqId(rfqTestId!)).toContainText(
+      "Passed",
+    )
   })
 })
