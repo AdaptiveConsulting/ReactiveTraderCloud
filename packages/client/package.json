@@ -140,7 +140,6 @@
     "jsdom": "26.0.0",
     "openfin-cli": "4.0.0",
     "prettier": "3.5.2",
-    "rollup-plugin-modulepreload": "2.0.0",
     "rollup-plugin-workbox": "8.1.2",
     "storybook": "8.6.0",
     "storybook-dark-mode": "4.0.2",
