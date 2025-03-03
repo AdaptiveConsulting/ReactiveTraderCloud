@@ -1,26 +1,30 @@
 import { chromium, Page, test as base } from "@playwright/test"
 import * as dotenv from "dotenv"
 
+import {
+  CreditBlotterPageObject,
+  CreditNewRfqPageObject,
+  CreditRfqTilesPageObject,
+} from "./pages"
 import { isOpenFin } from "./utils"
 
 dotenv.config({ path: ".env.development" })
 dotenv.config()
 
 type FXPage = "mainWindow" | "fx-tiles" | "fx-blotter" | "fx-analytics"
-type CreditPage =
-  | "credit-new-rfq"
-  | "credit-blotter"
-  | "credit-rfqs"
-  | "mainWindow"
 
 const RUNTIME_ADDRESS = process.env.OPENFIN_RUNTIME_ADDRESS ?? ""
 
-// Define custom fixture interface
-interface IPlaywrightFixtures {
-  mainWindow: Page
-  openfinNotification: Page
+type CreditPages = {
+  mainPage: Page
+  blotterPO: CreditBlotterPageObject
+  newRfqPO: CreditNewRfqPageObject
+  rfqsPO: CreditRfqTilesPageObject
+}
+
+interface Fixtures {
   fxPagesRec: Record<FXPage, Page>
-  creditPagesRec: Record<CreditPage, Page>
+  creditPagesRec: CreditPages
   limitCheckerPageRec: Page
 }
 
@@ -31,12 +35,12 @@ const fxOpenfinUrlPaths: string[] = [
   "fx-analytics",
 ]
 
-const creditOpenfinUrlPaths: string[] = [
-  "openfin-window-frame?app=CREDIT",
-  "credit-new-rfq",
-  "credit-blotter",
-  "credit-rfqs",
-]
+const creditOpenfinUrlSuffixes: Record<string, keyof CreditPages> = {
+  "openfin-window-frame?app=CREDIT": "mainPage",
+  "credit-blotter": "blotterPO",
+  "credit-new-rfq": "newRfqPO",
+  "credit-rfqs": "rfqsPO",
+}
 
 const limitCheckerUrlPath = "limit-checker"
 
@@ -49,16 +53,7 @@ const urlPathToFxPage = (path: string): FXPage => {
   }
 }
 
-const urlPathToCreditPage = (path: string): CreditPage => {
-  switch (path) {
-    case "openfin-window-frame?app=CREDIT":
-      return "mainWindow"
-    default:
-      return path as CreditPage
-  }
-}
-
-export const test = base.extend<IPlaywrightFixtures>({
+export const test = base.extend<Fixtures>({
   browser: async ({}, use, workerInfo) => {
     if (isOpenFin(workerInfo)) {
       const runtimeConnection = await chromium.connectOverCDP(RUNTIME_ADDRESS)
@@ -109,28 +104,50 @@ export const test = base.extend<IPlaywrightFixtures>({
   },
   creditPagesRec: async ({ context }, use, workerInfo) => {
     const contextPages = context.pages()
+    let pages: CreditPages
+
     if (isOpenFin(workerInfo)) {
-      const pages = creditOpenfinUrlPaths.reduce(
+      pages = Object.keys(creditOpenfinUrlSuffixes).reduce<CreditPages>(
         (rec, urlPath) => {
           const page = contextPages.find(
             (p) => p.url() === `${process.env.E2E_RTC_WEB_ROOT_URL}/${urlPath}`,
           )
+
           if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
-          return { ...rec, [urlPathToCreditPage(urlPath)]: page }
+
+          switch (urlPath) {
+            case "openfin-window-frame?app=CREDIT":
+              rec.mainPage = page
+              break
+            case "credit-blotter":
+              rec.blotterPO = new CreditBlotterPageObject(page)
+              break
+            case "credit-new-rfq":
+              rec.newRfqPO = new CreditNewRfqPageObject(page)
+              break
+            case "credit-rfqs":
+              rec.rfqsPO = new CreditRfqTilesPageObject(page)
+              break
+            default:
+              throw Error(`Unknown Openfin page URL - ${urlPath}`)
+          }
+          return rec
         },
-        {} as Record<CreditPage, Page>,
+        {} as CreditPages,
       )
-      use(pages)
     } else {
       const mainWindow =
         contextPages.length > 0 ? contextPages[0] : await context.newPage()
-      use({
-        mainWindow,
-        "credit-blotter": mainWindow,
-        "credit-new-rfq": mainWindow,
-        "credit-rfqs": mainWindow,
-      })
+
+      pages = {
+        mainPage: mainWindow,
+        blotterPO: new CreditBlotterPageObject(mainWindow),
+        newRfqPO: new CreditNewRfqPageObject(mainWindow),
+        rfqsPO: new CreditRfqTilesPageObject(mainWindow),
+      }
     }
+
+    use(pages)
   },
   limitCheckerPageRec: async ({ context }, use, workerInfo) => {
     const contextPages = context.pages()
