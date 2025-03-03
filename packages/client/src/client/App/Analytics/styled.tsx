@@ -1,7 +1,5 @@
 import styled from "styled-components"
 
-import { transparentColor } from "./globals/variables"
-
 export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
   flex: 1;
 
@@ -16,15 +14,6 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
       : ``}
 
   scrollbar-width: thin;
-  /* axis */
-  .nvd3 .nv-axis path,
-  .nvd3 .nv-axis .tick.zero line {
-  }
-
-  /* grid */
-  .nvd3 .nv-axis line {
-    stroke: ${transparentColor};
-  }
 
   .analytics__positions-tooltip {
     position: absolute;
