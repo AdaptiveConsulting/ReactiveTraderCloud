@@ -5,7 +5,7 @@ const TextInputText = styled.input(
   ({ theme }) => theme.newTheme.textStyles["Text md/Regular"],
 )
 
-const TextInputInner = styled(TextInputText)<Partial<HTMLInputElement>>`
+const TextInputStyled = styled(TextInputText)<Partial<HTMLInputElement>>`
   ${({ theme, disabled }) => `
 height: 28px;
 width: 100%;
@@ -53,6 +53,6 @@ interface Props {
 
 export const TextInput = React.forwardRef<HTMLInputElement, Props>(
   function InputTest({ value, ...props }, ref) {
-    return <TextInputInner value={value} ref={ref} {...props} />
+    return <TextInputStyled value={value} ref={ref} {...props} />
   },
 )
