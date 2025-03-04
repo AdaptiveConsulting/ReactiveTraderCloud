@@ -3,6 +3,8 @@ import { Subscribe } from "@react-rxjs/core"
 import { useEffect } from "react"
 import styled from "styled-components"
 
+import { Stack } from "@/client/components/Stack"
+
 import { LimitCheckResultsTable } from "./LimitCheckResults"
 import { LimitInputs } from "./LimitInputList"
 import { checkLimit, LimitCheckerRequest } from "./state"
@@ -15,12 +17,8 @@ window.fdc3.addContextListener("check-limit", contextHandler)
 
 joinChannel("green")
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
+const Container = styled(Stack)`
   height: 100%;
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-primary (900)"]};
 `
 
 const LimitChecker = () => {
