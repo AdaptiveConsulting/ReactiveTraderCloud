@@ -37,9 +37,9 @@ const Input = styled.input`
   padding: 2px 0;
   color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-primary (900)"]}};
   border-bottom: 1.5px solid ${({ theme }) => theme.newTheme.color["Colors/Border/border-primary"]};
-  caret-color: ${({ theme }) => theme.accents.primary.base};
+  caret-color: ${({ theme }) => theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
   &:focus {
-    border-color: ${({ theme }) => theme.accents.primary.base};
+    border-color: ${({ theme }) => theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
   }
 `
 

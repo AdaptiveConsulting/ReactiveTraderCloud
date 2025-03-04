@@ -8,10 +8,12 @@ export const Button = styled.button`
 `
 
 export const SignInButton = styled(Button)`
-  background-color: ${({ theme }) => theme.accents.primary.base};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-brand-primary"]};
   color: white;
   &:hover {
-    background-color: ${({ theme }) => theme.accents.primary.darker};
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-brand-secondary"]};
   }
 `
 export const LoadingButton = styled(SignInButton)`
@@ -28,7 +30,8 @@ export const DropdownButton = styled(Button)`
   justify-content: space-evenly;
   align-items: center;
   &:hover {
-    background-color: ${({ theme }) => theme.accents.primary.base};
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-brand-primary"]};
     color: white;
   }
 `

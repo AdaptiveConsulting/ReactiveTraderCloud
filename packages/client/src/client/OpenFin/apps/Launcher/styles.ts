@@ -203,14 +203,9 @@ export const CancelButton = styled.button`
   border-radius: 50%;
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
+  color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-primary (900)"]}
   cursor: pointer;
   z-index: 2;
-
-  svg {
-    path:last-child {
-      fill: ${({ theme }) => theme.secondary[1]};
-    }
-  }
 `
 
 export const Response = styled.div`

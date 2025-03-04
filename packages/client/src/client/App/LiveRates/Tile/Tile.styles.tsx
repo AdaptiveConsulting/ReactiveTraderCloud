@@ -96,7 +96,5 @@ export const Main = styled.div`
   .tile-hover & {
     color: ${({ theme }) =>
       theme.newTheme.color["Colors/Text/text-brand-primary (900)"]};
-    box-shadow: ${({ theme }) =>
-      theme.name === "light" ? "0 0 10px 0 rgba(0, 0, 0, 0.1)" : "none"};
   }
 `

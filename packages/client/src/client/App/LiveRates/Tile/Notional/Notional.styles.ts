@@ -53,7 +53,8 @@ export const ErrorMessage = styled.div`
   margin-left: 24px;
   margin-top: 2px;
   padding-top: 2px;
-  color: ${({ theme }) => theme.accents.negative.base};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-error-primary (600)"]};
   font-size: 0.6rem;
   line-height: 1;
 `

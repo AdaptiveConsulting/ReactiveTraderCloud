@@ -58,13 +58,19 @@ export const Table = styled.table`
 export const TableRow = styled.tr<{ status?: TradeStatus }>`
   border-left: 0.125rem solid transparent;
   border-left-color: ${({ theme, status }) =>
-    status === TradeStatus.Done ? theme.accents.positive.base : "transparent"};
+    status === TradeStatus.Done
+      ? theme.newTheme.color[
+          "Component colors/Utility/Success/utility-success-500"
+        ]
+      : "transparent"};
 
   td {
     position: relative;
-    color: ${({ status }) =>
-      status === TradeStatus.Rejected ? "#7f7f7f" : "white"};
-    ${({ status }) =>
+    color: ${({ status, theme }) =>
+      status === TradeStatus.Rejected
+        ? theme.newTheme.color["Colors/Text/text-disabled"]
+        : "white"};
+    ${({ status, theme }) =>
       status === TradeStatus.Rejected &&
       `
       &:after {
@@ -72,13 +78,16 @@ export const TableRow = styled.tr<{ status?: TradeStatus }>`
         position: absolute;
         top: 50%;
         left: 0;
-        border-bottom: 0.0625rem solid #7f7f7f;
+        border-bottom: 0.0625rem solid ${theme.newTheme.color["Colors/Border/border-primary"]};
         width: 100%;
       };
     `}
 
     button:hover {
-      background-color: #5f94f5;
+      background-color: ${({ theme }) =>
+        theme.newTheme.color[
+          "Component colors/Components/Buttons/Brand/button-brand-bg_hover"
+        ]};
     }
   }
 `
@@ -109,17 +118,6 @@ export const LoadingWrapper = styled.div`
   justify-content: center;
   align-items: center;
   height: 100px;
-`
-
-export const Response = styled.div`
-  font-size: 1rem;
-  background: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
-  padding: 0.75rem;
-`
-
-export const Intent = styled.div`
-  padding-right: 15px;
 `
 
 export const InlineIntent = styled.div`
@@ -162,73 +160,6 @@ export const IntentActions = styled(IntentActionWrapper)`
       background-color: #5f94f5;
     }
   }
-`
-
-export const Input = styled.input`
-  width: 100%;
-  height: 45px;
-  background: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
-  outline: none;
-  border-radius: 3px 0 0 3px;
-  font-size: 1rem;
-  font-weight: 400;
-  caret-color: transparent;
-  transition: all 0.3s ease;
-
-  &::placeholder {
-    color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-primary (900)"]};
-    opacity: 0.6;
-  }
-`
-
-export const CancelButton = styled.button`
-  position: absolute;
-  right: 8px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary"]}};
-  cursor: pointer;
-  z-index: 2;
-
-  svg {
-    path:last-child {
-      fill: ${({ theme }) => theme.secondary[1]};
-    }
-  }
-`
-
-export const SearchContainer = styled.div`
-  position: absolute;
-  left: 350px;
-  right: 75px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  opacity: 0;
-  z-index: 1;
-  transition:
-    left 0.3s,
-    right 0.3s,
-    opacity 0.1s ease;
-  will-change: opacity;
-
-  &.search-container--active {
-    left: 55px;
-    opacity: 1;
-    right: 83px;
-
-    > input {
-      caret-color: #5f94f5;
-      padding-left: 9px;
-    }
-  }
-`
-
-export const InlineQuoteContainer = styled.div`
-  font-size: 0.6875rem;
 `
 
 export const NlpExecutionContainer = styled.div`

@@ -9,26 +9,18 @@ export const Control = styled.div<{ accent: TouchableIntentName }>`
   align-self: center;
 
   color: ${(props) =>
-    props.theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    props.theme.newTheme.color["Colors/Foreground/fg-quaternary (500)"]};
 
   &:hover {
-    svg {
-      path:last-child {
-        fill: ${({ theme, accent = "primary" }) =>
-          theme.button[accent].backgroundColor};
-      }
-    }
+    color: ${({ theme, accent }) =>
+      accent === "aware"
+        ? theme.newTheme.color["Colors/Foreground/fg-warning-primary"]
+        : theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
   }
 
   &:disabled {
-    svg {
-      path:nth-child(2) {
-        fill: #535760;
-      }
-      path:last-child {
-        fill: #535760;
-      }
-    }
+    color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Foreground/fg-disabled"]};
   }
 `
 
