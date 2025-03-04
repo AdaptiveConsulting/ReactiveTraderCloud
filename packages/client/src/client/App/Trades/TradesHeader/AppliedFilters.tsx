@@ -30,7 +30,11 @@ export const AppliedFilters = () => {
   return (
     <>
       {filterFields.map((field) => (
-        <FilterField key={field} onClick={() => onFilterReset(field)}>
+        <FilterField
+          key={field}
+          onClick={() => onFilterReset(field)}
+          data-testid="filter-button"
+        >
           <Typography variant="Text sm/Regular" paddingRight="md">
             {colDef[field].headerName}
           </Typography>
