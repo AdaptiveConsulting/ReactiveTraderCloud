@@ -15,8 +15,10 @@ import { ComparatorSelect } from "./components/ComparatorSelect"
 import { FilterPopup } from "./components/FilterPopup"
 
 const DateFilterInputInner = styled.input`
+  ${({ theme }) => theme.newTheme.textStyles["Text sm/Regular"]}
   padding: 8px 8px 5px 8px;
-  color: ${({ theme }) => theme.core.textColor};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-primary (900)"]};
   ::-webkit-calendar-picker-indicator {
     filter: ${({ theme }) => (theme.name === "dark" ? "invert(1)" : "none")};
   }

@@ -1,5 +1,4 @@
 import { darken } from "polished"
-import { keyframes } from "styled-components"
 
 import {
   AccentName,
@@ -17,10 +16,6 @@ export enum ThemeName {
   Dark = "dark",
 }
 interface BaseTheme {
-  white: Color
-  black: Color
-  transparent: Color
-
   primary: CorePalette
   secondary: CorePalette
   accents: AccentPaletteMap
@@ -31,8 +26,6 @@ interface BaseTheme {
     normal: Motion
     slow: Motion
   }
-
-  overlay: ColorPair
 
   button: TouchableStyleSet
 
@@ -92,9 +85,6 @@ const createTheme = (
 ) => ({
   name,
   core,
-  white: colors.static.white,
-  black: colors.static.black,
-  transparent: colors.static.transparent,
 
   backgroundColor: core.darkBackground,
   textColor: core.textColor,
@@ -132,18 +122,6 @@ const createTheme = (
   tile: {
     inputColor: secondary[4],
   },
-
-  flash: keyframes`
-    0% {
-      background-color: ${primary.base};
-    }
-    50% {
-      background-color: ${accents.primary.darker};
-    }
-    100% {
-      background-color: ${primary.base};
-    }
-  `,
 
   button: {
     mute: {

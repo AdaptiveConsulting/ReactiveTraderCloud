@@ -5,12 +5,12 @@ import { CurrencyPair } from "@/services/currencyPairs/types"
 import { onChangeLimitValue, useLimit } from "./state"
 
 const Container = styled.div`
-  background-color: ${({ theme }) => theme.core.lightBackground};
+  background-color: ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary"]}};
   padding: 10px;
   margin-bottom: 0.25rem;
 
   &:hover {
-    background-color: ${({ theme }) => theme.core.backgroundHoverColor};
+    background-color: ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary_hover"]};
   }
 `
 
@@ -35,11 +35,11 @@ const Input = styled.input`
   font-size: 0.75rem;
 
   padding: 2px 0;
-  color: ${({ theme }) => theme.core.textColor};
-  border-bottom: 1.5px solid ${({ theme }) => theme.primary[5]};
-  caret-color: ${({ theme }) => theme.accents.primary.base};
+  color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-primary (900)"]}};
+  border-bottom: 1.5px solid ${({ theme }) => theme.newTheme.color["Colors/Border/border-primary"]};
+  caret-color: ${({ theme }) => theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
   &:focus {
-    border-color: ${({ theme }) => theme.accents.primary.base};
+    border-color: ${({ theme }) => theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
   }
 `
 

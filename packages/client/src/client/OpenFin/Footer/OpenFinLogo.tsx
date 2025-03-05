@@ -4,7 +4,7 @@ import OpenFinBrowserLink from "../components/OpenFinBrowserLink"
 
 const OpenFinLogoLink = styled.a`
   .svg-fill {
-    fill: ${({ theme }) => theme.core.textColor};
+    fill: ${({ theme }) => theme.newTheme.color["Colors/Text/text-primary (900)"]}};
   }
 `
 

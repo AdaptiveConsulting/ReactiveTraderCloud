@@ -104,14 +104,9 @@ export const TradeButton = styled(SharedButtonStyle)<TradeButtonProps>`
     `};
 `
 
-const QuotePriceLoadingText = styled(SharedButtonStyle)(({ theme }) => ({
-  ...theme.newTheme.textStyles["Text sm/Regular"],
-}))
-
-export const QuotePriceLoading = styled(QuotePriceLoadingText)`
+export const QuotePriceLoading = styled(SharedButtonStyle)`
   transition: background-color 0.2s ease;
   opacity: 0.5;
-  color: ${({ theme }) => theme.primary[5]};
   margin: 0;
 `
 
@@ -120,38 +115,9 @@ const Box = styled.div`
   margin: 0;
 `
 
-export const DirectionLabel = styled(Box)`
-  opacity: 0.59;
-  font-size: 0.625rem;
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-tertiary (600)"]};
-`
-
-const inline = {
-  display: "inline",
-}
-
 export const PriceContainer = styled(Box)`
   padding-top: ${({ theme }) => theme.newTheme.spacing.xl};
 `
-
-export const Big = styled(Box)(({ theme }) => ({
-  ...theme.newTheme.textStyles["Text sm/Regular"],
-  ...inline,
-  lineHeight: 0,
-}))
-
-export const Pip = styled(Box)(({ theme }) => ({
-  ...theme.newTheme.textStyles["Display xl/Regular"],
-  ...inline,
-  lineHeight: 0,
-}))
-
-export const Tenth = styled(Box)(({ theme }) => ({
-  ...theme.newTheme.textStyles["Text sm/Regular"],
-  ...inline,
-  lineHeight: 0,
-}))
 
 export const PriceTypography = styled(Typography)`
   display: inline;
@@ -202,7 +168,6 @@ export const PriceButtonDisabledPlaceholder = styled.div`
   align-items: center;
   justify-content: center;
   flex-flow: column;
-  border: 2px solid ${({ theme }) => theme.core.darkBackground};
   border-radius: 3px;
   font-size: 10px;
   transition: background-color 0.2s ease;
@@ -215,6 +180,5 @@ export const PriceButtonDisabledPlaceholder = styled.div`
   opacity: 0.5;
   text-align: center;
   text-transform: uppercase;
-  color: ${({ theme }) => theme.primary[5]};
   font-weight: 400;
 `

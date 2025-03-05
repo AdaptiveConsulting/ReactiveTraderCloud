@@ -29,7 +29,8 @@ export default {
 const TradesStyle = styled.div`
   height: 100%;
   width: 100%;
-  color: ${({ theme }) => theme.core.textColor};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-primary (900)"]};
   font-size: 0.8125rem;
 `
 

@@ -61,7 +61,11 @@ export const ThemeProvider = ({ storage = localStorage, children }: Props) => {
   // set themeColor in index.html (used for PWA title bar)
   useEffect(() => {
     const head = document.getElementById("themeColor")
-    head && head.setAttribute("content", themes[themeName].backgroundColor)
+    head &&
+      head.setAttribute(
+        "content",
+        themes[themeName].newTheme.color["Colors/Background/bg-primary"],
+      )
   }, [themeName])
 
   return (

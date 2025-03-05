@@ -6,7 +6,8 @@ import { LimitInput } from "./LimitInput"
 import { Header } from "./styled"
 
 const Container = styled.div`
-  background-color: ${({ theme }) => theme.core.darkBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
   h2 {
     font-size: 14px;
     font-weight: 400;

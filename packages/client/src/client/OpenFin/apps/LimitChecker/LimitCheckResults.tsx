@@ -30,7 +30,8 @@ const tableRows$ = limitResult$.pipe(
 )
 
 const Container = styled.div`
-  background-color: ${({ theme }) => theme.core.darkBackground};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
   display: flex;
   flex: 1;
   padding: 0 10px 20px 10px;

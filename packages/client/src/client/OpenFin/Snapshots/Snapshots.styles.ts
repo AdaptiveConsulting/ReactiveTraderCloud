@@ -63,9 +63,3 @@ export const Input = styled.input`
     outline: none;
   }
 `
-
-export const Button = styled.button`
-  display: block;
-  padding: 0 0.5rem;
-  background: ${({ theme }) => theme.accents.primary.base};
-`

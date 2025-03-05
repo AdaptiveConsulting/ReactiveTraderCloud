@@ -37,12 +37,12 @@ const ToolTipChildLeft = styled.div`
   width: 70px;
   opacity: 0.6;
   font-size: 10px;
-  color: ${({ theme }) => theme.white};
+  color: white;
 `
 const ToolTipChildRight = styled.div`
   width: 30px;
   font-size: 10px;
-  color: ${({ theme }) => theme.white};
+  color: white;
 `
 
 const formatToPrecision1 = precisionNumberFormatter(1)
