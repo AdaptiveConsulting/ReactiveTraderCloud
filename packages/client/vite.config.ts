@@ -2,7 +2,6 @@ import react from "@vitejs/plugin-react"
 import { existsSync, readdirSync, statSync } from "fs"
 import path, { resolve } from "path"
 import type { InputOption } from "rollup"
-import modulepreload from "rollup-plugin-modulepreload"
 import { injectManifest } from "rollup-plugin-workbox"
 import Unfonts from "unplugin-fonts/vite"
 import {
@@ -126,28 +125,6 @@ function indexSwitchPlugin(target: string): Plugin {
         return null
       }
     },
-  }
-}
-
-// Vite adds link rel="modulepreload" for static chunks, but not dynamic imports/chunks (by design)
-// .. back in the day Vite issue raised: https://github.com/vitejs/vite/issues/2460
-// More Info: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload
-// but basically this tells the browser to fetch (or get from SW cache), parse and load into module map
-// obviously quicker than grabbing from SW cache and processing, but how much?
-const customPreloadPlugin = (): Plugin => {
-  const rollupPlugin = modulepreload({
-    index: resolve(__dirname, "dist", "index.html"),
-    prefix: getBaseUrl(false),
-  })
-
-  return {
-    name: "custommodulepreload",
-    // to type this as Plugin, need to ignore ..
-    // as replacing writeBundle with generateBundle messes with the types (but it works)
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    writeBundle: rollupPlugin.generateBundle,
-    enforce: "post",
   }
 }
 
@@ -348,10 +325,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
 
   devPlugins.push(react())
 
-  if (!isDev) {
-    devPlugins.push(customPreloadPlugin())
-  }
-
   if (buildTarget === "web") {
     devPlugins.push(injectWebServiceWorkerPlugin(mode, baseUrl) as Plugin)
   }
@@ -386,16 +359,26 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
     build: {
       sourcemap: true,
       chunkSizeWarningLimit: 750,
+      // More Info: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload
+      // but basically this tells the browser to fetch (or get from SW cache), parse and load into module map
+      modulePreload: {
+        resolveDependencies: (url, deps, _context) => {
+          // vite built-in modulepreload handling now supersedes our custom setup based on the rollup plugin
+          // (it just needs a minor tweak, hence this verbose preamble), use this to illustrate:
+          // console.log(`modulePreload; url: ${url}, deps: ${deps}, hostId: ${hostId}, hostType: ${hostType}`)
+          //
+          // per various examples, include main itself in the modulepreload list
+          // ref https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload#examples
+          // ref https://web.dev/articles/modulepreload
+          return url.startsWith("assets/main") ? [url, ...deps] : deps
+        },
+      },
       rollupOptions: {
         input,
         output: {
           manualChunks: (id: string) => {
-            if (id.includes("node_modules/@openfin")) {
-              return "vendor-openfin"
-            }
-            if (id.includes("node_modules")) {
-              return "vendor"
-            }
+            if (id.includes("node_modules/@openfin")) return "vendor-openfin"
+            if (id.includes("node_modules")) return "vendor"
           },
         },
       },
