@@ -43,11 +43,54 @@ import "ress"
  * line-height explicit in our styles will allow us to
  * achieve a consistent vertical rhythm.
  */
-import { createGlobalStyle } from "styled-components"
+import { createGlobalStyle, css, withTheme } from "styled-components"
+
+import { Theme } from "./themes"
+
+const getColor = (props: { theme: Theme }) =>
+  props.theme.newTheme.color["Colors/Background/bg-tertiary"]
+
+const globalScrollbarStyle = css`
+  body,
+  #root {
+    overflow: hidden;
+  }
+
+  body ::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+
+  body ::-webkit-scrollbar-thumb {
+    background-color: ${getColor};
+  }
+
+  body {
+    scrollbar-color: ${getColor} transparent;
+  }
+
+  body ::-webkit-scrollbar-thumb {
+    border-radius: 22px;
+    background-color: rgba(212, 221, 232, 0.4);
+
+    height: 16px;
+    border: 4.5px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+  }
+
+  body ::-webkit-scrollbar-corner {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  body .ag-body ::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+`
 
 // background-color needs to be hardcoded to dark theme for PWA otherwise we end up with a
 // white status bar with white text when switching to light theme
-export default createGlobalStyle`
+export default withTheme(createGlobalStyle`
   :root, body {
     font-family: 'Work Sans', 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 16px;
@@ -89,4 +132,7 @@ export default createGlobalStyle`
   html {
     overflow-y: initial;
   } 
-`
+
+  
+  ${globalScrollbarStyle}
+`)

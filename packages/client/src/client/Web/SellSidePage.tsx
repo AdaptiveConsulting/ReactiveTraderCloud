@@ -7,7 +7,8 @@ import {
   useRfqSearchParamEffect,
 } from "@/client/App/Credit/SellSide"
 import { DisconnectionOverlay } from "@/client/components/DisconnectionOverlay"
-import { GlobalScrollbarStyle } from "@/client/theme"
+
+import { GlobalStyle } from "../theme"
 
 const SellSideWrapper = styled.div`
   display: flex;
@@ -24,7 +25,7 @@ const SellSidePage = () => {
   return (
     <ThemeProvider theme={invertedTheme}>
       <DisconnectionOverlay />
-      <GlobalScrollbarStyle />
+      <GlobalStyle />
       <SellSideWrapper>
         <SellSideRfqGrid />
         <SellSideTradeTicket />

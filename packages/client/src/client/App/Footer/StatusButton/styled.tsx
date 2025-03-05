@@ -12,8 +12,7 @@ const StatusCircleCore = ({ className }: { className?: string }) => {
       style={{
         width: "0.65rem",
         height: "0.65rem",
-        display: "inline-block",
-        marginTop: "-4px",
+        display: "flex",
       }}
     >
       <svg

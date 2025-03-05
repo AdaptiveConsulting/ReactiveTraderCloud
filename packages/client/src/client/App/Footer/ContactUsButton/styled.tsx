@@ -21,7 +21,6 @@ export const LogoWrapper = styled.div`
 `
 
 export const Link = styled(Typography)`
-  text-decoration: underline;
   cursor: pointer;
 `
 

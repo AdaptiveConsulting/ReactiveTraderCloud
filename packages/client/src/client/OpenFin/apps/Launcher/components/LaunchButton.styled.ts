@@ -19,9 +19,7 @@ export const StyledButton = styled.button<{
 
   border-radius: 4px;
   background-color: ${({ theme, active }) =>
-    active
-      ? theme.newTheme.color["Colors/Background/bg-primary"]
-      : "inherited"};
+    active ? theme.newTheme.color["Colors/Background/bg-primary"] : "unset"};
 
   svg {
     fill: ${({ theme }) =>

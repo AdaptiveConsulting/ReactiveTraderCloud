@@ -23,7 +23,7 @@ export const ContactUs = () => (
     <Row>+1 929 205 4900</Row>
 
     <Link
-      variant="Text sm/Regular"
+      variant="Text sm/Regular underlined"
       color="Component colors/Utility/Blue dark/utility-blue-dark-500"
       onClick={() => {
         window.open(`mailto:${EMAIL}`)
@@ -34,7 +34,7 @@ export const ContactUs = () => (
     <Gap height="xs" />
 
     <Link
-      variant="Text sm/Regular"
+      variant="Text sm/Regular underlined"
       color="Component colors/Utility/Blue dark/utility-blue-dark-500"
       onClick={() => {
         window.gtag("event", "outbound_click", {

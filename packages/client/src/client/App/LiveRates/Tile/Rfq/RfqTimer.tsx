@@ -20,7 +20,7 @@ const ProgressBar = styled.div<{
 }>`
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Text/text-brand-primary (900)"]};
-  border-radius: 3px;
+  border-radius: ${({ theme }) => theme.newTheme.radius.xs};
   transition: ${({ transitionTime }) => `width ${transitionTime}ms linear`};
   height: 100%;
   width: ${(p) => p.width}%;

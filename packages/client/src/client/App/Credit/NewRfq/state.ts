@@ -15,11 +15,8 @@ import {
 } from "rxjs"
 
 import { CREDIT_RFQ_EXPIRY_SECONDS } from "@/client/constants"
-import {
-  applyMaximum,
-  createApplyCharacterMultiplier,
-  parseQuantity,
-} from "@/client/utils"
+import { applyMaximum } from "@/client/utils"
+import { formatNotional } from "@/client/utils/formatNotional"
 import {
   ACK_CREATE_RFQ_RESPONSE,
   DealerBody,
@@ -32,8 +29,6 @@ import {
 } from "@/services/credit"
 
 const CLEAR_DEALER_IDS = -1
-
-const applyCharacterMultiplier = createApplyCharacterMultiplier(["k", "m"])
 
 const prepareStream$ = <T>(source$: Observable<T>, startsWithValue: T) =>
   merge(source$, reset$.pipe(map(() => startsWithValue))).pipe(
@@ -73,9 +68,7 @@ const direction$ = prepareStream$(_direction$, Direction.Buy)
 const instrumentId$ = prepareStream$(_instrumentId$, null)
 const quantity$ = prepareStream$(_quantity$, "").pipe(
   map((quantity) => {
-    const numValue = Math.trunc(Math.abs(parseQuantity(quantity)))
-    const lastChar = quantity.slice(-1).toLowerCase()
-    const value = applyCharacterMultiplier(numValue, lastChar)
+    const [value] = formatNotional(quantity, ["k", "m"])
     return !Number.isNaN(value) ? applyMaximum(value) : 0
   }),
 )
