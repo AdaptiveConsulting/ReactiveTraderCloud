@@ -8,14 +8,12 @@ export const Region = ({
   source$,
   fallback,
   children,
-  Header,
-  Body,
-  className,
+  ...props
 }: LayoutProps & React.ComponentProps<typeof Subscribe>) => {
   return (
     <Subscribe source$={source$} fallback={fallback}>
       {children}
-      <RegionLayout Header={Header} Body={Body} className={className} />
+      <RegionLayout {...props} />
     </Subscribe>
   )
 }

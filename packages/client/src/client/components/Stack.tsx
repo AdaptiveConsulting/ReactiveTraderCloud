@@ -3,7 +3,7 @@ import styled, { css, CSSProperties } from "styled-components"
 import { Spacing } from "../theme/types"
 import { Box, BoxProps } from "./Box"
 
-interface StackProps extends BoxProps {
+export interface StackProps extends BoxProps {
   direction?: CSSProperties["flexDirection"]
   wrap?: CSSProperties["flexWrap"]
   flow?: CSSProperties["flexFlow"]
