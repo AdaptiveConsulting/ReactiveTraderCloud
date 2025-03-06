@@ -42,7 +42,6 @@ export const FrameRoot = styled.div`
   .lm_tab {
     background-color: ${({ theme }) =>
       theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
-    font-size: 3rem;
   }
 
   .lm_tabs {
@@ -70,9 +69,9 @@ export const FrameRoot = styled.div`
       theme.newTheme.color["Colors/Text/text-primary (900)"]};
   }
 
-  .lm_title {
+  .lm_header .lm_tab .lm_title {
     color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-primary (900)"]} !important;
+      theme.newTheme.color["Colors/Text/text-primary (900)"]};
   }
 
   .lm_close_tab {

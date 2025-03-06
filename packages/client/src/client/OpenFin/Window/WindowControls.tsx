@@ -56,41 +56,25 @@ export const WindowControls = ({ close, minimize, maximize, popIn }: Props) => {
   return (
     <ControlsWrapper>
       {minimize && (
-        <Control
-          accent="aware"
-          onClick={minimize}
-          data-qa="openfin-chrome__minimize"
-        >
+        <Control onClick={minimize} data-qa="openfin-chrome__minimize">
           <MinimizeIcon />
         </Control>
       )}
 
       {maximize && (
-        <Control
-          accent="primary"
-          onClick={maximize}
-          data-qa="openfin-chrome__maximize"
-        >
+        <Control onClick={maximize} data-qa="openfin-chrome__maximize">
           <MaximizeIcon />
         </Control>
       )}
 
       {popIn && (
-        <Control
-          accent="primary"
-          onClick={popIn}
-          data-qa="openfin-chrome__popin"
-        >
+        <Control onClick={popIn} data-qa="openfin-chrome__popin">
           {<PopInIcon />}
         </Control>
       )}
 
       {close && (
-        <Control
-          accent="aware"
-          onClick={wrappedClose}
-          data-qa="openfin-chrome__close"
-        >
+        <Control onClick={wrappedClose} data-qa="openfin-chrome__close">
           <ExitIcon />
         </Control>
       )}

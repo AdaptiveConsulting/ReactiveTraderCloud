@@ -66,4 +66,9 @@ export const FrameRoot = styled.div`
     background-size: 30px !important;
     margin: 0.5rem 1.5rem 0 0;
   }
+
+  .lm_header .lm_tab .lm_title {
+    color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-primary (900)"]};
+  }
 `

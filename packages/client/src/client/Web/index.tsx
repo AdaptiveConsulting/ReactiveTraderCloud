@@ -94,7 +94,6 @@ export const WebApp = () => {
         {canUseAdmin && (
           <Route path={ROUTES_CONFIG.admin} element={<Admin />} />
         )}
-        <Route path={ROUTES_CONFIG.admin} element={<Admin />} />
 
         <Route
           path={ROUTES_CONFIG.tiles}

@@ -28,9 +28,6 @@ export const Banner = styled.div`
   gap: 8px;
   color: ${({ theme }) =>
     theme.newTheme.color["Colors/Text/text-primary (900)"]};
-  font-size: 11px;
-  line-height: 16px;
-  font-weight: 500;
 `
 
 export const Diamond = styled.div<{ state: SellSideQuoteState }>`
