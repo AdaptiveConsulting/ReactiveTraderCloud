@@ -5,7 +5,7 @@ import styled from "styled-components"
 
 import { Box } from "@/client/components/Box"
 import { TextInput } from "@/client/components/Form/TextInput"
-import { Typography } from "@/client/components/Typography"
+import { Typography, TypographyProps } from "@/client/components/Typography"
 
 import { useColDef, useTrades$ } from "../Context"
 import {
@@ -72,6 +72,8 @@ const SetFilterInner = ({
   ) as Set<string>
   const inputValue = useInputText(field)
   const { valueFormatter } = colDef[field]
+  const selectAllTypographyVariant: TypographyProps["variant"] =
+    selected.size === 0 ? "Text sm/Bold" : "Text sm/Regular"
 
   return (
     <FilterPopup
@@ -95,7 +97,7 @@ const SetFilterInner = ({
         selected={selected.size === 0}
       >
         <Typography
-          variant={`Text sm/${selected.size === 0 ? "Bold" : "Regular"}`}
+          variant={selectAllTypographyVariant}
           color="Colors/Text/text-primary (900)"
         >
           Select All
@@ -104,6 +106,10 @@ const SetFilterInner = ({
       </MultiSelectOption>
       {[...options].map((option) => {
         const isSelected = selected.has(option)
+        const typographyVariant: TypographyProps["variant"] = isSelected
+          ? "Text sm/Bold"
+          : "Text sm/Regular"
+
         return (
           <MultiSelectOption
             key={`${option}-filter`}
@@ -112,7 +118,7 @@ const SetFilterInner = ({
             selected={isSelected}
           >
             <Typography
-              variant={`Text sm/${isSelected ? "Bold" : "Regular"}`}
+              variant={typographyVariant}
               color="Colors/Text/text-primary (900)"
             >
               {valueFormatter?.(option) ?? option}

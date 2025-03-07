@@ -32,7 +32,6 @@ export const FrameRoot = styled.div`
   .lm_tab {
     margin-left: 1rem;
     background-color: ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary"]}};
-    font-size: 3rem;
   }
 
   .lm_tabs {
@@ -45,11 +44,10 @@ export const FrameRoot = styled.div`
     background-color: ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary"]}};
   }
 
-  .lm_tab,
-  .lm_tab.lm_active {
+  .lm_header .lm_tab.lm_active  {
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-primary"]} !important;
-    color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-primary (900)"]}} !important;
+      theme.newTheme.color["Colors/Background/bg-primary"]};
+    color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-primary (900)"]}} ;
   }
 
   .lm_splitter {
