@@ -19,7 +19,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   height: 100%;
-  color: ${({ theme }) => theme.core.textColor};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-primary (900)"]};
 `
 
 const LimitChecker = () => {

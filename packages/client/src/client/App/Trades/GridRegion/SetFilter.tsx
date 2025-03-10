@@ -3,6 +3,10 @@ import { FaCheck } from "react-icons/fa"
 import { filter, map, startWith } from "rxjs/operators"
 import styled from "styled-components"
 
+import { Box } from "@/client/components/Box"
+import { TextInput } from "@/client/components/Form/TextInput"
+import { Typography, TypographyProps } from "@/client/components/Typography"
+
 import { useColDef, useTrades$ } from "../Context"
 import {
   onColFilterToggle,
@@ -18,39 +22,27 @@ const MultiSelectOption = styled.div<{
   selected: boolean
   children: React.ReactNode
 }>`
-  padding: 8px 8px 5px 8px;
+  padding: ${({ theme }) => theme.newTheme.spacing.md};
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-weight: ${({ selected }) => (selected ? "bold" : "normal")};
   background-color: ${({ selected, theme }) =>
-    selected ? theme.core.activeColor : "inherit"};
+    selected
+      ? theme.newTheme.color["Colors/Background/bg-brand-primary"]
+      : "inherit"};
   border-radius: 2px;
   margin-bottom: 5px;
 
   &:hover {
-    background-color: ${({ theme }) => theme.core.backgroundHoverColor};
-    font-weight: ${({ selected }) => (selected ? "bold" : "normal")};
-    text-decoration: underline;
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-brand-primary_alt"]};
   }
 `
 const AlignedChecked = styled.span`
   margin-left: 0.675rem;
   min-width: 0.675rem;
 `
-const SearchInput = styled.input`
-  font-size: 0.6875;
-  padding: 8px 8px 5px 8px;
-  border: none;
-  color: ${({ theme }) => theme.core.textColor};
-  border-bottom: 0.0625rem solid ${({ theme }) => theme.core.dividerColor};
-  outline: none;
 
-  &:focus {
-    color: ${({ theme }) => theme.core.activeColor};
-    border-bottom: 0.0625rem solid ${({ theme }) => theme.core.activeColor};
-  }
-`
 const [useInputText, inputText$] = bind((propsField) =>
   searchInputs$.pipe(
     filter(({ field: eventField }) => propsField === eventField),
@@ -80,18 +72,21 @@ const SetFilterInner = ({
   ) as Set<string>
   const inputValue = useInputText(field)
   const { valueFormatter } = colDef[field]
+  const selectAllTypographyVariant: TypographyProps["variant"] =
+    selected.size === 0 ? "Text sm/Bold" : "Text sm/Regular"
 
   return (
     <FilterPopup
       parentRef={parentRef}
       ariaLabel={`Filter trades by ${field} field value`}
     >
-      <SearchInput
-        type="text"
-        placeholder="Search"
-        value={inputValue}
-        onChange={(e) => onSearchInput(field, e.target.value)}
-      />
+      <Box paddingBottom="sm">
+        <TextInput
+          value={inputValue}
+          placeholder="Search"
+          onChange={(e) => onSearchInput(field, e.target.value)}
+        />
+      </Box>
       <MultiSelectOption
         key={`select-all-filter`}
         onClick={() => {
@@ -101,11 +96,20 @@ const SetFilterInner = ({
         }}
         selected={selected.size === 0}
       >
-        Select All
+        <Typography
+          variant={selectAllTypographyVariant}
+          color="Colors/Text/text-primary (900)"
+        >
+          Select All
+        </Typography>
         <AlignedChecked>{selected.size === 0 && <FaCheck />}</AlignedChecked>
       </MultiSelectOption>
       {[...options].map((option) => {
         const isSelected = selected.has(option)
+        const typographyVariant: TypographyProps["variant"] = isSelected
+          ? "Text sm/Bold"
+          : "Text sm/Regular"
+
         return (
           <MultiSelectOption
             key={`${option}-filter`}
@@ -113,7 +117,12 @@ const SetFilterInner = ({
             onClick={() => onColFilterToggle(field, option)}
             selected={isSelected}
           >
-            {valueFormatter?.(option) ?? option}
+            <Typography
+              variant={typographyVariant}
+              color="Colors/Text/text-primary (900)"
+            >
+              {valueFormatter?.(option) ?? option}
+            </Typography>
             <AlignedChecked>{isSelected && <FaCheck />}</AlignedChecked>
           </MultiSelectOption>
         )

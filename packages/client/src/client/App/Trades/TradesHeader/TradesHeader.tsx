@@ -1,6 +1,7 @@
 import { Section } from "@/client/App/TearOutSection/state"
 import { supportsTearOut } from "@/client/App/TearOutSection/supportsTearOut"
 import { TearOutComponent } from "@/client/App/TearOutSection/TearOutComponent"
+import { Stack } from "@/client/components/Stack"
 import { TabBar, TabBarActionConfig } from "@/client/components/TabBar"
 
 import { AppliedFilters } from "./AppliedFilters"
@@ -26,10 +27,10 @@ export const TradesHeader = ({
     {
       name: "filter",
       inner: (
-        <>
+        <Stack gap="md">
           <AppliedFilters />
           <QuickFilter />
-        </>
+        </Stack>
       ),
       size: "lg",
     },

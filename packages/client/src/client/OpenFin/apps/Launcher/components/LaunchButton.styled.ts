@@ -43,7 +43,8 @@ export const StyledButton = styled.button<{
       fill: ${({ iconHoverFill }) => iconHoverFill};
     }
     span {
-      color: ${({ theme }) => theme.core.textColor};
+      color: ${({ theme }) =>
+        theme.newTheme.color["Colors/Text/text-primary (900)"]};
     }
   }
 `

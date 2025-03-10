@@ -36,7 +36,7 @@ const RFQButtonComponent = styled.button<{
   border-radius: 3px;
   font-weight: 300;
   font-stretch: normal;
-  color: ${({ theme }) => theme.white};
+  color: white;
 
   &:hover {
     background-color: ${({ theme }) =>

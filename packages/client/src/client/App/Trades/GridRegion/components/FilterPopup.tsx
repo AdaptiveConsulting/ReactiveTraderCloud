@@ -3,13 +3,7 @@ import styled from "styled-components"
 import { WithChildren } from "@/client/utils/utilityTypes"
 
 export const FilterPopupOuter = styled.span`
-  position: absolute;
-  width: inherit;
-  height: 100%;
-  background-color: transparent;
-  border-radius: 4px;
-  color: ${({ theme }) => theme.core.textColor};
-  font-size: 12px;
+  position: relative;
   cursor: pointer;
   display: inline-block;
 
@@ -21,15 +15,19 @@ export const FilterPopupOuter = styled.span`
 export const FilterPopupInner = styled.div<{
   leftAlignFilter: boolean
 }>`
-  width: fit-content;
-  min-height: 100%;
-  max-height: 8rem;
+  position: absolute;
+  max-height: 150px;
+  top: 20px;
+  right: -20px;
   overflow-y: auto;
-  margin-top: 2rem;
+
   float: ${({ leftAlignFilter }) => (leftAlignFilter ? "right" : undefined)};
-  background-color: ${({ theme }) => theme.primary.base};
-  padding: 6px;
-  box-shadow: ${({ theme }) => theme.core.textColor} 0px 0px 0.3125rem 0px;
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
+  padding: ${({ theme }) => theme.newTheme.spacing.sm};
+  box-shadow: ${({ theme }) =>
+      theme.newTheme.color["Colors/Effects/Focus rings/focus-ring"]}
+    0px 0px 2px 0px;
 `
 
 export const FilterPopup = ({

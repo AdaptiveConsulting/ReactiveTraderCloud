@@ -1,33 +1,25 @@
 import styled from "styled-components"
 
-import { TouchableIntentName } from "@/client/theme"
-
-export const Control = styled.div<{ accent: TouchableIntentName }>`
+export const Control = styled.div`
   display: flex;
   cursor: pointer;
   justify-content: center;
   align-self: center;
+  border-radius: ${({ theme }) => theme.newTheme.radius.xxs};
 
-  color: ${(props) => props.theme.secondary.base};
+  color: ${(props) =>
+    props.theme.newTheme.color["Colors/Foreground/fg-quaternary (500)"]};
 
   &:hover {
-    svg {
-      path:last-child {
-        fill: ${({ theme, accent = "primary" }) =>
-          theme.button[accent].backgroundColor};
-      }
-    }
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-primary_hover"]};
+    color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
   }
 
   &:disabled {
-    svg {
-      path:nth-child(2) {
-        fill: #535760;
-      }
-      path:last-child {
-        fill: #535760;
-      }
-    }
+    color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Foreground/fg-disabled"]};
   }
 `
 
@@ -38,14 +30,11 @@ export const ControlsWrapper = styled.div`
 export const TitleBar = styled.div`
   display: flex;
   flex: 1;
-  width: 100%;
+
   justify-content: center;
   align-items: center;
-  text-transform: uppercase;
-  font-weight: normal;
   min-height: 1.5rem;
   margin: 0;
-  font-size: 0.625rem;
   height: 100%;
   user-select: none;
 

@@ -10,8 +10,9 @@ const popoutIconString = encodeURIComponent(
 )
 
 export const FrameRoot = styled.div`
-  background-color: ${({ theme }) => theme.core.darkBackground};
-  color: ${({ theme }) => theme.core.textColor};
+  background-color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Background/bg-primary"]};
+  color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-primary (900)"]}};
   height: 100%;
   width: 100%;
   padding: 0px;
@@ -30,27 +31,27 @@ export const FrameRoot = styled.div`
 
   .lm_tab {
     margin-left: 1rem;
-    background-color: ${({ theme }) => theme.core.lightBackground};
-    font-size: 3rem;
+    background-color: ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary"]}};
   }
 
   .lm_tabs {
-    background-color: ${({ theme }) => theme.core.darkBackground};
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-primary"]};
     border-radius: 0px;
   }
 
   .lm_content {
-    background-color: ${({ theme }) => theme.core.lightBackground};
+    background-color: ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary"]}};
   }
 
-  .lm_tab,
-  .lm_tab.lm_active {
-    background-color: ${({ theme }) => theme.core.darkBackground} !important;
-    color: ${({ theme }) => theme.core.textColor} !important;
+  .lm_header .lm_tab.lm_active  {
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Background/bg-primary"]};
+    color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-primary (900)"]}} ;
   }
 
   .lm_splitter {
-    background-color: ${({ theme }) => theme.core.textColor};
+    background-color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-primary (900)"]}};
   }
 
   .lm_close_tab {
@@ -62,5 +63,10 @@ export const FrameRoot = styled.div`
     background-image: url("data:image/svg+xml;utf8,${popoutIconString}") !important;
     background-size: 30px !important;
     margin: 0.5rem 1.5rem 0 0;
+  }
+
+  .lm_header .lm_tab .lm_title {
+    color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Text/text-primary (900)"]};
   }
 `

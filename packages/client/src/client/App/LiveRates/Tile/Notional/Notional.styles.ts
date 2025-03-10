@@ -15,7 +15,7 @@ export const Input = styled.input`
     theme.newTheme.color["Colors/Text/text-secondary (700)"]};
   border: 1.5px solid
     ${({ theme }) => theme.newTheme.color["Colors/Border/border-secondary"]};
-  caret-color: ${({ theme }) => theme.primary.base};
+
   &:focus {
     outline: none !important;
     border-color: ${({ theme }) =>
@@ -53,7 +53,8 @@ export const ErrorMessage = styled.div`
   margin-left: 24px;
   margin-top: 2px;
   padding-top: 2px;
-  color: ${({ theme }) => theme.accents.negative.base};
+  color: ${({ theme }) =>
+    theme.newTheme.color["Colors/Text/text-error-primary (600)"]};
   font-size: 0.6rem;
   line-height: 1;
 `

@@ -179,7 +179,13 @@ const PriceButtonContainer = ({
 export const AwaitingPriceButton = () => (
   <QuotePriceLoading>
     <AdaptiveLoader size={16} />
-    Awaiting Price
+    <Typography
+      variant="Text sm/Regular"
+      color="Colors/Text/text-secondary (700)"
+      paddingTop="xxs"
+    >
+      Awaiting Price
+    </Typography>
   </QuotePriceLoading>
 )
 

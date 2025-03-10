@@ -8,7 +8,7 @@ import { withSubscriber } from "@/client/utils/withSubscriber"
 import { ThroughputAdminService } from "@/generated/TradingGateway"
 
 const Wrapper = styled.div`
-  background: ${({ theme }) => theme.white};
+  background: white;
   height: 100%;
   padding: 20px;
 `
@@ -20,7 +20,7 @@ const Row = styled.div`
 `
 
 const Label = styled.label`
-  color: ${({ theme }) => theme.colors.light.secondary[5]};
+  color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-black"]};
   margin-bottom: 0.5rem;
   font-size: 0.8rem;
   display: block;
@@ -35,8 +35,9 @@ const InputWrapper = styled.div`
 const Input = styled.input`
   padding: 0.5rem;
   padding-right: 60px;
-  border: 1px solid ${({ theme }) => theme.colors.light.primary[4]};
-  color: ${({ theme }) => theme.colors.light.secondary[4]};
+  border: 1px solid
+    ${({ theme }) => theme.newTheme.color["Colors/Border/border-primary"]};
+  color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-black"]};
   font-size: 0.65rem;
   margin-right: 1rem;
   width: 100%;
@@ -47,7 +48,7 @@ const InputMeta = styled.div`
   top: 0.55rem;
   right: 0.65rem;
   font-size: 0.65rem;
-  color: ${({ theme }) => theme.colors.light.primary[4]};
+  color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-placeholder"]};
 `
 
 const InputSlider = styled.input`
@@ -61,15 +62,18 @@ const InputSlider = styled.input`
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: ${({ theme }) => theme.accents.primary.base};
+    background-color: ${({ theme }) =>
+      theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
     cursor: pointer;
   }
 `
 
 const ResultMessage = styled.div<{ validResult: boolean }>`
   background-color: ${({ validResult, theme }) =>
-    validResult ? theme.accents.positive.base : theme.accents.negative.base};
-  color: ${({ theme }) => theme.white};
+    validResult
+      ? theme.newTheme.color["Colors/Background/bg-success-primary"]
+      : theme.newTheme.color["Colors/Background/bg-error-primary"]};
+  color: white;
   padding: 0.5rem;
   font-size: 0.65rem;
 `

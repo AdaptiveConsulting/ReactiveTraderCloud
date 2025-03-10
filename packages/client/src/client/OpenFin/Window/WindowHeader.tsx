@@ -1,6 +1,7 @@
 import Header from "@/client/App/Header"
 import LoginControls from "@/client/App/Header/LoginControls"
 import ThemeSwitcher from "@/client/App/Header/theme-switcher"
+import { Typography } from "@/client/components/Typography"
 
 import { LayoutLock } from "./LayoutLock"
 import { Props as WindowControlProps, WindowControls } from "./WindowControls"
@@ -18,7 +19,13 @@ export const WindowHeader = ({ title, ...controlsProps }: Props) => (
         <WindowControls {...controlsProps} />
       </>
     }
-    filler={<TitleBar>{title}</TitleBar>}
+    filler={
+      <TitleBar>
+        <Typography variant="Text md/Regular" textTransform="uppercase">
+          {title}
+        </Typography>
+      </TitleBar>
+    }
     switches={
       <>
         <LayoutLock />

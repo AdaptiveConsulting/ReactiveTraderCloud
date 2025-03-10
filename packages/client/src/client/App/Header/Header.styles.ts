@@ -22,7 +22,6 @@ export const AppHeaderRoot = styled.div`
 
   background-color: ${({ theme }) =>
     theme.newTheme.color["Colors/Background/bg-primary"]};
-  color: ${({ theme }) => theme.core.textColor};
 
   position: relative;
   z-index: 5;

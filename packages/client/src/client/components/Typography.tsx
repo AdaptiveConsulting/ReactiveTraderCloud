@@ -3,7 +3,7 @@ import styled, { css, CSSObject, CSSProperties } from "styled-components"
 import { Color, TextStyles } from "../theme/types"
 import { Box, BoxProps } from "./Box"
 
-interface TypographyProps extends BoxProps {
+export interface TypographyProps extends BoxProps {
   variant?: TextStyles
   color?: Color
   allowLineHeight?: boolean
