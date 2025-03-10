@@ -25,6 +25,15 @@ const config: PlaywrightTestConfig = {
       },
     },
     {
+      name: "responsiveNav",
+      use: {
+        viewport: {width: 900, height: 1024},
+        //Artifacts
+        screenshot: "only-on-failure",
+        trace: "retain-on-failure",
+      }
+    },
+    {
       name: "openfin",
       use: {
         screenshot: "only-on-failure",

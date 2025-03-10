@@ -1,15 +1,31 @@
-import { Page } from "@playwright/test"
+import { expect, Page } from "@playwright/test"
+import exp from "constants"
 
 export class CreditRfqTilesPageObject {
   constructor(readonly page: Page) {}
 
   // TODO - these tiles filter functions will not work in squashed resonsive mode
-  selectLiveRfqsFilter() {
-    return this.page.getByText(/Live/).first().click()
+
+  async selectLiveRfqsFilter() {
+    const collapsedNav = this.page.getByTestId("nav-dropdown")
+    const displayStyle = await collapsedNav.evaluate(el => getComputedStyle(el).display);
+    if (displayStyle == 'none') {
+      return this.page.getByTestId("tabItem-Live").first().click()
+    } else {
+      collapsedNav.click()
+      return this.page.click(':nth-match(:text("Live"), 2)')
+    }
   }
 
-  selectAllRfqsFilter() {
-    return this.page.getByTestId("tabItem-All").click()
+  async selectAllRfqsFilter() {
+    const collapsedNav = this.page.getByTestId("nav-dropdown")
+    const displayStyle = await collapsedNav.evaluate(el => getComputedStyle(el).display);
+    if(displayStyle == 'none') {
+      return this.page.getByTestId("tabItem-All").click()
+    } else {
+      collapsedNav.click()
+      return collapsedNav.getByText(/All/).click()
+    }
   }
 
   get firstQuote() {
