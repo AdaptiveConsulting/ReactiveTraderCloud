@@ -1,6 +1,4 @@
-import { expect, Page } from "@playwright/test"
-import exp from "constants"
-
+import { Page } from "@playwright/test"
 export class CreditRfqTilesPageObject {
   constructor(readonly page: Page) {}
 
@@ -8,8 +6,10 @@ export class CreditRfqTilesPageObject {
 
   async selectLiveRfqsFilter() {
     const collapsedNav = this.page.getByTestId("nav-dropdown")
-    const displayStyle = await collapsedNav.evaluate(el => getComputedStyle(el).display);
-    if (displayStyle == 'none') {
+    const displayStyle = await collapsedNav.evaluate(
+      (el) => getComputedStyle(el).display,
+    )
+    if (displayStyle == "none") {
       return this.page.getByTestId("tabItem-Live").first().click()
     } else {
       collapsedNav.click()
@@ -19,8 +19,10 @@ export class CreditRfqTilesPageObject {
 
   async selectAllRfqsFilter() {
     const collapsedNav = this.page.getByTestId("nav-dropdown")
-    const displayStyle = await collapsedNav.evaluate(el => getComputedStyle(el).display);
-    if(displayStyle == 'none') {
+    const displayStyle = await collapsedNav.evaluate(
+      (el) => getComputedStyle(el).display,
+    )
+    if (displayStyle == "none") {
       return this.page.getByTestId("tabItem-All").click()
     } else {
       collapsedNav.click()
