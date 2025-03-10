@@ -1,5 +1,7 @@
 import styled from "styled-components"
 
+import { Color } from "@/client/theme/types"
+
 export const Background = styled.div`
   height: ${({ theme }) => theme.newTheme.density.md};
   display: flex;
@@ -29,6 +31,10 @@ export const RightSection = styled.ul`
   list-style-type: none;
   list-style: none;
 `
+export const tabBackgroundColor: Record<string, Color> = {
+  hover: "Colors/Background/bg-primary_hover",
+  active: "Colors/Background/bg-primary_alt",
+}
 
 const TabBarButton = styled.button<{ active: boolean }>`
   height: 100%;
@@ -39,10 +45,10 @@ const TabBarButton = styled.button<{ active: boolean }>`
   list-style-type: none;
   text-decoration: none;
   background-color: ${({ active, theme }) =>
-    active ? theme.newTheme.color["Colors/Background/bg-primary_alt"] : "none"};
+    active ? theme.newTheme.color[tabBackgroundColor.active] : "none"};
 `
 
-export const Tab = styled(TabBarButton)<{
+export const TabStyled = styled(TabBarButton)<{
   isStatic?: boolean
 }>`
   width: ${({ theme }) => theme.newTheme.spacing["9xl"]};
@@ -52,9 +58,7 @@ export const Tab = styled(TabBarButton)<{
 
   &:hover {
     background-color: ${({ active, theme }) =>
-      active
-        ? "none"
-        : theme.newTheme.color["Colors/Background/bg-primary_hover"]};
+      active ? "none" : theme.newTheme.color[tabBackgroundColor.hover]};
   }
 `
 

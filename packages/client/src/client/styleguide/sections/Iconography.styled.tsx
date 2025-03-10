@@ -10,7 +10,7 @@ export const Table = styled.table`
   td,
   th {
     border-bottom: 1px solid
-      ${({ theme }) => theme.newTheme.color["Colors/Border/border-primary"]};
+      ${({ theme }) => theme.newTheme.color["Colors/Border/border-secondary"]};
   }
 
   tbody th {
@@ -26,7 +26,6 @@ export const Table = styled.table`
 
 const Container = styled.td`
   svg {
-    height: 16px;
   }
 `
 

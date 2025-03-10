@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from "react"
 import styled, { css } from "styled-components"
 
+import { brand, outline, primary, warning, whiteOutline } from "./Button.styled"
 import { Typography } from "./Typography"
 
 interface Props {
@@ -10,15 +11,6 @@ interface Props {
   style?: React.CSSProperties
   onClick: () => void
 }
-
-const focused = css`
-  &:focus {
-    outline: 2px solid
-      ${({ theme }) =>
-        theme.newTheme.color["Colors/Effects/Focus rings/focus-ring"]};
-    outline-offset: 1px;
-  }
-`
 
 const disabledStyle = css`
   ${({ theme }) => `
@@ -31,26 +23,28 @@ const brandStyle = css`
   ${({ theme }) => `
   color: ${theme.newTheme.color["Component colors/Components/Buttons/Brand/button-brand-fg"]};
   background-color: ${theme.newTheme.color["Component colors/Components/Buttons/Brand/button-brand-bg"]};
-  
+  `}
   &:hover {
-    color: ${theme.newTheme.color["Component colors/Components/Buttons/Brand/button-brand-fg_hover"]};
-    background-color: ${theme.newTheme.color["Component colors/Components/Buttons/Brand/button-brand-bg_hover"]};
+    ${brand.hover}
   }
-  ${focused}
-`}
+  &:focus {
+    ${brand.focus}
+  }
 `
+
 const primaryStyle = css`
   ${({ theme }) => `
   color: ${theme.newTheme.color["Component colors/Components/Buttons/Primary/button-primary-fg"]};
   background-color: ${theme.newTheme.color["Component colors/Components/Buttons/Primary/button-primary-bg"]};
-  
+  `}
   &:hover {
-    color: ${theme.newTheme.color["Component colors/Components/Buttons/Primary/button-primary-fg_hover"]};
-    background-color: ${theme.newTheme.color["Component colors/Components/Buttons/Primary/button-primary-bg_hover"]};
+    ${primary.hover}
   }
-  ${focused}
-`}
+  &:focus {
+    ${primary.focus}
+  }
 `
+
 const outlineStyle = css`
   ${({ theme }) => `
   color: ${theme.newTheme.color["Colors/Text/text-brand-primary (900)"]};
@@ -60,30 +54,38 @@ const outlineStyle = css`
     opacity: 0.65; // TODO Talk to UX about getting border hover colors
   }
   `}
+  &:hover {
+    ${outline.hover}
+  }
+  &:focus {
+    ${outline.focus}
+  }
 `
+
 const warningStyle = css`
   ${({ theme }) => `
   color: ${theme.newTheme.color["Colors/Text/text-primary (900)"]};
   background-color: ${theme.newTheme.color["Colors/Background/bg-warning-primary"]};
-  
+  `}
   &:hover {
-    color: ${theme.newTheme.color["Component colors/Components/Buttons/Primary/button-primary-fg_hover"]};
-    background-color: ${theme.newTheme.color["Component colors/Components/Buttons/Primary/button-primary-bg"]};
-    border: 1px solid ${theme.newTheme.color["Colors/Border/border-warning_subtle"]};
+    ${warning.hover}
   }
-  ${focused}
-`}
+  &:focus {
+    ${warning.focus}
+  }
 `
 
 const whiteOutlineStyle = css`
   ${({ theme }) => `
   color: ${theme.newTheme.color["Colors/Text/text-white"]};
   border: 1px solid ${theme.newTheme.color["Colors/Text/text-white"]};
-
+  `}
   &:hover {
-    opacity: 0.75; // TODO Talk to UX about getting border hover colors
+    ${whiteOutline.hover}
   }
-`}
+  &:focus {
+    ${whiteOutline.focus}
+  }
 `
 
 const ButtonStyled = styled.button<Props>`

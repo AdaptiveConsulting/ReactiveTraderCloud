@@ -5,7 +5,7 @@ import { Paragraph, SectionBlock } from "../styled"
 export const Molecules = () => (
   <>
     <SectionBlock colorScheme="secondary" py={0} pt={2} mh={0}>
-      <H2 pt={4}>Molecules</H2>
+      <H2 paddingTop={4}>Molecules</H2>
       <Paragraph>
         Molecules use a combination of atoms to form a more relevant and
         slightly more unique reusable component.

@@ -3,7 +3,6 @@ import styled, { css } from "styled-components"
 
 import { ColorProps as ThemeSelectorPair } from "@/client/theme"
 
-import { H2 } from "../elements"
 import { rules } from "../rules"
 import { Block, BlockProps } from "."
 import {
@@ -142,10 +141,5 @@ export const SectionBody = styled.div`
   ${SectionBleed} + ${SectionBleed} & {
     margin-top: 2rem;
     margin-bottom: 2rem;
-  }
-  ${H2} {
-    font-weight: normal;
-    color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-brand-primary (900)"]};
   }
 `

@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 import { ChevronIcon } from "../icons"
 import { Stack } from "../Stack"
-import { _TextInput } from "./TextInput.styled"
+import { TextInputStyled } from "./TextInput.styled"
 
 interface Props {
   name?: string
@@ -32,8 +32,12 @@ export const TextInput = React.forwardRef<HTMLInputElement, Props>(
   function InputInner({ value, comboBox, ...props }, ref) {
     return (
       <Container alignItems="center">
-        <_TextInput value={value} ref={ref} {...props} />
-        {comboBox && <Icon>{ChevronIcon}</Icon>}
+        <TextInputStyled value={value} ref={ref} {...props} />
+        {comboBox && (
+          <Icon>
+            <ChevronIcon />
+          </Icon>
+        )}
       </Container>
     )
   },

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { rgba } from "polished"
 import { ReactNode } from "react"
-import styled, {
+import {
   css,
   FlattenSimpleInterpolation,
   StyledComponent,
@@ -15,6 +15,7 @@ import { UISK_Variables } from "@/client/theme/uisk/generatedTheme"
 
 import { H2, H3, P } from "../elements"
 import { BlockProps, SectionBlock } from "../styled"
+import { Separator } from "./components"
 import {
   AccentRowGrid,
   AccentSwatchGrid,
@@ -102,12 +103,6 @@ export const CoreBranding = () => {
     </>
   )
 }
-
-const Separator = styled.div`
-  height: 1px;
-  background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Border/border-primary"]};
-`
 
 const PaletteLayout = ({
   grid: SwatchGrid,

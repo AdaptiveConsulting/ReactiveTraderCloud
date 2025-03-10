@@ -24,18 +24,18 @@ import {
 } from "./Iconography.styled"
 
 const icons = [
-  { name: "Bin", Element: BinIcon },
-  { name: "Chart", Element: ChartIcon },
-  { name: "Check", Element: CheckCircleIcon },
-  { name: "Chevron", Element: ChevronIcon },
-  { name: "Dark Mode", Element: DarkThemeIcon },
-  { name: "Light Mode", Element: LightThemeIcon },
-  { name: "Download", Element: DownloadIcon },
-  { name: "Filter", Element: FilterIcon },
-  { name: "Edit Filter", Element: FilterEditIcon },
-  { name: "Pop Out", Element: PopOutIcon },
-  { name: "Pop In", Element: PopInIcon },
-  { name: "Search", Element: SearchIcon },
+  { name: "Bin", Element: <BinIcon /> },
+  { name: "Chart", Element: <ChartIcon /> },
+  { name: "Check", Element: <CheckCircleIcon /> },
+  { name: "Chevron", Element: <ChevronIcon /> },
+  { name: "Dark Mode", Element: <DarkThemeIcon height={16} /> },
+  { name: "Light Mode", Element: <LightThemeIcon height={16} /> },
+  { name: "Download", Element: <DownloadIcon /> },
+  { name: "Filter", Element: <FilterIcon /> },
+  { name: "Edit Filter", Element: <FilterEditIcon /> },
+  { name: "Pop Out", Element: <PopOutIcon /> },
+  { name: "Pop In", Element: <PopInIcon /> },
+  { name: "Search", Element: <SearchIcon /> },
 ]
 
 const states = [
@@ -47,7 +47,7 @@ const states = [
 export const Iconography = () => (
   <>
     <SectionBlock colorScheme="secondary" py={0} pt={2} mh={0}>
-      <H2 pt={4}>Iconography</H2>
+      <H2 paddingTop={4}>Iconography</H2>
 
       <Stack direction="column" paddingBottom="4xl">
         <P paddingBottom="4xl" paddingTop="2xl">
@@ -80,5 +80,3 @@ export const Iconography = () => (
     </SectionBlock>
   </>
 )
-
-export default FontFamilies

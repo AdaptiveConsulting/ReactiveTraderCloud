@@ -10,9 +10,9 @@ export interface RawPrice {
 }
 
 export enum PriceMovementType {
-  UP,
-  DOWN,
-  NONE,
+  UP = "Up",
+  DOWN = "Down",
+  NONE = "None",
 }
 
 export type HistoryPrice = CamelCase<RawPrice>
