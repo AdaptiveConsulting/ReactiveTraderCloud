@@ -80,7 +80,7 @@ test.describe("Credit", () => {
     return pagePromise
   }
 
-  test.only("Create RFQ for GOOGL @smoke", async ({}, workerInfo) => {
+  test("Create RFQ for GOOGL @smoke", async ({}, workerInfo) => {
     await test.step("Create RFQ for 1000 GOOGL", () =>
       createRFQStep("GOOGL", "1", false))
 

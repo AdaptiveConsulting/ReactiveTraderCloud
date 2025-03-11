@@ -36,7 +36,7 @@ export const TabBar = <T extends string>({
   doNotShowDropdown,
 }: TabBarProps<T>) => (
   <Background>
-    <LeftSection doNotShowDropdown={items.length < 2 || !!doNotShowDropdown}>
+    <LeftSection data-testid="tab-bar" doNotShowDropdown={items.length < 2 || !!doNotShowDropdown}>
       {items.map((item) => (
         <TabStyled
           active={item === activeItem}
