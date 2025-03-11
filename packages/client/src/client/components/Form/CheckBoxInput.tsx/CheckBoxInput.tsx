@@ -1,28 +1,9 @@
-import styled, { css } from "styled-components"
+import styled from "styled-components"
 
 import Check from "@/client/components/icons/svg/tick.svg"
 
 import { Stack } from "../../Stack"
 import { Typography } from "../../Typography"
-
-const CheckBoxInputWrapper = styled(Stack)`
-  border-bottom: 1px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-tertiary"]};
-  padding: ${({ theme }) => theme.newTheme.spacing.sm};
-  gap: ${({ theme }) => theme.newTheme.spacing.md};
-`
-
-export const hover = css`
-  border: 1px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-brand-solid"]};
-`
-
-export const focus = css`
-  outline: 2px solid
-    ${({ theme }) =>
-      theme.newTheme.color["Colors/Effects/Focus rings/focus-ring"]};
-  outline-offset: 1px;
-`
 
 export const CheckBox = styled.input.attrs({ type: "checkbox" })<{
   checked: boolean
@@ -39,14 +20,6 @@ export const CheckBox = styled.input.attrs({ type: "checkbox" })<{
   background-color: ${({ theme, disabled }) =>
     disabled && theme.newTheme.color["Colors/Background/bg-disabled_subtle"]};
 
-  &:hover {
-    ${({ disabled }) => !disabled && hover}
-  }
-
-  &:focus {
-    ${({ disabled }) => !disabled && focus}
-  }
-
   ${({ theme, checked, disabled }) =>
     checked &&
     `
@@ -54,6 +27,34 @@ export const CheckBox = styled.input.attrs({ type: "checkbox" })<{
     background-image: url("${Check}");
 
   `}
+`
+
+const CheckBoxInputWrapper = styled(Stack)<{ disabled?: boolean }>`
+  border-bottom: 1px solid
+    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-tertiary"]};
+  padding: ${({ theme }) => theme.newTheme.spacing.sm};
+  gap: ${({ theme }) => theme.newTheme.spacing.md};
+
+  &:hover,
+  &.sg-checkbox-hover {
+    ${CheckBox} {
+      border: 1px solid
+        ${({ theme, disabled }) =>
+          !disabled &&
+          theme.newTheme.color["Colors/Background/bg-brand-solid"]};
+    }
+  }
+
+  &:focus,
+  &.sg-checkbox-focus {
+    ${CheckBox} {
+      outline: 2px solid
+        ${({ theme, disabled }) =>
+          !disabled &&
+          theme.newTheme.color["Colors/Effects/Focus rings/focus-ring"]};
+      outline-offset: 1px;
+    }
+  }
 `
 
 interface Props {
@@ -72,7 +73,7 @@ export const CheckBoxInput = ({
   className,
 }: Props) => {
   return (
-    <CheckBoxInputWrapper key={name} className={className}>
+    <CheckBoxInputWrapper key={name} className={className} disabled={disabled}>
       <CheckBox
         id={name}
         checked={checked}

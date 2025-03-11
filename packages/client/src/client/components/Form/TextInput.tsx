@@ -12,6 +12,7 @@ interface Props {
   placeholder?: string
   value?: string
   comboBox?: boolean
+  className?: string
   onChange?: React.ChangeEventHandler<HTMLInputElement>
   onFocus?: React.FocusEventHandler<HTMLInputElement>
   onBlur?: React.FocusEventHandler<HTMLInputElement>

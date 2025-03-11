@@ -2,7 +2,6 @@ import React from "react"
 
 import { PriceMovementInner } from "@/client/App/LiveRates/Tile/PriceMovement"
 import { Box } from "@/client/components/Box"
-import { Typography } from "@/client/components/Typography"
 import { Direction } from "@/generated/TradingGateway"
 import { PriceMovementType } from "@/services/prices"
 
@@ -106,20 +105,7 @@ export const Atoms = () => {
           <AtomTable
             states={TabStates}
             variants={["tab"]}
-            renderItem={(state) => (
-              <AtomsTab active={false} state={state}>
-                <Typography
-                  variant="Text md/Regular"
-                  color={
-                    state === TabStates.Active
-                      ? "Colors/Text/text-quaternary_on-brand"
-                      : "Colors/Text/text-quaternary (500)"
-                  }
-                >
-                  {state}
-                </Typography>
-              </AtomsTab>
-            )}
+            renderItem={(state) => <AtomsTab state={state} />}
           />
         </Box>
 

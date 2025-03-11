@@ -1,21 +1,4 @@
-import styled, { css } from "styled-components"
-
-export const stateStyles = {
-  hover: css`
-    border-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Border/border-hover"]};
-  `,
-  active: css`
-    border-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Border/border-brand"]};
-  `,
-  focus: css`
-    outline: 2px solid
-      ${({ theme }) =>
-        theme.newTheme.color["Colors/Effects/Focus rings/focus-ring"]};
-    outline-offset: 1px;
-  `,
-}
+import styled from "styled-components"
 
 const TextInputText = styled.input(
   ({ theme }) => theme.newTheme.textStyles["Text md/Regular"],
@@ -36,15 +19,24 @@ export const TextInputStyled = styled(TextInputText)<Partial<HTMLInputElement>>`
   }
   `}
 
-  &:hover {
-    ${({ disabled }) => !disabled && stateStyles.hover}
+  ${({ disabled, theme }) =>
+    !disabled &&
+    `
+  &:hover,
+  &.sg-text-input-hover {
+    border-color: ${theme.newTheme.color["Colors/Border/border-hover"]};
   }
 
-  &:active {
-    ${({ disabled }) => !disabled && stateStyles.active};
+  &:active,
+  &.sg-text-input-active {
+       border-color: ${theme.newTheme.color["Colors/Border/border-brand"]};
   }
 
-  &:focus {
-    ${({ disabled }) => !disabled && stateStyles.focus}
+  &:focus,
+  &.sg-text-input-focus {
+        outline: 2px solid
+      ${theme.newTheme.color["Colors/Effects/Focus rings/focus-ring"]};
+    outline-offset: 1px;
   }
+  `}
 `
