@@ -3,6 +3,9 @@ import { expect, Locator, WorkerInfo } from "@playwright/test"
 export const isOpenFin = (workerInfo: WorkerInfo) =>
   workerInfo.project.name === "openfin"
 
+export const isResponsive = (workerInfo: WorkerInfo) => 
+  workerInfo.project.name === "responsiveNav"
+
 export enum ExpectTimeout {
   MEDIUM = 15000,
   LONG = 30000,

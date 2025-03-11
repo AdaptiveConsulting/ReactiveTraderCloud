@@ -4,30 +4,13 @@ export class CreditRfqTilesPageObject {
 
   // TODO - these tiles filter functions will not work in squashed resonsive mode
 
-  async selectLiveRfqsFilter() {
-    const collapsedNav = this.page.getByTestId("nav-dropdown")
-    const displayStyle = await collapsedNav.evaluate(
-      (el) => getComputedStyle(el).display,
-    )
-    if (displayStyle == "none") {
-      return this.page.getByTestId("tabItem-Live").first().click()
-    } else {
-      collapsedNav.click()
-      return this.page.click(':nth-match(:text("Live"), 2)')
-    }
+  async selectFilter(filter: string) {
+    return this.page.getByTestId("tab-bar").getByText(filter).click()
   }
 
-  async selectAllRfqsFilter() {
-    const collapsedNav = this.page.getByTestId("nav-dropdown")
-    const displayStyle = await collapsedNav.evaluate(
-      (el) => getComputedStyle(el).display,
-    )
-    if (displayStyle == "none") {
-      return this.page.getByTestId("tabItem-All").click()
-    } else {
-      collapsedNav.click()
-      return collapsedNav.getByText(/All/).click()
-    }
+  async selectFilterResponsiveNav(filter: string) {
+    this.page.getByTestId("nav-dropdown").click()
+    return await this.page.getByTestId("nav-dropdown").getByText(filter).click() 
   }
 
   get firstQuote() {

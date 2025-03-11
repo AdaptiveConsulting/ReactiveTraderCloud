@@ -7,7 +7,7 @@ import {
   CreditRfqTilesPageObject,
   CreditSellSidePageObject,
 } from "./pages"
-import { ExpectTimeout, isOpenFin } from "./utils"
+import { ExpectTimeout, isOpenFin, isResponsive } from "./utils"
 
 let browserContext: BrowserContext
 let mainPage: Page
@@ -80,11 +80,15 @@ test.describe("Credit", () => {
     return pagePromise
   }
 
-  test("Create RFQ for GOOGL @smoke", async () => {
+  test.only("Create RFQ for GOOGL @smoke", async ({}, workerInfo) => {
     await test.step("Create RFQ for 1000 GOOGL", () =>
       createRFQStep("GOOGL", "1", false))
 
-    await rfqsPage.selectLiveRfqsFilter()
+    if(isResponsive(workerInfo)) {
+      await rfqsPage.selectFilterResponsiveNav("Live")
+    } else {
+      await rfqsPage.selectFilter("Live")
+    }
 
     await expect(rfqsPage.firstQuote).not.toContainText(/Awaiting response/, {
       timeout: ExpectTimeout.LONG,
@@ -98,7 +102,11 @@ test.describe("Credit", () => {
       timeout: ExpectTimeout.MEDIUM,
     })
 
-    await rfqsPage.selectAllRfqsFilter()
+    if(isResponsive(workerInfo)) {
+      await rfqsPage.selectFilterResponsiveNav("All")
+    } else {
+      await rfqsPage.selectFilter("All")
+    }
 
     const viewTradeButtonLabel = await rfqsPage.firstViewTradeButton.innerText()
     const tradeIdFromTile = viewTradeButtonLabel.split(" ")[2]
