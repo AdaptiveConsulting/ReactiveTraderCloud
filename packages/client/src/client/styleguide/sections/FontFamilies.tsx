@@ -92,7 +92,7 @@ export const FontFamilies = () => (
         </Table>
       ))}
     </SectionBlock>
-    <SectionBlock mh={0} py={0}>
+    <SectionBlock mh={0}>
       <Typography variant="Text sm/Regular italic">
         {`*Means there will often be regular, bold, medium, italic, underline
           styles available.

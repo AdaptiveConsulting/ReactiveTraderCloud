@@ -30,7 +30,6 @@ import {
   Main,
   PanelItem,
   PriceControlsStyle,
-  PriceControlWrapper,
 } from "./Tile.styles"
 
 export const tile$ = (symbol: string) =>
@@ -90,14 +89,12 @@ const Tile = ({ isAnalytics }: { isAnalytics: boolean }) => {
         <Header />
         <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>
           {isAnalytics ? <HistoricalGraph showTimer={!!timerData} /> : null}
-          <PriceControlWrapper isAnalyticsView={isAnalytics}>
-            <PriceControlsStyle isAnalyticsView={isAnalytics}>
-              <PriceMovement isAnalyticsView={isAnalytics} />
-              <PriceButton direction={Direction.Sell} />
-              <PriceButton direction={Direction.Buy} />
-              <RfqButton isAnalytics={isAnalytics} />
-            </PriceControlsStyle>
-          </PriceControlWrapper>
+          <PriceControlsStyle isAnalyticsView={isAnalytics}>
+            <PriceMovement isAnalyticsView={isAnalytics} />
+            <PriceButton direction={Direction.Sell} />
+            <PriceButton direction={Direction.Buy} />
+            <RfqButton isAnalytics={isAnalytics} />
+          </PriceControlsStyle>
         </Body>
         <InputTimerWrapper />
       </Main>

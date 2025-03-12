@@ -37,7 +37,7 @@ export const CoreBranding = () => {
   return (
     <>
       <SectionBlock colorScheme="secondary">
-        <H2>Colour</H2>
+        <H2>Color</H2>
         <H3>Core UI</H3>
         <P>
           Core color control the general look and feel of the application and

@@ -7,11 +7,13 @@ import {
   DownloadIcon,
   FilterEditIcon,
   FilterIcon,
+  ForbiddenIcon,
   LightThemeIcon,
   PopInIcon,
   PopOutIcon,
   SearchIcon,
 } from "@/client/components/icons"
+import { RefreshIcon } from "@/client/components/icons/RefreshIcon"
 import { Stack } from "@/client/components/Stack"
 
 import { H2, P } from "../elements"
@@ -36,6 +38,8 @@ const icons = [
   { name: "Pop Out", Element: <PopOutIcon /> },
   { name: "Pop In", Element: <PopInIcon /> },
   { name: "Search", Element: <SearchIcon /> },
+  { name: "Refresh", Element: <RefreshIcon /> },
+  { name: "Forbidden", Element: <ForbiddenIcon /> },
 ]
 
 const states = [
@@ -46,8 +50,8 @@ const states = [
 
 export const Iconography = () => (
   <>
-    <SectionBlock colorScheme="secondary" py={0} pt={2} mh={0}>
-      <H2 paddingTop={4}>Iconography</H2>
+    <SectionBlock colorScheme="secondary" mh={0}>
+      <H2>Iconography</H2>
 
       <Stack direction="column" paddingBottom="4xl">
         <P paddingBottom="4xl" paddingTop="2xl">

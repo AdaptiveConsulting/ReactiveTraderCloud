@@ -3,8 +3,6 @@ import styled from "styled-components"
 
 import { Typography, TypographyProps } from "../components/Typography"
 
-export { Paragraph } from "./styled"
-
 export const H2 = (props: PropsWithChildren<TypographyProps>) => (
   <Typography
     variant="Display md/Regular"

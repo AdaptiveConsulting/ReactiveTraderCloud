@@ -89,7 +89,7 @@ const AtomTable = <V extends Variants, S extends Record<string, string>>({
 export const Atoms = () => {
   return (
     <>
-      <SectionBlock py={0} pt={2} mh={0}>
+      <SectionBlock>
         <H2>Atoms</H2>
         <P>
           Atoms are the lowest level of a UI such as a button, text link, input
@@ -97,9 +97,7 @@ export const Atoms = () => {
           functionality. All controls are scalable in height and width so as to
           accomodate a compact or spacious UI preference.
         </P>
-      </SectionBlock>
 
-      <SectionBlock py={0} pt={2} mh={0}>
         <Box paddingY="4xl">
           <H3>Tab</H3>
           <AtomTable

@@ -19,7 +19,7 @@ const RfqButtonContainer = styled(OverlayDiv)`
 `
 const RFQButtonComponent = styled.button<{
   textWrap: boolean
-  isAnalytics: boolean
+  isAnalytics?: boolean
 }>`
   background-color: ${({ theme }) =>
     theme.newTheme.color[
@@ -75,7 +75,7 @@ const buttonState = (quoteState: QuoteStateStage, isAnalytics: boolean) => {
 }
 
 type RFQButtonProps = {
-  isAnalytics: boolean
+  isAnalytics?: boolean
   disabled: boolean
   textWrap: boolean
   onClick: () => void

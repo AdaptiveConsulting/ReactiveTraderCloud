@@ -23,7 +23,7 @@ export const MovementValue = styled.div`
 `
 
 export const PriceMovementStyle = styled.div<{
-  isAnalyticsView: boolean
+  isAnalyticsView?: boolean
 }>`
   position: relative;
   display: flex;

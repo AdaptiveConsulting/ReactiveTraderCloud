@@ -10,10 +10,10 @@ import { Link } from "react-router-dom"
 import styled, { css } from "styled-components"
 
 import Logo from "@/client/components/logos/AdaptiveLogo"
+import { Stack } from "@/client/components/Stack"
 import { Typography } from "@/client/components/Typography"
 import { useScrollToHashElement } from "@/client/utils"
 
-import { Flex } from "../styled"
 import { mapMarginPaddingProps } from "../styled/mapMarginPaddingProps"
 
 export type NavSection =
@@ -172,7 +172,7 @@ const OnePageNavLink = styled(Link)`
   }
 `
 
-const FlexWrapper = styled(Flex)`
+const FlexWrapper = styled(Stack)`
   align-items: center;
   flex-flow: row wrap;
   width: 100%;
