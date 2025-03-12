@@ -22,13 +22,13 @@ export const Colors = () => {
       <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
         <stop
           offset={offset}
-          stopColor={theme.newTheme.color["Colors/Border/border-buy"]}
+          stopColor={theme.color["Colors/Border/border-buy"]}
           stopOpacity="1"
           strokeWidth="1.2"
         ></stop>
         <stop
           offset={offset}
-          stopColor={theme.newTheme.color["Colors/Border/border-sell"]}
+          stopColor={theme.color["Colors/Border/border-sell"]}
           stopOpacity="1"
           strokeWidth="1.2"
         ></stop>

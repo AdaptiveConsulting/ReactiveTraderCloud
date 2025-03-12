@@ -23,10 +23,10 @@ export const FilterPopupInner = styled.div<{
 
   float: ${({ leftAlignFilter }) => (leftAlignFilter ? "right" : undefined)};
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
-  padding: ${({ theme }) => theme.newTheme.spacing.sm};
+    theme.color["Colors/Background/bg-primary"]};
+  padding: ${({ theme }) => theme.spacing.sm};
   box-shadow: ${({ theme }) =>
-      theme.newTheme.color["Colors/Effects/Focus rings/focus-ring"]}
+      theme.color["Colors/Effects/Focus rings/focus-ring"]}
     0px 0px 2px 0px;
 `
 

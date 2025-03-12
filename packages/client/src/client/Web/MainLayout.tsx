@@ -23,11 +23,10 @@ const AppLayoutRoot = styled.div`
   display: grid;
   grid-template-rows: auto 1fr auto;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    theme.color["Colors/Background/bg-primary"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
   border: ${({ theme }) =>
-    `${theme.newTheme.spacing.sm} ${theme.newTheme.color["Colors/Background/bg-primary"]} solid`};
+    `${theme.spacing.sm} ${theme.color["Colors/Background/bg-primary"]} solid`};
 `
 const MainWrapper = styled.div`
   display: flex;

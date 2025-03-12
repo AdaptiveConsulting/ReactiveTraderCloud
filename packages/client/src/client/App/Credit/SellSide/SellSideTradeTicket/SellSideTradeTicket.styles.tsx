@@ -17,10 +17,10 @@ export const NoSelectedWrapper = styled.div`
 `
 
 export const NoSelectHeader = styled.div`
-  padding: ${({ theme }) => theme.newTheme.spacing.md};
+  padding: ${({ theme }) => theme.spacing.md};
   flex: 0 1 auto;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary"]};
+    theme.color["Colors/Background/bg-secondary"]};
 `
 
 export const NoSelectedMessage = styled(FlexBox)`
@@ -29,5 +29,5 @@ export const NoSelectedMessage = styled(FlexBox)`
   flex-direction: column;
   justify-content: center;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-tertiary"]};
+    theme.color["Colors/Background/bg-tertiary"]};
 `

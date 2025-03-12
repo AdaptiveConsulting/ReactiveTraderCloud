@@ -12,8 +12,8 @@ const AnalyticsWrapper = styled(RegionWrapper)<{
   hideIfMatches?: string | null
 }>`
   border-left: solid
-    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-primary"]}
-    ${({ theme }) => theme.newTheme.spacing.sm};
+    ${({ theme }) => theme.color["Colors/Background/bg-primary"]}
+    ${({ theme }) => theme.spacing.sm};
   ${({ hideIfMatches }) =>
     hideIfMatches
       ? ` @media ${hideIfMatches} {

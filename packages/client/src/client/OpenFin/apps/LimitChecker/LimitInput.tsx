@@ -5,12 +5,12 @@ import { CurrencyPair } from "@/services/currencyPairs/types"
 import { onChangeLimitValue, useLimit } from "./state"
 
 const Container = styled.div`
-  background-color: ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary"]}};
+  background-color: ${({ theme }) => theme.color["Colors/Background/bg-secondary"]}};
   padding: 10px;
   margin-bottom: 0.25rem;
 
   &:hover {
-    background-color: ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary_hover"]};
+    background-color: ${({ theme }) => theme.color["Colors/Background/bg-secondary_hover"]};
   }
 `
 
@@ -35,11 +35,11 @@ const Input = styled.input`
   font-size: 0.75rem;
 
   padding: 2px 0;
-  color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-primary (900)"]}};
-  border-bottom: 1.5px solid ${({ theme }) => theme.newTheme.color["Colors/Border/border-primary"]};
-  caret-color: ${({ theme }) => theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]}};
+  border-bottom: 1.5px solid ${({ theme }) => theme.color["Colors/Border/border-primary"]};
+  caret-color: ${({ theme }) => theme.color["Colors/Foreground/fg-brand-primary (600)"]};
   &:focus {
-    border-color: ${({ theme }) => theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
+    border-color: ${({ theme }) => theme.color["Colors/Foreground/fg-brand-primary (600)"]};
   }
 `
 

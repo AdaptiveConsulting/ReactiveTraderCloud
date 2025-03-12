@@ -8,7 +8,7 @@ export const PriceControlsStyle = styled("div")<{
   flex: 1;
   align-self: stretch;
   padding: ${({ isAnalyticsView, theme }) =>
-    isAnalyticsView ? `0` : theme.newTheme.spacing.md};
+    isAnalyticsView ? `0` : theme.spacing.md};
   display: grid;
   ${({ isAnalyticsView, theme }) =>
     isAnalyticsView
@@ -17,7 +17,7 @@ export const PriceControlsStyle = styled("div")<{
   grid-template-areas:
   "movement sell"
   "movement buy";
-  gap: ${theme.newTheme.spacing.xxs};
+  gap: ${theme.spacing.xxs};
   `
       : `
       grid-template-columns: 37% 26% 37%;
@@ -48,7 +48,7 @@ export const PanelItem = styled.div<{ shouldMoveDate: boolean }>`
 
     ${DeliveryDate} {
       margin-right: ${({ shouldMoveDate, theme }) =>
-        shouldMoveDate ? theme.newTheme.spacing["2xl"] : "0"};
+        shouldMoveDate ? theme.spacing["2xl"] : "0"};
     }
   }
 `
@@ -61,7 +61,7 @@ export const Body = styled.div<{
   flex: 1;
   flex-direction: ${isAnalyticsView ? "row" : "column"};
   align-items: ${isAnalyticsView ? "center" : null};
-  padding: ${theme.newTheme.spacing.xs} 0;
+  padding: ${theme.spacing.xs} 0;
   min-height: ${isAnalyticsView ? "136px" : "0"};
 `,
 )
@@ -72,13 +72,13 @@ export const Main = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+    theme.color["Colors/Background/bg-primary"]};
   border: 2px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary"]};
+    ${({ theme }) => theme.color["Colors/Background/bg-secondary"]};
 
   &:hover,
   .tile-hover & {
     color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-brand-primary (900)"]};
+      theme.color["Colors/Text/text-brand-primary (900)"]};
   }
 `

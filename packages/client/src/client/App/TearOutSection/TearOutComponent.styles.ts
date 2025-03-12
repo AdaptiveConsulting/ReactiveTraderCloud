@@ -2,8 +2,7 @@ import styled from "styled-components"
 
 export const HeaderTearOutAction = styled.button`
   svg {
-    fill: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-quaternary (500)"]};
+    fill: ${({ theme }) => theme.color["Colors/Text/text-quaternary (500)"]};
   }
   &:hover {
     .tear-out-hover-state {

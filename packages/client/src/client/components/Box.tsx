@@ -35,7 +35,7 @@ export type BoxProps = MarginProps & PaddingProps
 export const Box = styled.div<BoxProps>`
   ${({ theme, ...props }) => {
     const mapSpacingCss = (prop?: ThemeSpacing | number) =>
-      prop && (typeof prop === "number" ? prop : theme.newTheme.spacing[prop])
+      prop && (typeof prop === "number" ? prop : theme.spacing[prop])
 
     const marginProps = Object.entries(props).filter(([name]) =>
       marginPropNames.includes(name as (typeof marginPropNames)[number]),

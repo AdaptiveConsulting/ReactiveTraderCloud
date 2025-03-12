@@ -14,12 +14,12 @@ const Background = styled(FlexBox)`
   position: relative;
   box-sizing: border-box;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary"]};
-  border-radius: ${({ theme }) => theme.newTheme.radius.full};
+    theme.color["Colors/Background/bg-secondary"]};
+  border-radius: ${({ theme }) => theme.radius.full};
   height: 28px;
   justify-content: space-between;
-  border: ${({ theme }) => theme.newTheme.spacing.xxs} solid
-    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary"]};
+  border: ${({ theme }) => theme.spacing.xxs} solid
+    ${({ theme }) => theme.color["Colors/Background/bg-secondary"]};
 `
 
 const Button = styled.button`
@@ -40,9 +40,9 @@ const Indicator = styled.div<{ isToggled: boolean }>`
   height: 100%;
   background-color: ${({ theme, isToggled }) =>
     isToggled
-      ? theme.newTheme.color["Colors/Background/bg-sell-primary"]
-      : theme.newTheme.color["Colors/Background/bg-buy-primary"]};
-  border-radius: ${({ theme }) => theme.newTheme.radius.full};
+      ? theme.color["Colors/Background/bg-sell-primary"]
+      : theme.color["Colors/Background/bg-buy-primary"]};
+  border-radius: ${({ theme }) => theme.radius.full};
   left: ${({ isToggled }) => (isToggled ? "50%" : 0)};
   transition:
     left 0.5s ease,

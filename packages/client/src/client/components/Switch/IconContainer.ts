@@ -9,7 +9,7 @@ export const IconContainer = styled.div<{ hover: boolean }>`
   svg {
     height: 20px;
     fill: ${({ theme }) =>
-      theme.newTheme.color[
+      theme.color[
         "Component colors/Components/Buttons/Primary/button-primary-fg_subtle"
       ]};
   }

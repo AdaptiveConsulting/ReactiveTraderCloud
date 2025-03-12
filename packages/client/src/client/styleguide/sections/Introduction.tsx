@@ -13,7 +13,7 @@ const Content = styled.div`
   max-width: 24rem;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.newTheme.spacing.md};
+  gap: ${({ theme }) => theme.spacing.md};
 `
 
 const Background = styled.div`

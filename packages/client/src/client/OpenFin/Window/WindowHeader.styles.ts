@@ -5,21 +5,20 @@ export const Control = styled.div`
   cursor: pointer;
   justify-content: center;
   align-self: center;
-  border-radius: ${({ theme }) => theme.newTheme.radius.xxs};
+  border-radius: ${({ theme }) => theme.radius.xxs};
 
   color: ${(props) =>
-    props.theme.newTheme.color["Colors/Foreground/fg-quaternary (500)"]};
+    props.theme.color["Colors/Foreground/fg-quaternary (500)"]};
 
   &:hover {
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-primary_hover"]};
+      theme.color["Colors/Background/bg-primary_hover"]};
     color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
+      theme.color["Colors/Foreground/fg-brand-primary (600)"]};
   }
 
   &:disabled {
-    color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Foreground/fg-disabled"]};
+    color: ${({ theme }) => theme.color["Colors/Foreground/fg-disabled"]};
   }
 `
 

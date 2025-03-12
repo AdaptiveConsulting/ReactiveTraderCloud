@@ -1,12 +1,12 @@
 import styled from "styled-components"
 
 export const Background = styled.div`
-  height: ${({ theme }) => theme.newTheme.density.md};
+  height: ${({ theme }) => theme.density.md};
   display: flex;
   justify-content: space-between;
 
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary"]};
+    theme.color["Colors/Background/bg-secondary"]};
 `
 
 export const LeftSection = styled.ul<{ doNotShowDropdown: boolean }>`
@@ -40,14 +40,14 @@ const TabBarButton = styled.button<{ active: boolean }>`
   text-decoration: none;
   background-color: ${({ active, theme }) =>
     active
-      ? theme.newTheme.color["Colors/Background/bg-primary_alt"]
-      : theme.newTheme.color["Colors/Background/bg-secondary"]};
+      ? theme.color["Colors/Background/bg-primary_alt"]
+      : theme.color["Colors/Background/bg-secondary"]};
 `
 
 export const TabStyled = styled(TabBarButton)<{
   isStatic?: boolean
 }>`
-  width: ${({ theme }) => theme.newTheme.spacing["9xl"]};
+  width: ${({ theme }) => theme.spacing["9xl"]};
   display: flex;
 
   cursor: ${({ isStatic }) => (isStatic ? "unset" : "pointer")};
@@ -55,9 +55,7 @@ export const TabStyled = styled(TabBarButton)<{
   &:hover,
   &.sg-tab-hover {
     background-color: ${({ active, theme }) =>
-      active
-        ? "none"
-        : theme.newTheme.color["Colors/Background/bg-primary_hover"]};
+      active ? "none" : theme.color["Colors/Background/bg-primary_hover"]};
   }
 `
 
@@ -79,8 +77,7 @@ export const Action = styled(TabBarButton)<{
   size: "sm" | "lg"
   disabled?: boolean
 }>`
-  width: ${({ theme, size }) =>
-    size === "sm" ? theme.newTheme.density.md : "auto"};
+  width: ${({ theme, size }) => (size === "sm" ? theme.density.md : "auto")};
   display: flex;
   align-items: center;
   line-height: 0;
@@ -89,13 +86,11 @@ export const Action = styled(TabBarButton)<{
       ? 0.3
       : 1}; // TODO talk to ux about getting a dark enough colour for this disabled state
 
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Foreground/fg-quinary (400)"]};
+  color: ${({ theme }) => theme.color["Colors/Foreground/fg-quinary (400)"]};
 
   &:hover {
     cursor: ${({ disabled }) => (disabled ? "auto" : "pointer")};
-    color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Foreground/fg-quinary_hover"]};
+    color: ${({ theme }) => theme.color["Colors/Foreground/fg-quinary_hover"]};
     }
   }
 `

@@ -28,7 +28,7 @@ const FxRfq = styled.div`
 `
 const GridSeparator = styled(Separator)`
   grid-column: 1 / -1;
-  margin: ${({ theme }) => theme.newTheme.spacing.lg} 0;
+  margin: ${({ theme }) => theme.spacing.lg} 0;
 `
 
 const currencyPair = {

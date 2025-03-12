@@ -10,11 +10,11 @@ import { useColDef, useTrades$ } from "./Context"
 import { useTableTrades } from "./TradesState"
 
 const TradesFooterStyled = styled.div`
-  ${({ theme }) => theme.newTheme.textStyles["Text sm/Regular"]}
+  ${({ theme }) => theme.textStyles["Text sm/Regular"]}
   display: flex;
-  color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-disabled"]};
-  padding: ${({ theme }) => theme.newTheme.spacing.lg};
-  padding-top: ${({ theme }) => theme.newTheme.spacing.sm};
+  color: ${({ theme }) => theme.color["Colors/Text/text-disabled"]};
+  padding: ${({ theme }) => theme.spacing.lg};
+  padding-top: ${({ theme }) => theme.spacing.sm};
   display: flex;
   align-items: center;
 `

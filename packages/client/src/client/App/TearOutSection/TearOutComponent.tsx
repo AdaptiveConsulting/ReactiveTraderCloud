@@ -10,11 +10,9 @@ import { closeWindow } from "@/client/utils/window/closeWindow"
 import { Section } from "./state"
 
 const HeaderTearOutAction = styled.div`
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Foreground/fg-quinary (400)"]};
+  color: ${({ theme }) => theme.color["Colors/Foreground/fg-quinary (400)"]};
   &:hover {
-    color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Foreground/fg-quinary_hover"]};
+    color: ${({ theme }) => theme.color["Colors/Foreground/fg-quinary_hover"]};
   }
 `
 

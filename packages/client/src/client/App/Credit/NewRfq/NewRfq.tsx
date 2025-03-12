@@ -7,9 +7,8 @@ import { Loader } from "@/client/components/Loader"
 const NewRfqCore = lazy(() => import("./NewRfqCore"))
 
 const NewRfqWrapper = styled(RegionWrapper)`
-  border-left: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-primary"]}
-    solid ${({ theme }) => theme.newTheme.spacing.sm};
+  border-left: ${({ theme }) => theme.color["Colors/Background/bg-primary"]}
+    solid ${({ theme }) => theme.spacing.sm};
 `
 
 const loader = (

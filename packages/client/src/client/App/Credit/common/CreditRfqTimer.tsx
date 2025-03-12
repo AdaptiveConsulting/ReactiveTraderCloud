@@ -11,15 +11,14 @@ export const TimerWrapper = styled.div`
 `
 
 export const TimeLeft = styled.div`
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
   font-size: 10px;
   opacity: 0.6;
   white-space: nowrap;
 `
 
 export const ProgressBarWrapper = styled.div`
-  margin: 0 ${({ theme }) => theme.newTheme.spacing.sm};
+  margin: 0 ${({ theme }) => theme.spacing.sm};
   height: 6px;
   width: 100%;
   border-radius: 3px;
@@ -48,7 +47,7 @@ export const ProgressBar = memo(styled.div<{
   transitionTime: number
 }>`
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
+    theme.color["Colors/Foreground/fg-brand-primary (600)"]};
   border-radius: 3px;
   height: 100%;
   animation: ${progressAnimation};

@@ -34,7 +34,7 @@ export { pnL$ }
 
 const PnLSectionLayout = styled(AnalyticsSectionLayout)`
   overflow: hidden;
-  padding-bottom: ${({ theme }) => theme.newTheme.spacing.lg};
+  padding-bottom: ${({ theme }) => theme.spacing.lg};
 `
 
 export const PnLInner = ({ data }: { data: PNLBarProps[] }) => (

@@ -22,13 +22,12 @@ export const IconWrapper = styled.div`
   margin-left: 5px;
   height: 30px;
   width: 30px;
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-quaternary (500)"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-quaternary (500)"]};
 
   &:hover {
     cursor: pointer;
     color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-brand-primary (900)"]};
+      theme.color["Colors/Text/text-brand-primary (900)"]};
   }
 `
 
@@ -40,17 +39,17 @@ export const SearchResultsWrapper = styled.div`
   top: 35px;
   z-index: 1000;
   width: 100%;
-  border-radius: ${({ theme }) => theme.newTheme.radius.sm};
+  border-radius: ${({ theme }) => theme.radius.sm};
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+    theme.color["Colors/Background/bg-primary"]};
 `
 
 export const SearchResultItem = styled.div`
-  padding: ${({ theme }) => theme.newTheme.spacing.md};
-  border-radius: ${({ theme }) => theme.newTheme.radius.sm};
+  padding: ${({ theme }) => theme.spacing.md};
+  border-radius: ${({ theme }) => theme.radius.sm};
   margin: 6px;
   &[aria-selected="true"] {
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-primary_hover"]};
+      theme.color["Colors/Background/bg-primary_hover"]};
   }
 `

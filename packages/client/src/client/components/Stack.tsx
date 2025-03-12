@@ -34,7 +34,7 @@ export const Stack = styled(Box)<StackProps>`
       alignItems,
       alignContent,
       ...(gap && {
-        gap: typeof gap === "number" ? gap : theme.newTheme.spacing[gap],
+        gap: typeof gap === "number" ? gap : theme.spacing[gap],
       }),
     })}
 `

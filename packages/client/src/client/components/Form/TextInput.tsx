@@ -25,8 +25,7 @@ const Container = styled(Stack)`
 const Icon = styled.div`
   position: absolute;
   right: 0;
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-tertiary (600)"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-tertiary (600)"]};
 `
 
 export const TextInput = React.forwardRef<HTMLInputElement, Props>(

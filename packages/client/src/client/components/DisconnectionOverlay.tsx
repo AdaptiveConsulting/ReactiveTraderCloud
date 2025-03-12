@@ -21,7 +21,7 @@ type DisconnectedStatus =
 
 const Wrapper = styled(FlexBox)`
   flex-direction: column;
-  gap: ${({ theme }) => theme.newTheme.spacing.xl};
+  gap: ${({ theme }) => theme.spacing.xl};
 `
 
 export const DisconnectionOverlayInner = ({

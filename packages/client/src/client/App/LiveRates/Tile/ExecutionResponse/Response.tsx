@@ -26,11 +26,10 @@ import {
 
 const BackgroundColored = styled.span`
   color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-success-primary (600)"]};
-  background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Foreground/fg-white"]};
+    theme.color["Colors/Text/text-success-primary (600)"]};
+  background-color: ${({ theme }) => theme.color["Colors/Foreground/fg-white"]};
   font-weight: 700;
-  padding: 0 ${({ theme }) => theme.newTheme.spacing.xs};
+  padding: 0 ${({ theme }) => theme.spacing.xs};
 `
 const BoldSpan = styled.span`
   font-weight: 700;

@@ -22,9 +22,7 @@ const RFQButtonComponent = styled.button<{
   isAnalytics?: boolean
 }>`
   background-color: ${({ theme }) =>
-    theme.newTheme.color[
-      "Component colors/Components/Buttons/Brand/button-brand-bg"
-    ]};
+    theme.color["Component colors/Components/Buttons/Brand/button-brand-bg"]};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,7 +38,7 @@ const RFQButtonComponent = styled.button<{
 
   &:hover {
     background-color: ${({ theme }) =>
-      theme.newTheme.color[
+      theme.color[
         "Component colors/Components/Buttons/Brand/button-brand-bg_hover"
       ]};
   }

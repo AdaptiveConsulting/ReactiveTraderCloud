@@ -19,17 +19,16 @@ export const StyledButton = styled.button<{
 
   border-radius: 4px;
   background-color: ${({ theme, active }) =>
-    active ? theme.newTheme.color["Colors/Background/bg-primary"] : "unset"};
+    active ? theme.color["Colors/Background/bg-primary"] : "unset"};
 
   svg {
-    fill: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    fill: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
   }
 
   &:hover {
     height: 45px;
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-brand-primary"]};
+      theme.color["Colors/Background/bg-brand-primary"]};
     justify-content: ${({ title }) =>
       title === "Search ecosystem" ? "center" : "start"};
     padding-top: ${({ title }) =>
@@ -43,8 +42,7 @@ export const StyledButton = styled.button<{
       fill: ${({ iconHoverFill }) => iconHoverFill};
     }
     span {
-      color: ${({ theme }) =>
-        theme.newTheme.color["Colors/Text/text-primary (900)"]};
+      color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
     }
   }
 `

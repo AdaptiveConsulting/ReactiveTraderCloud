@@ -15,15 +15,15 @@ interface WithTerminated {
 const buyBackground = css<WithTerminated>`
   background-color: ${({ theme, terminated }) =>
     terminated
-      ? theme.newTheme.color["Colors/Background/bg-quaternary"]
-      : theme.newTheme.color["Colors/Background/bg-brand-primary"]};
+      ? theme.color["Colors/Background/bg-quaternary"]
+      : theme.color["Colors/Background/bg-brand-primary"]};
 `
 
 const sellBackground = css<WithTerminated>`
   background-color: ${({ theme, terminated }) =>
     terminated
-      ? theme.newTheme.color["Colors/Background/bg-quaternary"]
-      : theme.newTheme.color["Colors/Background/bg-sell-primary"]};
+      ? theme.color["Colors/Background/bg-quaternary"]
+      : theme.color["Colors/Background/bg-sell-primary"]};
 `
 
 export const DirectionLabel = styled.div<WithDirection & WithTerminated>`
@@ -33,7 +33,7 @@ export const DirectionLabel = styled.div<WithDirection & WithTerminated>`
   align-items: center;
   justify-content: center;
   width: 56px;
-  padding: ${({ theme }) => theme.newTheme.spacing.md};
+  padding: ${({ theme }) => theme.spacing.md};
   height: 100%;
   ${({ direction }) => (isBuy(direction) ? buyBackground : sellBackground)}
 `
@@ -45,7 +45,7 @@ export const InstrumentLabelContainer = styled.div<WithTerminated>`
   flex-direction: column;
   justify-content: center;
   text-align: left;
-  padding-left: ${({ theme }) => theme.newTheme.spacing.md};
+  padding-left: ${({ theme }) => theme.spacing.md};
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-tertiary"]};
+    theme.color["Colors/Background/bg-tertiary"]};
 `

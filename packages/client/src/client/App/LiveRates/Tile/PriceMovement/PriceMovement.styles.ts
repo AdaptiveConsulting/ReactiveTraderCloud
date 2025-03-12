@@ -5,21 +5,20 @@ export const MovementIconUP = styled(FaSortUp)<{ $show: boolean }>`
   position: absolute;
   visibility: ${({ $show: show }) => (show ? "visible" : "hidden")};
   color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-success-primary (600)"]};
+    theme.color["Colors/Text/text-success-primary (600)"]};
   top: 50%;
   margin-top: -16px;
 ` // TODO Dave to confirm new negative and positive colours
 export const MovementIconDown = styled(FaSortDown)<{ $show: boolean }>`
   position: absolute;
   visibility: ${({ $show: show }) => (show ? "visible" : "hidden")};
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-error-primary (600)"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-error-primary (600)"]};
   bottom: 50%;
   margin-bottom: -16px;
 ` // TODO Dave to confirm new negative and positive colours
 
 export const MovementValue = styled.div`
-  padding: ${({ theme }) => theme.newTheme.spacing.lg} 0;
+  padding: ${({ theme }) => theme.spacing.lg} 0;
 `
 
 export const PriceMovementStyle = styled.div<{

@@ -25,13 +25,13 @@ function getBuySellHighlightRowBackgroundColor(
   direction: Direction,
 ) {
   return isBuy(direction)
-    ? theme.newTheme.color["Colors/Background/bg-buy-primary"]
-    : theme.newTheme.color["Colors/Background/bg-sell-primary"]
+    ? theme.color["Colors/Background/bg-buy-primary"]
+    : theme.color["Colors/Background/bg-sell-primary"]
 }
 
 export const QuoteRow = styled(Row)<QuoteRowProps>`
-  height: ${({ theme }) => theme.newTheme.density.lg};
-  padding: 0 ${({ theme }) => theme.newTheme.spacing.xs};
+  height: ${({ theme }) => theme.density.lg};
+  padding: 0 ${({ theme }) => theme.spacing.xs};
   background-color: ${({ theme, highlight, direction }) =>
     highlight ? getBuySellHighlightRowBackgroundColor(theme, direction) : null};
 
@@ -44,9 +44,9 @@ export const QuoteRow = styled(Row)<QuoteRowProps>`
 
 export const Divider = styled.div`
   height: 1px;
-  margin: 0 ${({ theme }) => theme.newTheme.spacing.xs};
+  margin: 0 ${({ theme }) => theme.spacing.xs};
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-tertiary"]};
+    theme.color["Colors/Background/bg-tertiary"]};
 `
 
 export const QuoteDotWrapper = styled.div`
@@ -64,12 +64,12 @@ export const QuoteDot = styled.div<AnimatedRowProps>`
   border-radius: 4px;
   background-color: ${({ theme, highlight, direction, passed }) =>
     highlight
-      ? theme.newTheme.color["Colors/Text/text-primary (900)"]
+      ? theme.color["Colors/Text/text-primary (900)"]
       : passed
-        ? theme.newTheme.color["Colors/Text/text-disabled"]
+        ? theme.color["Colors/Text/text-disabled"]
         : isBuy(direction)
-          ? theme.newTheme.color["Colors/Text/text-buy-primary"]
-          : theme.newTheme.color["Colors/Text/text-sell-primary"]};
+          ? theme.color["Colors/Text/text-buy-primary"]
+          : theme.color["Colors/Text/text-sell-primary"]};
   animation: ${breathing} 1s linear infinite;
 `
 
@@ -88,17 +88,17 @@ export const Price = styled(Typography)<RowFieldProps>`
     (passed || (!open && !accepted)) &&
     `
   text-decoration: line-through;
-  color: ${theme.newTheme.color["Colors/Text/text-disabled"]};
-  ${priced && `margin-right: ${theme.newTheme.spacing.sm}`}
+  color: ${theme.color["Colors/Text/text-disabled"]};
+  ${priced && `margin-right: ${theme.spacing.sm}`}
   `}
 
   svg {
     color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-success-primary (600)"]};
+      theme.color["Colors/Text/text-success-primary (600)"]};
     margin-right: 4px;
   }
 `
 export const AcceptButton = styled(Button)`
   display: none;
-  margin-left: ${({ theme }) => theme.newTheme.spacing.sm};
+  margin-left: ${({ theme }) => theme.spacing.sm};
 `

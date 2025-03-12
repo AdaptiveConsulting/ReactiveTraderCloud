@@ -3,22 +3,22 @@ import styled from "styled-components"
 import { Box } from "@/client/components/Box"
 
 export const Table = styled.table`
-  margin-bottom: ${({ theme }) => theme.newTheme.spacing["4xl"]};
+  margin-bottom: ${({ theme }) => theme.spacing["4xl"]};
 
   th {
     text-align: start;
-    padding-bottom: ${({ theme }) => theme.newTheme.spacing.md};
+    padding-bottom: ${({ theme }) => theme.spacing.md};
   }
 
   tr:first-child {
     th {
-      padding-bottom: ${({ theme }) => theme.newTheme.spacing["xl"]};
+      padding-bottom: ${({ theme }) => theme.spacing["xl"]};
       text-align: start;
     }
   }
   td {
-    padding-right: ${({ theme }) => theme.newTheme.spacing.lg};
-    padding-bottom: ${({ theme }) => theme.newTheme.spacing.md};
+    padding-right: ${({ theme }) => theme.spacing.lg};
+    padding-bottom: ${({ theme }) => theme.spacing.md};
   }
 `
 

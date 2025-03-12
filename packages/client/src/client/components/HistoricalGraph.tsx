@@ -9,7 +9,7 @@ const Path = styled.path``
 const Svg = styled.svg`
   &:hover ${Path} {
     stroke: ${({ theme }) =>
-      theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
+      theme.color["Colors/Foreground/fg-brand-primary (600)"]};
   }
 `
 

@@ -50,14 +50,14 @@ const LineChartWrapper = styled.div<{ showTimer?: boolean }>`
   width: 45%;
   height: 108px;
   grid-area: chart;
-  padding-left: ${({ theme }) => theme.newTheme.spacing.md};
+  padding-left: ${({ theme }) => theme.spacing.md};
 `
 
 const Path = styled.path``
 const Svg = styled.svg`
   width: 100%;
   &:hover ${Path} {
-    stroke: ${({ theme }) => theme.newTheme.color["Colors/Border/border-buy"]};
+    stroke: ${({ theme }) => theme.color["Colors/Border/border-buy"]};
   }
 `
 
@@ -88,8 +88,8 @@ export const HistoricalGraphComponent = forwardRef<
         <Path
           stroke={
             active
-              ? theme.newTheme.color["Colors/Border/border-buy"]
-              : theme.newTheme.color["Colors/Text/text-primary (900)"]
+              ? theme.color["Colors/Border/border-buy"]
+              : theme.color["Colors/Text/text-primary (900)"]
           }
           strokeOpacity={0.9}
           strokeWidth={1.6}

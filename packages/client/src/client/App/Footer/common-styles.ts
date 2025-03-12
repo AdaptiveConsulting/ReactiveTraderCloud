@@ -15,9 +15,8 @@ export const Background = styled.div`
   display: flex;
   flex-direction: column;
   z-index: 5;
-  border-radius: ${({ theme }) => theme.newTheme.radius.lg};
-  background: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+  border-radius: ${({ theme }) => theme.radius.lg};
+  background: ${({ theme }) => theme.color["Colors/Background/bg-primary"]};
   border: 1px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Border/border-primary"]};
+    ${({ theme }) => theme.color["Colors/Border/border-primary"]};
 `

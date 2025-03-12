@@ -22,20 +22,18 @@ const MultiSelectOption = styled.div<{
   selected: boolean
   children: React.ReactNode
 }>`
-  padding: ${({ theme }) => theme.newTheme.spacing.md};
+  padding: ${({ theme }) => theme.spacing.md};
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: ${({ selected, theme }) =>
-    selected
-      ? theme.newTheme.color["Colors/Background/bg-brand-primary"]
-      : "inherit"};
+    selected ? theme.color["Colors/Background/bg-brand-primary"] : "inherit"};
   border-radius: 2px;
   margin-bottom: 5px;
 
   &:hover {
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-brand-primary_alt"]};
+      theme.color["Colors/Background/bg-brand-primary_alt"]};
   }
 `
 const AlignedChecked = styled.span`

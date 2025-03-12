@@ -22,7 +22,7 @@ export const QuoteDot = styled.div`
   width: 4px;
   border-radius: 4px;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
+    theme.color["Colors/Foreground/fg-brand-primary (600)"]};
   animation: ${breathing} 1s linear infinite;
 `
 
@@ -31,12 +31,12 @@ const TableWrapper = styled.div`
   overflow: auto;
   contain: strict;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+    theme.color["Colors/Background/bg-primary"]};
 `
 
 const Table = styled.table`
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
+    theme.color["Colors/Background/bg-secondary_subtle"]};
   position: relative;
   width: 100%;
   border-collapse: separate;
@@ -53,7 +53,7 @@ const TableHead = styled.thead`
 const TableBody = styled.tbody`
   position: relative;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+    theme.color["Colors/Background/bg-primary"]};
   z-index: 0;
 `
 
@@ -74,15 +74,15 @@ const TableBodyRow = styled.tr<{
   selected?: boolean
 }>`
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+    theme.color["Colors/Background/bg-primary"]};
   &:hover {
     cursor: pointer;
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-active"]};
+      theme.color["Colors/Background/bg-active"]};
   }
 
   border-bottom: 1px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Border/border-secondary"]};
+    ${({ theme }) => theme.color["Colors/Border/border-secondary"]};
   height: 28px;
   max-height: 24px;
   ${({ selected }) => {
@@ -90,7 +90,7 @@ const TableBodyRow = styled.tr<{
       selected &&
       css`
         background-color: ${({ theme }) =>
-          theme.newTheme.color["Colors/Background/bg-active"]} !important;
+          theme.color["Colors/Background/bg-active"]} !important;
       `
     )
   }}
@@ -119,7 +119,7 @@ const TableBodyCell = styled.td<{
 const StatusIndicator = styled.td<{ status: SellSideQuoteState }>`
   width: 18px;
     padding-right: 4px;
-  border-left: ${({ theme }) => theme.newTheme.spacing.xs} solid
+  border-left: ${({ theme }) => theme.spacing.xs} solid
     ${({ status, theme }) => getSellSideStatusColor(status, theme)}};
   width: 18px;
 `
@@ -128,11 +128,10 @@ const StatusIndicatorSpacer = styled.th<{ header?: boolean }>`
   top: 0;
   position: sticky;
   border-left: solid
-    ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-secondary_subtle"]}
-    ${({ theme }) => theme.newTheme.spacing.xs};
+    ${({ theme }) => theme.color["Colors/Background/bg-secondary_subtle"]}
+    ${({ theme }) => theme.spacing.xs};
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
+    theme.color["Colors/Background/bg-secondary_subtle"]};
   z-index: 2;
 `
 

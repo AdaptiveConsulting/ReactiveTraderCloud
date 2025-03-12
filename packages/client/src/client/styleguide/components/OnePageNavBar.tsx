@@ -159,7 +159,7 @@ const LogoContainer = styled.div`
 const OnePageNavLink = styled(Link)`
   text-decoration: none;
   padding: 9px 0;
-  margin-right: ${({ theme }) => theme.newTheme.spacing.xl};
+  margin-right: ${({ theme }) => theme.spacing.xl};
   border-bottom: 3px solid transparent;
 
   &:hover,
@@ -167,7 +167,7 @@ const OnePageNavLink = styled(Link)`
     border-bottom: 3px solid white;
     ${({ theme }) =>
       css({
-        borderBottom: `3px solid ${theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]}`,
+        borderBottom: `3px solid ${theme.color["Colors/Foreground/fg-brand-primary (600)"]}`,
       })};
   }
 `
@@ -189,8 +189,8 @@ const NavBarBleed = styled(NavBar)`
   ${({ theme }) =>
     css({
       transition: "background-color ease-out 0.15s",
-      backgroundColor: theme.newTheme.color["Colors/Background/bg-primary_alt"],
-      borderBottom: `2px solid ${theme.newTheme.color["Colors/Border/border-tertiary"]}`,
+      backgroundColor: theme.color["Colors/Background/bg-primary_alt"],
+      borderBottom: `2px solid ${theme.color["Colors/Border/border-tertiary"]}`,
     })};
 
   display: flex;

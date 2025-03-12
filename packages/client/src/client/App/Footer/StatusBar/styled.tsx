@@ -12,5 +12,5 @@ export const Root = styled.div`
   z-index: 20;
   height: 2rem;
   padding: 0 1rem;
-  gap: ${({ theme }) => theme.newTheme.spacing.sm};
+  gap: ${({ theme }) => theme.spacing.sm};
 `

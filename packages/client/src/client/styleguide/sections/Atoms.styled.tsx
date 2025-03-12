@@ -5,14 +5,13 @@ export const Table = styled.table`
   border-collapse: collapse;
 
   thead th {
-    padding: ${({ theme }) => theme.newTheme.spacing.xl};
+    padding: ${({ theme }) => theme.spacing.xl};
   }
 
   td,
   th {
     // border-bottom: 1px solid
-    //   ${({ theme }) =>
-      theme.newTheme.color["Colors/Border/border-secondary"]};
+    //   ${({ theme }) => theme.color["Colors/Border/border-secondary"]};
   }
 
   tbody th {
@@ -25,7 +24,7 @@ export const Table = styled.table`
   }
 
   td {
-    padding: ${({ theme }) => theme.newTheme.spacing.lg}
-      ${({ theme }) => theme.newTheme.spacing.md};
+    padding: ${({ theme }) => theme.spacing.lg}
+      ${({ theme }) => theme.spacing.md};
   }
 `

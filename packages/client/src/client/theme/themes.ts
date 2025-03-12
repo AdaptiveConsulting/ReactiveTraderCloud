@@ -41,7 +41,7 @@ export const getThemeColor = (
       ? color
       : fallback
 
-const createTheme = (name: ThemeName, newTheme: UISKTheme) => ({
+const createTheme = (name: ThemeName, theme: UISKTheme) => ({
   name,
 
   motion: {
@@ -63,8 +63,7 @@ const createTheme = (name: ThemeName, newTheme: UISKTheme) => ({
       easing: "cubic-bezier(0.165, 0.84, 0.44, 1)",
     },
   },
-
-  newTheme,
+  ...theme,
 })
 
 const lightTheme: Theme = createTheme(

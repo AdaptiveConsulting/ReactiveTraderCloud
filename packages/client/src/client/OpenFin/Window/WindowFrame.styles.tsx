@@ -17,61 +17,57 @@ export const FrameRoot = styled.div`
   height: 100%;
   overflow: hidden;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    theme.color["Colors/Background/bg-primary"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
 
   --header-height: 3.5rem;
   --footer-height: 2.5rem;
   --color-behind-views: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+    theme.color["Colors/Background/bg-primary"]};
 
   #layout-container {
     height: 100%;
     width: 100%;
     padding: 0;
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-primary"]};
+      theme.color["Colors/Background/bg-primary"]};
   }
 
   .wrapper_title {
-    color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
   }
 
   .lm_tab {
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
+      theme.color["Colors/Background/bg-secondary_subtle"]};
   }
 
   .lm_tabs {
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-primary"]};
+      theme.color["Colors/Background/bg-primary"]};
     box-sizing: border-box !important;
     padding-left: 1rem;
   }
 
   .lm_header {
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-primary"]};
+      theme.color["Colors/Background/bg-primary"]};
   }
 
   .lm_goldenlayout {
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
+      theme.color["Colors/Background/bg-secondary_subtle"]};
   }
 
   .lm_tab,
   .lm_tab.lm_active {
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-primary"]};
-    color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-primary (900)"]};
+      theme.color["Colors/Background/bg-primary"]};
+    color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
   }
 
   .lm_header .lm_tab .lm_title {
-    color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
   }
 
   .lm_close_tab {

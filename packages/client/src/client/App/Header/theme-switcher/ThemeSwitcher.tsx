@@ -54,14 +54,10 @@ const ThemeStorageSwitch = ({
             <IconContainer hover={hover}>{<LightThemeIcon />}</IconContainer>
           }
           handleDiameter={props.handleDiameter || 15}
-          offColor={theme.newTheme.color["Colors/Background/bg-secondary"]}
-          offHandleColor={
-            theme.newTheme.color["Colors/Background/bg-brand-primary"]
-          }
-          onColor={theme.newTheme.color["Colors/Background/bg-secondary"]}
-          onHandleColor={
-            theme.newTheme.color["Colors/Background/bg-brand-primary"]
-          }
+          offColor={theme.color["Colors/Background/bg-secondary"]}
+          offHandleColor={theme.color["Colors/Background/bg-brand-primary"]}
+          onColor={theme.color["Colors/Background/bg-secondary"]}
+          onHandleColor={theme.color["Colors/Background/bg-brand-primary"]}
           {...props}
         />
       ) : (

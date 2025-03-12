@@ -22,12 +22,10 @@ const ThemeStorageSwitch = ({
       height={12}
       width={27}
       handleDiameter={props.handleDiameter}
-      offColor={theme.newTheme.color["Colors/Background/bg-disabled"]}
-      offHandleColor={theme.newTheme.color["Colors/Foreground/fg-disabled"]}
-      onColor={theme.newTheme.color["Colors/Background/bg-disabled"]}
-      onHandleColor={
-        theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]
-      }
+      offColor={theme.color["Colors/Background/bg-disabled"]}
+      offHandleColor={theme.color["Colors/Foreground/fg-disabled"]}
+      onColor={theme.color["Colors/Background/bg-disabled"]}
+      onHandleColor={theme.color["Colors/Foreground/fg-brand-primary (600)"]}
       {...props}
     />
   )

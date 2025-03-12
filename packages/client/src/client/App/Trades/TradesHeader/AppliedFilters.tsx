@@ -10,16 +10,16 @@ const FilterField = styled.div`
   display: flex;
   align-items: normal;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-tertiary"]};
+    theme.color["Colors/Background/bg-tertiary"]};
 
-  border-radius: ${({ theme }) => theme.newTheme.radius.xs};
-  padding: 0 ${({ theme }) => theme.newTheme.spacing.sm};
+  border-radius: ${({ theme }) => theme.radius.xs};
+  padding: 0 ${({ theme }) => theme.spacing.sm};
   cursor: pointer;
   align-items: center;
 
   &:hover {
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-quaternary"]};
+      theme.color["Colors/Background/bg-quaternary"]};
   }
 `
 

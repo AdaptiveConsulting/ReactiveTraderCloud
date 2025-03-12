@@ -17,15 +17,13 @@ const LoadableStyle = styled.div<Props>`
   min-height: ${({ minHeight = "100%" }) => minHeight};
   border-radius: 0.1875rem;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    theme.color["Colors/Background/bg-secondary_subtle"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  fill: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+  fill: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
   opacity: ${({ opacity }) => (opacity ? opacity : "1")};
 `
 

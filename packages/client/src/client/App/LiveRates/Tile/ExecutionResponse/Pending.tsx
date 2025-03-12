@@ -13,12 +13,11 @@ const PendingContainer = styled(OverlayDiv)`
 
 const PendingPill = styled("div")`
   display: flex;
-  gap: ${({ theme }) => theme.newTheme.spacing.sm};
+  gap: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-brand-primary"]};
-  padding: ${({ theme }) => theme.newTheme.spacing.lg}
-    ${({ theme }) => theme.newTheme.spacing.xl};
-  border-radius: ${({ theme }) => theme.newTheme.radius.full};
+    theme.color["Colors/Background/bg-brand-primary"]};
+  padding: ${({ theme }) => theme.spacing.lg} ${({ theme }) => theme.spacing.xl};
+  border-radius: ${({ theme }) => theme.radius.full};
 `
 
 export const Pending = () => {

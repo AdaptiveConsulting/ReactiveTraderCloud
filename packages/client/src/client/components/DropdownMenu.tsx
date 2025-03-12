@@ -5,7 +5,7 @@ import styled, { css } from "styled-components"
 import { usePopUpMenu } from "@/client/utils/usePopUpMenu"
 
 const DropdownLayout = styled.div`
-  ${({ theme }) => theme.newTheme.textStyles["Display xs/Regular"]}
+  ${({ theme }) => theme.textStyles["Display xs/Regular"]}
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -14,11 +14,10 @@ const DropdownLayout = styled.div`
   line-height: 0;
   margin-block-end: 0;
 
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-secondary (700)"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-secondary (700)"]};
   cursor: pointer;
   transition: all 200ms ease;
-  padding: 0 ${({ theme }) => theme.newTheme.spacing.md};
+  padding: 0 ${({ theme }) => theme.spacing.md};
 `
 
 const DropdownOptions = styled.div`
@@ -26,7 +25,7 @@ const DropdownOptions = styled.div`
   top: 30px;
   left: 0px;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+    theme.color["Colors/Background/bg-primary"]};
   box-shadow: 0 7px 26px 0 rgba(23, 24, 25, 0.5);
   z-index: 100;
 `
@@ -34,26 +33,22 @@ const DropdownOption = styled.div<{ selected: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: ${({ theme }) => theme.newTheme.density.md};
-  padding: ${({ theme }) =>
-    `${theme.newTheme.spacing["2xl"]} ${theme.newTheme.spacing["lg"]}`};
+  height: ${({ theme }) => theme.density.md};
+  padding: ${({ theme }) => `${theme.spacing["2xl"]} ${theme.spacing["lg"]}`};
   color: ${({ theme, selected }) =>
-    selected
-      ? theme.newTheme.color["Colors/Text/text-brand-primary (900)"]
-      : "inherit"};
+    selected ? theme.color["Colors/Text/text-brand-primary (900)"] : "inherit"};
 
   &:hover {
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-quaternary"]};
+      theme.color["Colors/Background/bg-quaternary"]};
   }
 `
 
 const chevronStyle = css`
   position: relative;
   font-size: 12px;
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-quaternary_on-brand"]};
-  margin-left: ${({ theme }) => theme.newTheme.spacing.xl};
+  color: ${({ theme }) => theme.color["Colors/Text/text-quaternary_on-brand"]};
+  margin-left: ${({ theme }) => theme.spacing.xl};
 `
 const AlignedUp = styled(FaChevronUp)`
   ${chevronStyle}

@@ -22,16 +22,16 @@ export interface SectionProps extends BlockProps, MarginPaddingProps {
 
 const colorSchemes: { [scheme in ColorSchemeName]: ThemeSelectorPair } = {
   primary: {
-    bg: (t) => t.newTheme.color["Colors/Background/bg-primary"],
-    fg: (t) => t.newTheme.color["Colors/Text/text-primary (900)"],
+    bg: (t) => t.color["Colors/Background/bg-primary"],
+    fg: (t) => t.color["Colors/Text/text-primary (900)"],
   },
   secondary: {
-    bg: (t) => t.newTheme.color["Colors/Background/bg-secondary_subtle"],
-    fg: (t) => t.newTheme.color["Colors/Text/text-primary (900)"],
+    bg: (t) => t.color["Colors/Background/bg-secondary_subtle"],
+    fg: (t) => t.color["Colors/Text/text-primary (900)"],
   },
   inverted: {
-    bg: (t) => t.newTheme.color["Colors/Background/bg-primary-solid"],
-    fg: (t) => t.newTheme.color["Colors/Text/text-primary_alt"],
+    bg: (t) => t.color["Colors/Background/bg-primary-solid"],
+    fg: (t) => t.color["Colors/Text/text-primary_alt"],
   },
 }
 

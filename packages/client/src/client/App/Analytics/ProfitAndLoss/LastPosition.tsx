@@ -23,8 +23,8 @@ export const LastPosition = () => {
         USD
         <Typography
           style={{
-            paddingLeft: theme.newTheme.spacing.sm,
-            paddingRight: theme.newTheme.spacing.sm,
+            paddingLeft: theme.spacing.sm,
+            paddingRight: theme.spacing.sm,
           }}
           color={
             lastPos >= 0

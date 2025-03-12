@@ -20,7 +20,7 @@ const Row = styled.div`
 `
 
 const Label = styled.label`
-  color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-black"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-black"]};
   margin-bottom: 0.5rem;
   font-size: 0.8rem;
   display: block;
@@ -36,8 +36,8 @@ const Input = styled.input`
   padding: 0.5rem;
   padding-right: 60px;
   border: 1px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Border/border-primary"]};
-  color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-black"]};
+    ${({ theme }) => theme.color["Colors/Border/border-primary"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-black"]};
   font-size: 0.65rem;
   margin-right: 1rem;
   width: 100%;
@@ -48,7 +48,7 @@ const InputMeta = styled.div`
   top: 0.55rem;
   right: 0.65rem;
   font-size: 0.65rem;
-  color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-placeholder"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-placeholder"]};
 `
 
 const InputSlider = styled.input`
@@ -63,7 +63,7 @@ const InputSlider = styled.input`
     height: 8px;
     border-radius: 50%;
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Foreground/fg-brand-primary (600)"]};
+      theme.color["Colors/Foreground/fg-brand-primary (600)"]};
     cursor: pointer;
   }
 `
@@ -71,8 +71,8 @@ const InputSlider = styled.input`
 const ResultMessage = styled.div<{ validResult: boolean }>`
   background-color: ${({ validResult, theme }) =>
     validResult
-      ? theme.newTheme.color["Colors/Background/bg-success-primary"]
-      : theme.newTheme.color["Colors/Background/bg-error-primary"]};
+      ? theme.color["Colors/Background/bg-success-primary"]
+      : theme.color["Colors/Background/bg-error-primary"]};
   color: white;
   padding: 0.5rem;
   font-size: 0.65rem;

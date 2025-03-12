@@ -11,11 +11,11 @@ import { QuoteStatus } from "@/services/rfqs/types"
 import { LimitCheckStatus, TradeStatus } from "@/services/trades/types"
 
 export const Table = styled.div`
-  ${({ theme }) => theme.newTheme.textStyles["Text sm/Regular"]}
+  ${({ theme }) => theme.textStyles["Text sm/Regular"]}
   height: 100%;
   width: 100%;
   margin: 0;
-  padding-left: ${({ theme }) => theme.newTheme.spacing.md};
+  padding-left: ${({ theme }) => theme.spacing.md};
   .visually-hidden {
     display: none;
   }
@@ -25,13 +25,12 @@ export const TableHeadRow = styled.div`
   position: sticky;
   top: 0;
   display: flex;
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-quaternary (500)"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-quaternary (500)"]};
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary_alt"]};
+    theme.color["Colors/Background/bg-primary_alt"]};
   z-index: 1;
 
-  padding: ${({ theme }) => theme.newTheme.spacing.sm};
+  padding: ${({ theme }) => theme.spacing.sm};
 `
 
 export const highlightBackgroundColor = css`
@@ -45,13 +44,13 @@ export const TableBodyRow = styled.div<{
   display: flex;
   width: 100%;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+    theme.color["Colors/Background/bg-primary"]};
   border-bottom: 1px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-tertiary"]};
+    ${({ theme }) => theme.color["Colors/Background/bg-tertiary"]};
 
   &:hover {
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-secondary"]};
+      theme.color["Colors/Background/bg-secondary"]};
   }
   ${({ highlight }) => highlight && highlightBackgroundColor}
 `
@@ -79,7 +78,7 @@ export const TableBodyStrikeThrough = styled.div<{
   left: 0;
   border-bottom: 1px solid
     ${({ theme }) =>
-      theme.newTheme.color[
+      theme.color[
         "Component colors/Utility/Red/utility-red-400"
       ]}; // TODO talk to UX about getting better error reds
   width: 100%;
@@ -96,7 +95,7 @@ export const StatusIndicator = styled.div<{
         status === ACCEPTED_QUOTE_STATE ||
         status === LimitCheckStatus.Success
       )
-        return theme.newTheme.color[
+        return theme.color[
           "Component colors/Utility/Success/utility-success-500"
         ]
       else if (
@@ -105,7 +104,7 @@ export const StatusIndicator = styled.div<{
         status === REJECTED_WITHOUT_PRICE_QUOTE_STATE ||
         status === LimitCheckStatus.Failure
       ) {
-        return theme.newTheme.color[
+        return theme.color[
           "Component colors/Utility/Red/utility-red-400" // TODO talk to UX about getting better error reds
         ]
       }
@@ -114,5 +113,5 @@ export const StatusIndicator = styled.div<{
 `
 
 export const StatusIndicatorSpacer = styled.div`
-  width: ${({ theme }) => theme.newTheme.spacing["lg"]};
+  width: ${({ theme }) => theme.spacing["lg"]};
 `

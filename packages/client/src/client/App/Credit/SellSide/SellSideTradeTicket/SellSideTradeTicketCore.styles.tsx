@@ -6,11 +6,11 @@ import { getSellSideStatusColor } from "../utils"
 export const SellSideTradeTicketWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: ${({ theme }) => theme.newTheme.spacing.md};
-  gap: ${({ theme }) => theme.newTheme.spacing.md};
+  padding: ${({ theme }) => theme.spacing.md};
+  gap: ${({ theme }) => theme.spacing.md};
   height: 100%;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
+    theme.color["Colors/Background/bg-secondary_subtle"]};
 `
 
 export const SellSideTradeTicketInnerWrapper = styled.div`
@@ -19,15 +19,14 @@ export const SellSideTradeTicketInnerWrapper = styled.div`
   border-radius: 2px;
   height: 100%;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+    theme.color["Colors/Background/bg-primary"]};
 `
 export const Banner = styled.div`
   display: flex;
   align-items: center;
   padding: 8px;
   gap: 8px;
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
 `
 
 export const Diamond = styled.div<{ state: SellSideQuoteState }>`
