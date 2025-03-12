@@ -1,18 +1,12 @@
 import styled from "styled-components"
 
 import Logo from "@/client/components/logos/AdaptiveLogo"
+import { Stack } from "@/client/components/Stack"
 import { Typography } from "@/client/components/Typography"
 
-import designTownPNGURL from "../assets/design-town.png"
+import adaptiveExpertisePNGURL from "../assets/Adaptive-expertise.png"
 import { SectionBlock } from "../styled"
 import { SectionProps } from "../styled/SectionBlock"
-
-const Flex = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  padding: 2rem 0;
-`
 
 const Content = styled.div`
   flex: 1 1 100%;
@@ -24,18 +18,15 @@ const Content = styled.div`
 
 const Background = styled.div`
   flex: 1 1 auto;
-  min-height: 12rem;
-  min-width: 18rem;
-  padding: 2rem 0;
-  background-origin: context-box;
-  background-image: url(${designTownPNGURL});
-  background-position: center left;
+
+  min-height: 25rem;
+  background-image: url(${adaptiveExpertisePNGURL});
   background-size: contain;
 `
 
 export const Introduction = (props: SectionProps) => (
   <SectionBlock {...props}>
-    <Flex>
+    <Stack alignItems="center">
       <Content>
         <Logo />
         <Typography variant="Display md/Regular">Design Systems</Typography>
@@ -48,6 +39,6 @@ export const Introduction = (props: SectionProps) => (
         </Typography>
       </Content>
       <Background />
-    </Flex>
+    </Stack>
   </SectionBlock>
 )
