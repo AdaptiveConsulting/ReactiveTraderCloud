@@ -143,7 +143,7 @@ export const test = base.extend<Fixtures>({
         mainPage: mainWindow,
         blotterPO: new CreditBlotterPageObject(mainWindow),
         newRfqPO: new CreditNewRfqPageObject(mainWindow),
-        rfqsPO: new CreditRfqTilesPageObject(mainWindow),
+        rfqsPO: new CreditRfqTilesPageObject(mainWindow, workerInfo),
       }
     }
 

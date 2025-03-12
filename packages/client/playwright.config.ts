@@ -25,7 +25,7 @@ const config: PlaywrightTestConfig = {
       },
     },
     {
-      name: "responsiveNav",
+      name: "webResponsive",
       use: {
         viewport: {width: 900, height: 1024},
         //Artifacts
