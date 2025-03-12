@@ -7,7 +7,7 @@ import {
   CreditRfqTilesPageObject,
   CreditSellSidePageObject,
 } from "./pages"
-import { ExpectTimeout, isOpenFin, isResponsive } from "./utils"
+import { ExpectTimeout, isOpenFin } from "./utils"
 
 let browserContext: BrowserContext
 let mainPage: Page
@@ -84,11 +84,7 @@ test.describe("Credit", () => {
     await test.step("Create RFQ for 1000 GOOGL", () =>
       createRFQStep("GOOGL", "1", false))
 
-    if(isResponsive(workerInfo)) {
-      await rfqsPage.selectFilterResponsiveNav("Live")
-    } else {
-      await rfqsPage.selectFilter("Live")
-    }
+    await rfqsPage.selectFilter("Live", workerInfo)
 
     await expect(rfqsPage.firstQuote).not.toContainText(/Awaiting response/, {
       timeout: ExpectTimeout.LONG,
@@ -102,11 +98,7 @@ test.describe("Credit", () => {
       timeout: ExpectTimeout.MEDIUM,
     })
 
-    if(isResponsive(workerInfo)) {
-      await rfqsPage.selectFilterResponsiveNav("All")
-    } else {
-      await rfqsPage.selectFilter("All")
-    }
+    await rfqsPage.selectFilter("All", workerInfo)
 
     const viewTradeButtonLabel = await rfqsPage.firstViewTradeButton.innerText()
     const tradeIdFromTile = viewTradeButtonLabel.split(" ")[2]
