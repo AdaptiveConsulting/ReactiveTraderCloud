@@ -80,11 +80,11 @@ test.describe("Credit", () => {
     return pagePromise
   }
 
-  test("Create RFQ for GOOGL @smoke", async ({}, workerInfo) => {
+  test("Create RFQ for GOOGL @smoke", async () => {
     await test.step("Create RFQ for 1000 GOOGL", () =>
       createRFQStep("GOOGL", "1", false))
 
-    await rfqsPage.selectFilter("Live", workerInfo)
+    await rfqsPage.selectFilter("Live")
 
     await expect(rfqsPage.firstQuote).not.toContainText(/Awaiting response/, {
       timeout: ExpectTimeout.LONG,
@@ -98,7 +98,7 @@ test.describe("Credit", () => {
       timeout: ExpectTimeout.MEDIUM,
     })
 
-    await rfqsPage.selectFilter("All", workerInfo)
+    await rfqsPage.selectFilter("All")
 
     const viewTradeButtonLabel = await rfqsPage.firstViewTradeButton.innerText()
     const tradeIdFromTile = viewTradeButtonLabel.split(" ")[2]
