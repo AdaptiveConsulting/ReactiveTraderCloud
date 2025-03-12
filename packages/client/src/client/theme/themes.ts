@@ -1,13 +1,4 @@
-import { darken } from "polished"
-
-import {
-  AccentName,
-  AccentPaletteMap,
-  Color,
-  colors,
-  CorePalette,
-  CorePaletteMap,
-} from "./colors"
+import { Color } from "./colors"
 import { Theme as UISKTheme } from "./types"
 import { generateUISKTheme } from "./uisk/generateUISKTheme"
 
@@ -16,44 +7,17 @@ export enum ThemeName {
   Dark = "dark",
 }
 interface BaseTheme {
-  primary: CorePalette
-  secondary: CorePalette
-  accents: AccentPaletteMap
-  colors: typeof colors
-
   motion: Motion & {
     fast: Motion
     normal: Motion
     slow: Motion
   }
-
-  button: TouchableStyleSet
-
-  // Known extensible properties
-  backgroundColor: Color
-  textColor: Color
 }
 type GeneratedTheme = ReturnType<typeof createTheme>
 export type Theme = BaseTheme & GeneratedTheme
 
-interface Touchable {
-  backgroundColor: Color
-  textColor: Color
-
-  active: ColorPair
-  disabled: ColorPair
-}
-export type TouchableIntentName = AccentName | "primary" | "secondary" | "mute"
-type TouchableStyleSet = { [style in TouchableIntentName]: Touchable }
-
 interface Motion {
-  duration: number
   easing: string
-}
-
-interface ColorPair {
-  backgroundColor: string
-  textColor?: string
 }
 
 export type ThemeSelector = (theme: Theme) => Color | undefined
@@ -77,22 +41,8 @@ export const getThemeColor = (
       ? color
       : fallback
 
-const createTheme = (
-  name: ThemeName,
-  { primary, secondary, core }: CorePaletteMap,
-  accents: AccentPaletteMap,
-  newTheme: UISKTheme,
-) => ({
+const createTheme = (name: ThemeName, newTheme: UISKTheme) => ({
   name,
-  core,
-
-  backgroundColor: core.darkBackground,
-  textColor: core.textColor,
-
-  primary,
-  secondary,
-  accents,
-  colors,
 
   motion: {
     duration: 16 * 16,
@@ -114,87 +64,15 @@ const createTheme = (
     },
   },
 
-  overlay: {
-    backgroundColor: darken(0.1, primary[1]),
-    textColor: secondary[2],
-  },
-
-  tile: {
-    inputColor: secondary[4],
-  },
-
-  button: {
-    mute: {
-      backgroundColor: primary.base,
-      textColor: secondary.base,
-
-      active: {
-        backgroundColor: primary[4],
-      },
-      disabled: {
-        backgroundColor: primary[3],
-      },
-    },
-
-    secondary: {
-      backgroundColor: primary[1],
-      textColor: secondary.base,
-
-      active: {
-        backgroundColor: accents.primary.darker,
-        textColor: colors.static.white,
-      },
-      disabled: {
-        backgroundColor: primary[1],
-      },
-    },
-
-    ...Object.fromEntries(
-      Object.entries(accents).map(([key, { base, darker }]) => [
-        key,
-        {
-          backgroundColor: base,
-          textColor: colors.static.white,
-
-          active: {
-            backgroundColor: darker,
-          },
-          disabled: {
-            backgroundColor: primary[1],
-            textColor: secondary.base,
-          },
-        },
-      ]),
-    ),
-  } as TouchableStyleSet,
-
-  dropdown: {
-    backgroundColor: primary.base,
-    textColor: secondary.base,
-
-    active: {
-      backgroundColor: primary[2],
-    },
-
-    disabled: {
-      backgroundColor: primary[1],
-      textColor: primary[2],
-    },
-  },
-
   newTheme,
 })
 
 const lightTheme: Theme = createTheme(
   ThemeName.Light,
-  colors.light,
-  colors.accents,
   generateUISKTheme("Light mode") as unknown as UISKTheme,
 )
 const darkTheme: Theme = createTheme(
   ThemeName.Dark,
-  colors.dark,
-  colors.accents,
   generateUISKTheme("Dark mode") as unknown as UISKTheme,
 )
 

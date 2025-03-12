@@ -1,22 +1,10 @@
 import type { Theme } from "./themes"
 
-export type {
-  AccentName,
-  AccentPaletteMap,
-  Color,
-  ColorPalette,
-  DarkShade,
-  LightShade,
-} from "./colors"
-export { colors, dark } from "./colors"
+export type { Color } from "./colors"
+export { colors } from "./colors"
 export { default as GlobalStyle } from "./globals"
 export { ThemeConsumer, ThemeProvider, useTheme } from "./ThemeContext"
-export type {
-  ColorProps,
-  Theme,
-  ThemeSelector,
-  TouchableIntentName,
-} from "./themes"
+export type { ColorProps, Theme, ThemeSelector } from "./themes"
 export { getThemeColor, ThemeName, themes } from "./themes"
 export { default as ThemeStorageSwitch } from "./ThemeStorageSwitch"
 
