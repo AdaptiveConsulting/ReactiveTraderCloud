@@ -40,9 +40,7 @@ export const CurrencyPairSymbol = styled("label")`
 
 export const InputWrapper = styled.div`
   padding-bottom: ${({ theme }) => theme.newTheme.spacing.md};
-
   width: 100%;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,17 +59,13 @@ export const ErrorMessage = styled.div`
 
 export const ResetInputValue = styled.button<{ isVisible: boolean }>`
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary"]};
+    theme.newTheme.color[
+      "Component colors/Components/Buttons/Brand/button-brand-bg"
+    ]};
   color: ${({ theme }) =>
     theme.newTheme.color["Colors/Text/text-secondary (700)"]};
   display: ${({ isVisible }) => (isVisible ? "inline-flex" : "none")};
   border-radius: 3px;
   margin-left: 8px;
-  padding: 2px;
-  cursor: pointer;
-  font-size: 0.625rem;
-  line-height: 1.2rem;
-  .flipHorizontal {
-    transform: scaleX(-1);
-  }
+  padding: ${({ theme }) => theme.newTheme.spacing.xs};
 `

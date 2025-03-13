@@ -2,20 +2,13 @@ import styled from "styled-components"
 
 import { DeliveryDate, HeaderAction } from "./Header/TileHeader"
 
-export const PriceControlWrapper = styled.div<{ isAnalyticsView: boolean }>`
+export const PriceControlsStyle = styled("div")<{
+  isAnalyticsView?: boolean
+}>`
   flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   align-self: stretch;
   padding: ${({ isAnalyticsView, theme }) =>
     isAnalyticsView ? `0` : theme.newTheme.spacing.md};
-`
-
-export const PriceControlsStyle = styled("div")<{
-  isAnalyticsView: boolean
-}>`
-  flex: 1;
   display: grid;
   ${({ isAnalyticsView, theme }) =>
     isAnalyticsView
@@ -60,7 +53,7 @@ export const PanelItem = styled.div<{ shouldMoveDate: boolean }>`
   }
 `
 export const Body = styled.div<{
-  isAnalyticsView: boolean
+  isAnalyticsView?: boolean
   showTimer: boolean
 }>(
   ({ isAnalyticsView, theme }) => `
@@ -72,12 +65,6 @@ export const Body = styled.div<{
   min-height: ${isAnalyticsView ? "136px" : "0"};
 `,
 )
-
-export const GraphPricesWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-`
 
 export const Main = styled.div`
   flex: 1;

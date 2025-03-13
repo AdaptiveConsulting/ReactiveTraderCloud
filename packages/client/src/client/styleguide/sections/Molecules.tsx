@@ -1,18 +1,15 @@
 import SpotTilesGrid from "../components/SpotTilesGrid"
-import { H2 } from "../elements"
-import { Paragraph, SectionBlock } from "../styled"
+import { H2, P } from "../elements"
+import { SectionBlock } from "../styled"
 
 export const Molecules = () => (
-  <>
-    <SectionBlock colorScheme="secondary" py={0} pt={2} mh={0}>
-      <H2 pt={4}>Molecules</H2>
-      <Paragraph>
-        Molecules use a combination of atoms to form a more relevant and
-        slightly more unique reusable component.
-      </Paragraph>
-    </SectionBlock>
-    <SectionBlock colorScheme="secondary" py={2} bleeds>
-      <SpotTilesGrid />
-    </SectionBlock>
-  </>
+  <SectionBlock colorScheme="secondary" mh={0}>
+    <H2>Molecules</H2>
+    <P paddingBottom="3xl">
+      Molecules use a combination of atoms to form a more relevant and slightly
+      more unique reusable component.
+    </P>
+
+    <SpotTilesGrid />
+  </SectionBlock>
 )

@@ -6,7 +6,7 @@ import {
   DropdownWrapper,
   LeftSection,
   RightSection,
-  Tab,
+  TabStyled,
 } from "./TabBar.styled"
 
 interface TabBarActionConfigItem {
@@ -38,7 +38,7 @@ export const TabBar = <T extends string>({
   <Background>
     <LeftSection doNotShowDropdown={items.length < 2 || !!doNotShowDropdown}>
       {items.map((item) => (
-        <Tab
+        <TabStyled
           active={item === activeItem}
           key={item}
           onClick={() => handleItemOnClick?.(item)}
@@ -55,7 +55,7 @@ export const TabBar = <T extends string>({
           >
             {item}
           </Typography>
-        </Tab>
+        </TabStyled>
       ))}
     </LeftSection>
     <RightSection>

@@ -1,6 +1,7 @@
 import styled, { css, DefaultTheme, keyframes } from "styled-components"
 
 import { isBuy } from "@/client/App/Credit/common"
+import { Stack } from "@/client/components/Stack"
 import { Typography } from "@/client/components/Typography"
 import { Theme } from "@/client/theme/themes"
 import { Direction } from "@/generated/TradingGateway"
@@ -56,15 +57,13 @@ const backgroundEffect = ({
     color: white;`
       : ""
 
-export const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const buttonDimensions = css`
+  height: 60px;
+  width: 88px;
 `
 
 const SharedButtonStyle = styled.button`
-  height: 60px;
-  width: 88px;
+  ${buttonDimensions}
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -133,16 +132,6 @@ export const Price = styled.div<{ disabled: boolean }>`
   ${({ disabled }) => (disabled ? "opacity: 0.3" : "")}
 `
 
-const fadeOut = keyframes`
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-`
-
 export const ExpiredPrice = styled.div`
   position: absolute;
   left: 30px;
@@ -152,33 +141,14 @@ export const ExpiredPrice = styled.div`
     theme.newTheme.color["Colors/Text/text-error-primary (600)"]};
   font-size: 8px;
   text-transform: uppercase;
-  // animation: ${fadeOut} 1s linear;
-  // transition: visibility 1s linear;
-  // animation-fill-mode: forwards;
-  // animation-delay: 1s;
 `
 
-export const Icon = styled.i`
-  font-size: 20px;
-  margin: 3px 0;
-`
-
-export const PriceButtonDisabledPlaceholder = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-flow: column;
+export const PriceButtonDisabledPlaceholder = styled(Stack)`
+  border: 1px solid
+    ${({ theme }) => theme.newTheme.color["Colors/Border/border-disabled"]};
+  ${buttonDimensions}
+  color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-disabled"]};
   border-radius: 3px;
-  font-size: 10px;
   transition: background-color 0.2s ease;
-  height: 58px;
-  min-height: 2rem;
-  max-height: 3.7rem;
-  margin-bottom: 1px;
-  min-width: 100px;
-  line-height: normal;
-  opacity: 0.5;
   text-align: center;
-  text-transform: uppercase;
-  font-weight: 400;
 `

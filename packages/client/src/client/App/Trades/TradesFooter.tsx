@@ -9,11 +9,8 @@ import { Trade } from "@/services/trades"
 import { useColDef, useTrades$ } from "./Context"
 import { useTableTrades } from "./TradesState"
 
-const TradeFooterText = styled.div(
-  ({ theme }) => theme.newTheme.textStyles["Text sm/Regular"],
-)
-
-const TradesFooterStyled = styled(TradeFooterText)`
+const TradesFooterStyled = styled.div`
+  ${({ theme }) => theme.newTheme.textStyles["Text sm/Regular"]}
   display: flex;
   color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-disabled"]};
   padding: ${({ theme }) => theme.newTheme.spacing.lg};

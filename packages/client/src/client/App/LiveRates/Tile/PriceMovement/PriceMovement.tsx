@@ -55,7 +55,7 @@ export const PriceMovementInner = ({
 }: {
   spread: string
   movementType?: PriceMovementType
-  isAnalyticsView: boolean
+  isAnalyticsView?: boolean
 }) => (
   <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
     <Line height={isAnalyticsView ? "3xl" : "lg"} />

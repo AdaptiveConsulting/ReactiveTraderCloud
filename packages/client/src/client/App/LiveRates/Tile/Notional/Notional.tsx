@@ -1,8 +1,8 @@
 import { createKeyedSignal } from "@react-rxjs/utils"
-import { FaRedo } from "react-icons/fa"
 import { concat, merge, pipe } from "rxjs"
 import { filter, map, take } from "rxjs/operators"
 
+import { RefreshIcon } from "@/client/components/icons/RefreshIcon"
 import { formatNotional } from "@/client/utils/formatNotional"
 import { currencyPairs$ } from "@/services/currencyPairs"
 
@@ -96,7 +96,7 @@ export const NotionalInputInner = ({
       }}
     />
     <ResetInputValue isVisible={canReset} onClick={onReset}>
-      <FaRedo className="flipHorizontal" />
+      <RefreshIcon width={14} height={14} />
     </ResetInputValue>
     {!valid && <ErrorMessage>Max exceeded</ErrorMessage>}
   </InputWrapper>

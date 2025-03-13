@@ -1,5 +1,5 @@
 import { Button } from "@/client/components/Button"
-import { CheckBoxInput } from "@/client/components/Form/CheckBoxInput.tsx/CheckBoxInput"
+import { CheckBoxInput } from "@/client/components/Form/CheckBoxInput/CheckBoxInput"
 import { FormControl } from "@/client/components/Form/FormControl/FormControl"
 import { Label } from "@/client/components/Form/FormControl/Label"
 import { TextInput } from "@/client/components/Form/TextInput"
@@ -68,6 +68,7 @@ export const NewRfqForm = () => {
             name="duration"
             id="duration"
             placeholder="2 Minutes"
+            comboBox
             disabled
           />
         </FormControl>
@@ -75,7 +76,13 @@ export const NewRfqForm = () => {
 
       <FormControl>
         <Label htmlFor="type">Fill Type</Label>
-        <TextInput name="type" id="type" placeholder="All or None" disabled />
+        <TextInput
+          name="type"
+          id="type"
+          placeholder="All or None"
+          comboBox
+          disabled
+        />
       </FormControl>
 
       <FormControl>

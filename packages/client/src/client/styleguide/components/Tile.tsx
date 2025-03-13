@@ -15,19 +15,19 @@ import { RfqButtonInner } from "@/client/App/LiveRates/Tile/Rfq/RfqButton"
 import { TileState } from "@/client/App/LiveRates/Tile/Tile.state"
 import {
   Body,
-  GraphPricesWrapper,
   InputTimerStyle,
   Main,
   PanelItem,
   PriceControlsStyle,
 } from "@/client/App/LiveRates/Tile/Tile.styles"
+import { Stack } from "@/client/components/Stack"
 import { Direction } from "@/generated/TradingGateway"
 import { CurrencyPair } from "@/services/currencyPairs"
 import { PriceMovementType } from "@/services/prices"
 
 export type TileProps = {
   currencyPair: CurrencyPair
-  isAnalytics: boolean
+  isAnalytics?: boolean
   timerData?: {
     start: number
     end: number
@@ -48,7 +48,7 @@ export type TileProps = {
   isExpired?: boolean
   priceDisabled?: boolean
   priceButtonStatic?: boolean
-  graphPath: string
+  graphPath?: string
 }
 
 export const Tile = ({
@@ -110,14 +110,11 @@ export const Tile = ({
           isTornOut={false}
         />
         <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>
-          {isAnalytics ? (
-            <GraphPricesWrapper>
-              <HistoricalGraphComponent
-                showTimer={!!timerData}
-                path={graphPath}
-              />
-              <InputTimerWrapper isAnalytics />
-            </GraphPricesWrapper>
+          {isAnalytics && graphPath ? (
+            <HistoricalGraphComponent
+              showTimer={!!timerData}
+              path={graphPath}
+            />
           ) : null}
           <PriceControlsStyle isAnalyticsView={isAnalytics}>
             <PriceMovementInner
@@ -126,38 +123,42 @@ export const Tile = ({
               isAnalyticsView={isAnalytics}
             />
 
-            {sellPrice ? (
-              <PriceButtonInner
-                direction={Direction.Sell}
-                currencyPair={currencyPair}
-                onClick={() => null}
-                disabled={!!priceDisabled}
-                isExpired={!!isExpired}
-                priceAnnounced={!!timerData}
-                price={sellPrice}
-                isStatic={!!priceButtonStatic}
-              />
-            ) : isRfq ? (
-              <AwaitingPriceButton />
-            ) : (
-              <PriceUnavailableButton />
-            )}
-            {buyPrice ? (
-              <PriceButtonInner
-                direction={Direction.Buy}
-                currencyPair={currencyPair}
-                onClick={() => null}
-                disabled={!!priceDisabled}
-                isExpired={!!isExpired}
-                priceAnnounced={!!timerData}
-                price={buyPrice}
-                isStatic={!!priceButtonStatic}
-              />
-            ) : isRfq ? (
-              <AwaitingPriceButton />
-            ) : (
-              <PriceUnavailableButton />
-            )}
+            <Stack justifyContent="center" alignItems="center">
+              {sellPrice ? (
+                <PriceButtonInner
+                  direction={Direction.Sell}
+                  currencyPair={currencyPair}
+                  onClick={() => null}
+                  disabled={!!priceDisabled}
+                  isExpired={!!isExpired}
+                  priceAnnounced={!!timerData}
+                  price={sellPrice}
+                  isStatic={!!priceButtonStatic}
+                />
+              ) : isRfq ? (
+                <AwaitingPriceButton />
+              ) : (
+                <PriceUnavailableButton />
+              )}
+            </Stack>
+            <Stack justifyContent="center" alignItems="center">
+              {buyPrice ? (
+                <PriceButtonInner
+                  direction={Direction.Buy}
+                  currencyPair={currencyPair}
+                  onClick={() => null}
+                  disabled={!!priceDisabled}
+                  isExpired={!!isExpired}
+                  priceAnnounced={!!timerData}
+                  price={buyPrice}
+                  isStatic={!!priceButtonStatic}
+                />
+              ) : isRfq ? (
+                <AwaitingPriceButton />
+              ) : (
+                <PriceUnavailableButton />
+              )}
+            </Stack>
             {rfqButtonText && typeof rfqButtonText === "string" && (
               <RfqButtonInner
                 isAnalytics={isAnalytics}
@@ -168,8 +169,8 @@ export const Tile = ({
               />
             )}
           </PriceControlsStyle>
-          {!isAnalytics ? <InputTimerWrapper /> : null}
         </Body>
+        <InputTimerWrapper />
       </Main>
       <StatelessExecutionResponse
         currencyPair={currencyPair}

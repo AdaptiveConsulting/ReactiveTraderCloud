@@ -4,6 +4,8 @@ import { map, switchMap } from "rxjs/operators"
 
 import { isBuy } from "@/client/App/Credit/common"
 import { AdaptiveLoader } from "@/client/components/AdaptiveLoader"
+import { ForbiddenIcon } from "@/client/components/icons"
+import { Stack } from "@/client/components/Stack"
 import { Typography } from "@/client/components/Typography"
 import {
   customNumberFormatter,
@@ -21,14 +23,12 @@ import { useTileCurrencyPair } from "../Tile.context"
 import { sendExecution } from "../Tile.state"
 import {
   ExpiredPrice,
-  Icon,
   Price,
   PriceButtonDisabledPlaceholder,
   PriceContainer,
   PriceTypography,
   QuotePriceLoading,
   TradeButton,
-  Wrapper,
 } from "./PriceButton.styles"
 
 const getPriceByDirection$ = (symbol: string, direction: Direction) =>
@@ -193,19 +193,25 @@ export const PriceButton = ({ direction }: { direction: Direction }) => {
   const rfqState = useRfqState()
 
   return (
-    <Wrapper>
+    <Stack justifyContent="center" alignItems="center">
       {rfqState.stage === QuoteStateStage.Requested ? (
         <AwaitingPriceButton />
       ) : (
         <PriceButtonContainer direction={direction} rfqQuoteState={rfqState} />
       )}
-    </Wrapper>
+    </Stack>
   )
 }
 
 export const PriceUnavailableButton = () => (
-  <PriceButtonDisabledPlaceholder>
-    <Icon className="fas fa-ban fa-flip-horizontal" />
-    Pricing Unavailable
+  <PriceButtonDisabledPlaceholder
+    direction="column"
+    justifyContent="center"
+    alignItems="center"
+  >
+    <ForbiddenIcon />
+    <Typography variant="Text sm/Regular" color="Colors/Text/text-disabled">
+      Pricing Unavailable
+    </Typography>
   </PriceButtonDisabledPlaceholder>
 )

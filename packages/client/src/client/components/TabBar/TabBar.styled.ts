@@ -39,10 +39,12 @@ const TabBarButton = styled.button<{ active: boolean }>`
   list-style-type: none;
   text-decoration: none;
   background-color: ${({ active, theme }) =>
-    active ? theme.newTheme.color["Colors/Background/bg-primary_alt"] : "none"};
+    active
+      ? theme.newTheme.color["Colors/Background/bg-primary_alt"]
+      : theme.newTheme.color["Colors/Background/bg-secondary"]};
 `
 
-export const Tab = styled(TabBarButton)<{
+export const TabStyled = styled(TabBarButton)<{
   isStatic?: boolean
 }>`
   width: ${({ theme }) => theme.newTheme.spacing["9xl"]};
@@ -50,7 +52,8 @@ export const Tab = styled(TabBarButton)<{
 
   cursor: ${({ isStatic }) => (isStatic ? "unset" : "pointer")};
 
-  &:hover {
+  &:hover,
+  &.sg-tab-hover {
     background-color: ${({ active, theme }) =>
       active
         ? "none"
