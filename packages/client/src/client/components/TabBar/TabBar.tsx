@@ -78,7 +78,7 @@ export const TabBar = <T extends string>({
             </Action>
           ))}
       {handleItemOnClick && !doNotShowDropdown && (
-        <DropdownWrapper data-testid="nav-dropdown">
+        <DropdownWrapper data-testid="rfqs-filter-dropdown">
           <DropdownMenu
             selectedOption={activeItem}
             options={items}

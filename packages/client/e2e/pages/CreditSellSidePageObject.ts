@@ -1,7 +1,10 @@
-import { Page } from "@playwright/test"
+import { Page, WorkerInfo } from "@playwright/test"
 
 export class CreditSellSidePageObject {
-  constructor(readonly page: Page) {}
+  constructor(
+    readonly page: Page,
+    readonly workerInfo: WorkerInfo,
+  ) {}
 
   get firstNewRfqInGrid() {
     return this.page.locator("div").getByText("New RFQ").first()
