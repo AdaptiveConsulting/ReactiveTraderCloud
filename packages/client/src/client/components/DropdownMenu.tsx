@@ -4,11 +4,8 @@ import styled, { css } from "styled-components"
 
 import { usePopUpMenu } from "@/client/utils/usePopUpMenu"
 
-const DropdownText = styled.div(
-  ({ theme }) => theme.newTheme.textStyles["Display xs/Regular"],
-)
-
-const DropdownLayout = styled(DropdownText)`
+const DropdownLayout = styled.div`
+  ${({ theme }) => theme.newTheme.textStyles["Display xs/Regular"]}
   display: flex;
   align-items: center;
   justify-content: space-between;

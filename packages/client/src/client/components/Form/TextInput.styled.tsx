@@ -1,10 +1,7 @@
 import styled from "styled-components"
 
-const TextInputText = styled.input(
-  ({ theme }) => theme.newTheme.textStyles["Text md/Regular"],
-)
-
-export const TextInputStyled = styled(TextInputText)<Partial<HTMLInputElement>>`
+export const TextInputStyled = styled.input<Partial<HTMLInputElement>>`
+  ${({ theme }) => theme.newTheme.textStyles["Text md/Regular"]}
   ${({ theme, disabled }) => `
   height: 28px;
   width: 100%;

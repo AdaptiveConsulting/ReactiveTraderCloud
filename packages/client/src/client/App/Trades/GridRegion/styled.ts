@@ -10,11 +10,8 @@ import {
 import { QuoteStatus } from "@/services/rfqs/types"
 import { LimitCheckStatus, TradeStatus } from "@/services/trades/types"
 
-const TableText = styled.div(
-  ({ theme }) => theme.newTheme.textStyles["Text sm/Regular"],
-)
-
-export const Table = styled(TableText)`
+export const Table = styled.div`
+  ${({ theme }) => theme.newTheme.textStyles["Text sm/Regular"]}
   height: 100%;
   width: 100%;
   margin: 0;

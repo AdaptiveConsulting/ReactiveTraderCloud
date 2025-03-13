@@ -132,16 +132,6 @@ export const Price = styled.div<{ disabled: boolean }>`
   ${({ disabled }) => (disabled ? "opacity: 0.3" : "")}
 `
 
-const fadeOut = keyframes`
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-`
-
 export const ExpiredPrice = styled.div`
   position: absolute;
   left: 30px;
@@ -151,10 +141,6 @@ export const ExpiredPrice = styled.div`
     theme.newTheme.color["Colors/Text/text-error-primary (600)"]};
   font-size: 8px;
   text-transform: uppercase;
-  // animation: ${fadeOut} 1s linear;
-  // transition: visibility 1s linear;
-  // animation-fill-mode: forwards;
-  // animation-delay: 1s;
 `
 
 export const PriceButtonDisabledPlaceholder = styled(Stack)`

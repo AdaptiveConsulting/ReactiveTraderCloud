@@ -1,7 +1,7 @@
 import { ComponentProps } from "react"
 import styled from "styled-components"
 
-import { CheckBoxInput } from "@/client/components/Form/CheckBoxInput.tsx/CheckBoxInput"
+import { CheckBoxInput } from "@/client/components/Form/CheckBoxInput/CheckBoxInput"
 
 import { CommonStates } from "../atomStates"
 

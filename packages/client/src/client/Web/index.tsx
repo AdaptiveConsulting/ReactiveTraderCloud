@@ -91,7 +91,6 @@ export const WebApp = () => {
             </Suspense>
           }
         />
-        {/* TODO: either remove if UISK takes this role, or refactor with new branding - https://weareadaptive.atlassian.net/jira/software/c/projects/SU/boards/284?selectedIssue=SU-47 */}
 
         {canUseAdmin && (
           <Route path={ROUTES_CONFIG.admin} element={<Admin />} />

@@ -10,7 +10,7 @@ export const CheckBox = styled.input.attrs({ type: "checkbox" })<{
   disabled?: boolean
 }>`
   appearance: none;
-  background-color: transparentz;
+  background-color: transparent;
   border: 1px solid
     ${({ theme }) => theme.newTheme.color["Colors/Border/border-primary"]};
   width: 14px;

@@ -1,5 +1,5 @@
 import { Button } from "@/client/components/Button"
-import { CheckBoxInput } from "@/client/components/Form/CheckBoxInput.tsx/CheckBoxInput"
+import { CheckBoxInput } from "@/client/components/Form/CheckBoxInput/CheckBoxInput"
 import { FormControl } from "@/client/components/Form/FormControl/FormControl"
 import { Label } from "@/client/components/Form/FormControl/Label"
 import { TextInput } from "@/client/components/Form/TextInput"
