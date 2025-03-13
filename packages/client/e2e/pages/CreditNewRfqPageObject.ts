@@ -1,7 +1,10 @@
-import { Page } from "@playwright/test"
+import { Page, WorkerInfo } from "@playwright/test"
 
 export class CreditNewRfqPageObject {
-  constructor(readonly page: Page) {}
+  constructor(
+    readonly page: Page,
+    readonly workerInfo: WorkerInfo,
+  ) {}
 
   get cusipInput() {
     return this.page.getByPlaceholder(/Enter a CUSIP/)

@@ -1,15 +1,24 @@
-import { Page } from "@playwright/test"
+import { Page, WorkerInfo } from "@playwright/test"
 
+import { isResponsive } from "../utils"
 export class CreditRfqTilesPageObject {
-  constructor(readonly page: Page) {}
+  constructor(
+    readonly page: Page,
+    readonly workerInfo: WorkerInfo,
+  ) {}
 
   // TODO - these tiles filter functions will not work in squashed resonsive mode
-  selectLiveRfqsFilter() {
-    return this.page.getByText(/Live/).first().click()
-  }
 
-  selectAllRfqsFilter() {
-    return this.page.getByTestId("tabItem-All").click()
+  async selectFilter(filter: string) {
+    if (isResponsive(this.workerInfo)) {
+      this.page.getByTestId("rfqs-filter-dropdown").click()
+      return await this.page
+        .getByTestId("rfqs-filter-dropdown")
+        .getByText(filter)
+        .click()
+    } else {
+      return this.page.getByTestId("tab-bar").getByText(filter).click()
+    }
   }
 
   get firstQuote() {
