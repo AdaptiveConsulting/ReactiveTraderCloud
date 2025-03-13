@@ -11,9 +11,9 @@ export class CreditRfqTilesPageObject {
 
   async selectFilter(filter: string) {
     if (isResponsive(this.workerInfo)) {
-      this.page.getByTestId("nav-dropdown").click()
+      this.page.getByTestId("rfqs-filter-dropdown").click()
       return await this.page
-        .getByTestId("nav-dropdown")
+        .getByTestId("rfqs-filter-dropdown")
         .getByText(filter)
         .click()
     } else {
