@@ -15,7 +15,7 @@ const BodyWrapper = styled(Stack)`
   flex: 1;
   overflow-y: auto;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary_alt"]};
+    theme.color["Colors/Background/bg-primary_alt"]};
 `
 
 export const RegionLayout = ({

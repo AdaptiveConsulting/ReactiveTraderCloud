@@ -64,7 +64,7 @@ export const ThemeProvider = ({ storage = localStorage, children }: Props) => {
     head &&
       head.setAttribute(
         "content",
-        themes[themeName].newTheme.color["Colors/Background/bg-primary"],
+        themes[themeName].color["Colors/Background/bg-primary"],
       )
   }, [themeName])
 

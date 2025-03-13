@@ -13,7 +13,7 @@ export const ContactUsPopup = styled(Popup)`
 `
 
 const ContactUsContent = styled.div`
-  padding: ${({ theme }) => theme.newTheme.spacing.md};
+  padding: ${({ theme }) => theme.spacing.md};
 `
 
 export const LogoWrapper = styled.div`

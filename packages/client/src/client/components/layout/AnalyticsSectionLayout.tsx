@@ -5,14 +5,14 @@ import { Typography } from "../Typography"
 import { LayoutProps } from "./types"
 
 const Background = styled.div`
-  padding: 0 ${({ theme }) => theme.newTheme.spacing.xl};
-  padding-top: ${({ theme }) => theme.newTheme.spacing.xl};
+  padding: 0 ${({ theme }) => theme.spacing.xl};
+  padding-top: ${({ theme }) => theme.spacing.xl};
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary_alt"]};
+    theme.color["Colors/Background/bg-primary_alt"]};
 `
 
 const BodyWrapper = styled.div`
-  padding-top: ${({ theme }) => theme.newTheme.spacing["2xl"]};
+  padding-top: ${({ theme }) => theme.spacing["2xl"]};
 `
 
 export const AnalyticsSectionLayout = ({

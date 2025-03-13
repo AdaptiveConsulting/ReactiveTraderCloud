@@ -11,7 +11,7 @@ const FlexDiv = styled.div`
 export const BarContainer = styled(FlexBox)`
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: ${({ theme }) => theme.newTheme.spacing.md};
+  margin-bottom: ${({ theme }) => theme.spacing.md};
 `
 
 export const PriceContainer = styled(FlexDiv).attrs(
@@ -30,7 +30,7 @@ export const PriceLabel = styled.div<{
   distance: number
 }>`
   align-self: center;
-  padding-bottom: ${({ theme }) => theme.newTheme.spacing.sm};
+  padding-bottom: ${({ theme }) => theme.spacing.sm};
   transition: transform 0.2s;
 
   &:hover {
@@ -59,8 +59,7 @@ export const PriceIndicator = styled.div<{
     }}
   );
 
-  background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Border/border-buy"]};
+  background-color: ${({ theme }) => theme.color["Colors/Border/border-buy"]};
 `
 
 export const BarPriceContainer = styled.div`
@@ -71,7 +70,7 @@ export const Bar = styled.div`
   position: relative;
   width: 100%;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-tertiary"]};
+    theme.color["Colors/Background/bg-tertiary"]};
   height: ${indicatorWidth}px;
 `
 

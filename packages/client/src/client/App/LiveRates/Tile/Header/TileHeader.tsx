@@ -21,11 +21,10 @@ const HeaderWrapper = styled(FlexBox)`
   position: relative;
   justify-content: space-between;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary"]};
-  padding: ${({ theme }) =>
-    `${theme.newTheme.spacing.md} ${theme.newTheme.spacing["3xl"]} `};
-  padding-left: ${({ theme }) => theme.newTheme.spacing.md};
-  padding-right: ${({ theme }) => theme.newTheme.spacing.md};
+    theme.color["Colors/Background/bg-secondary"]};
+  padding: ${({ theme }) => `${theme.spacing.md} ${theme.spacing["3xl"]} `};
+  padding-left: ${({ theme }) => theme.spacing.md};
+  padding-right: ${({ theme }) => theme.spacing.md};
 `
 export const HeaderAction = styled.button`
   position: absolute;
@@ -34,11 +33,9 @@ export const HeaderAction = styled.button`
   opacity: 0;
   transition: opacity 0.2s;
 
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Foreground/fg-quinary (400)"]};
+  color: ${({ theme }) => theme.color["Colors/Foreground/fg-quinary (400)"]};
   &:hover {
-    color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Foreground/fg-quinary_hover"]};
+    color: ${({ theme }) => theme.color["Colors/Foreground/fg-quinary_hover"]};
   }
 `
 

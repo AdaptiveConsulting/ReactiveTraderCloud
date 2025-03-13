@@ -6,12 +6,12 @@ const getBarColor = (
   theme: DefaultTheme,
 ) => {
   if (!done) {
-    return theme.newTheme.color["Colors/Background/bg-brand-primary"]
+    return theme.color["Colors/Background/bg-brand-primary"]
   }
 
   return successful
-    ? theme.newTheme.color["Colors/Background/bg-success-primary"] // TODO: get a proper positive colour from UX
-    : theme.newTheme.color["Colors/Background/bg-error-primary"] // TODO: get a proper negative colour from UX
+    ? theme.color["Colors/Background/bg-success-primary"] // TODO: get a proper positive colour from UX
+    : theme.color["Colors/Background/bg-error-primary"] // TODO: get a proper negative colour from UX
 }
 
 const Slider = styled.div`

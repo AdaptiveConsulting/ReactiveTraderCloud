@@ -9,11 +9,11 @@ export const Button = styled.button`
 
 export const SignInButton = styled(Button)`
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-brand-primary"]};
+    theme.color["Colors/Background/bg-brand-primary"]};
   color: white;
   &:hover {
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-brand-secondary"]};
+      theme.color["Colors/Background/bg-brand-secondary"]};
   }
 `
 export const LoadingButton = styled(SignInButton)`
@@ -23,15 +23,14 @@ export const LoadingButton = styled(SignInButton)`
 
 export const DropdownButton = styled(Button)`
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    theme.color["Colors/Background/bg-primary"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   &:hover {
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-brand-primary"]};
+      theme.color["Colors/Background/bg-brand-primary"]};
     color: white;
   }
 `
@@ -40,7 +39,7 @@ export const UserWrapper = styled.div`
 `
 export const UserContainer = styled(Button)`
   color: ${({ theme }) =>
-    theme.newTheme.color[
+    theme.color[
       "Component colors/Components/Buttons/Primary/button-primary-fg"
     ]};
   display: flex;

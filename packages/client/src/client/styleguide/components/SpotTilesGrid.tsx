@@ -7,6 +7,7 @@ import { PriceMovementType } from "@/services/prices"
 
 import { H3 } from "../elements"
 import { PATH } from "../path"
+import { Separator } from "../sections/components"
 import { Tile, TileProps } from "./Tile"
 
 const Grid = styled(Box)`
@@ -25,12 +26,9 @@ const FxSpot = styled.div`
 const FxRfq = styled.div`
   grid-row: 4 / span 4;
 `
-const Separator = styled.hr`
+const GridSeparator = styled(Separator)`
   grid-column: 1 / -1;
-  border: none;
-  border-bottom: ${({ theme }) =>
-    `2px solid ${theme.core.primaryStyleGuideBackground}`};
-  margin: 4rem 0;
+  margin: ${({ theme }) => theme.spacing.lg} 0;
 `
 
 const currencyPair = {
@@ -198,20 +196,20 @@ const SpotTilesGrid = () => (
       {FX_SPOT.map((item, i) => (
         <TileCell item={item} key={i} />
       ))}
-      <Separator />
+      <GridSeparator />
       <FxRfq>FX RFQ</FxRfq>
       {FX_RFQ.map((item, i) => (
         <TileCell item={item} key={i} />
       ))}
     </Grid>
-    <Separator />
+    <GridSeparator />
     <H3>Trading Tiles - Vertical</H3>
-    <Grid>
+    <Grid paddingTop="xl">
       <FxSpot>FX Spot</FxSpot>
       {FX_SPOT.map((item, i) => (
         <TileCell item={item} key={i} isAnalytics graphPath={PATH} />
       ))}
-      <Separator />
+      <GridSeparator />
       <FxRfq>FX RFQ</FxRfq>
       {FX_RFQ.map((item, i) => (
         <TileCell item={item} key={i} isAnalytics graphPath={PATH} />

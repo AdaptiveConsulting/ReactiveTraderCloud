@@ -28,9 +28,9 @@ export const StatusCircle = styled(StatusCircleCore)<{
   circle {
     fill: ${({ theme, status }) =>
       status === ConnectionStatus.CONNECTED
-        ? theme.newTheme.color["Colors/Foreground/fg-success-primary"]
+        ? theme.color["Colors/Foreground/fg-success-primary"]
         : status === ConnectionStatus.CONNECTING
-          ? theme.newTheme.color["Colors/Foreground/fg-warning-primary"]
-          : theme.newTheme.color["Colors/Foreground/fg-error-primary"]};
+          ? theme.color["Colors/Foreground/fg-warning-primary"]
+          : theme.color["Colors/Foreground/fg-error-primary"]};
   }
 `

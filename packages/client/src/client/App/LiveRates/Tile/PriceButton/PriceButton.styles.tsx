@@ -32,8 +32,8 @@ const getAnimationCSSProperty = (props: {
 
 const getDirectionColor = (theme: DefaultTheme, direction: Direction) =>
   isBuy(direction)
-    ? theme.newTheme.color["Colors/Background/bg-buy-primary"]
-    : theme.newTheme.color["Colors/Background/bg-sell-primary"]
+    ? theme.color["Colors/Background/bg-buy-primary"]
+    : theme.color["Colors/Background/bg-sell-primary"]
 
 type TradeButtonProps = {
   direction: Direction
@@ -74,7 +74,7 @@ const SharedButtonStyle = styled.button`
 export const TradeButton = styled(SharedButtonStyle)<TradeButtonProps>`
   position: relative;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+    theme.color["Colors/Background/bg-primary"]};
   color: ${({ theme, priceAnnounced, direction }) =>
     priceAnnounced ? getDirectionColor(theme, direction) : "inherit"};
   transition: background-color 0.2s ease;
@@ -98,7 +98,7 @@ export const TradeButton = styled(SharedButtonStyle)<TradeButtonProps>`
   
   &:hover {
     background-color: ${getDirectionColor(theme, direction)} !important;
-    color: ${theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    color: ${theme.color["Colors/Text/text-primary (900)"]};
     }
     `};
 `
@@ -115,7 +115,7 @@ const Box = styled.div`
 `
 
 export const PriceContainer = styled(Box)`
-  padding-top: ${({ theme }) => theme.newTheme.spacing.xl};
+  padding-top: ${({ theme }) => theme.spacing.xl};
 `
 
 export const PriceTypography = styled(Typography)`
@@ -137,17 +137,16 @@ export const ExpiredPrice = styled.div`
   left: 30px;
   top: 55px;
   z-index: 1;
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-error-primary (600)"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-error-primary (600)"]};
   font-size: 8px;
   text-transform: uppercase;
 `
 
 export const PriceButtonDisabledPlaceholder = styled(Stack)`
   border: 1px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Border/border-disabled"]};
+    ${({ theme }) => theme.color["Colors/Border/border-disabled"]};
   ${buttonDimensions}
-  color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-disabled"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-disabled"]};
   border-radius: 3px;
   transition: background-color 0.2s ease;
   text-align: center;

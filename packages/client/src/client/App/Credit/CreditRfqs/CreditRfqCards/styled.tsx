@@ -6,13 +6,13 @@ import { Direction } from "@/generated/TradingGateway"
 
 const cardFlash = ({ theme }: { theme: DefaultTheme }) => keyframes`
   0% {
-    border-color: ${theme.newTheme.color["Colors/Border/border-brand"]};
+    border-color: ${theme.color["Colors/Border/border-brand"]};
   }
   50% {
     border-color: transparent;
   }
   100% {
-    border-color: ${theme.newTheme.color["Colors/Border/border-brand"]};
+    border-color: ${theme.color["Colors/Border/border-brand"]};
   }
 `
 
@@ -28,7 +28,7 @@ export const CardContainer = styled.div<{
   display: flex;
   flex-direction: column;
   border: 2px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-tertiary"]};
+    ${({ theme }) => theme.color["Colors/Background/bg-tertiary"]};
   width: 100%;
   height: 251px;
 
@@ -38,7 +38,7 @@ export const CardContainer = styled.div<{
     ${({ theme, live, highlight, direction }) =>
       live &&
       !highlight &&
-      `border-color: ${direction === Direction.Buy ? theme.newTheme.color["Colors/Border/border-buy"] : theme.newTheme.color["Colors/Border/border-sell"]}`};
+      `border-color: ${direction === Direction.Buy ? theme.color["Colors/Border/border-buy"] : theme.color["Colors/Border/border-sell"]}`};
   }
 `
 
@@ -46,7 +46,7 @@ export const Row = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: ${({ theme }) => theme.newTheme.spacing.md} 0;
+  padding: ${({ theme }) => theme.spacing.md} 0;
 
   width: 100%;
 `
@@ -54,17 +54,16 @@ export const Row = styled.div`
 export const DetailsWrapper = styled(Row)`
   white-space: nowrap;
   display: flex;
-  gap: ${({ theme }) => theme.newTheme.spacing["4xl"]};
-  padding: ${({ theme }) => theme.newTheme.spacing.xs};
-  background: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-quaternary"]};
+  gap: ${({ theme }) => theme.spacing["4xl"]};
+  padding: ${({ theme }) => theme.spacing.xs};
+  background: ${({ theme }) => theme.color["Colors/Background/bg-quaternary"]};
 `
 
 export const QuotesContainer = styled.div`
   flex: 1;
   overflow-y: auto;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+    theme.color["Colors/Background/bg-primary"]};
 `
 
 export const NoRfqsWrapper = styled.div`
@@ -81,13 +80,13 @@ export const CardFooterWrapper = styled(FlexBox)`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: ${({ theme }) => theme.newTheme.spacing.md};
+  padding: ${({ theme }) => theme.spacing.md};
   background: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
+    theme.color["Colors/Background/bg-secondary_subtle"]};
   color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-success-primary (600)"]};
+    theme.color["Colors/Text/text-success-primary (600)"]};
   svg {
-    margin-right: ${({ theme }) => theme.newTheme.spacing.xs};
+    margin-right: ${({ theme }) => theme.spacing.xs};
   }
 `
 
@@ -97,18 +96,18 @@ export const AcceptedCardState = styled.div`
   align-items: center;
 
   svg {
-    margin-right: ${({ theme }) => theme.newTheme.spacing.md};
+    margin-right: ${({ theme }) => theme.spacing.md};
   }
 `
 
 export const FooterButton = styled.button`
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-tertiary"]};
-  padding: ${({ theme }) => theme.newTheme.spacing.md};
+    theme.color["Colors/Background/bg-tertiary"]};
+  padding: ${({ theme }) => theme.spacing.md};
 
   &:hover {
     background-color: ${({ theme }) =>
-      theme.newTheme.color[
+      theme.color[
         "Component colors/Components/Buttons/Primary/button-primary-bg_hover"
       ]};
   }
@@ -121,11 +120,9 @@ export const ViewTradeButton = styled(FooterButton)`
 export const CloseRfqButton = styled(FooterButton)`
   display: flex;
   align-items: center;
-  padding: ${({ theme }) => theme.newTheme.spacing.xs}
-    ${({ theme }) => theme.newTheme.spacing.md};
-  border-radius: ${({ theme }) => theme.newTheme.radius.xs};
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-brand-tertiary (600)"]};
+  padding: ${({ theme }) => theme.spacing.xs} ${({ theme }) => theme.spacing.md};
+  border-radius: ${({ theme }) => theme.radius.xs};
+  color: ${({ theme }) => theme.color["Colors/Text/text-brand-tertiary (600)"]};
 `
 
 export const QuantityTypography = styled(Typography)`

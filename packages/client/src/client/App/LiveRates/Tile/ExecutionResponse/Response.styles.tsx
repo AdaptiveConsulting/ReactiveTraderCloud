@@ -12,31 +12,30 @@ export const ExecutionStatusAlertContainer = styled(OverlayDiv)<{
     switch (state.status) {
       case TileStates.Finished:
         return state.trade.status === ExecutionStatus.Done
-          ? theme.newTheme.color["Colors/Background/bg-success-primary"]
-          : theme.newTheme.color["Colors/Background/bg-error-primary"]
+          ? theme.color["Colors/Background/bg-success-primary"]
+          : theme.color["Colors/Background/bg-error-primary"]
       case TileStates.TooLong:
-        return theme.newTheme.color["Colors/Background/bg-warning-primary"]
+        return theme.color["Colors/Background/bg-warning-primary"]
       case TileStates.Timeout:
       case TileStates.CreditExceeded:
-        return theme.newTheme.color["Colors/Background/bg-error-primary"]
+        return theme.color["Colors/Background/bg-error-primary"]
       default:
         return ""
     }
   }};
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.newTheme.spacing.sm};
-  padding: ${({ theme }) => theme.newTheme.spacing.xl}
-    ${({ theme }) => theme.newTheme.spacing.lg};
-  padding-bottom: ${({ theme }) => theme.newTheme.spacing.md};
+  gap: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.lg};
+  padding-bottom: ${({ theme }) => theme.spacing.md};
   position: absolute;
 `
 
 export const CurrencyPairDiv = styled.div`
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.newTheme.spacing.sm};
+  gap: ${({ theme }) => theme.spacing.sm};
   svg {
-    fill: ${({ theme }) => theme.newTheme.color["Colors/Text/text-white"]};
+    fill: ${({ theme }) => theme.color["Colors/Text/text-white"]};
   }
 `

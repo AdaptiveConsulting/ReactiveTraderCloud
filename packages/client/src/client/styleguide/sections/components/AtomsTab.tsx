@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const AtomsTabInner = styled(TabStyled)<Props>`
-  height: ${({ theme }) => theme.newTheme.density.md};
+  height: ${({ theme }) => theme.density.md};
   pointer-events: none;
 `
 

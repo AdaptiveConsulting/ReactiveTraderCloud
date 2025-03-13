@@ -40,12 +40,12 @@ export const Table = styled.table`
 
       &:nth-child(odd) {
         background-color: ${({ theme }) =>
-          theme.newTheme.color["Colors/Background/bg-secondary"]};
+          theme.color["Colors/Background/bg-secondary"]};
       }
 
       &:hover {
         background-color: ${({ theme }) =>
-          theme.newTheme.color["Colors/Background/bg-secondary_hover"]};
+          theme.color["Colors/Background/bg-secondary_hover"]};
 
         button {
           opacity: 1;
@@ -59,16 +59,14 @@ export const TableRow = styled.tr<{ status?: TradeStatus }>`
   border-left: 0.125rem solid transparent;
   border-left-color: ${({ theme, status }) =>
     status === TradeStatus.Done
-      ? theme.newTheme.color[
-          "Component colors/Utility/Success/utility-success-500"
-        ]
+      ? theme.color["Component colors/Utility/Success/utility-success-500"]
       : "transparent"};
 
   td {
     position: relative;
     color: ${({ status, theme }) =>
       status === TradeStatus.Rejected
-        ? theme.newTheme.color["Colors/Text/text-disabled"]
+        ? theme.color["Colors/Text/text-disabled"]
         : "white"};
     ${({ status, theme }) =>
       status === TradeStatus.Rejected &&
@@ -78,14 +76,14 @@ export const TableRow = styled.tr<{ status?: TradeStatus }>`
         position: absolute;
         top: 50%;
         left: 0;
-        border-bottom: 0.0625rem solid ${theme.newTheme.color["Colors/Border/border-primary"]};
+        border-bottom: 0.0625rem solid ${theme.color["Colors/Border/border-primary"]};
         width: 100%;
       };
     `}
 
     button:hover {
       background-color: ${({ theme }) =>
-        theme.newTheme.color[
+        theme.color[
           "Component colors/Components/Buttons/Brand/button-brand-bg_hover"
         ]};
     }
@@ -149,7 +147,7 @@ export const IntentActions = styled(IntentActionWrapper)`
     cursor: pointer;
     padding: 0.75rem 1.5rem;
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-secondary"]};
+      theme.color["Colors/Background/bg-secondary"]};
     &:first-of-type {
       border-radius: 3px 0 0 3px;
     }
@@ -167,7 +165,7 @@ export const NlpExecutionContainer = styled.div`
   max-width: 100%;
   height: 100%;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+    theme.color["Colors/Background/bg-primary"]};
   padding-top: 4px; // top loading bar
   padding: 1rem;
   display: flex;
@@ -180,7 +178,7 @@ export const NlpExecutionActionContainer = styled.div`
   button {
     cursor: pointer;
     padding: 0.75rem 1.5rem;
-    background-color: ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary"]}};
+    background-color: ${({ theme }) => theme.color["Colors/Background/bg-secondary"]}};
     &:first-of-type {
       border-radius: 3px 0 0 3px;
     }
@@ -210,6 +208,6 @@ export const Pill = styled.div`
   padding: 0.2rem 0.4rem;
   display: inline-block;
   background-color: #5f94f5;
-  color: ${({ theme }) => theme.newTheme.color["Colors/Background/bg-secondary"]}};
+  color: ${({ theme }) => theme.color["Colors/Background/bg-secondary"]}};
   border-radius: 0.2rem;
 `

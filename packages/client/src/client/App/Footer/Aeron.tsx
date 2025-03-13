@@ -8,11 +8,10 @@ import { AERON } from "@/client/constants"
 const AeronLogoWrapper = styled(FlexBox)`
   margin-right: auto;
   align-items: flex-start;
-  gap: ${({ theme }) => theme.newTheme.spacing.xs};
+  gap: ${({ theme }) => theme.spacing.xs};
   cursor: pointer;
   svg {
-    fill: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    fill: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
   }
 `
 

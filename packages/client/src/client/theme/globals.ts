@@ -48,7 +48,7 @@ import { createGlobalStyle, css, withTheme } from "styled-components"
 import { Theme } from "./themes"
 
 const getColor = (props: { theme: Theme }) =>
-  props.theme.newTheme.color["Colors/Background/bg-tertiary"]
+  props.theme.color["Colors/Background/bg-tertiary"]
 
 const globalScrollbarStyle = css`
   body,
@@ -97,7 +97,7 @@ export default withTheme(createGlobalStyle`
     line-height: 1rem;
     text-rendering: geometricPrecision;
 
-    color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
 
     .tearOff {
       box-shadow: 1px 4px 10px 0px rgba(0,0,0,0.3);

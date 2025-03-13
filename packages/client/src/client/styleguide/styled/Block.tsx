@@ -15,17 +15,13 @@ export const Block = styled.div<BlockProps>`
     css({
       transition: bg ? "background-color ease-out 0.15s" : undefined,
       backgroundColor: bg
-        ? getThemeColor(
-            theme,
-            bg,
-            theme.newTheme.color["Colors/Background/bg-primary"],
-          )
+        ? getThemeColor(theme, bg, theme.color["Colors/Background/bg-primary"])
         : undefined,
       color: fg
         ? getThemeColor(
             theme,
             fg,
-            theme.newTheme.color["Colors/Text/text-primary (900)"],
+            theme.color["Colors/Text/text-primary (900)"],
           )
         : undefined,
     })};

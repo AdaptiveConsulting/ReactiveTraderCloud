@@ -19,16 +19,13 @@ const FilterValueInputInner = styled.input`
   font-size: 0.75rem;
   width: 100%;
   padding: 2px 10px;
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
   border-bottom: 1.5px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Border/border-primary"]};
-  caret-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Border/border-brand"]};
+    ${({ theme }) => theme.color["Colors/Border/border-primary"]};
+  caret-color: ${({ theme }) => theme.color["Colors/Border/border-brand"]};
   &:focus {
     outline: none !important;
-    border-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Border/border-brand"]};
+    border-color: ${({ theme }) => theme.color["Colors/Border/border-brand"]};
   }
 `
 

@@ -31,9 +31,7 @@ interface RootProps {
 const Root: React.FC<RootProps> = ({ children }: RootProps) => {
   return (
     <>
-      <Block
-        bg={(t) => t.newTheme.color["Colors/Background/bg-secondary_subtle"]}
-      />
+      <Block bg={(t) => t.color["Colors/Background/bg-secondary_subtle"]} />
       {children}
     </>
   )
@@ -42,8 +40,8 @@ const Root: React.FC<RootProps> = ({ children }: RootProps) => {
 const Bar = styled((props) => (
   <Block
     px={3}
-    bg={(t) => t.newTheme.color["Colors/Background/bg-secondary_subtle"]}
-    fg={(t) => t.newTheme.color["Colors/Foreground/fg-secondary (700)"]}
+    bg={(t) => t.color["Colors/Background/bg-secondary_subtle"]}
+    fg={(t) => t.color["Colors/Foreground/fg-secondary (700)"]}
     {...props}
   />
 ))`

@@ -37,9 +37,7 @@ const Bar = styled("rect")<BarProps>`
   animation-delay: ${({ order, speed }) =>
     order * (speed / 1.3 / BAR_NUMBER) - speed * 0.6}s;
   fill: ${({ theme, color }) =>
-    color
-      ? theme.newTheme.color[color]
-      : theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    color ? theme.color[color] : theme.color["Colors/Text/text-primary (900)"]};
   will-change: transform;
 `
 

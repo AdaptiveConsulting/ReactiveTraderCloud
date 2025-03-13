@@ -28,9 +28,8 @@ export const RootContainer = styled.div`
   width: 100%;
   overflow: hidden;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    theme.color["Colors/Background/bg-primary"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
 `
 
 export const RootLauncherContainer = styled(RootContainer)`
@@ -50,7 +49,7 @@ export const LauncherContainer = styled.div<{ showResponsePanel: boolean }>`
   height: 100%;
   width: 100%;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
+    theme.color["Colors/Background/bg-secondary_subtle"]};
   display: flex;
   align-items: center;
   border-radius: ${({ showResponsePanel }) =>
@@ -102,19 +101,16 @@ export const SearchButtonContainer = styled(ButtonContainer)<{
   width: 40px;
   border-radius: 0 3px 3px 0;
   background-color: ${({ isSearchVisible, theme }) =>
-    isSearchVisible
-      ? theme.newTheme.color["Colors/Background/bg-secondary"]
-      : ""};
+    isSearchVisible ? theme.color["Colors/Background/bg-secondary"] : ""};
   ${appRegionNoDrag};
 `
 
 export const LogoContainer = styled(IconContainer)`
   width: 50%;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
+    theme.color["Colors/Background/bg-secondary_subtle"]};
   .svg-icon {
-    fill: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    fill: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
   }
   ${appRegionDrag};
 `
@@ -122,8 +118,7 @@ export const LogoContainer = styled(IconContainer)`
 const controlButtonHoverStyle = css`
   &:hover {
     svg path:last-child {
-      fill: ${({ theme }) =>
-        theme.newTheme.color["Colors/Background/bg-brand-primary"]};
+      fill: ${({ theme }) => theme.color["Colors/Background/bg-brand-primary"]};
     }
   }
 `
@@ -180,15 +175,14 @@ export const Input = styled.input`
   width: 100%;
   height: 45px;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+    theme.color["Colors/Background/bg-primary"]};
   outline: none;
   border-radius: 3px 0 0 3px;
   font-size: 1rem;
   font-weight: 400;
   caret-color: transparent;
   transition: all 0.3s ease;
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
 
   &::placeholder {
     opacity: 0.6;
@@ -202,8 +196,8 @@ export const CancelButton = styled.button`
   height: 24px;
   border-radius: 50%;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
-  color: ${({ theme }) => theme.newTheme.color["Colors/Text/text-primary (900)"]}
+    theme.color["Colors/Background/bg-secondary_subtle"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]}
   cursor: pointer;
   z-index: 2;
 `
@@ -211,7 +205,7 @@ export const CancelButton = styled.button`
 export const Response = styled.div`
   font-size: 1rem;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+    theme.color["Colors/Background/bg-primary"]};
   padding: 0.75rem;
 `
 

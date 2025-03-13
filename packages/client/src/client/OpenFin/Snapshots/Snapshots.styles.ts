@@ -5,10 +5,8 @@ export const Container = styled.div`
   grid-template-rows: 1fr 66px;
   align-items: stretch;
   height: 100%;
-  background: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+  background: ${({ theme }) => theme.color["Colors/Background/bg-primary"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
 `
 
 export const Title = styled.div`
@@ -32,7 +30,7 @@ export const Entry = styled.div`
 
   &:hover {
     background: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-primary_hover"]};
+      theme.color["Colors/Background/bg-primary_hover"]};
   }
 `
 
@@ -41,7 +39,7 @@ export const Form = styled.div`
   grid-template-rows: auto 1fr;
   padding: 1rem;
   border-top: 1px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-tertiary"]};
+    ${({ theme }) => theme.color["Colors/Background/bg-tertiary"]};
 `
 
 export const Fieldset = styled.div`
@@ -53,11 +51,9 @@ export const Fieldset = styled.div`
 export const Input = styled.input`
   display: block;
   padding: 0 0.5rem;
-  background: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-tertiary"]};
+  background: ${({ theme }) => theme.color["Colors/Background/bg-tertiary"]};
   border: none;
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
 
   &:focus {
     outline: none;

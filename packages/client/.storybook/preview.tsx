@@ -53,9 +53,8 @@ const StyledStory = styled.div`
   width: 100%;
   height: 100%;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    theme.color["Colors/Background/bg-primary"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
   transition:
     background-color ${({ theme }) => theme.motion.duration}ms
       ${({ theme }) => theme.motion.easing},

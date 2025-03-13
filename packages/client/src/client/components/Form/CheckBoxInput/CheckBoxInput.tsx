@@ -12,18 +12,18 @@ export const CheckBox = styled.input.attrs({ type: "checkbox" })<{
   appearance: none;
   background-color: transparent;
   border: 1px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Border/border-primary"]};
+    ${({ theme }) => theme.color["Colors/Border/border-primary"]};
   width: 14px;
   height: 14px;
   border-radius: 4px;
 
   background-color: ${({ theme, disabled }) =>
-    disabled && theme.newTheme.color["Colors/Background/bg-disabled_subtle"]};
+    disabled && theme.color["Colors/Background/bg-disabled_subtle"]};
 
   ${({ theme, checked, disabled }) =>
     checked &&
     `
-    background-color: ${!disabled && theme.newTheme.color["Component colors/Utility/Blue/utility-blue-300"]};
+    background-color: ${!disabled && theme.color["Component colors/Utility/Blue/utility-blue-300"]};
     background-image: url("${Check}");
 
   `}
@@ -31,17 +31,16 @@ export const CheckBox = styled.input.attrs({ type: "checkbox" })<{
 
 const CheckBoxInputWrapper = styled(Stack)<{ disabled?: boolean }>`
   border-bottom: 1px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Background/bg-tertiary"]};
-  padding: ${({ theme }) => theme.newTheme.spacing.sm};
-  gap: ${({ theme }) => theme.newTheme.spacing.md};
+    ${({ theme }) => theme.color["Colors/Background/bg-tertiary"]};
+  padding: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.spacing.md};
 
   &:hover,
   &.sg-checkbox-hover {
     ${CheckBox} {
       border: 1px solid
         ${({ theme, disabled }) =>
-          !disabled &&
-          theme.newTheme.color["Colors/Background/bg-brand-solid"]};
+          !disabled && theme.color["Colors/Background/bg-brand-solid"]};
     }
   }
 
@@ -50,8 +49,7 @@ const CheckBoxInputWrapper = styled(Stack)<{ disabled?: boolean }>`
     ${CheckBox} {
       outline: 2px solid
         ${({ theme, disabled }) =>
-          !disabled &&
-          theme.newTheme.color["Colors/Effects/Focus rings/focus-ring"]};
+          !disabled && theme.color["Colors/Effects/Focus rings/focus-ring"]};
       outline-offset: 1px;
     }
   }

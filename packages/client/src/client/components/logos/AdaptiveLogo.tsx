@@ -79,7 +79,6 @@ const AdaptiveLogo = ({
 
 export default styled(AdaptiveLogo)`
   [fill] {
-    fill: ${(props) =>
-      props.theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    fill: ${(props) => props.theme.color["Colors/Text/text-primary (900)"]};
   }
 `

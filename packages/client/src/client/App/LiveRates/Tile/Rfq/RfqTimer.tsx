@@ -19,8 +19,8 @@ const ProgressBar = styled.div<{
   width: number
 }>`
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-brand-primary (900)"]};
-  border-radius: ${({ theme }) => theme.newTheme.radius.xs};
+    theme.color["Colors/Text/text-brand-primary (900)"]};
+  border-radius: ${({ theme }) => theme.radius.xs};
   transition: ${({ transitionTime }) => `width ${transitionTime}ms linear`};
   height: 100%;
   width: ${(p) => p.width}%;
@@ -57,11 +57,11 @@ const TimeProgress = ({ start, end }: { start: number; end: number }) => {
 
 const RejectQuoteButton = styled.button<{ isAnalyticsView: boolean }>`
   color: ${({ theme }) =>
-    theme.newTheme.color[
+    theme.color[
       "Component colors/Components/Buttons/Primary/button-primary-fg"
     ]};
   background-color: ${({ theme }) =>
-    `${theme.newTheme.color["Component colors/Components/Buttons/Primary/button-primary-bg"]}`};
+    `${theme.color["Component colors/Components/Buttons/Primary/button-primary-bg"]}`};
   border-radius: 3px;
   font-size: 11px;
   padding: 2px 5px 3px 5px;
@@ -73,8 +73,8 @@ const TimerWrapper = styled.div<{ isAnalyticsView: boolean }>`
   align-items: center;
   align-self: stretch;
   z-index: 3;
-  padding: 0 ${({ theme }) => theme.newTheme.spacing.lg};
-  margin-bottom: ${({ theme }) => theme.newTheme.spacing.xs};
+  padding: 0 ${({ theme }) => theme.spacing.lg};
+  margin-bottom: ${({ theme }) => theme.spacing.xs};
 `
 
 const SecsTimer = ({

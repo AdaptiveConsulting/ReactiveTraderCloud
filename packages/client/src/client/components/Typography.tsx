@@ -12,11 +12,10 @@ export interface TypographyProps extends BoxProps {
 }
 
 export const Typography = styled(Box)<TypographyProps>`
-  ${({ variant, theme }) =>
-    variant ? theme.newTheme.textStyles[variant] : null}
+  ${({ variant, theme }) => (variant ? theme.textStyles[variant] : null)}
   ${({ theme, color, allowLineHeight, textTransform, fontSize }) => {
     const style: CSSObject = {}
-    style.color = color ? theme.newTheme.color[color] : "inherit"
+    style.color = color ? theme.color[color] : "inherit"
     style.lineHeight = allowLineHeight ? undefined : "normal"
     style.textTransform = textTransform
     if (fontSize) {

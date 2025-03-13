@@ -5,12 +5,12 @@ export const FooterWrapper = styled.div<{ accepted: boolean; missed: boolean }>`
   align-items: center;
   height: 50px;
   padding: 8px;
-  border-radius: ${({ theme }) => theme.newTheme.radius.sm};
+  border-radius: ${({ theme }) => theme.radius.sm};
   background-color: ${({ accepted, missed, theme }) =>
     accepted
-      ? theme.newTheme.color["Colors/Background/bg-success-secondary"]
+      ? theme.color["Colors/Background/bg-success-secondary"]
       : missed
-        ? theme.newTheme.color["Colors/Background/bg-error-primary"]
+        ? theme.color["Colors/Background/bg-error-primary"]
         : undefined};
 `
 

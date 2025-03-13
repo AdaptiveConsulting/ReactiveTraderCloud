@@ -31,9 +31,9 @@ export type RfqRowKey = keyof RfqRow
 
 const Banner = styled(FlexBox)`
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary"]};
-  padding: ${({ theme }) => theme.newTheme.spacing.md};
-  gap: ${({ theme }) => theme.newTheme.spacing.md};
+    theme.color["Colors/Background/bg-secondary"]};
+  padding: ${({ theme }) => theme.spacing.md};
+  gap: ${({ theme }) => theme.spacing.md};
   height: 24px;
 `
 

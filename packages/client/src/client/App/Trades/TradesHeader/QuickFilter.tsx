@@ -15,16 +15,14 @@ const QuickFilterStyle = styled("div")`
 `
 
 const QuickFilterInput = styled("input")`
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
   width: 100%;
   height: 1.25rem;
-  padding: 0 ${({ theme }) => theme.newTheme.spacing.sm};
+  padding: 0 ${({ theme }) => theme.spacing.sm};
   outline: none;
   user-select: text;
   border-bottom: 1px solid
-    ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-brand-primary (900)"]};
+    ${({ theme }) => theme.color["Colors/Text/text-brand-primary (900)"]};
   opacity: 0.5;
 
   &:hover {
@@ -49,8 +47,7 @@ const QuickFilterClearIcon = styled("i")`
   i {
     opacity: 0.59;
     cursor: pointer;
-    color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
   }
 `
 

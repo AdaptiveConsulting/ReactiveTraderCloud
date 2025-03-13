@@ -9,7 +9,7 @@ interface Props {
 
 export const Gap = styled.div<Props>`
   ${({ height, width, theme }) => `
-        height: ${height && theme.newTheme.spacing[height]};
-        width: ${width && theme.newTheme.spacing[width]};
+        height: ${height && theme.spacing[height]};
+        width: ${width && theme.spacing[width]};
   `}
 `

@@ -6,11 +6,10 @@ export const PopupContainer = styled.div<{ open: boolean }>`
   z-index: 5;
   align-items: center;
   justify-content: center;
-  border-radius: ${({ theme }) => theme.newTheme.radius.md};
-  background: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-primary"]};
+  border-radius: ${({ theme }) => theme.radius.md};
+  background: ${({ theme }) => theme.color["Colors/Background/bg-primary"]};
   border: 1px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Border/border-primary"]};
+    ${({ theme }) => theme.color["Colors/Border/border-primary"]};
 `
 
 export const PopupPanel = styled.div<{ minWidth?: string }>`

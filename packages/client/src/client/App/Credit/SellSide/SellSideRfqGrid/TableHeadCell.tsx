@@ -9,7 +9,7 @@ const TableHeadCell = styled.th<{ numeric: boolean; width: number }>`
   ${({ numeric }) => (numeric ? "padding-right: 1.5rem;" : null)};
   width: ${({ width }) => `${width} px`};
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary_subtle"]};
+    theme.color["Colors/Background/bg-secondary_subtle"]};
 `
 interface Props<T extends ColKey> {
   field: T

@@ -9,9 +9,8 @@ export const ComparatorSelectOuter = styled.div`
   position: relative;
   width: 10rem;
   background-color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Background/bg-secondary"]};
-  color: ${({ theme }) =>
-    theme.newTheme.color["Colors/Text/text-primary (900)"]};
+    theme.color["Colors/Background/bg-secondary"]};
+  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
   outline: none;
   padding: 8px 15px 5px 10px;
   cursor: pointer;
@@ -19,17 +18,17 @@ export const ComparatorSelectOuter = styled.div`
   text-transform: none;
   text-align: left;
   border-bottom: 1px solid
-    ${({ theme }) => theme.newTheme.color["Colors/Border/border-brand"]};
+    ${({ theme }) => theme.color["Colors/Border/border-brand"]};
 
   &:hover {
     background-color: ${({ theme }) =>
-      theme.newTheme.color["Colors/Background/bg-secondary_hover"]};
+      theme.color["Colors/Background/bg-secondary_hover"]};
   }
 `
 
 const ComparatorSelectInner = styled.select`
   ${({ theme }) => `
-color: ${theme.newTheme.color["Colors/Text/text-primary (900)"]};
+color: ${theme.color["Colors/Text/text-primary (900)"]};
 &:focus {
   outline: none;
 }
@@ -42,8 +41,8 @@ width: 105%;
 
 /* caret */
 background-image:
-  linear-gradient(45deg, transparent 50%, ${theme.newTheme.color["Colors/Text/text-primary (900)"]} 50%),
-  linear-gradient(135deg, ${theme.newTheme.color["Colors/Text/text-primary (900)"]} 50%, transparent 50%);
+  linear-gradient(45deg, transparent 50%, ${theme.color["Colors/Text/text-primary (900)"]} 50%),
+  linear-gradient(135deg, ${theme.color["Colors/Text/text-primary (900)"]} 50%, transparent 50%);
 background-position:
   calc(100% - 5px) center,
   calc(100%) center;
@@ -52,7 +51,7 @@ background-size:
   5px 5px;
 
 option {
-  background-color: ${theme.newTheme.color["Colors/Background/bg-secondary"]};
+  background-color: ${theme.color["Colors/Background/bg-secondary"]};
 }
 
 `}
