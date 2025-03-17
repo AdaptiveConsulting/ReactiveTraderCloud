@@ -176,7 +176,10 @@ const d3Effect = (chartDiv: HTMLDivElement) => {
     force.restart().alpha(0.5).nodes(nodes)
   })
 
-  return () => subscription.unsubscribe()
+  return () => {
+    select(chartDiv).select("svg").remove()
+    subscription.unsubscribe()
+  }
 }
 
 export const BubbleChart = () => {
