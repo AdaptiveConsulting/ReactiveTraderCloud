@@ -1,17 +1,10 @@
 import styled from "styled-components"
 
-import { FlexBox } from "@/client/components/FlexBox"
 import { Line } from "@/client/components/Line"
 
 const FlexDiv = styled.div`
   display: flex;
   flex-direction: column;
-`
-
-export const BarContainer = styled(FlexBox)`
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: ${({ theme }) => theme.spacing.md};
 `
 
 export const PriceContainer = styled(FlexDiv).attrs(
@@ -31,8 +24,6 @@ export const PriceLabel = styled.div<{
 }>`
   align-self: center;
   padding-bottom: ${({ theme }) => theme.spacing.sm};
-  transition: transform 0.2s;
-
   &:hover {
     transform: scale(1.64);
     transform-origin: ${({ distance }) =>
@@ -40,30 +31,34 @@ export const PriceLabel = styled.div<{
       12px;
   }
 `
-const barLength = 180
+
+export const PriceIndicatorContainer = styled.div.attrs<{
+  distance: number
+}>(({ distance }) => {
+  return {
+    style: {
+      transform: `translate(${distance}%)`,
+      transition: "transform 0.5s",
+    },
+  }
+})<{ distance: number }>`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+`
+
 const indicatorWidth = 5
 
-export const PriceIndicator = styled.div<{
-  distance: number
-}>`
+export const PriceIndicator = styled.div`
   height: 100%;
   width: ${indicatorWidth}px;
-
-  transition: transform 0.5s;
-  transform: translate(
-    ${({ distance }) => {
-      const translationToCenterOfBar = barLength / 2 - indicatorWidth / 2
-      const translationDistanceAlongBar =
-        distance === -Infinity ? 0 : (barLength / 100) * distance
-      return `calc(${translationToCenterOfBar}px + ${translationDistanceAlongBar}px)`
-    }}
-  );
-
   background-color: ${({ theme }) => theme.color["Colors/Border/border-buy"]};
+  z-index: 1;
 `
 
 export const BarPriceContainer = styled.div`
-  width: ${barLength}px;
+  width: 100%;
 `
 
 export const Bar = styled.div`
@@ -76,5 +71,5 @@ export const Bar = styled.div`
 
 export const CenterLine = styled(Line)`
   position: absolute;
-  left: ${barLength / 2 - 1}px;
+  left: 50%;
 `

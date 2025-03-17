@@ -1,5 +1,6 @@
 import { useState } from "react"
 
+import { Stack } from "@/client/components/Stack"
 import { Typography } from "@/client/components/Typography"
 import {
   formatAsWholeNumber,
@@ -9,11 +10,11 @@ import {
 
 import {
   Bar,
-  BarContainer,
   BarPriceContainer,
   CenterLine,
   PriceContainer,
   PriceIndicator,
+  PriceIndicatorContainer,
   PriceLabel,
 } from "./styled"
 
@@ -51,7 +52,13 @@ const PNLBar = ({
   const base = symbol.slice(0, 3)
   const terms = symbol.slice(3)
   return (
-    <BarContainer data-testid={`pnlbar-${base + "/" + terms}`}>
+    <Stack
+      justifyContent="space-between"
+      alignItems="flex-end"
+      marginBottom="md"
+      data-testid={`pnlbar-${base + "/" + terms}`}
+      gap="5xl"
+    >
       <Typography
         variant="Text sm/Regular"
         color="Colors/Text/text-quaternary (500)"
@@ -77,10 +84,12 @@ const PNLBar = ({
         </PriceContainer>
         <Bar>
           <CenterLine />
-          <PriceIndicator distance={distance} />
+          <PriceIndicatorContainer distance={distance}>
+            <PriceIndicator />
+          </PriceIndicatorContainer>
         </Bar>
       </BarPriceContainer>
-    </BarContainer>
+    </Stack>
   )
 }
 

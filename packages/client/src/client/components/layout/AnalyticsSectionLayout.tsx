@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-import { FlexBox } from "../FlexBox"
+import { Stack } from "../Stack"
 import { Typography } from "../Typography"
 import { LayoutProps } from "./types"
 
@@ -25,7 +25,7 @@ export const AnalyticsSectionLayout = ({
       variant="Text lg/Regular"
       color="Colors/Text/text-secondary (700)"
     >
-      <FlexBox>{Header}</FlexBox>
+      <Stack>{Header}</Stack>
     </Typography>
     <BodyWrapper>{Body}</BodyWrapper>
   </Background>
