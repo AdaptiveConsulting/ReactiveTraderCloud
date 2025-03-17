@@ -31,31 +31,34 @@ export const PriceLabel = styled.div<{
       12px;
   }
 `
-const barLength = 180
-const indicatorWidth = 5
 
-export const PriceIndicator = styled.div.attrs<{
+export const PriceIndicatorContainer = styled.div.attrs<{
   distance: number
 }>(({ distance }) => {
-  const translationToCenterOfBar = barLength / 2 - indicatorWidth / 2
-  const translationDistanceAlongBar =
-    distance === -Infinity ? 0 : (barLength / 100) * distance
   return {
     style: {
-      color: "red",
-      transform: `translate(calc(${translationToCenterOfBar}px + ${translationDistanceAlongBar}px))`,
+      transform: `translate(${distance}%)`,
       transition: "transform 0.5s",
     },
   }
 })<{ distance: number }>`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+`
+
+const indicatorWidth = 5
+
+export const PriceIndicator = styled.div`
   height: 100%;
   width: ${indicatorWidth}px;
-
   background-color: ${({ theme }) => theme.color["Colors/Border/border-buy"]};
+  z-index: 1;
 `
 
 export const BarPriceContainer = styled.div`
-  width: ${barLength}px;
+  width: 100%;
 `
 
 export const Bar = styled.div`
@@ -68,5 +71,5 @@ export const Bar = styled.div`
 
 export const CenterLine = styled(Line)`
   position: absolute;
-  left: ${barLength / 2 - 1}px;
+  left: 50%;
 `

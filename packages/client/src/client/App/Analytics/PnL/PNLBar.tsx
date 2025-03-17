@@ -14,6 +14,7 @@ import {
   CenterLine,
   PriceContainer,
   PriceIndicator,
+  PriceIndicatorContainer,
   PriceLabel,
 } from "./styled"
 
@@ -56,6 +57,7 @@ const PNLBar = ({
       alignItems="flex-end"
       marginBottom="md"
       data-testid={`pnlbar-${base + "/" + terms}`}
+      gap="5xl"
     >
       <Typography
         variant="Text sm/Regular"
@@ -82,7 +84,9 @@ const PNLBar = ({
         </PriceContainer>
         <Bar>
           <CenterLine />
-          <PriceIndicator distance={distance} />
+          <PriceIndicatorContainer distance={distance}>
+            <PriceIndicator />
+          </PriceIndicatorContainer>
         </Bar>
       </BarPriceContainer>
     </Stack>
