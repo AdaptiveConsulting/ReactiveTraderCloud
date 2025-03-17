@@ -103,51 +103,44 @@ export const test = base.extend<Fixtures>({
     }
   },
   creditPagesRec: async ({ context }, use, workerInfo) => {
+    let mainPage, blotterPage, newRfqPage, rfqsPage
     const contextPages = context.pages()
-    let pages: CreditPages
-
     if (isOpenFin(workerInfo)) {
-      pages = Object.keys(creditOpenfinUrlSuffixes).reduce<CreditPages>(
-        (rec, urlPath) => {
-          const page = contextPages.find(
-            (p) => p.url() === `${process.env.E2E_RTC_WEB_ROOT_URL}/${urlPath}`,
-          )
-
-          if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
-
-          switch (urlPath) {
-            case "openfin-window-frame?app=CREDIT":
-              rec.mainPage = page
-              break
-            case "credit-blotter":
-              rec.blotterPO = new CreditBlotterPageObject(page)
-              break
-            case "credit-new-rfq":
-              rec.newRfqPO = new CreditNewRfqPageObject(page)
-              break
-            case "credit-rfqs":
-              rec.rfqsPO = new CreditRfqTilesPageObject(page)
-              break
-            default:
-              throw Error(`Unknown Openfin page URL - ${urlPath}`)
-          }
-          return rec
-        },
-        {} as CreditPages,
-      )
+      Object.keys(creditOpenfinUrlSuffixes).forEach((urlPath) => {
+        const page = contextPages.find(
+          (p) => p.url() === `${process.env.E2E_RTC_WEB_ROOT_URL}/${urlPath}`,
+        )
+        if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
+        switch (urlPath) {
+          case "openfin-window-frame?app=CREDIT":
+            mainPage = page
+            break
+          case "credit-blotter":
+            blotterPage = page
+            break
+          case "credit-new-rfq":
+            newRfqPage = page
+            break
+          case "credit-rfqs":
+            rfqsPage = page
+            break
+          default:
+            throw Error(`Unknown Openfin page URL - ${urlPath}`)
+        }
+      })
     } else {
-      const mainWindow =
-        contextPages.length > 0 ? contextPages[0] : await context.newPage()
-
-      pages = {
-        mainPage: mainWindow,
-        blotterPO: new CreditBlotterPageObject(mainWindow, workerInfo),
-        newRfqPO: new CreditNewRfqPageObject(mainWindow, workerInfo),
-        rfqsPO: new CreditRfqTilesPageObject(mainWindow, workerInfo),
-      }
+      mainPage =
+        blotterPage =
+        newRfqPage =
+        rfqsPage =
+          contextPages.length > 0 ? contextPages[0] : await context.newPage()
     }
-
-    use(pages)
+    use({
+      mainPage,
+      blotterPO: new CreditBlotterPageObject(blotterPage, workerInfo),
+      newRfqPO: new CreditNewRfqPageObject(newRfqPage, workerInfo),
+      rfqsPO: new CreditRfqTilesPageObject(rfqsPage, workerInfo),
+    })
   },
   limitCheckerPageRec: async ({ context }, use, workerInfo) => {
     const contextPages = context.pages()
