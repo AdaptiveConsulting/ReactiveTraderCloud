@@ -37,7 +37,7 @@ export const TabBar = <T extends string>({
 }: TabBarProps<T>) => (
   <Background>
     <LeftSection
-      data-testid="tab-bar"
+      data-testid="rfqs-filter-tab-bar"
       doNotShowDropdown={items.length < 2 || !!doNotShowDropdown}
     >
       {items.map((item) => (
