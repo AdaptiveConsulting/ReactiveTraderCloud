@@ -172,7 +172,8 @@ const _sellSideRfqs$ = combineLatest([
             ? adaptiveQuote.state.payload
             : 0
         transformed.timer =
-          rfq.state !== RfqState.Open
+          rfq.state !== RfqState.Open ||
+          transformed.status === SellSideQuoteState.Passed
             ? undefined
             : Number(rfq.creationTimestamp) + rfq.expirySecs * 1000
         return [...rows, transformed]

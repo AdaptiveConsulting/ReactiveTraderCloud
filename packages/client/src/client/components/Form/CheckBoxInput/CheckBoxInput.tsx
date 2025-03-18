@@ -23,9 +23,9 @@ export const CheckBox = styled.input.attrs({ type: "checkbox" })<{
   ${({ theme, checked, disabled }) =>
     checked &&
     `
-    background-color: ${!disabled && theme.color["Component colors/Utility/Blue/utility-blue-300"]};
+    background-color: ${!disabled && theme.color["Colors/Background/bg-brand-solid"]};
     background-image: url("${Check}");
-
+    border-color: ${!disabled && theme.color["Colors/Background/bg-brand-solid"]};
   `}
 `
 

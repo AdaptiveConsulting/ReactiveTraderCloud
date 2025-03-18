@@ -1,4 +1,5 @@
 import { Loader } from "@/client/components/Loader"
+import { Stack } from "@/client/components/Stack"
 import { Typography } from "@/client/components/Typography"
 import { invertDirection } from "@/client/utils"
 import { ACCEPTED_QUOTE_STATE, RfqState } from "@/generated/TradingGateway"
@@ -8,7 +9,6 @@ import { CardHeader } from "../../CreditRfqs/CreditRfqCards/CardHeader"
 import { getSellSideQuoteState, SellSideQuoteState } from "../sellSideState"
 import { SellSideTradeTicketFooter } from "./SellSideTradeTickerFooter"
 import {
-  Banner,
   Diamond,
   SellSideTradeTicketInnerWrapper,
   SellSideTradeTicketWrapper,
@@ -68,12 +68,14 @@ export const SellSideTradeTicketTicketCore = ({
   const terminated = rfqState !== RfqState.Open && !accepted
 
   return (
-    <SellSideTradeTicketWrapper>
+    <SellSideTradeTicketWrapper direction="column" padding="md" gap="md">
       <Typography color="Colors/Text/text-primary (900)">
-        <Banner>
+        <Stack alignItems="center" gap="sm" padding="sm">
           <Diamond state={state} />
-          {getHeaderMessage(state)}
-        </Banner>
+          <Typography variant="Text md/Regular">
+            {getHeaderMessage(state)}
+          </Typography>
+        </Stack>
         <SellSideTradeTicketInnerWrapper>
           <CardHeader
             accepted={accepted}

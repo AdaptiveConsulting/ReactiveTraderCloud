@@ -126,6 +126,7 @@ const StatusIndicator = styled.td<{ status: SellSideQuoteState }>`
 
 const StatusIndicatorSpacer = styled.th<{ header?: boolean }>`
   top: 0;
+  width: 18px;
   position: sticky;
   border-left: solid
     ${({ theme }) => theme.color["Colors/Background/bg-secondary_subtle"]}
@@ -226,6 +227,7 @@ export const RfqGridInner = ({ caption }: RfqGridInner) => {
             ))
           ) : (
             <TableBodyRow>
+              <td></td>
               <TableBodyCell colSpan={rfqColFields.length}>
                 <Typography
                   variant="Text sm/Regular"
@@ -240,6 +242,7 @@ export const RfqGridInner = ({ caption }: RfqGridInner) => {
                   RFQs in queue
                 </Typography>
               </TableBodyCell>
+              <td></td>
             </TableBodyRow>
           )}
         </TableBody>

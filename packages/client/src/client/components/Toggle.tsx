@@ -57,7 +57,7 @@ export const Toggle = ({ left, right, onChange, isToggled }: Props) => (
         color={
           isToggled
             ? "Colors/Text/text-quaternary (500)"
-            : "Colors/Text/text-primary_alt"
+            : "Colors/Text/text-white"
         }
       >
         {left}

@@ -1,23 +1,21 @@
 import styled from "styled-components"
 
+import { Stack } from "@/client/components/Stack"
+
 import { SellSideQuoteState } from "../sellSideState"
 import { getSellSideStatusColor } from "../utils"
 
-export const SellSideTradeTicketWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: ${({ theme }) => theme.spacing.md};
-  gap: ${({ theme }) => theme.spacing.md};
-  height: 100%;
+export const SellSideTradeTicketWrapper = styled(Stack)`
   background-color: ${({ theme }) =>
-    theme.color["Colors/Background/bg-secondary_subtle"]};
+    theme.color["Colors/Background/bg-secondary"]};
 `
 
 export const SellSideTradeTicketInnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 2px;
-  height: 100%;
+  box-shadow: -2px -2px 10px
+    ${({ theme }) => theme.color["Colors/Border/border-secondary"]};
   background-color: ${({ theme }) =>
     theme.color["Colors/Background/bg-primary"]};
 `
@@ -26,7 +24,6 @@ export const Banner = styled.div`
   align-items: center;
   padding: 8px;
   gap: 8px;
-  color: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
 `
 
 export const Diamond = styled.div<{ state: SellSideQuoteState }>`

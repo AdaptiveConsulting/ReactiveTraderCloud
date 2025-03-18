@@ -99,7 +99,7 @@ export const SellSideTradeTicketParameters = ({
           </>
         ) : (
           <Typography variant="Text sm/Regular">
-            {hasPrice(quote?.state) && quote?.state.payload}
+            {hasPrice(quote?.state) ? quote?.state.payload : "-"}
           </Typography>
         )}
       </Parameter>
