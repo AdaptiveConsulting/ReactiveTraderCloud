@@ -1,8 +1,13 @@
-export const AppleShareIcon = (
+import { ReactiveTraderIcon } from "./types"
+
+export const AppleShareIcon = ({
+  width = 22,
+  height = 23,
+}: ReactiveTraderIcon) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="22"
-    height="23"
+    width={width}
+    height={height}
     viewBox="0 0 22 23"
   >
     <g fill="none" fillRule="evenodd" transform="translate(0 .5)">

@@ -1,4 +1,9 @@
-export const CheckCircleIcon = ({ width = 16, height = 16 }) => (
+import { ReactiveTraderIcon } from "./types"
+
+export const CheckCircleIcon = ({
+  width = 16,
+  height = 16,
+}: ReactiveTraderIcon) => (
   <svg
     width={width}
     height={height}

@@ -4,7 +4,7 @@ import { AppleShareIcon } from "@/client/components/icons"
 import { Modal } from "@/client/components/Modal"
 import { Typography } from "@/client/components/Typography"
 
-import { Icon, ModalWrapper } from "./PWAInstallModal.styles"
+import { IconWrapper, ModalWrapper } from "./PWAInstallModal.styles"
 
 interface InstallModalProps {
   closeModal: () => void
@@ -27,8 +27,11 @@ export const PWAInstallModal = ({ closeModal }: InstallModalProps) => (
         variant="Text sm/Regular"
         color="Colors/Text/text-secondary (700)"
       >
-        Tap <Icon>{AppleShareIcon}</Icon> from the browsers menu and select
-        &quot;Add to Home Screen&quot;
+        Tap{" "}
+        <IconWrapper>
+          <AppleShareIcon />
+        </IconWrapper>{" "}
+        from the browsers menu and select &quot;Add to Home Screen&quot;
       </Typography>
       <Gap height="md" />
       <Button variant="outline" size="lg" onClick={closeModal}>
