@@ -29,10 +29,10 @@ test.describe("Trade Blotter", () => {
   let tilePage: Page
   let blotterPage: Page
 
-  test.beforeAll(async ({ context, fxPagesRec }, workerInfo) => {
+  test.beforeAll(async ({ context, fxPages }, workerInfo) => {
     if (isOpenFin(workerInfo)) {
-      tilePage = fxPagesRec["fx-tiles"]
-      blotterPage = fxPagesRec["fx-blotter"]
+      tilePage = fxPages["fx-tiles"]
+      blotterPage = fxPages["fx-blotter"]
     } else {
       const pages = context.pages()
       const mainWindow = pages.length > 0 ? pages[0] : await context.newPage()

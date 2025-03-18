@@ -36,13 +36,15 @@ export const TabBar = <T extends string>({
   doNotShowDropdown,
 }: TabBarProps<T>) => (
   <Background>
-    <LeftSection doNotShowDropdown={items.length < 2 || !!doNotShowDropdown}>
+    <LeftSection
+      data-testid="tab-bar-tabs"
+      doNotShowDropdown={items.length < 2 || !!doNotShowDropdown}
+    >
       {items.map((item) => (
         <TabStyled
           active={item === activeItem}
           key={item}
           onClick={() => handleItemOnClick?.(item)}
-          data-testid={`tabItem-${item}`}
           isStatic={items.length < 2}
         >
           <Typography
@@ -75,7 +77,7 @@ export const TabBar = <T extends string>({
             </Action>
           ))}
       {handleItemOnClick && !doNotShowDropdown && (
-        <DropdownWrapper>
+        <DropdownWrapper data-testid="tab-bar-dropdown">
           <DropdownMenu
             selectedOption={activeItem}
             options={items}

@@ -19,9 +19,9 @@ const currencies = ["NZD", "USD", "JPY", "GBP", "EUR", "CAD", "AUD"]
 test.describe("Analytics panel", () => {
   let analyticsPage: Page
 
-  test.beforeAll(async ({ context, fxPagesRec }, workerInfo) => {
+  test.beforeAll(async ({ context, fxPages }, workerInfo) => {
     if (isOpenFin(workerInfo)) {
-      analyticsPage = fxPagesRec["fx-analytics"]
+      analyticsPage = fxPages["fx-analytics"]
     } else {
       const pages = context.pages()
       const mainWindow = pages.length > 0 ? pages[0] : await context.newPage()
