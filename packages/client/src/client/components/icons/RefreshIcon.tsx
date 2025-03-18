@@ -1,4 +1,9 @@
-export const RefreshIcon = ({ width = 16, height = 16 }) => (
+import { ReactiveTraderIcon } from "./types"
+
+export const RefreshIcon = ({
+  width = 16,
+  height = 16,
+}: ReactiveTraderIcon) => (
   <svg
     width={width}
     height={height}

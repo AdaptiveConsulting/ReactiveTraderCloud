@@ -1,4 +1,9 @@
-export const DarkThemeIcon = ({ width = 28, height = 28 }) => (
+import { ReactiveTraderIcon } from "./types"
+
+export const DarkThemeIcon = ({
+  width = 28,
+  height = 28,
+}: ReactiveTraderIcon) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={width}

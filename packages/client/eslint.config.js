@@ -46,19 +46,17 @@ export default [
   pluginReact.configs.flat.recommended,
   pluginReact.configs.flat["jsx-runtime"],
 
+  // https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks
+  pluginReactHooks.configs["recommended-latest"],
+
   // https://github.com/import-js/eslint-plugin-import
   //
   pluginImport.flatConfigs.recommended,
   pluginImport.flatConfigs.typescript,
 
-  // all files - main block, with no "files" restriction
   {
+    // all files - main block - no "files" restriction
     plugins: {
-      // https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks
-      // full flat config support coming in 5.2.0, will then be able to configure as pluginReact, as:
-      //   pluginReactHooks.configs["recommended-latest"],
-      "react-hooks": pluginReactHooks,
-
       // https://github.com/lydell/eslint-plugin-simple-import-sort
       "simple-import-sort": pluginSimpleImportSort,
     },
@@ -116,11 +114,7 @@ export default [
       // need to suppress no-unresolved, as it cannot cope with the vite aliasing :rolleyes:
       "import/no-unresolved": "off",
 
-      // https://github.com/jsx-eslint/eslint-plugin-react/issues/3796
-      "react/prop-types": "off",
-
-      // as hooks plugin does not play well with Flat Config right now, do this
-      ...pluginReactHooks.configs.recommended.rules,
+      "react-hooks/exhaustive-deps": "error",
     },
   },
   {

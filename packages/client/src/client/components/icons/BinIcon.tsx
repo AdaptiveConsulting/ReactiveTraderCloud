@@ -1,4 +1,6 @@
-export const BinIcon = ({ width = 18, height = 18 }) => (
+import { ReactiveTraderIcon } from "./types"
+
+export const BinIcon = ({ width = 18, height = 18 }: ReactiveTraderIcon) => (
   <svg
     width={width}
     height={height}
