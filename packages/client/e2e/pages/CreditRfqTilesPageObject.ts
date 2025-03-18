@@ -17,7 +17,10 @@ export class CreditRfqTilesPageObject {
         .getByText(filter)
         .click()
     } else {
-      return this.page.getByTestId("rfqs-filter-tab-bar").getByText(filter).click()
+      return this.page
+        .getByTestId("rfqs-filter-tab-bar")
+        .getByText(filter)
+        .click()
     }
   }
 
