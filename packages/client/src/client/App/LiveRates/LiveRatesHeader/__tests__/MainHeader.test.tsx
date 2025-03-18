@@ -63,7 +63,7 @@ describe("MainHeader", () => {
   it("should load all the currency buttons", async () => {
     await renderComponent()
 
-    const currencyTabBar = screen.getByTestId("rfqs-filter-tab-bar")
+    const currencyTabBar = screen.getByTestId("tab-bar-tabs")
     expect(getByText(currencyTabBar, "All")).not.toBeNull()
     expect(getByText(currencyTabBar, "EUR")).not.toBeNull()
     expect(getByText(currencyTabBar, "GBP")).not.toBeNull()
@@ -76,7 +76,7 @@ describe("MainHeader", () => {
       screen.getByRole("region", { name: "Lives Rates Tiles" }).children.length,
     ).toBe(2)
 
-    const currencyTabBar = screen.getByTestId("rfqs-filter-tab-bar")
+    const currencyTabBar = screen.getByTestId("tab-bar-tabs")
 
     act(() => {
       fireEvent.click(getByText(currencyTabBar, "EUR"))

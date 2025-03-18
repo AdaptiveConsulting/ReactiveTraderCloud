@@ -123,6 +123,7 @@ export const test = base.extend<Fixtures>({
                 rec.newRfqPO = new CreditNewRfqPageObject(page, workerInfo)
                 break
               case "credit-rfqs":
+                page.setViewportSize({ width: 1280, height: 1024 })
                 rec.rfqsPO = new CreditRfqTilesPageObject(page, workerInfo)
                 break
               default:

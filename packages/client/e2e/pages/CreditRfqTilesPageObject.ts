@@ -7,21 +7,6 @@ export class CreditRfqTilesPageObject {
     readonly workerInfo: WorkerInfo,
   ) {}
 
-  async selectFilter(filter: string) {
-    if (isRfqTilesResponsive(this.workerInfo)) {
-      this.page.getByTestId("rfqs-filter-dropdown").click()
-      return await this.page
-        .getByTestId("rfqs-filter-dropdown")
-        .getByText(filter)
-        .click()
-    } else {
-      return this.page
-        .getByTestId("rfqs-filter-tab-bar")
-        .getByText(filter)
-        .click()
-    }
-  }
-
   get firstQuote() {
     return this.page
       .getByTestId(/^rfq-/)
@@ -41,6 +26,22 @@ export class CreditRfqTilesPageObject {
 
   get firstRfqTile() {
     return this.page.getByTestId(/^rfq-/).first()
+  }
+
+  get filterTabs() {
+    return this.page.getByTestId("tab-bar-tabs")
+  }
+
+  get filterDropdown() {
+    return this.page.getByTestId("tab-bar-dropdown")
+  }
+
+  async selectFilter(filter: string) {
+    if (isRfqTilesResponsive(this.workerInfo)) {
+      this.filterDropdown.click()
+      return await this.filterDropdown.getByText(filter).click()
+    }
+    return this.filterTabs.getByText(filter).click()
   }
 
   firstQuoteForRfqId(rfqId: string) {

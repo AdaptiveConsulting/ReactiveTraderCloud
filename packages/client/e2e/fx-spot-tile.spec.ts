@@ -25,7 +25,7 @@ test.describe("Spot Tile", () => {
 
   test.describe("Valid Purchase", () => {
     test("When I sell EUR to USD then trade Id shown in tile should match trade Id shown in blotter @smoke", async () => {
-      await tilePage.locator("[data-testid='tabItem-EUR']").click()
+      await tilePage.getByTestId("tab-bar-tabs").getByText("EUR").click()
 
       const spotTileNotionalInput = tilePage.locator(
         "input[id='notional-input-EURUSD']",
@@ -43,11 +43,11 @@ test.describe("Spot Tile", () => {
         .locator(`[data-testid='trades-grid-row-${tradeId}'] > div`)
         .nth(1)
       await expect(blotterTradeID).toHaveText(tradeId)
-
-      await tilePage.locator("[data-testid='tabItem-All']").click()
     })
 
     test("When I buy USD/JPY then a tile displays in green with confirmation message", async () => {
+      await tilePage.getByTestId("tab-bar-tabs").getByText("USD").click()
+
       await tilePage.locator("[data-testid='Buy-USDJPY']").click()
 
       const greenConfirmation = tilePage
@@ -59,6 +59,8 @@ test.describe("Spot Tile", () => {
 
   test.describe("Rejected purchase confirmation", () => {
     test("When I buy GBP/JPY then a tile displays in red with message 'Trade was rejected'", async () => {
+      await tilePage.getByTestId("tab-bar-tabs").getByText("GBP").click()
+
       await tilePage.locator("[data-testid='Buy-GBPJPY']").click()
 
       const redConfirmation = tilePage
@@ -70,6 +72,8 @@ test.describe("Spot Tile", () => {
 
   test.describe("Timed out transaction", () => {
     test("When I sell EUR/JPY then an execution animation appears until a timed out tile displays in orange with message 'Trade taking longer than expected'", async () => {
+      await tilePage.getByTestId("tab-bar-tabs").getByText("EUR").click()
+
       await tilePage.locator("[data-testid='Sell-EURJPY']").click()
 
       const executingSpinner = tilePage.getByText(/Executing/)
@@ -87,6 +91,8 @@ test.describe("Spot Tile", () => {
 
   test.describe("High notional RFQ", () => {
     test("When I initiate RFQ on NZD/USD then it should display fixed prices for buy/sell and after 10 secs, and a requote button appears", async () => {
+      await tilePage.getByTestId("tab-bar-tabs").getByText("NZD").click()
+
       await tilePage.locator("[data-testid='rfqButton']").click()
 
       await expect(tilePage.getByTestId("rfqTimer")).toBeVisible()
@@ -102,6 +108,10 @@ test.describe("Spot Tile", () => {
   })
 
   test.describe("Notional value", () => {
+    test.beforeAll(async () => {
+      await tilePage.getByTestId("tab-bar-tabs").getByText("EUR").click()
+    })
+
     test("When I type 1k as notional value to EUR/USD then notional value should be 1 thousand", async () => {
       const spotTileNotionalInput = tilePage.locator(
         "input[id='notional-input-EURUSD']",
@@ -163,48 +173,23 @@ test.describe("Spot Tile", () => {
   })
 
   test.describe("Toggle between tile filters", () => {
-    test("When I toggle EUR then I should see 4 tiles", async () => {
-      await tilePage.locator("[data-testid='tabItem-EUR']").click()
-      const totalEuroTiles = await tilePage
-        .locator('div[aria-label="Lives Rates Tiles"] > div')
-        .count()
+    const filterData = [
+      { currency: "EUR", numTiles: 4 },
+      { currency: "USD", numTiles: 5 },
+      { currency: "GBP", numTiles: 2 },
+      { currency: "AUD", numTiles: 2 },
+      { currency: "NZD", numTiles: 1 },
+    ]
 
-      expect(totalEuroTiles).toBe(4)
-    })
+    filterData.forEach(({ currency, numTiles }) => {
+      test(`When I toggle ${currency} then I should see ${numTiles} tiles testing with `, async () => {
+        await tilePage.getByTestId("tab-bar-tabs").getByText(currency).click()
+        const totalTiles = await tilePage
+          .locator('div[aria-label="Lives Rates Tiles"] > div')
+          .count()
 
-    test("When I toggle USD then I should see 5 tiles", async () => {
-      await tilePage.locator("[data-testid='tabItem-USD']").click()
-      const totalUsdTiles = await tilePage
-        .locator('div[aria-label="Lives Rates Tiles"] > div')
-        .count()
-
-      expect(totalUsdTiles).toBe(5)
-    })
-
-    test("When I toggle GBP then I should see 2 tiles", async () => {
-      await tilePage.locator("[data-testid='tabItem-GBP']").click()
-      const totalGBPTiles = await tilePage
-        .locator('div[aria-label="Lives Rates Tiles"] > div')
-        .count()
-
-      expect(totalGBPTiles).toBe(2)
-    })
-
-    test("When I toggle AUD then I should see 2 tiles", async () => {
-      await tilePage.locator("[data-testid='tabItem-AUD']").click()
-      const totalAUD = await tilePage
-        .locator('div[aria-label="Lives Rates Tiles"] > div')
-        .count()
-      expect(totalAUD).toBe(2)
-    })
-
-    test("When I toggle NZD then I should see 1 tile", async () => {
-      await tilePage.locator("[data-testid='tabItem-NZD']").click()
-      const totalNZDTiles = await tilePage
-        .locator('div[aria-label="Lives Rates Tiles"] > div')
-        .count()
-      expect(totalNZDTiles).toBe(1)
-      await tilePage.locator("[data-testid='tabItem-All']").click()
+        expect(totalTiles).toBe(numTiles)
+      })
     })
   })
 })

@@ -37,7 +37,7 @@ export const TabBar = <T extends string>({
 }: TabBarProps<T>) => (
   <Background>
     <LeftSection
-      data-testid="rfqs-filter-tab-bar"
+      data-testid="tab-bar-tabs"
       doNotShowDropdown={items.length < 2 || !!doNotShowDropdown}
     >
       {items.map((item) => (
@@ -77,7 +77,7 @@ export const TabBar = <T extends string>({
             </Action>
           ))}
       {handleItemOnClick && !doNotShowDropdown && (
-        <DropdownWrapper data-testid="rfqs-filter-dropdown">
+        <DropdownWrapper data-testid="tab-bar-dropdown">
           <DropdownMenu
             selectedOption={activeItem}
             options={items}
