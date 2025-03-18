@@ -1,4 +1,4 @@
-import type { HttpFunction } from '@google-cloud/functions-framework/build/src/functions';
+import type { HttpFunction } from '@google-cloud/functions-framework';
 import { v1 as uuid } from 'uuid';
 import DialogFlow from '@google-cloud/dialogflow';
 
