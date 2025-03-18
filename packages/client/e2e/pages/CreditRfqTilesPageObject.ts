@@ -1,16 +1,14 @@
 import { Page, WorkerInfo } from "@playwright/test"
 
-import { isResponsive } from "../utils"
+import { isRfqTilesResponsive } from "../utils"
 export class CreditRfqTilesPageObject {
   constructor(
     readonly page: Page,
     readonly workerInfo: WorkerInfo,
   ) {}
 
-  // TODO - these tiles filter functions will not work in squashed resonsive mode
-
   async selectFilter(filter: string) {
-    if (isResponsive(this.workerInfo)) {
+    if (isRfqTilesResponsive(this.workerInfo)) {
       this.page.getByTestId("rfqs-filter-dropdown").click()
       return await this.page
         .getByTestId("rfqs-filter-dropdown")

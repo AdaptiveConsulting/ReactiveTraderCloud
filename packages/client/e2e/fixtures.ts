@@ -16,16 +16,15 @@ type FXPage = "mainWindow" | "fx-tiles" | "fx-blotter" | "fx-analytics"
 const RUNTIME_ADDRESS = process.env.OPENFIN_RUNTIME_ADDRESS ?? ""
 
 type CreditPages = {
-  mainPage: Page
   blotterPO: CreditBlotterPageObject
   newRfqPO: CreditNewRfqPageObject
   rfqsPO: CreditRfqTilesPageObject
 }
 
 interface Fixtures {
-  fxPagesRec: Record<FXPage, Page>
-  creditPagesRec: CreditPages
-  limitCheckerPageRec: Page
+  fxPages: Record<FXPage, Page>
+  creditPages: CreditPages
+  limitCheckerPage: Page
 }
 
 const fxOpenfinUrlPaths: string[] = [
@@ -36,7 +35,6 @@ const fxOpenfinUrlPaths: string[] = [
 ]
 
 const creditOpenfinUrlSuffixes: Record<string, keyof CreditPages> = {
-  "openfin-window-frame?app=CREDIT": "mainPage",
   "credit-blotter": "blotterPO",
   "credit-new-rfq": "newRfqPO",
   "credit-rfqs": "rfqsPO",
@@ -77,8 +75,9 @@ export const test = base.extend<Fixtures>({
       use(context)
     }
   },
-  fxPagesRec: async ({ context }, use, workerInfo) => {
+  fxPages: async ({ context }, use, workerInfo) => {
     const contextPages = context.pages()
+
     if (isOpenFin(workerInfo)) {
       const pages = fxOpenfinUrlPaths.reduce(
         (rec, urlPath) => {
@@ -102,48 +101,52 @@ export const test = base.extend<Fixtures>({
       })
     }
   },
-  creditPagesRec: async ({ context }, use, workerInfo) => {
-    let mainPage, blotterPage, newRfqPage, rfqsPage
+  creditPages: async ({ context }, use, workerInfo) => {
     const contextPages = context.pages()
+
     if (isOpenFin(workerInfo)) {
-      Object.keys(creditOpenfinUrlSuffixes).forEach((urlPath) => {
-        const page = contextPages.find(
-          (p) => p.url() === `${process.env.E2E_RTC_WEB_ROOT_URL}/${urlPath}`,
-        )
-        if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
-        switch (urlPath) {
-          case "openfin-window-frame?app=CREDIT":
-            mainPage = page
-            break
-          case "credit-blotter":
-            blotterPage = page
-            break
-          case "credit-new-rfq":
-            newRfqPage = page
-            break
-          case "credit-rfqs":
-            rfqsPage = page
-            break
-          default:
-            throw Error(`Unknown Openfin page URL - ${urlPath}`)
-        }
-      })
+      use(
+        Object.keys(creditOpenfinUrlSuffixes).reduce<CreditPages>(
+          (rec, urlPath) => {
+            const page = contextPages.find(
+              (p) =>
+                p.url() === `${process.env.E2E_RTC_WEB_ROOT_URL}/${urlPath}`,
+            )
+
+            if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
+
+            switch (urlPath) {
+              case "credit-blotter":
+                rec.blotterPO = new CreditBlotterPageObject(page, workerInfo)
+                break
+              case "credit-new-rfq":
+                rec.newRfqPO = new CreditNewRfqPageObject(page, workerInfo)
+                break
+              case "credit-rfqs":
+                rec.rfqsPO = new CreditRfqTilesPageObject(page, workerInfo)
+                break
+              default:
+                throw Error(`Unknown Openfin page URL - ${urlPath}`)
+            }
+            return rec
+          },
+          {} as CreditPages,
+        ),
+      )
     } else {
-      mainPage =
-        blotterPage =
-        newRfqPage =
-        rfqsPage =
-          contextPages.length > 0 ? contextPages[0] : await context.newPage()
+      const mainPage =
+        contextPages.length > 0 ? contextPages[0] : await context.newPage()
+      await mainPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}/credit`)
+      use({
+        blotterPO: new CreditBlotterPageObject(mainPage, workerInfo),
+        newRfqPO: new CreditNewRfqPageObject(mainPage, workerInfo),
+        rfqsPO: new CreditRfqTilesPageObject(mainPage, workerInfo),
+      })
     }
-    use({
-      mainPage,
-      blotterPO: new CreditBlotterPageObject(blotterPage, workerInfo),
-      newRfqPO: new CreditNewRfqPageObject(newRfqPage, workerInfo),
-      rfqsPO: new CreditRfqTilesPageObject(rfqsPage, workerInfo),
-    })
   },
-  limitCheckerPageRec: async ({ context }, use, workerInfo) => {
+  limitCheckerPage: async ({ context }, use, workerInfo) => {
     const contextPages = context.pages()
+
     if (isOpenFin(workerInfo)) {
       const page = contextPages.find(
         (p) =>
@@ -154,10 +157,10 @@ export const test = base.extend<Fixtures>({
         throw Error(`Openfin page at ${limitCheckerUrlPath} was not found`)
       use(page)
     } else {
-      const mainWindow =
+      const mainPage =
         contextPages.length > 0 ? contextPages[0] : await context.newPage()
 
-      use(mainWindow)
+      use(mainPage)
     }
   },
 })

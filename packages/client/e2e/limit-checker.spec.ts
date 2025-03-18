@@ -7,17 +7,17 @@ import { assertGridCell, assertGridRow, isOpenFin } from "./utils"
 test.describe("Limit Checker", () => {
   let tilePage: Page
   let blotterPage: Page
-  let limitCheckerPage: Page
 
-  test.beforeAll(async ({ fxPagesRec, limitCheckerPageRec }, workerInfo) => {
+  test.beforeAll(async ({ fxPages }, workerInfo) => {
     test.fixme(!isOpenFin(workerInfo), "Openfin Only")
 
-    tilePage = fxPagesRec["fx-tiles"]
-    blotterPage = fxPagesRec["fx-blotter"]
-    limitCheckerPage = limitCheckerPageRec
+    tilePage = fxPages["fx-tiles"]
+    blotterPage = fxPages["fx-blotter"]
   })
 
-  test("Trade is checked and allowed if notional is under set limit", async ({}) => {
+  test("Trade is checked and allowed if notional is under set limit", async ({
+    limitCheckerPage,
+  }) => {
     const limitTableFirstRowCells = limitCheckerPage
       .locator(`[role="grid"] > div`)
       .nth(1)
@@ -75,7 +75,9 @@ test.describe("Limit Checker", () => {
     })
   })
 
-  test("Trade is blocked if notional is above limit", async ({}) => {
+  test("Trade is blocked if notional is above limit", async ({
+    limitCheckerPage,
+  }) => {
     const limitTableFirstRowCells = limitCheckerPage
       .locator(`[role="grid"] > div`)
       .nth(1)

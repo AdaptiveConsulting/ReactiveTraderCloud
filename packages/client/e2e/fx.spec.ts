@@ -6,9 +6,9 @@ import { isOpenFin } from "./utils"
 test.describe("Fx App", () => {
   let mainWindow: Page
 
-  test.beforeAll(async ({ context, fxPagesRec }, workerInfo) => {
+  test.beforeAll(async ({ context, fxPages }, workerInfo) => {
     if (isOpenFin(workerInfo)) {
-      mainWindow = fxPagesRec["mainWindow"]
+      mainWindow = fxPages["mainWindow"]
     } else {
       const pages = context.pages()
       mainWindow = pages.length > 0 ? pages[0] : await context.newPage()

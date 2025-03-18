@@ -7,10 +7,10 @@ test.describe("Spot Tile", () => {
   let tilePage: Page
   let blotterPage: Page
 
-  test.beforeAll(async ({ context, fxPagesRec }, workerInfo) => {
+  test.beforeAll(async ({ context, fxPages }, workerInfo) => {
     if (isOpenFin(workerInfo)) {
-      tilePage = fxPagesRec["fx-tiles"]
-      blotterPage = fxPagesRec["fx-blotter"]
+      tilePage = fxPages["fx-tiles"]
+      blotterPage = fxPages["fx-blotter"]
       tilePage.setViewportSize({ width: 1280, height: 1024 })
       blotterPage.setViewportSize({ width: 1280, height: 1024 })
     } else {

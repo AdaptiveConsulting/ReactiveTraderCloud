@@ -1,5 +1,11 @@
 import { Subscribe } from "@react-rxjs/core"
-import { act, fireEvent, render, screen } from "@testing-library/react"
+import {
+  act,
+  fireEvent,
+  getByText,
+  render,
+  screen,
+} from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 
 import { TestThemeProvider } from "@/client/utils/testUtils"
@@ -57,9 +63,10 @@ describe("MainHeader", () => {
   it("should load all the currency buttons", async () => {
     await renderComponent()
 
-    expect(screen.getByTestId("tabItem-All").textContent).toBe(`All`)
-    expect(screen.getByTestId("tabItem-EUR").textContent).toBe(`EUR`)
-    expect(screen.getByTestId("tabItem-GBP").textContent).toBe(`GBP`)
+    const currencyTabBar = screen.getByTestId("rfqs-filter-tab-bar")
+    expect(getByText(currencyTabBar, "All")).not.toBeNull()
+    expect(getByText(currencyTabBar, "EUR")).not.toBeNull()
+    expect(getByText(currencyTabBar, "GBP")).not.toBeNull()
   })
 
   it("should filter the tiles based on selection", async () => {
@@ -69,8 +76,10 @@ describe("MainHeader", () => {
       screen.getByRole("region", { name: "Lives Rates Tiles" }).children.length,
     ).toBe(2)
 
+    const currencyTabBar = screen.getByTestId("rfqs-filter-tab-bar")
+
     act(() => {
-      fireEvent.click(screen.getByTestId("tabItem-EUR"))
+      fireEvent.click(getByText(currencyTabBar, "EUR"))
     })
 
     expect(
@@ -79,7 +88,7 @@ describe("MainHeader", () => {
     expect(screen.getByTestId("tile-EURUSD")).not.toBeNull()
 
     act(() => {
-      fireEvent.click(screen.getByTestId("tabItem-GBP"))
+      fireEvent.click(getByText(currencyTabBar, "GBP"))
     })
 
     expect(

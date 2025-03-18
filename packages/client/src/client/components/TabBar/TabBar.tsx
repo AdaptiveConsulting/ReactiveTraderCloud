@@ -45,7 +45,6 @@ export const TabBar = <T extends string>({
           active={item === activeItem}
           key={item}
           onClick={() => handleItemOnClick?.(item)}
-          data-testid={`tabItem-${item}`}
           isStatic={items.length < 2}
         >
           <Typography

@@ -10,28 +10,15 @@ import {
 import { ExpectTimeout, isOpenFin } from "./utils"
 
 let browserContext: BrowserContext
-let mainPage: Page
 let newRfqPage: CreditNewRfqPageObject
 let rfqsPage: CreditRfqTilesPageObject
 let rfqBlotterPage: CreditBlotterPageObject
 
 test.describe("Credit", () => {
-  test.beforeAll(async ({ creditPagesRec }, workerInfo) => {
-    mainPage = creditPagesRec.mainPage
-    newRfqPage = creditPagesRec.newRfqPO
-    rfqsPage = creditPagesRec.rfqsPO
-    rfqBlotterPage = creditPagesRec.blotterPO
-
-    if (isOpenFin(workerInfo)) {
-      await mainPage.evaluate(async () => {
-        // eslint-disable-next-line
-        // @ts-ignore
-        window.fin.Window.getCurrentSync().maximize()
-      })
-      rfqsPage.page.setViewportSize({ width: 1280, height: 1024 })
-    } else {
-      await mainPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}/credit`)
-    }
+  test.beforeAll(async ({ creditPages: creditPages }) => {
+    newRfqPage = creditPages.newRfqPO
+    rfqsPage = creditPages.rfqsPO
+    rfqBlotterPage = creditPages.blotterPO
   })
 
   test.beforeEach(async ({ context }) => {
@@ -112,10 +99,10 @@ test.describe("Credit", () => {
     expect(tradeIdFromTile).toEqual(tradeIdInBlotter)
   })
 
-  test("Sell side ticket", async () => {
+  test("Sell side ticket", async ({}, workerInfo) => {
     const sellSidePage = (await test.step("Create RFQ for 2000 AMZN", () =>
       createRFQStep("AMZN", "2"))) as Page
-    const sellSidePO = new CreditSellSidePageObject(sellSidePage)
+    const sellSidePO = new CreditSellSidePageObject(sellSidePage, workerInfo)
 
     const rfqTestId = await rfqsPage.firstRfqTile.getAttribute("data-testid")
 
@@ -128,10 +115,10 @@ test.describe("Credit", () => {
     await expect(rfqsPage.firstQuoteForRfqId(rfqTestId!)).toContainText("$100")
   })
 
-  test("Respond to quote with Pass in Sell Side", async () => {
+  test("Respond to quote with Pass in Sell Side", async ({}, workerInfo) => {
     const sellSidePage = (await test.step("Create RFQ for 2000 AMZN", () =>
       createRFQStep("AMZN", "2"))) as Page
-    const sellSidePO = new CreditSellSidePageObject(sellSidePage)
+    const sellSidePO = new CreditSellSidePageObject(sellSidePage, workerInfo)
 
     const rfqTestId = await rfqsPage.firstRfqTile.getAttribute("data-testid")
 

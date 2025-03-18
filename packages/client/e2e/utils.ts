@@ -3,7 +3,7 @@ import { expect, Locator, WorkerInfo } from "@playwright/test"
 export const isOpenFin = (workerInfo: WorkerInfo) =>
   workerInfo.project.name === "openfin"
 
-export const isResponsive = (workerInfo: WorkerInfo) =>
+export const isRfqTilesResponsive = (workerInfo: WorkerInfo) =>
   workerInfo.project.name === "webResponsive"
 
 export enum ExpectTimeout {
