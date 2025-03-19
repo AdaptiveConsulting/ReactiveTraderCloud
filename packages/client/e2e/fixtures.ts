@@ -5,8 +5,8 @@ import {
   CreditBlotterPageObject,
   CreditNewRfqPageObject,
   CreditRfqTilesPageObject,
+  FxBlotterPageObject,
   FxNewRfqPageObject,
-  FxBlotterPageObject
 } from "./pages"
 import { isOpenFin } from "./utils"
 
@@ -82,7 +82,7 @@ export const test = base.extend<Fixtures>({
       use(context)
     }
   },
-  fxPages: async ({ context }, use, workerInfo) => {
+  fxPages: async ({ context }, use, workerInfo, testInfo) => {
     const contextPages = context.pages()
 
     if (isOpenFin(workerInfo)) {
@@ -96,13 +96,14 @@ export const test = base.extend<Fixtures>({
         },
         {} as Record<FXPage, Page>,
       )
+      use(pages)
     } else {
       const mainPage =
         contextPages.length > 0 ? contextPages[0] : await context.newPage()
       await mainPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}`)
       use({
-        fxTilePO: new FxNewRfqPageObject(mainPage),
-        fxBlotterPO: new FxBlotterPageObject(mainPage)
+        fxTilePO: new FxNewRfqPageObject(mainPage, testInfo),
+        fxBlotterPO: new FxBlotterPageObject(mainPage, testInfo),
       })
     }
   },
