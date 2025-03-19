@@ -2,7 +2,6 @@ import { FC } from "react"
 import styled from "styled-components"
 
 import { FlexBox } from "@/client/components/FlexBox"
-import { Gap } from "@/client/components/Gap"
 import { Typography } from "@/client/components/Typography"
 
 import { RfqsTab, useSelectedRfqsTab } from "../../selectedRfqsTab"
@@ -77,10 +76,9 @@ export const NoRfqsScreen = () => {
   return (
     <Wrapper>
       <IconComponent />
-      <Typography variant="Text lg/Semibold">
+      <Typography variant="Text lg/Semibold" marginBottom="xs">
         {getTitleForTab(selectedRfqsTab)}
       </Typography>
-      <Gap height="xs" />
       <Typography
         variant="Text md/Regular"
         color="Colors/Text/text-tertiary (600)"
