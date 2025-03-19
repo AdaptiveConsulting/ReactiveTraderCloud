@@ -1,10 +1,9 @@
 import { createSignal } from "@react-rxjs/utils"
-import { FaCheckCircle, FaThumbsDown } from "react-icons/fa"
 import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
 
 import { Button } from "@/client/components/Button"
-import { FlexBox } from "@/client/components/FlexBox"
-import { Gap } from "@/client/components/Gap"
+import { CheckCircleIcon, CrossCircleIcon } from "@/client/components/icons"
+import { Stack } from "@/client/components/Stack"
 import { Typography } from "@/client/components/Typography"
 import {
   customNumberFormatter,
@@ -68,7 +67,7 @@ export const SellSideTradeTicketFooter = ({
     useClickElementOnEnter<HTMLButtonElement>(isPriceFieldFocused)
 
   if (!rfq) {
-    return <FooterWrapper accepted={false} missed={false} />
+    return <FooterWrapper accepted={false} missed={false} ended={false} />
   }
 
   const {
@@ -89,15 +88,27 @@ export const SellSideTradeTicketFooter = ({
     quote?.state.type !== PENDING_WITHOUT_PRICE_QUOTE_STATE
 
   const passed = quote?.state.type === PASSED_QUOTE_STATE
+
   const accepted =
     state === RfqState.Closed && quote?.state.type === ACCEPTED_QUOTE_STATE
+
   const missed =
     state === RfqState.Closed &&
     quote?.state.type !== ACCEPTED_QUOTE_STATE &&
     !passed
 
+  const ended = isRfqTerminated(state) || passed
+
   return (
-    <FooterWrapper accepted={accepted} missed={missed}>
+    <FooterWrapper
+      accepted={accepted}
+      missed={missed}
+      ended={ended}
+      alignItems="center"
+      padding="md"
+      marginX="xs"
+      marginBottom="xs"
+    >
       {state === RfqState.Open && !passed && (
         <>
           <Button
@@ -128,22 +139,23 @@ export const SellSideTradeTicketFooter = ({
           </Button>
         </>
       )}
-      {(isRfqTerminated(state) || passed) && (
-        <Typography variant="Text sm/Regular">
-          Request{" "}
-          {passed
-            ? "Passed"
-            : state === RfqState.Cancelled
-              ? "Cancelled"
-              : "Expired"}
-        </Typography>
+      {ended && (
+        <Stack alignItems="center" gap="sm">
+          <Typography variant="Text sm/Regular">
+            Request{" "}
+            {passed
+              ? "Passed"
+              : state === RfqState.Cancelled
+                ? "Cancelled"
+                : "Expired"}
+          </Typography>
+        </Stack>
       )}
       {accepted && (
-        <FlexBox>
-          <FaCheckCircle size={11} />
-          <Gap width="sm" />
+        <Stack alignItems="center" gap="sm">
+          <CheckCircleIcon />
           <div>
-            <Typography variant="Text sm/Medium">Trade Successful</Typography>
+            <Typography variant="Text lg/Medium">Trade Successful</Typography>
             <Typography variant="Text sm/Regular">
               You {isBuy(direction) ? "Bought" : "Sold"} {formatter(quantity)}{" "}
               {instrument?.name ?? "Unknown Instrument"} @
@@ -152,16 +164,13 @@ export const SellSideTradeTicketFooter = ({
                 : null}
             </Typography>
           </div>
-        </FlexBox>
+        </Stack>
       )}
       {missed && (
-        <Typography
-          variant="Text sm/Regular"
-          color="Colors/Text/text-error-primary (600)"
-        >
-          <FaThumbsDown size={11} />
-          Traded Away
-        </Typography>
+        <Stack alignItems="center" gap="sm">
+          <CrossCircleIcon />
+          <Typography variant="Text lg/Medium">Traded Away</Typography>
+        </Stack>
       )}
     </FooterWrapper>
   )

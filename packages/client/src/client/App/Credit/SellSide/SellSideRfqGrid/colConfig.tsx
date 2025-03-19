@@ -92,7 +92,7 @@ export const rfqColDef: RfqColDef = {
   price: {
     headerName: "Price",
     filterType: "number",
-    valueFormatter: (v) => `$${v}`,
+    valueFormatter: (v) => (v ? `$${v}` : "-"),
     excelValueFormatter: (v) => `${v}`,
     width: 10,
   },
