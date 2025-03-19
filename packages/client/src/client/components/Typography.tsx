@@ -5,7 +5,7 @@ import { Box, BoxProps } from "./Box"
 
 export interface TypographyProps extends BoxProps {
   variant?: TextStyles
-  color?: Color
+  color?: Color | string
   allowLineHeight?: boolean
   fontSize?: number | string
   textTransform?: CSSProperties["textTransform"]

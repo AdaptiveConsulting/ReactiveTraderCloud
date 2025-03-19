@@ -54,11 +54,7 @@ export const Toggle = ({ left, right, onChange, isToggled }: Props) => (
     <Button onClick={onChange}>
       <ButtonTypography
         variant="Text md/Semibold"
-        color={
-          isToggled
-            ? "Colors/Text/text-quaternary (500)"
-            : "Colors/Text/text-white"
-        }
+        color={isToggled ? "Colors/Text/text-quaternary (500)" : "white"}
       >
         {left}
       </ButtonTypography>
