@@ -1,5 +1,6 @@
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
+import pluginNode from "eslint-plugin-n";
 
 export default [
   {
@@ -11,6 +12,8 @@ export default [
   // ESLint's own core recommended rules
   // the FlatConfig equivalent of:  extends: [ 'eslint:recommended' ]
   js.configs.recommended,
+
+  pluginNode.configs["flat/recommended-script"],
 
   // https://typescript-eslint.io/getting-started/
   // Note:
