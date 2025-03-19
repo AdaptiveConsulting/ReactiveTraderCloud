@@ -5,6 +5,8 @@ import {
   CreditBlotterPageObject,
   CreditNewRfqPageObject,
   CreditRfqTilesPageObject,
+  FxNewRfqPageObject,
+  FxBlotterPageObject
 } from "./pages"
 import { isOpenFin } from "./utils"
 
@@ -15,6 +17,11 @@ type FXPage = "mainWindow" | "fx-tiles" | "fx-blotter" | "fx-analytics"
 
 const RUNTIME_ADDRESS = process.env.OPENFIN_RUNTIME_ADDRESS ?? ""
 
+type FxPages = {
+  fxTilePO: FxNewRfqPageObject
+  fxBlotterPO: FxBlotterPageObject
+}
+
 type CreditPages = {
   blotterPO: CreditBlotterPageObject
   newRfqPO: CreditNewRfqPageObject
@@ -22,7 +29,7 @@ type CreditPages = {
 }
 
 interface Fixtures {
-  fxPages: Record<FXPage, Page>
+  fxPages: FxPages
   creditPages: CreditPages
   limitCheckerPage: Page
 }
@@ -89,15 +96,13 @@ export const test = base.extend<Fixtures>({
         },
         {} as Record<FXPage, Page>,
       )
-      use(pages)
     } else {
-      const mainWindow =
+      const mainPage =
         contextPages.length > 0 ? contextPages[0] : await context.newPage()
+      await mainPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}`)
       use({
-        mainWindow,
-        "fx-analytics": mainWindow,
-        "fx-blotter": mainWindow,
-        "fx-tiles": mainWindow,
+        fxTilePO: new FxNewRfqPageObject(mainPage),
+        fxBlotterPO: new FxBlotterPageObject(mainPage)
       })
     }
   },
