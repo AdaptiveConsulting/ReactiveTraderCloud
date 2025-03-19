@@ -1,7 +1,0 @@
-.env
-lib/
-rsa/
-config/
-node_modules/
-error.log
-combined.log
