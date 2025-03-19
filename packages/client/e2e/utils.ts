@@ -17,7 +17,7 @@ export enum TestTimeout {
 
 export enum RfqTimeout {
   SPOT_TILE_RFQ_TIMEOUT = 10500,
-  SPOT_RFQ_REQUOTE_TIMEOUT = 100
+  SPOT_RFQ_REQUOTE_TIMEOUT = 100,
 }
 
 export const assertGridRow = async ({

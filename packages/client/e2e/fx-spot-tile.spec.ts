@@ -1,8 +1,8 @@
-import { expect, Page } from "@playwright/test"
+import { expect } from "@playwright/test"
 
 import { test } from "./fixtures"
-import { isOpenFin, RfqTimeout } from "./utils"
 import { FxBlotterPageObject, FxNewRfqPageObject } from "./pages"
+import { isOpenFin, RfqTimeout } from "./utils"
 
 test.describe("Spot Tile", () => {
   let tilePage: FxNewRfqPageObject
@@ -107,7 +107,6 @@ test.describe("Spot Tile", () => {
     })
 
     test("When I type 1k as notional value to EUR/USD then notional value should be 1 thousand", async () => {
-      
       await tilePage.spotTileNotionalInput.clear()
       await tilePage.spotTileNotionalInput.pressSequentially("1k")
 
@@ -134,7 +133,9 @@ test.describe("Spot Tile", () => {
 
   test.describe("Toggle between prices and graph views", () => {
     test("When I click the graph icon on the Live Rates bar then I should toggle from graph to price views", async () => {
-      const toggle = tilePage.page.locator("[data-testid='action-toggleTileView']")
+      const toggle = tilePage.page.locator(
+        "[data-testid='action-toggleTileView']",
+      )
 
       // first click, goes into normal mode, should be no graphs
       await toggle.click()
