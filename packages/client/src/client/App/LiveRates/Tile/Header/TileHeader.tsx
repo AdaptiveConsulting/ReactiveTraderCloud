@@ -4,27 +4,23 @@ import { forwardRef, useRef } from "react"
 import { map } from "rxjs/operators"
 import styled from "styled-components"
 
-import { FlexBox } from "@/client/components/FlexBox"
 import { PopInIcon } from "@/client/components/icons/PopInIcon"
 import { PopOutIcon } from "@/client/components/icons/PopOutIcon"
 import { Typography } from "@/client/components/Typography"
 import { CurrencyPair } from "@/services/currencyPairs"
 import { getPrice$ } from "@/services/prices"
 
+import { Stack } from "@/client/components/Stack"
 import { tearOut } from "../TearOut/state"
 import { useTileContext } from "../Tile.context"
 
 export const DeliveryDate = styled.div`
   transition: margin-right 0.2s;
 `
-const HeaderWrapper = styled(FlexBox)`
+const HeaderWrapper = styled(Stack)`
   position: relative;
-  justify-content: space-between;
   background-color: ${({ theme }) =>
     theme.color["Colors/Background/bg-secondary"]};
-  padding: ${({ theme }) => `${theme.spacing.md} ${theme.spacing["3xl"]} `};
-  padding-left: ${({ theme }) => theme.spacing.md};
-  padding-right: ${({ theme }) => theme.spacing.md};
 `
 export const HeaderAction = styled.button`
   position: absolute;
@@ -65,7 +61,7 @@ export const HeaderInner = forwardRef<HTMLDivElement, HeaderProps>(
     const canTearOut = supportsTearOut
 
     return (
-      <HeaderWrapper ref={ref}>
+      <HeaderWrapper padding="md" justifyContent="space-between">
         <Typography
           variant="Text sm/Regular"
           color="Colors/Text/text-tertiary (600)"

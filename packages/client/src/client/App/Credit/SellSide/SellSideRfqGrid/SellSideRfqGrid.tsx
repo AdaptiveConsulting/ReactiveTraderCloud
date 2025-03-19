@@ -1,6 +1,5 @@
 import styled from "styled-components"
 
-import { FlexBox } from "@/client/components/FlexBox"
 import { Region } from "@/client/components/layout/Region"
 import { Loader } from "@/client/components/Loader"
 import Logo from "@/client/components/logos/AdaptiveLogo"
@@ -8,6 +7,7 @@ import { TabBar } from "@/client/components/TabBar"
 import { Typography } from "@/client/components/Typography"
 import { Direction } from "@/generated/TradingGateway"
 
+import { Stack } from "@/client/components/Stack"
 import {
   SELLSIDE_RFQS_TABS,
   SellSideQuoteState,
@@ -29,11 +29,9 @@ export interface RfqRow {
 
 export type RfqRowKey = keyof RfqRow
 
-const Banner = styled(FlexBox)`
+const Banner = styled(Stack)`
   background-color: ${({ theme }) =>
     theme.color["Colors/Background/bg-secondary"]};
-  padding: ${({ theme }) => theme.spacing.md};
-  gap: ${({ theme }) => theme.spacing.md};
   height: 24px;
 `
 
@@ -45,7 +43,7 @@ export const SellSideRfqGrid = () => {
       fallback={<Loader ariaLabel="Loading RFQ queue.." />}
       Header={
         <>
-          <Banner>
+          <Banner padding="md" gap="md">
             <Logo withText={false} size={1} />
             <Typography
               variant="Text sm/Regular"

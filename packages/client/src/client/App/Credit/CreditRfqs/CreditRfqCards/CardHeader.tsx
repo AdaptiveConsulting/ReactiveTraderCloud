@@ -1,10 +1,10 @@
 import { memo } from "react"
 
-import { FlexBox } from "@/client/components/FlexBox"
 import { Typography } from "@/client/components/Typography"
 import { Direction } from "@/generated/TradingGateway"
 import { useCreditInstrumentById } from "@/services/credit"
 
+import { Stack } from "@/client/components/Stack"
 import {
   CusipWithBenchmark,
   DirectionLabel,
@@ -28,7 +28,7 @@ export const CardHeader = memo(function CardHeader({
   const instrument = useCreditInstrumentById(instrumentId)
 
   return (
-    <FlexBox>
+    <Stack alignItems="center">
       {isBuy(direction) && (
         <DirectionLabel direction={direction} terminated={terminated}>
           <Typography
@@ -60,6 +60,6 @@ export const CardHeader = memo(function CardHeader({
           </Typography>
         </DirectionLabel>
       )}
-    </FlexBox>
+    </Stack>
   )
 })

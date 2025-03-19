@@ -1,9 +1,9 @@
 import { FC } from "react"
 import styled from "styled-components"
 
-import { FlexBox } from "@/client/components/FlexBox"
 import { Typography } from "@/client/components/Typography"
 
+import { Stack } from "@/client/components/Stack"
 import { RfqsTab, useSelectedRfqsTab } from "../../selectedRfqsTab"
 import { NoCancelledRfqsIcon } from "./svgs/NoCancelledRfqsIcon"
 import { NoDoneRfqsIcon } from "./svgs/NoDoneRfqsIcon"
@@ -12,11 +12,9 @@ import { NoLiveRfqsIcon } from "./svgs/NoLiveRfqsIcon"
 import { NoRfqsIcon } from "./svgs/NoRfqsIcon"
 import { IconProps } from "./svgs/types"
 
-const Wrapper = styled(FlexBox)`
+const Wrapper = styled(Stack)`
   width: 100%;
   height: 100%;
-  flex-direction: column;
-  justify-content: center;
 `
 
 function getTitleForTab(tab: RfqsTab) {
@@ -74,7 +72,7 @@ export const NoRfqsScreen = () => {
   const IconComponent = getIconComponent(selectedRfqsTab)
 
   return (
-    <Wrapper>
+    <Wrapper direction="column" justifyContent="center">
       <IconComponent />
       <Typography variant="Text lg/Semibold" marginBottom="xs">
         {getTitleForTab(selectedRfqsTab)}
