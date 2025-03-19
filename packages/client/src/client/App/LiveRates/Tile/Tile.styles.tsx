@@ -1,15 +1,13 @@
 import styled from "styled-components"
 
-import { DeliveryDate, HeaderAction } from "./Header/TileHeader"
+import { DeliveryDate, HeaderAction } from "./Header"
 
 export const PriceControlsStyle = styled("div")<{
   isAnalyticsView?: boolean
 }>`
-  flex: 1;
-  align-self: stretch;
-  padding: ${({ isAnalyticsView, theme }) =>
-    isAnalyticsView ? `0` : theme.spacing.md};
   display: grid;
+  flex: 1;
+  height: 100%;
   ${({ isAnalyticsView, theme }) =>
     isAnalyticsView
       ? `
@@ -18,12 +16,14 @@ export const PriceControlsStyle = styled("div")<{
   "movement sell"
   "movement buy";
   gap: ${theme.spacing.xxs};
+  padding-right: ${theme.spacing.xs}
   `
       : `
-      grid-template-columns: 37% 26% 37%;
+      grid-template-columns: 87px 1fr 87px;
       grid-template-rows: 100%;
       grid-template-areas:
       "sell movement buy";
+      padding: 0 ${theme.spacing.md};
     `}
 `
 
@@ -39,7 +39,6 @@ export const InputTimerStyle = styled.div<{ isAnalyticsView: boolean }>`
 export const PanelItem = styled.div<{ shouldMoveDate: boolean }>`
   position: relative;
   display: flex;
-
   &:hover,
   &.tile-hover {
     ${HeaderAction} {
@@ -67,15 +66,15 @@ export const Body = styled.div<{
 )
 
 export const Main = styled.div`
+  min-height: 142px;
   flex: 1;
   width: 100%;
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) =>
     theme.color["Colors/Background/bg-primary"]};
-  border: 2px solid
+  box-shadow: 0 2px 20px
     ${({ theme }) => theme.color["Colors/Background/bg-secondary"]};
-
   &:hover,
   .tile-hover & {
     color: ${({ theme }) =>

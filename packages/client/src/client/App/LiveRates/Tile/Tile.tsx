@@ -90,10 +90,10 @@ const Tile = ({ isAnalytics }: { isAnalytics: boolean }) => {
         <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>
           {isAnalytics ? <HistoricalGraph showTimer={!!timerData} /> : null}
           <PriceControlsStyle isAnalyticsView={isAnalytics}>
-            <PriceMovement isAnalyticsView={isAnalytics} />
             <PriceButton direction={Direction.Sell} />
+            <PriceMovement isAnalyticsView={isAnalytics} />
             <PriceButton direction={Direction.Buy} />
-            <RfqButton isAnalytics={isAnalytics} />
+            <RfqButton />
           </PriceControlsStyle>
         </Body>
         <InputTimerWrapper />

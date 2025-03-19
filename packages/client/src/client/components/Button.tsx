@@ -90,7 +90,7 @@ const whiteOutlineStyle = css`
   &.sg-button-hover {
     ${({ theme }) => `
     color: ${theme.color["Component colors/Components/Buttons/Primary/button-primary-fg_hover"]};
-    background-color: ${theme.color["Component colors/Components/Buttons/Primary/button-primary-bg"]};
+    
     `}
   }
 `
