@@ -6,19 +6,17 @@ import {
   CreditNewRfqPageObject,
   CreditRfqTilesPageObject,
   FxBlotterPageObject,
-  FxNewRfqPageObject,
+  FxTilesPageObject,
 } from "./pages"
 import { isOpenFin } from "./utils"
 
 dotenv.config({ path: ".env.development" })
 dotenv.config()
 
-type FXPage = "mainWindow" | "fx-tiles" | "fx-blotter" | "fx-analytics"
-
 const RUNTIME_ADDRESS = process.env.OPENFIN_RUNTIME_ADDRESS ?? ""
 
 type FxPages = {
-  fxTilePO: FxNewRfqPageObject
+  fxTilePO: FxTilesPageObject
   fxBlotterPO: FxBlotterPageObject
 }
 
@@ -34,29 +32,18 @@ interface Fixtures {
   limitCheckerPage: Page
 }
 
-const fxOpenfinUrlPaths: string[] = [
-  "openfin-window-frame?app=FX",
-  "fx-tiles",
-  "fx-blotter",
-  "fx-analytics",
-]
-
 const creditOpenfinUrlSuffixes: Record<string, keyof CreditPages> = {
   "credit-blotter": "blotterPO",
   "credit-new-rfq": "newRfqPO",
   "credit-rfqs": "rfqsPO",
 }
 
-const limitCheckerUrlPath = "limit-checker"
-
-const urlPathToFxPage = (path: string): FXPage => {
-  switch (path) {
-    case "openfin-window-frame?app=FX":
-      return "mainWindow"
-    default:
-      return path as FXPage
-  }
+const fxOpenFinUrlSuffixes: Record<string, keyof FxPages> = {
+  "fx-blotter": "fxBlotterPO",
+  "fx-tiles": "fxTilePO",
 }
+
+const limitCheckerUrlPath = "limit-checker"
 
 export const test = base.extend<Fixtures>({
   browser: async ({}, use, workerInfo) => {
@@ -82,27 +69,39 @@ export const test = base.extend<Fixtures>({
       use(context)
     }
   },
-  fxPages: async ({ context }, use, workerInfo, testInfo) => {
+  fxPages: async ({ context }, use, testInfo) => {
     const contextPages = context.pages()
 
-    if (isOpenFin(workerInfo)) {
-      const pages = fxOpenfinUrlPaths.reduce(
-        (rec, urlPath) => {
+    if (isOpenFin(testInfo)) {
+      use(
+        Object.keys(fxOpenFinUrlSuffixes).reduce<FxPages>((rec, urlPath) => {
           const page = contextPages.find(
             (p) => p.url() === `${process.env.E2E_RTC_WEB_ROOT_URL}/${urlPath}`,
           )
+
           if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
-          return { ...rec, [urlPathToFxPage(urlPath)]: page }
-        },
-        {} as Record<FXPage, Page>,
+
+          switch (urlPath) {
+            case "fx-blotter":
+              page.setViewportSize({ width: 1280, height: 1024 })
+              rec.fxBlotterPO = new FxBlotterPageObject(page, testInfo)
+              break
+            case "fx-tiles":
+              page.setViewportSize({ width: 1280, height: 1024 })
+              rec.fxTilePO = new FxTilesPageObject(page, testInfo)
+              break
+            default:
+              throw Error(`Unknown Openfin page URL - ${urlPath}`)
+          }
+          return rec
+        }, {} as FxPages),
       )
-      use(pages)
     } else {
       const mainPage =
         contextPages.length > 0 ? contextPages[0] : await context.newPage()
       await mainPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}`)
       use({
-        fxTilePO: new FxNewRfqPageObject(mainPage, testInfo),
+        fxTilePO: new FxTilesPageObject(mainPage, testInfo),
         fxBlotterPO: new FxBlotterPageObject(mainPage, testInfo),
       })
     }

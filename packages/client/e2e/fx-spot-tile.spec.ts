@@ -1,30 +1,15 @@
 import { expect } from "@playwright/test"
 
 import { test } from "./fixtures"
-import { FxBlotterPageObject, FxNewRfqPageObject } from "./pages"
-import { isOpenFin, RfqTimeout } from "./utils"
+import { FxBlotterPageObject, FxTilesPageObject } from "./pages"
+
+let tilePage: FxTilesPageObject
+let blotterPage: FxBlotterPageObject
 
 test.describe("Spot Tile", () => {
-  let tilePage: FxNewRfqPageObject
-  let blotterPage: FxBlotterPageObject
-
-  test.beforeAll(async ({ context, fxPages }, workerInfo) => {
-    if (isOpenFin(workerInfo)) {
-      tilePage = fxPages["fx-tiles"]
-      blotterPage = fxPages["fx-blotter"]
-      tilePage.page.setViewportSize({ width: 1280, height: 1024 })
-      blotterPage.page.setViewportSize({ width: 1280, height: 1024 })
-    } else {
-      const pages = context.pages()
-      const mainWindow = pages.length > 0 ? pages[0] : await context.newPage()
-
-      tilePage = fxPages.fxTilePO
-      blotterPage = fxPages.fxBlotterPO
-
-      await mainWindow.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}`)
-      tilePage.page.setViewportSize({ width: 1280, height: 1024 })
-      blotterPage.page.setViewportSize({ width: 1280, height: 1024 })
-    }
+  test.beforeAll(async ({ fxPages }) => {
+    tilePage = fxPages.fxTilePO
+    blotterPage = fxPages.fxBlotterPO
   })
 
   test.describe("Valid Purchase", () => {
@@ -34,7 +19,7 @@ test.describe("Spot Tile", () => {
       await tilePage.spotTileNotionalInput.clear()
       await tilePage.spotTileNotionalInput.pressSequentially("1m")
 
-      await tilePage.sellCurrencyPair("EURUSD")
+      await tilePage.sell("EURUSD")
 
       // Wait for execution delay to end
       await expect(tilePage.tradeId).toBeVisible()
@@ -48,7 +33,7 @@ test.describe("Spot Tile", () => {
     test("When I buy USD/JPY then a tile displays in green with confirmation message", async () => {
       await tilePage.clickCurrency("USD")
 
-      await tilePage.buyCurrencyPair("USDJPY")
+      await tilePage.buy("USDJPY")
 
       const greenConfirmation = tilePage.page
         .locator("div[role='dialog']")
@@ -61,7 +46,7 @@ test.describe("Spot Tile", () => {
     test("When I buy GBP/JPY then a tile displays in red with message 'Trade was rejected'", async () => {
       await tilePage.clickCurrency("GBP")
 
-      await tilePage.buyCurrencyPair("GBPJPY")
+      await tilePage.buy("GBPJPY")
 
       const redConfirmation = tilePage.page
         .locator("div[role='dialog']")
@@ -74,7 +59,7 @@ test.describe("Spot Tile", () => {
     test("When I sell EUR/JPY then an execution animation appears until a timed out tile displays in orange with message 'Trade taking longer than expected'", async () => {
       await tilePage.clickCurrency("EUR")
 
-      await tilePage.sellCurrencyPair("EURJPY")
+      await tilePage.sell("EURJPY")
 
       const executingSpinner = tilePage.page.getByText(/Executing/)
       await expect(executingSpinner).toBeVisible()
@@ -87,6 +72,8 @@ test.describe("Spot Tile", () => {
   })
 
   test.describe("High notional RFQ", () => {
+    const SPOT_TILE_RFQ_TIMEOUT = 10500
+
     test("When I initiate RFQ on NZD/USD then it should display fixed prices for buy/sell and after 10 secs, and a requote button appears", async () => {
       await tilePage.clickCurrency("NZD")
 
@@ -95,11 +82,11 @@ test.describe("Spot Tile", () => {
       await expect(tilePage.page.getByTestId("rfqTimer")).toBeVisible()
       await tilePage.page.getByTestId("rfqTimer").waitFor({
         state: "hidden",
-        timeout: RfqTimeout.SPOT_TILE_RFQ_TIMEOUT,
+        timeout: SPOT_TILE_RFQ_TIMEOUT,
       })
       const requoteBtn = tilePage.page.getByText(/Requote/)
       await expect(requoteBtn).toBeVisible({
-        timeout: RfqTimeout.SPOT_TILE_RFQ_TIMEOUT,
+        timeout: SPOT_TILE_RFQ_TIMEOUT,
       })
     })
   })
