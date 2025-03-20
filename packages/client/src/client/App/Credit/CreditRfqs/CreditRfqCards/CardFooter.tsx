@@ -100,7 +100,7 @@ export const CardFooter = ({
     (quote) => quote.state.type === ACCEPTED_QUOTE_STATE,
   )?.dealerId
   return (
-    <CardFooterWrapper>
+    <CardFooterWrapper alignItems="center" justifyContent="center" padding="md">
       {state === RfqState.Open ? (
         <LiveFooterContent
           rfqId={id}

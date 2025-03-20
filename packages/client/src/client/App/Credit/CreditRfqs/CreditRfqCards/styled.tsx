@@ -1,6 +1,6 @@
 import styled, { css, DefaultTheme, keyframes } from "styled-components"
 
-import { FlexBox } from "@/client/components/FlexBox"
+import { Stack } from "@/client/components/Stack"
 import { Typography } from "@/client/components/Typography"
 import { Direction } from "@/generated/TradingGateway"
 
@@ -76,11 +76,7 @@ export const NoRfqsWrapper = styled.div`
 
 // Card Footer
 
-export const CardFooterWrapper = styled(FlexBox)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: ${({ theme }) => theme.spacing.md};
+export const CardFooterWrapper = styled(Stack)`
   background: ${({ theme }) =>
     theme.color["Colors/Background/bg-secondary_subtle"]};
   color: ${({ theme }) =>

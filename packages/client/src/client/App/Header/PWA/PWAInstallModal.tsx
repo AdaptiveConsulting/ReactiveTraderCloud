@@ -1,5 +1,4 @@
 import { Button } from "@/client/components/Button"
-import { Gap } from "@/client/components/Gap"
 import { AppleShareIcon } from "@/client/components/icons"
 import { Modal } from "@/client/components/Modal"
 import { Typography } from "@/client/components/Typography"
@@ -13,10 +12,9 @@ interface InstallModalProps {
 export const PWAInstallModal = ({ closeModal }: InstallModalProps) => (
   <Modal shouldShow>
     <ModalWrapper>
-      <Typography variant="Display sm/Regular">
+      <Typography variant="Display sm/Regular" paddingBottom="lg">
         Install Reactive Trader
       </Typography>
-      <Gap height="lg" />
       <Typography
         variant="Text sm/Regular"
         color="Colors/Text/text-secondary (700)"
@@ -26,6 +24,7 @@ export const PWAInstallModal = ({ closeModal }: InstallModalProps) => (
       <Typography
         variant="Text sm/Regular"
         color="Colors/Text/text-secondary (700)"
+        paddingBottom="md"
       >
         Tap{" "}
         <IconWrapper>
@@ -33,7 +32,6 @@ export const PWAInstallModal = ({ closeModal }: InstallModalProps) => (
         </IconWrapper>{" "}
         from the browsers menu and select &quot;Add to Home Screen&quot;
       </Typography>
-      <Gap height="md" />
       <Button variant="outline" size="lg" onClick={closeModal}>
         Close
       </Button>

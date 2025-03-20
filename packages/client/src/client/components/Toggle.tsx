@@ -1,7 +1,8 @@
 import styled from "styled-components"
 
-import { FlexBox } from "@/client/components/FlexBox"
 import { Typography } from "@/client/components/Typography"
+
+import { Stack } from "./Stack"
 
 interface Props {
   left: string
@@ -10,7 +11,7 @@ interface Props {
   onChange: () => void
 }
 
-const Background = styled(FlexBox)`
+const Background = styled(Stack)`
   position: relative;
   box-sizing: border-box;
   background-color: ${({ theme }) =>
@@ -50,7 +51,7 @@ const Indicator = styled.div<{ isToggled: boolean }>`
 `
 
 export const Toggle = ({ left, right, onChange, isToggled }: Props) => (
-  <Background>
+  <Background justifyContent="space-between">
     <Button onClick={onChange}>
       <ButtonTypography
         variant="Text md/Semibold"

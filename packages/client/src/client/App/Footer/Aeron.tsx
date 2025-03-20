@@ -1,14 +1,12 @@
 import styled from "styled-components"
 
-import { FlexBox } from "@/client/components/FlexBox"
 import { AeronLogo } from "@/client/components/logos/AeronLogo"
+import { Stack } from "@/client/components/Stack"
 import { Typography } from "@/client/components/Typography"
 import { AERON } from "@/client/constants"
 
-const AeronLogoWrapper = styled(FlexBox)`
+const AeronLogoWrapper = styled(Stack)`
   margin-right: auto;
-  align-items: flex-start;
-  gap: ${({ theme }) => theme.spacing.xs};
   cursor: pointer;
   svg {
     fill: ${({ theme }) => theme.color["Colors/Text/text-primary (900)"]};
@@ -16,7 +14,11 @@ const AeronLogoWrapper = styled(FlexBox)`
 `
 
 export const Aeron = () => (
-  <AeronLogoWrapper onClick={() => window.open(AERON)}>
+  <AeronLogoWrapper
+    alignItems="flex-start"
+    gap="xs"
+    onClick={() => window.open(AERON)}
+  >
     <Typography
       variant="Text xs/Regular"
       color="Colors/Text/text-quaternary (500)"

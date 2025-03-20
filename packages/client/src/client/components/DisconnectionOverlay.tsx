@@ -1,6 +1,5 @@
 import { bind } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
-import styled from "styled-components"
 
 import { Modal } from "@/client/components/Modal"
 import {
@@ -11,18 +10,13 @@ import {
 } from "@/services/connection"
 
 import { Button } from "./Button"
-import { FlexBox } from "./FlexBox"
+import { Stack } from "./Stack"
 import { Typography } from "./Typography"
 
 type DisconnectedStatus =
   | ConnectionStatus.DISCONNECTED
   | ConnectionStatus.IDLE_DISCONNECTED
   | ConnectionStatus.OFFLINE_DISCONNECTED
-
-const Wrapper = styled(FlexBox)`
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.xl};
-`
 
 export const DisconnectionOverlayInner = ({
   connectionStatus,
@@ -33,14 +27,14 @@ export const DisconnectionOverlayInner = ({
 }) => (
   <Modal shouldShow>
     {connectionStatus === ConnectionStatus.IDLE_DISCONNECTED ? (
-      <Wrapper>
+      <Stack direction="column" gap="xl">
         <Typography variant={"Text sm/Regular"}>
           You have been disconnected due to inactivity.
         </Typography>
         <Button variant="outline" size="lg" onClick={onReconnect}>
           Reconnect
         </Button>
-      </Wrapper>
+      </Stack>
     ) : connectionStatus === ConnectionStatus.OFFLINE_DISCONNECTED ? (
       "This device has been detected to be offline.  Connection to the server will resume when a stable internet connection is established."
     ) : (

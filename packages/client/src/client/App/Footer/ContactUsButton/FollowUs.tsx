@@ -1,6 +1,5 @@
 import { PropsWithChildren } from "react"
 
-import { Gap } from "@/client/components/Gap"
 import { Typography } from "@/client/components/Typography"
 import { SOCIAL_ADDRESSES, SocialPlatform } from "@/client/constants"
 
@@ -17,10 +16,10 @@ const Row = ({
       variant="Text sm/Regular underlined"
       color="Component colors/Utility/Blue dark/utility-blue-dark-500"
       onClick={onClick}
+      paddingBottom="md"
     >
       {children}
     </Link>
-    <Gap height="md" />
   </>
 )
 export const FollowUs = () => {
@@ -33,8 +32,9 @@ export const FollowUs = () => {
 
   return (
     <ContactUsContentResolver>
-      <Typography variant="Text lg/Regular">Follow us on</Typography>
-      <Gap height="sm" />
+      <Typography variant="Text lg/Regular" paddingBottom="sm">
+        Follow us on
+      </Typography>
       <Row label="LinkedIn" onClick={onClick("LinkedIn")}>
         linkedin.com/company/{<br />}adaptive-consulting-ltd/
       </Row>

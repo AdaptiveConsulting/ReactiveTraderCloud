@@ -31,7 +31,7 @@ const SellSideTradeTicketInner = () => {
             No RFQ Selected
           </Typography>
         </NoSelectHeader>
-        <NoSelectedMessage>
+        <NoSelectedMessage direction="column" justifyContent="center">
           <Typography
             variant="Text sm/Regular"
             color="Colors/Text/text-primary (900)"

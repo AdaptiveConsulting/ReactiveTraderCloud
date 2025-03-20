@@ -2,7 +2,7 @@ import { bind } from "@react-rxjs/core"
 import { map } from "rxjs/operators"
 import { useTheme } from "styled-components"
 
-import { FlexBox } from "@/client/components/FlexBox"
+import { Stack } from "@/client/components/Stack"
 import { Typography } from "@/client/components/Typography"
 import { formatAsWholeNumber } from "@/client/utils/formatNumber"
 import { history$ } from "@/services/analytics"
@@ -19,7 +19,7 @@ export const LastPosition = () => {
 
   return (
     <Typography variant="Text md/Regular">
-      <FlexBox>
+      <Stack alignItems="center">
         USD
         <Typography
           style={{
@@ -35,7 +35,7 @@ export const LastPosition = () => {
         >
           {lastPosStr}
         </Typography>
-      </FlexBox>
+      </Stack>
     </Typography>
   )
 }
