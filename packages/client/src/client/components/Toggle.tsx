@@ -1,6 +1,7 @@
 import styled from "styled-components"
 
 import { Typography } from "@/client/components/Typography"
+
 import { Stack } from "./Stack"
 
 interface Props {

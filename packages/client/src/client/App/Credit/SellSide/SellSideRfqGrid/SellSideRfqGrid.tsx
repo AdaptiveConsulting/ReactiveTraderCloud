@@ -3,11 +3,11 @@ import styled from "styled-components"
 import { Region } from "@/client/components/layout/Region"
 import { Loader } from "@/client/components/Loader"
 import Logo from "@/client/components/logos/AdaptiveLogo"
+import { Stack } from "@/client/components/Stack"
 import { TabBar } from "@/client/components/TabBar"
 import { Typography } from "@/client/components/Typography"
 import { Direction } from "@/generated/TradingGateway"
 
-import { Stack } from "@/client/components/Stack"
 import {
   SELLSIDE_RFQS_TABS,
   SellSideQuoteState,

@@ -1,8 +1,8 @@
 import styled, { css, DefaultTheme, keyframes } from "styled-components"
 
+import { Stack } from "@/client/components/Stack"
 import { Typography } from "@/client/components/Typography"
 import { Direction } from "@/generated/TradingGateway"
-import { Stack } from "@/client/components/Stack"
 
 const cardFlash = ({ theme }: { theme: DefaultTheme }) => keyframes`
   0% {

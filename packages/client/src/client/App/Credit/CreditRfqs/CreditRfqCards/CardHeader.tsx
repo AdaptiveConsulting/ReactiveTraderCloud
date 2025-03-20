@@ -1,10 +1,10 @@
 import { memo } from "react"
 
+import { Stack } from "@/client/components/Stack"
 import { Typography } from "@/client/components/Typography"
 import { Direction } from "@/generated/TradingGateway"
 import { useCreditInstrumentById } from "@/services/credit"
 
-import { Stack } from "@/client/components/Stack"
 import {
   CusipWithBenchmark,
   DirectionLabel,

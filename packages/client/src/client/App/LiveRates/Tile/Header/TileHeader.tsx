@@ -6,11 +6,11 @@ import styled from "styled-components"
 
 import { PopInIcon } from "@/client/components/icons/PopInIcon"
 import { PopOutIcon } from "@/client/components/icons/PopOutIcon"
+import { Stack } from "@/client/components/Stack"
 import { Typography } from "@/client/components/Typography"
 import { CurrencyPair } from "@/services/currencyPairs"
 import { getPrice$ } from "@/services/prices"
 
-import { Stack } from "@/client/components/Stack"
 import { tearOut } from "../TearOut/state"
 import { useTileContext } from "../Tile.context"
 
@@ -61,7 +61,7 @@ export const HeaderInner = forwardRef<HTMLDivElement, HeaderProps>(
     const canTearOut = supportsTearOut
 
     return (
-      <HeaderWrapper padding="md" justifyContent="space-between">
+      <HeaderWrapper ref={ref} padding="md" justifyContent="space-between">
         <Typography
           variant="Text sm/Regular"
           color="Colors/Text/text-tertiary (600)"

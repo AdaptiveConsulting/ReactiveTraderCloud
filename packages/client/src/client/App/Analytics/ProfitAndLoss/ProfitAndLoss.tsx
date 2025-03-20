@@ -2,11 +2,11 @@ import { merge } from "rxjs"
 import styled from "styled-components"
 
 import { AnalyticsSectionLayout } from "@/client/components/layout/AnalyticsSectionLayout"
+import { Stack } from "@/client/components/Stack"
 import { Typography } from "@/client/components/Typography"
 
 import { LastPosition, lastPosition$ } from "./LastPosition"
 import { LineChart, lineChart$ } from "./LineChart"
-import { Stack } from "@/client/components/Stack"
 
 const ProfitAndLossFlexBox = styled(Stack)`
   flex: 1;
