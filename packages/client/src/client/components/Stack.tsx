@@ -4,6 +4,8 @@ import { Spacing } from "../theme/types"
 import { Box, BoxProps } from "./Box"
 
 export interface StackProps extends BoxProps {
+  flex?: CSSProperties["flex"]
+  flexBasis?: CSSProperties["flexBasis"]
   direction?: CSSProperties["flexDirection"]
   wrap?: CSSProperties["flexWrap"]
   flow?: CSSProperties["flexFlow"]
@@ -18,13 +20,15 @@ export const Stack = styled(Box)<StackProps>`
 
   ${({
     theme,
+    gap,
     direction,
     wrap,
     flow,
     justifyContent,
     alignItems,
     alignContent,
-    gap,
+    flex,
+    flexBasis,
   }) =>
     css({
       flexDirection: direction,
@@ -33,6 +37,8 @@ export const Stack = styled(Box)<StackProps>`
       justifyContent,
       alignItems,
       alignContent,
+      flex,
+      flexBasis,
       ...(gap && {
         gap: typeof gap === "number" ? gap : theme.spacing[gap],
       }),

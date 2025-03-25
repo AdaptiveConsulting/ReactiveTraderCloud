@@ -6,6 +6,7 @@ import {
   CrossCircleIcon,
   DarkThemeIcon,
   DownloadIcon,
+  ErrorIcon,
   FilterEditIcon,
   FilterIcon,
   ForbiddenIcon,
@@ -15,6 +16,7 @@ import {
   SearchIcon,
 } from "@/client/components/icons"
 import { RefreshIcon } from "@/client/components/icons/RefreshIcon"
+import { WarningIcon } from "@/client/components/icons/WarningIcon"
 import { Stack } from "@/client/components/Stack"
 
 import { H2, P } from "../elements"
@@ -42,6 +44,8 @@ const icons = [
   { name: "Search", Element: <SearchIcon /> },
   { name: "Refresh", Element: <RefreshIcon /> },
   { name: "Forbidden", Element: <ForbiddenIcon /> },
+  { name: "Error", Element: <ErrorIcon /> },
+  { name: "Warning", Element: <WarningIcon /> },
 ]
 
 const states = [
