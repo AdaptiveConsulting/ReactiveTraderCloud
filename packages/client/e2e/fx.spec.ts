@@ -6,14 +6,9 @@ import { isOpenFin } from "./utils"
 test.describe("Fx App", () => {
   let mainWindow: Page
 
-  test.beforeAll(async ({ context, fxPages }, workerInfo) => {
+  test.beforeAll(async ({ fxPages }, workerInfo) => {
     if (isOpenFin(workerInfo)) {
       mainWindow = fxPages["mainWindow"]
-    } else {
-      const pages = context.pages()
-      mainWindow = pages.length > 0 ? pages[0] : await context.newPage()
-
-      await mainWindow.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}`)
     }
     selectors.setTestIdAttribute("data-qa")
   })

@@ -1,23 +1,11 @@
-import { expect, Page } from "@playwright/test"
+import { expect } from "@playwright/test"
 import fs from "fs"
 
 import { test } from "./fixtures"
+import { FxBlotterPageObject, FxTilesPageObject } from "./pages"
 import { isOpenFin } from "./utils"
 
-const TRADE_ID_COLUMN_INDEX = 1 // account for trade state (colour bar) column
 const FIRST_TRADE_ROW_INDEX = 1 // account for header row
-
-const getTradeIDCellContent = (
-  page: Page,
-  rowIndex: number,
-): Promise<string | null> => {
-  return page
-    .locator('[role="grid"] > div')
-    .nth(rowIndex)
-    .locator("div")
-    .nth(TRADE_ID_COLUMN_INDEX)
-    .textContent()
-}
 
 const getTradeIDFromCSV = (csvRows: string | string[]): string => {
   const firstRowFields = csvRows[FIRST_TRADE_ROW_INDEX].split(",")
@@ -26,32 +14,22 @@ const getTradeIDFromCSV = (csvRows: string | string[]): string => {
 }
 
 test.describe("Trade Blotter", () => {
-  let tilePage: Page
-  let blotterPage: Page
+  let tilePage: FxTilesPageObject
+  let blotterPage: FxBlotterPageObject
 
-  test.beforeAll(async ({ context, fxPages }, workerInfo) => {
-    if (isOpenFin(workerInfo)) {
-      tilePage = fxPages["fx-tiles"]
-      blotterPage = fxPages["fx-blotter"]
-    } else {
-      const pages = context.pages()
-      const mainWindow = pages.length > 0 ? pages[0] : await context.newPage()
-
-      await mainWindow.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}`)
-
-      tilePage = mainWindow
-      blotterPage = mainWindow
-    }
+  test.beforeAll(async ({ fxPages }) => {
+    tilePage = fxPages.fxTilePO
+    blotterPage = fxPages.fxBlotterPO
   })
 
   test.afterAll(async ({}, workerInfo) => {
     if (isOpenFin(workerInfo)) {
-      await blotterPage.getByTestId("filter-button").click()
+      await blotterPage.filterButton.click()
     }
   })
 
   test("When user hovers over a row on the Blotter, it should highlight that row", async () => {
-    const firstRow = blotterPage.locator(`[role="grid"] > div`).nth(1)
+    const firstRow = blotterPage.page.locator(`[role="grid"] > div`).nth(1)
     const color = await firstRow.evaluate((element) => {
       return window
         .getComputedStyle(element)
@@ -62,74 +40,67 @@ test.describe("Trade Blotter", () => {
   })
 
   test("when user buys a currency, the new row should flash briefly", async () => {
-    await tilePage.locator("input[id='notional-input-EURUSD']").clear()
-    await tilePage
-      .locator("input[id='notional-input-EURUSD']")
-      .pressSequentially("1m")
+    await tilePage.notionalInput("EURUSD").clear()
+    await tilePage.notionalInput("EURUSD").pressSequentially("1m")
 
     // circumvent low occurences of false negative. if it fails on 1st attempt then we retry until timeout
     await expect(async () => {
-      await tilePage.locator("input[id='notional-input-EURUSD']").clear()
-      await tilePage
-        .locator("input[id='notional-input-EURUSD']")
-        .pressSequentially("1m")
-      await tilePage.locator('[data-testid="Buy-EURUSD"]').nth(0).click()
+      await tilePage.notionalInput("EURUSD").clear()
+      await tilePage.notionalInput("EURUSD").pressSequentially("1m")
+      await tilePage.buy("EURUSD")
 
-      const tradeID = await tilePage
-        .locator("[data-testid='trade-id']")
-        .innerText()
+      const tradeID = await tilePage.tradeId.innerText()
 
-      const newRow = blotterPage.getByTestId(`trades-grid-row-${tradeID}`)
+      const newRow = blotterPage.page.getByTestId(`trades-grid-row-${tradeID}`)
 
       await expect(newRow).toHaveCSS("animation", /1s ease-in-out/)
     }, `Trade then test blotter flash`).toPass()
   })
 
   test("when user clicks on the header of any column, it should sort it (depending on number of clicks, can be ascending or descending)", async () => {
-    const firstRowTradeID = await getTradeIDCellContent(blotterPage, 1)
-
-    const tradeIDColHeader = blotterPage.getByText("Trade ID", {
-      exact: true,
-    })
+    const firstRowTradeID = await blotterPage.tradeIDCellContent
 
     // filter once (descending)
-    await tradeIDColHeader.click()
-    const afterClick1 = await getTradeIDCellContent(blotterPage, 1)
+    await blotterPage.tradeIDColHeader.click()
+    const afterClick1 = await blotterPage.tradeIDCellContent
 
     expect(afterClick1).toBe(firstRowTradeID)
 
     // filter 2nd time (ascending)
-    await tradeIDColHeader.click()
-    const afterClick2 = await getTradeIDCellContent(blotterPage, 1)
+    await blotterPage.tradeIDColHeader.click()
+    const afterClick2 = await blotterPage.tradeIDCellContent
 
     expect(afterClick2).toBe("1")
 
     //reset column
-    await tradeIDColHeader.click()
+    await blotterPage.tradeIDColHeader.click()
   })
 
   test("when user enters column values into column search filter, it should return only rows with those values", async () => {
-    const tradeIDColHeader = blotterPage.getByText("Trade ID", {
-      exact: true,
-    })
-    await tradeIDColHeader.hover()
-    const filterButton = blotterPage.locator('[aria-label*="Open Trade ID"]')
+    await blotterPage.tradeIDColHeader.hover()
+    const filterButton = blotterPage.page.locator(
+      '[aria-label*="Open Trade ID"]',
+    )
     await filterButton.click()
-    const searchInput = blotterPage.locator('[aria-label*="Primary filter"]')
+    const searchInput = blotterPage.page.locator(
+      '[aria-label*="Primary filter"]',
+    )
     const tradeIDToSearch = "1"
     await searchInput.pressSequentially(tradeIDToSearch, { delay: 100 })
-    const rows = blotterPage.locator(`[role="grid"] > div`)
+    const rows = blotterPage.page.locator(`[role="grid"] > div`)
     expect(await rows.count()).toBe(2)
-    const firstRowTradeID = await getTradeIDCellContent(blotterPage, 1)
+    const firstRowTradeID = await blotterPage.tradeIDCellContent
     expect(firstRowTradeID).toBe(tradeIDToSearch)
     // cleanup so the next test that runs is not filtered
     await searchInput.fill("")
   })
 
   test("when user clicks export button on blotter, should download a csv, and the csv data should match blotter data", async () => {
-    const firstRowTradeID = await getTradeIDCellContent(blotterPage, 1)
-    const downloadPromise = blotterPage.waitForEvent("download")
-    const downloadButton = blotterPage.locator('[aria-label="Export to CSV"]')
+    const firstRowTradeID = await blotterPage.tradeIDCellContent
+    const downloadPromise = blotterPage.page.waitForEvent("download")
+    const downloadButton = blotterPage.page.locator(
+      '[aria-label="Export to CSV"]',
+    )
     await downloadButton.click()
     const download = await downloadPromise
     await download.saveAs("e2e/test-data/blotter-data.csv")
@@ -147,24 +118,26 @@ test.describe("Trade Blotter", () => {
   })
 
   test("when user filters blotter and then clicks export button on blotter, the csv file should be filtered", async () => {
-    const tradeIDColHeader = blotterPage.getByText("Trade ID", {
-      exact: true,
-    })
+    await blotterPage.tradeIDColHeader.hover()
 
-    await tradeIDColHeader.hover()
-
-    const filterButton = blotterPage.locator('[aria-label*="Open Trade ID"]')
+    const filterButton = blotterPage.page.locator(
+      '[aria-label*="Open Trade ID"]',
+    )
 
     await filterButton.click()
 
-    const searchInput = blotterPage.locator('[aria-label*="Primary filter"]')
+    const searchInput = blotterPage.page.locator(
+      '[aria-label*="Primary filter"]',
+    )
 
     const tradeIDToSearch = "1"
     await searchInput.pressSequentially(tradeIDToSearch, { delay: 100 })
 
-    const downloadPromise = blotterPage.waitForEvent("download")
+    const downloadPromise = blotterPage.page.waitForEvent("download")
 
-    const downloadButton = blotterPage.locator('[aria-label="Export to CSV"]')
+    const downloadButton = blotterPage.page.locator(
+      '[aria-label="Export to CSV"]',
+    )
     await downloadButton.click()
 
     const download = await downloadPromise
