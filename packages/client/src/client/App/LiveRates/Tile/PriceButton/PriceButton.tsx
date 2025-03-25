@@ -113,13 +113,11 @@ export const PriceButtonInner = ({
       priceAnnounced={priceAnnounced}
       disabled={disabled}
       isStatic={isStatic}
+      isExpired={isExpired}
       data-testid={`${direction}-${currencyPair.symbol}`}
     >
       <Price disabled={disabled}>
-        <Typography
-          variant="Text sm/Regular"
-          color="Colors/Text/text-secondary (700)"
-        >
+        <Typography variant="Text xxs/Regular">
           {`${direction} ${currencyPair.base}`.toUpperCase()}
         </Typography>
         <PriceContainer>
@@ -136,11 +134,11 @@ export const PriceButtonInner = ({
               </PriceTypography>
             </>
           )}
+          {isExpired && (
+            <ExpiredPrice data-testid="expireLabel">Expired</ExpiredPrice>
+          )}
         </PriceContainer>
       </Price>
-      {isExpired && (
-        <ExpiredPrice data-testid="expireLabel">Expired</ExpiredPrice>
-      )}
     </TradeButton>
   )
 }

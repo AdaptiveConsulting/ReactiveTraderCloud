@@ -38,8 +38,9 @@ export const CurrencyPairSymbol = styled("label")`
 `
 
 export const InputWrapper = styled.div`
-  padding-bottom: ${({ theme }) => theme.spacing.md};
   width: 100%;
+  background-color: ${({ theme }) =>
+    theme.color["Colors/Background/bg-secondary_subtle"]};
   display: flex;
   justify-content: center;
   align-items: center;

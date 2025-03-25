@@ -1,45 +1,51 @@
 import styled from "styled-components"
 
-import { DeliveryDate, HeaderAction } from "./Header/TileHeader"
+import { DeliveryDate, HeaderAction } from "./Header"
+import { useTileContext } from "./Tile.context"
 
-export const PriceControlsStyle = styled("div")<{
-  isAnalyticsView?: boolean
-}>`
-  flex: 1;
-  align-self: stretch;
-  padding: ${({ isAnalyticsView, theme }) =>
-    isAnalyticsView ? `0` : theme.spacing.md};
+export const PriceControlsStyle = styled("div")(({ theme }) => {
+  const { showingChart } = useTileContext()
+  return `
   display: grid;
-  ${({ isAnalyticsView, theme }) =>
-    isAnalyticsView
+  flex: 1;
+  height: 100%;
+  ${
+    showingChart
       ? `
   grid-template-rows: 50% 50%;
   grid-template-areas:
   "movement sell"
   "movement buy";
   gap: ${theme.spacing.xxs};
+  padding-right: ${theme.spacing.xs}
   `
       : `
-      grid-template-columns: 37% 26% 37%;
-      grid-template-rows: 100%;
-      grid-template-areas:
-      "sell movement buy";
-    `}
+  grid-template-columns: 87px 1fr 87px;
+  grid-template-rows: 100%;
+  grid-template-areas:
+  "sell movement buy";
+  padding: 0 ${theme.spacing.md};
 `
+  }
+`
+})
 
-export const InputTimerStyle = styled.div<{ isAnalyticsView: boolean }>`
+export const InputTimerStyle = styled.div(() => {
+  const { showingChart } = useTileContext()
+  return `
   display: flex;
   flex-direction: column;
-  ${({ isAnalyticsView }) =>
-    !isAnalyticsView &&
+  ${
+    !showingChart &&
     `align-items: flex-start;
-`}
 `
+  }
+`
+})
 
 export const PanelItem = styled.div<{ shouldMoveDate: boolean }>`
   position: relative;
   display: flex;
-
   &:hover,
   &.tile-hover {
     ${HeaderAction} {
@@ -52,30 +58,29 @@ export const PanelItem = styled.div<{ shouldMoveDate: boolean }>`
     }
   }
 `
-export const Body = styled.div<{
-  isAnalyticsView?: boolean
-  showTimer: boolean
-}>(
-  ({ isAnalyticsView, theme }) => `
+export const Body = styled.div(({ theme }) => {
+  const { showingChart } = useTileContext()
+  return `
   display: flex;
   flex: 1;
-  flex-direction: ${isAnalyticsView ? "row" : "column"};
-  align-items: ${isAnalyticsView ? "center" : null};
+  flex-direction: ${showingChart ? "row" : "column"};
+  align-items: ${showingChart ? "center" : null};
   padding: ${theme.spacing.xs} 0;
-  min-height: ${isAnalyticsView ? "136px" : "0"};
-`,
-)
+  min-height: ${showingChart ? "136px" : "0"};
+`
+})
 
 export const Main = styled.div`
+  min-height: 142px;
   flex: 1;
   width: 100%;
   display: flex;
   flex-direction: column;
+
   background-color: ${({ theme }) =>
     theme.color["Colors/Background/bg-primary"]};
-  border: 2px solid
+  box-shadow: 0 2px 20px
     ${({ theme }) => theme.color["Colors/Background/bg-secondary"]};
-
   &:hover,
   .tile-hover & {
     color: ${({ theme }) =>

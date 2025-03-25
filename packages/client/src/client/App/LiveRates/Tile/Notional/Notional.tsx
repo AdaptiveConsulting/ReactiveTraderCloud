@@ -3,13 +3,13 @@ import { concat, merge, pipe } from "rxjs"
 import { filter, map, take } from "rxjs/operators"
 
 import { RefreshIcon } from "@/client/components/icons/RefreshIcon"
+import { Typography } from "@/client/components/Typography"
 import { formatNotional } from "@/client/utils/formatNotional"
 import { currencyPairs$ } from "@/services/currencyPairs"
 
 import { QuoteStateStage, useRfqState } from "../Rfq"
 import { symbolBind, useTileCurrencyPair } from "../Tile.context"
 import {
-  CurrencyPairSymbol,
   ErrorMessage,
   Input,
   InputWrapper,
@@ -83,7 +83,14 @@ export const NotionalInputInner = ({
   onReset,
 }: Props) => (
   <InputWrapper>
-    <CurrencyPairSymbol htmlFor={id}>{base}</CurrencyPairSymbol>
+    <Typography
+      as="label"
+      variant="Text sm/Regular"
+      color="Colors/Text/text-tertiary (600)"
+      htmlFor={id}
+    >
+      {base}
+    </Typography>
     <Input
       type="text"
       id={id}

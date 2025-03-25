@@ -4,6 +4,7 @@ import { forwardRef, useRef } from "react"
 import { map } from "rxjs/operators"
 import styled from "styled-components"
 
+import { AdaptiveLoader } from "@/client/components/AdaptiveLoader"
 import { PopInIcon } from "@/client/components/icons/PopInIcon"
 import { PopOutIcon } from "@/client/components/icons/PopOutIcon"
 import { Stack } from "@/client/components/Stack"
@@ -13,14 +14,16 @@ import { getPrice$ } from "@/services/prices"
 
 import { tearOut } from "../TearOut/state"
 import { useTileContext } from "../Tile.context"
+import { TileStates, useTileState } from "../Tile.state"
 
 export const DeliveryDate = styled.div`
+  margin-left: auto;
   transition: margin-right 0.2s;
 `
 const HeaderWrapper = styled(Stack)`
   position: relative;
   background-color: ${({ theme }) =>
-    theme.color["Colors/Background/bg-secondary"]};
+    theme.color["Colors/Background/bg-tertiary"]};
 `
 export const HeaderAction = styled.button`
   position: absolute;
@@ -48,20 +51,28 @@ type HeaderProps = {
   currencyPair: CurrencyPair
   isTornOut?: boolean
   supportsTearOut?: boolean
+  executing?: boolean
   date: string
   onClick: () => void
 }
 
 export const HeaderInner = forwardRef<HTMLDivElement, HeaderProps>(
   function HeaderInner(
-    { currencyPair, isTornOut, supportsTearOut, date, onClick },
+    { currencyPair, isTornOut, supportsTearOut, date, executing, onClick },
     ref,
   ) {
     const { base, terms } = currencyPair
     const canTearOut = supportsTearOut
 
     return (
-      <HeaderWrapper ref={ref} padding="md" justifyContent="space-between">
+      <HeaderWrapper
+        ref={ref}
+        alignItems="center"
+        paddingY="md"
+        paddingX="md"
+        gap="md"
+      >
+        {executing && <AdaptiveLoader size={12} />}
         <Typography
           variant="Text sm/Regular"
           color="Colors/Text/text-tertiary (600)"
@@ -102,6 +113,7 @@ export const Header = () => {
   const onClick = () => {
     ref.current && tearOut(currencyPair.symbol, !isTornOut, ref.current)
   }
+  const { status } = useTileState(currencyPair.symbol)
 
   return (
     <HeaderInner
@@ -110,6 +122,7 @@ export const Header = () => {
       date={date}
       isTornOut={isTornOut}
       supportsTearOut={supportsTearOut}
+      executing={status === TileStates.Started}
       onClick={onClick}
     />
   )

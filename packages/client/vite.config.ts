@@ -434,7 +434,7 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
         // headless: true,
         fileParallelism: false, // seems to make little difference
       },
-      include: ["**/*.test.{tsx,ts}", "**/__tests__/*"],
+      include: ["**/*.test.{tsx,ts}"],
       setupFiles: "./src/client/setupTests.ts",
     },
   })
