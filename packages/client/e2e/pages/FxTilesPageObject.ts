@@ -10,8 +10,8 @@ export class FxTilesPageObject {
     return this.page.getByTestId("trade-id")
   }
 
-  get spotTileNotionalInput() {
-    return this.page.locator("input[id='notional-input-EURUSD']")
+  notionalInput(currency: string) {
+    return this.page.locator(`input[id='notional-input-${currency}']`)
   }
 
   clickCurrency(currency: string) {

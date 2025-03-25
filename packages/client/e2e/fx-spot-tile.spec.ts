@@ -16,8 +16,8 @@ test.describe("Spot Tile", () => {
     test("When I sell EUR to USD then trade Id shown in tile should match trade Id shown in blotter @smoke", async () => {
       await tilePage.clickCurrency("EUR")
 
-      await tilePage.spotTileNotionalInput.clear()
-      await tilePage.spotTileNotionalInput.pressSequentially("1m")
+      await tilePage.notionalInput("EURUSD").clear()
+      await tilePage.notionalInput("EURUSD").pressSequentially("1m")
 
       await tilePage.sell("EURUSD")
 
@@ -97,26 +97,26 @@ test.describe("Spot Tile", () => {
     })
 
     test("When I type 1k as notional value to EUR/USD then notional value should be 1 thousand", async () => {
-      await tilePage.spotTileNotionalInput.clear()
-      await tilePage.spotTileNotionalInput.pressSequentially("1k")
+      await tilePage.notionalInput("EURUSD").clear()
+      await tilePage.notionalInput("EURUSD").pressSequentially("1k")
 
-      await expect(tilePage.spotTileNotionalInput).toHaveValue("1,000")
+      await expect(tilePage.notionalInput("EURUSD")).toHaveValue("1,000")
     })
 
     test("When I type 1m as notional value to EUR/USD then notional value should be 1 million", async () => {
-      await tilePage.spotTileNotionalInput.clear()
-      await tilePage.spotTileNotionalInput.pressSequentially("1m")
+      await tilePage.notionalInput("EURUSD").clear()
+      await tilePage.notionalInput("EURUSD").pressSequentially("1m")
 
-      await expect(tilePage.spotTileNotionalInput).toHaveValue("1,000,000")
+      await expect(tilePage.notionalInput("EURUSD")).toHaveValue("1,000,000")
     })
 
     test("When I enter a number too large (over 1,000,000,000) then an error will appear 'Max exceeded'", async () => {
-      await tilePage.spotTileNotionalInput.clear()
-      await tilePage.spotTileNotionalInput.pressSequentially("1200000000")
+      await tilePage.notionalInput("EURUSD").clear()
+      await tilePage.notionalInput("EURUSD").pressSequentially("1200000000")
       await expect(tilePage.page.getByText(/Max exceeded/)).toBeVisible()
 
-      await tilePage.spotTileNotionalInput.selectText()
-      await tilePage.spotTileNotionalInput.pressSequentially("1m")
+      await tilePage.notionalInput("EURUSD").selectText()
+      await tilePage.notionalInput("EURUSD").pressSequentially("1m")
       await expect(tilePage.page.getByText(/Max exceeded/)).toBeHidden()
     })
   })

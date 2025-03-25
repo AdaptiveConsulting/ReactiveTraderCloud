@@ -83,11 +83,9 @@ export const test = base.extend<Fixtures>({
 
           switch (urlPath) {
             case "fx-blotter":
-              page.setViewportSize({ width: 1280, height: 1024 })
               rec.fxBlotterPO = new FxBlotterPageObject(page, testInfo)
               break
             case "fx-tiles":
-              page.setViewportSize({ width: 1280, height: 1024 })
               rec.fxTilePO = new FxTilesPageObject(page, testInfo)
               break
             default:
