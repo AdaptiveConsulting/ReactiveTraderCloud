@@ -33,7 +33,6 @@ const ContactUsButton = () => {
         variant="primary"
         size="sm"
         onClick={() => setDisplayMenu((prev) => !prev)}
-        data-qa="contact-us-button"
       >
         {/* <MailIcon height="1" width="1" active={displayMenu} /> TODO: Refactor button to allow icons */}
         Get in touch

@@ -17,6 +17,7 @@ dotenv.config()
 const RUNTIME_ADDRESS = process.env.OPENFIN_RUNTIME_ADDRESS ?? ""
 
 type FxPages = {
+  mainPage: Page
   fxTilePO: FxTilesPageObject
   fxBlotterPO: FxBlotterPageObject
   fxAnalyticsPO: FxAnalyticsPageObject
@@ -41,6 +42,7 @@ const creditOpenfinUrlSuffixes: Record<string, keyof CreditPages> = {
 }
 
 const fxOpenFinUrlSuffixes: Record<string, keyof FxPages> = {
+  "openfin-window-frame?app=FX": "mainPage",
   "fx-blotter": "fxBlotterPO",
   "fx-tiles": "fxTilePO",
   "fx-analytics": "fxAnalyticsPO",
@@ -85,6 +87,9 @@ export const test = base.extend<Fixtures>({
           if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
 
           switch (urlPath) {
+            case "openfin-window-frame?app=FX":
+              rec.mainPage = page
+              break
             case "fx-blotter":
               rec.fxBlotterPO = new FxBlotterPageObject(page, testInfo)
               break
@@ -105,6 +110,7 @@ export const test = base.extend<Fixtures>({
         contextPages.length > 0 ? contextPages[0] : await context.newPage()
       await mainPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}`)
       use({
+        mainPage,
         fxTilePO: new FxTilesPageObject(mainPage, testInfo),
         fxBlotterPO: new FxBlotterPageObject(mainPage, testInfo),
         fxAnalyticsPO: new FxAnalyticsPageObject(mainPage, testInfo),

@@ -50,11 +50,7 @@ const Analytics = ({ children }: WithChildren) => {
         />
       }
       Body={
-        <AnalyticsStyle
-          role="region"
-          aria-label="Trade and position analytics"
-          data-qa="analytics__analytics-content"
-        >
+        <AnalyticsStyle role="region" aria-label="Trade and position analytics">
           <ProfitAndLoss />
           <Positions />
           <PnL />

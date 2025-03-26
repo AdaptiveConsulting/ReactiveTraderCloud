@@ -14,11 +14,7 @@ const LogoWrapper = styled.div`
 
 export const OpenFinLogo = () => (
   <LogoWrapper>
-    <OpenFinLogoLink
-      href="http://www.openfin.co"
-      as={OpenFinBrowserLink}
-      data-qa="logo__openfin-logo-link"
-    >
+    <OpenFinLogoLink href="http://www.openfin.co" as={OpenFinBrowserLink}>
       <svg
         height="20px"
         xmlns="http://www.w3.org/2000/svg"

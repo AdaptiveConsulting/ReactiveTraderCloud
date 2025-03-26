@@ -14,7 +14,7 @@ export class FxTilesPageObject {
     return this.page.locator(`input[id='notional-input-${currency}']`)
   }
 
-  clickCurrency(currency: string) {
+  selectFilter(currency: string) {
     return this.page.getByTestId("tab-bar-tabs").getByText(currency).click()
   }
 

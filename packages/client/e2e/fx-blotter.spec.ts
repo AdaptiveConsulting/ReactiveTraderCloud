@@ -40,6 +40,7 @@ test.describe("Trade Blotter", () => {
   })
 
   test("when user buys a currency, the new row should flash briefly", async () => {
+    await tilePage.selectFilter("EUR")
     await tilePage.notionalInput("EURUSD").clear()
     await tilePage.notionalInput("EURUSD").pressSequentially("1m")
 

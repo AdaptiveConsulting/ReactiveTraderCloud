@@ -35,7 +35,6 @@ export const defaultLogo = (
         })
         window.open(WEBSITE)
       }}
-      data-qa="header__root-logo"
     />
   </LogoWrapper>
 )
@@ -52,7 +51,6 @@ const symbolLogo = (
         window.open(WEBSITE)
       }}
       withText={false}
-      data-qa="header__root-logo"
     />
   </LogoWrapper>
 )
