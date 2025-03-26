@@ -14,7 +14,7 @@ test.describe("Spot Tile", () => {
 
   test.describe("Valid Purchase", () => {
     test("When I sell EUR to USD then trade Id shown in tile should match trade Id shown in blotter @smoke", async () => {
-      await tilePage.clickCurrency("EUR")
+      await tilePage.selectFilter("EUR")
 
       await tilePage.notionalInput("EURUSD").clear()
       await tilePage.notionalInput("EURUSD").pressSequentially("1m")
@@ -31,7 +31,7 @@ test.describe("Spot Tile", () => {
     })
 
     test("When I buy USD/JPY then a tile displays in green with confirmation message", async () => {
-      await tilePage.clickCurrency("USD")
+      await tilePage.selectFilter("USD")
 
       await tilePage.buy("USDJPY")
 
@@ -44,7 +44,7 @@ test.describe("Spot Tile", () => {
 
   test.describe("Rejected purchase confirmation", () => {
     test("When I buy GBP/JPY then a tile displays in red with message 'Trade was rejected'", async () => {
-      await tilePage.clickCurrency("GBP")
+      await tilePage.selectFilter("GBP")
 
       await tilePage.buy("GBPJPY")
 
@@ -57,7 +57,7 @@ test.describe("Spot Tile", () => {
 
   test.describe("Timed out transaction", () => {
     test("When I sell EUR/JPY then an execution animation appears until a timed out tile displays in orange with message 'Trade taking longer than expected'", async () => {
-      await tilePage.clickCurrency("EUR")
+      await tilePage.selectFilter("EUR")
 
       await tilePage.sell("EURJPY")
 
@@ -75,7 +75,7 @@ test.describe("Spot Tile", () => {
     const SPOT_TILE_RFQ_TIMEOUT = 10500
 
     test("When I initiate RFQ on NZD/USD then it should display fixed prices for buy/sell and after 10 secs, and a requote button appears", async () => {
-      await tilePage.clickCurrency("NZD")
+      await tilePage.selectFilter("NZD")
 
       await tilePage.page.locator("[data-testid='rfqButton']").click()
 
@@ -93,7 +93,7 @@ test.describe("Spot Tile", () => {
 
   test.describe("Notional value", () => {
     test.beforeAll(async () => {
-      await tilePage.clickCurrency("EUR")
+      await tilePage.selectFilter("EUR")
     })
 
     test("When I type 1k as notional value to EUR/USD then notional value should be 1 thousand", async () => {
@@ -160,7 +160,7 @@ test.describe("Spot Tile", () => {
 
     filterData.forEach(({ currency, numTiles }) => {
       test(`When I toggle ${currency} then I should see ${numTiles} tiles testing with `, async () => {
-        await tilePage.clickCurrency(currency)
+        await tilePage.selectFilter(currency)
         const totalTiles = await tilePage.page
           .locator('div[aria-label="Lives Rates Tiles"] > div')
           .count()

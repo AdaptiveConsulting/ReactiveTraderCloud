@@ -76,7 +76,6 @@ export const HeaderInner = forwardRef<HTMLDivElement, HeaderProps>(
         <Typography
           variant="Text sm/Regular"
           color="Colors/Text/text-tertiary (600)"
-          data-qa="tile-header__tile-symbol"
         >
           {base}/{terms}
         </Typography>
@@ -84,7 +83,6 @@ export const HeaderInner = forwardRef<HTMLDivElement, HeaderProps>(
           <Typography
             variant="Text sm/Regular"
             color="Colors/Text/text-tertiary (600)"
-            data-qa="tile-header__delivery-date"
           >
             {date}
           </Typography>

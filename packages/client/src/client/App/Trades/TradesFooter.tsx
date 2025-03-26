@@ -35,10 +35,7 @@ export const TradesFooter = () => {
 
   return (
     <TradesFooterStyled>
-      <Typography
-        color="Colors/Text/text-disabled"
-        data-qa="blotter__blotter-status-text"
-      >
+      <Typography color="Colors/Text/text-disabled">
         Displaying rows {displayRows} of {totalRows}
       </Typography>
     </TradesFooterStyled>

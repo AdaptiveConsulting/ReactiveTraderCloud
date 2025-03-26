@@ -74,12 +74,8 @@ export const QuickFilter = () => {
         value={quickFilterText}
         onChange={(event) => setQuickFilterText(event.target.value)}
         role="textbox"
-        data-qa="quick-filer__filter-input"
       />
-      <QuickFilterClearIcon
-        onClick={() => setQuickFilterText("")}
-        data-qa="quick-filter__filter-clear-icon"
-      >
+      <QuickFilterClearIcon onClick={() => setQuickFilterText("")}>
         {quickFilterText.length ? <FaTimes /> : null}
       </QuickFilterClearIcon>
     </QuickFilterStyle>
