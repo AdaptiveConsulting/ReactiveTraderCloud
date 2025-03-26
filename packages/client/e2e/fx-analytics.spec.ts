@@ -3,28 +3,13 @@ import { expect } from "@playwright/test"
 import { test } from "./fixtures"
 import { ExpectTimeout } from "./utils"
 
-const currencyPairs = [
-  "EUR/USD",
-  "USD/JPY",
-  "GBP/USD",
-  "GBP/JPY",
-  "EUR/JPY",
-  "AUD/USD",
-  "NZD/USD",
-  "EUR/CAD",
-]
-
-const currencies = ["NZD", "USD", "JPY", "GBP", "EUR", "CAD", "AUD"]
-
-test.describe("Analytics panel", () => {
+test.describe("FX Analytics", () => {
   test.describe("Profit & Loss section", () => {
     test("Last Profit & Loss amount is displayed in numerical format @smoke", async ({
       fxPages: { analyticsPO },
     }) => {
       const lastPnlAmount = await analyticsPO.lastPnLPosition.textContent()
-
-      const regexp = RegExp(`[-+,.0-9]`, "g")
-      expect(lastPnlAmount).toMatch(regexp)
+      expect(lastPnlAmount).toMatch(/[-+,.0-9]/)
     })
 
     test("Profit & Loss amount is updated periodically", async ({
@@ -57,32 +42,31 @@ test.describe("Analytics panel", () => {
       )
     })
   })
-  test.describe("Positions section", () => {
-    test("Position nodes are showing tooltip information for each currencies", async ({
-      fxPages: { analyticsPO },
-    }) => {
-      for (const currency of currencies) {
-        const currencyCircle = analyticsPO.currencyCircle(currency).first()
-        const currencyTooltip = analyticsPO.page
-          .locator("[data-testid='tooltip']", { hasText: currency })
-          .first()
 
-        await currencyCircle.hover()
+  test.describe("Positions section", () => {
+    const currencies = ["NZD", "USD", "JPY", "GBP", "EUR", "CAD", "AUD"]
+
+    currencies.forEach((currency) => {
+      test(`Position nodes are showing tooltip information for ${currency}`, async ({
+        fxPages: { analyticsPO },
+      }) => {
+        await analyticsPO.bubble(currency).hover()
+
+        const currencyTooltip = analyticsPO.bubbleTooltip(currency)
         await expect(currencyTooltip).toBeVisible()
-        const regexp = RegExp(`${currency} [-+,.0-9]`, "g")
+
         expect(
           await currencyTooltip.textContent(),
           `tooltip for ${currency} doesn't match expected pattern`,
-        ).toMatch(regexp)
-      }
+        ).toMatch(RegExp(`${currency} [-+,.0-9]`))
+      })
     })
 
     test("Position nodes can be moved", async ({
       fxPages: { analyticsPO },
     }) => {
-      const nzdNode = analyticsPO.currencyCircle("NZD").first()
-
-      const jpyNode = analyticsPO.currencyCircle("JPY").first()
+      const nzdNode = analyticsPO.bubble("NZD")
+      const jpyNode = analyticsPO.bubble("JPY")
 
       const nzdInitialPosition = await nzdNode.boundingBox()
       await nzdNode.dragTo(jpyNode)
@@ -91,21 +75,32 @@ test.describe("Analytics panel", () => {
   })
 
   test.describe("PnL section", () => {
-    test("PnL value is displayed for each currencies", async ({
-      fxPages: { analyticsPO },
-    }) => {
-      for (const currencypair of currencyPairs) {
+    const currencyPairs = [
+      "EUR/USD",
+      "USD/JPY",
+      "GBP/USD",
+      "GBP/JPY",
+      "EUR/JPY",
+      "AUD/USD",
+      "NZD/USD",
+      "EUR/CAD",
+    ]
+
+    currencyPairs.forEach((currencyPair) => {
+      test(`PnL value is displayed for ${currencyPair}`, async ({
+        fxPages: { analyticsPO },
+      }) => {
         const amountString = await analyticsPO
-          .PnLAmount(currencypair)
+          .pnlAmount(currencyPair)
           .textContent()
 
         const regexp = RegExp(`[-,.0-9km]`, "g")
 
         expect(
           amountString,
-          `amount for ${currencypair} doesn't match abbreviated numerical pattern`,
+          `amount for ${currencyPair} doesn't match abbreviated numerical pattern`,
         ).toMatch(regexp)
-      }
+      })
     })
   })
 })

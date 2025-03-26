@@ -10,11 +10,15 @@ export class FxAnalyticsPageObject {
     return this.page.getByTestId("lastPosition")
   }
 
-  currencyCircle(currency: string) {
+  bubble(currency: string) {
     return this.page.locator("g.node").filter({ hasText: currency })
   }
 
-  PnLAmount(currencyPair: string) {
+  bubbleTooltip(currency: string) {
+    return this.page.locator("[data-testid='tooltip']", { hasText: currency })
+  }
+
+  pnlAmount(currencyPair: string) {
     return this.page
       .getByTestId(`pnlbar-${currencyPair}`)
       .getByTestId("priceLabel")
