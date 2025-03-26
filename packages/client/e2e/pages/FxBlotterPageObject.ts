@@ -24,14 +24,14 @@ export class FxBlotterPageObject {
     return this.page.getByTestId("filter-button")
   }
 
-  get tradeIDCellContent() {
-    return this.page
-      .locator('[role="grid"] > div')
-      .nth(1)
-      .locator("div")
-      .nth(TRADE_ID_COLUMN_INDEX)
-      .textContent()
+  get firstTradeRow() {
+    return this.page.locator('[role="grid"] > div').nth(1).locator("div")
   }
+
+  get tradeIDCellContent() {
+    return this.firstTradeRow.nth(TRADE_ID_COLUMN_INDEX).textContent()
+  }
+
   get tradeIDColHeader() {
     return this.page.getByText("Trade ID", {
       exact: true,
