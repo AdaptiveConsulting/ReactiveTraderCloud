@@ -1,7 +1,6 @@
 import { expect } from "@playwright/test"
 
 import { test } from "./fixtures"
-import { FxAnalyticsPageObject } from "./pages"
 import { ExpectTimeout } from "./utils"
 
 const currencyPairs = [
@@ -18,22 +17,20 @@ const currencyPairs = [
 const currencies = ["NZD", "USD", "JPY", "GBP", "EUR", "CAD", "AUD"]
 
 test.describe("Analytics panel", () => {
-  let analyticsPage: FxAnalyticsPageObject
-
-  test.beforeAll(async ({ fxPages }) => {
-    analyticsPage = fxPages.fxAnalyticsPO
-  })
-
   test.describe("Profit & Loss section", () => {
-    test("Last Profit & Loss amount is displayed in numerical format @smoke", async () => {
-      const lastPnlAmount = await analyticsPage.lastPnLPosition.textContent()
+    test("Last Profit & Loss amount is displayed in numerical format @smoke", async ({
+      fxPages: { analyticsPO },
+    }) => {
+      const lastPnlAmount = await analyticsPO.lastPnLPosition.textContent()
 
       const regexp = RegExp(`[-+,.0-9]`, "g")
       expect(lastPnlAmount).toMatch(regexp)
     })
 
-    test("Profit & Loss amount is updated periodically", async () => {
-      const pnlLocator = analyticsPage.lastPnLPosition
+    test("Profit & Loss amount is updated periodically", async ({
+      fxPages: { analyticsPO },
+    }) => {
+      const pnlLocator = analyticsPO.lastPnLPosition
       const initialPnlAmount = await pnlLocator.textContent()
 
       await expect(pnlLocator).not.toContainText(initialPnlAmount ?? "", {
@@ -41,8 +38,10 @@ test.describe("Analytics panel", () => {
       })
     })
 
-    test("Correct text color is displayed based on Profit & Loss amount", async () => {
-      const pnlLocator = analyticsPage.lastPnLPosition
+    test("Correct text color is displayed based on Profit & Loss amount", async ({
+      fxPages: { analyticsPO },
+    }) => {
+      const pnlLocator = analyticsPO.lastPnLPosition
 
       const pnlText = await pnlLocator.textContent()
 
@@ -59,10 +58,12 @@ test.describe("Analytics panel", () => {
     })
   })
   test.describe("Positions section", () => {
-    test("Position nodes are showing tooltip information for each currencies", async () => {
+    test("Position nodes are showing tooltip information for each currencies", async ({
+      fxPages: { analyticsPO },
+    }) => {
       for (const currency of currencies) {
-        const currencyCircle = analyticsPage.currencyCircle(currency).first()
-        const currencyTooltip = analyticsPage.page
+        const currencyCircle = analyticsPO.currencyCircle(currency).first()
+        const currencyTooltip = analyticsPO.page
           .locator("[data-testid='tooltip']", { hasText: currency })
           .first()
 
@@ -76,10 +77,12 @@ test.describe("Analytics panel", () => {
       }
     })
 
-    test("Position nodes can be moved", async () => {
-      const nzdNode = analyticsPage.currencyCircle("NZD").first()
+    test("Position nodes can be moved", async ({
+      fxPages: { analyticsPO },
+    }) => {
+      const nzdNode = analyticsPO.currencyCircle("NZD").first()
 
-      const jpyNode = analyticsPage.currencyCircle("JPY").first()
+      const jpyNode = analyticsPO.currencyCircle("JPY").first()
 
       const nzdInitialPosition = await nzdNode.boundingBox()
       await nzdNode.dragTo(jpyNode)
@@ -88,9 +91,11 @@ test.describe("Analytics panel", () => {
   })
 
   test.describe("PnL section", () => {
-    test("PnL value is displayed for each currencies", async () => {
+    test("PnL value is displayed for each currencies", async ({
+      fxPages: { analyticsPO },
+    }) => {
       for (const currencypair of currencyPairs) {
-        const amountString = await analyticsPage
+        const amountString = await analyticsPO
           .PnLAmount(currencypair)
           .textContent()
 

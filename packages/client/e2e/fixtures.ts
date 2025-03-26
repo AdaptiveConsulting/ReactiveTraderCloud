@@ -18,9 +18,9 @@ const RUNTIME_ADDRESS = process.env.OPENFIN_RUNTIME_ADDRESS ?? ""
 
 type FxPages = {
   mainPage: Page
-  fxTilePO: FxTilesPageObject
-  fxBlotterPO: FxBlotterPageObject
-  fxAnalyticsPO: FxAnalyticsPageObject
+  tilePO: FxTilesPageObject
+  blotterPO: FxBlotterPageObject
+  analyticsPO: FxAnalyticsPageObject
 }
 
 type CreditPages = {
@@ -43,9 +43,9 @@ const creditOpenfinUrlSuffixes: Record<string, keyof CreditPages> = {
 
 const fxOpenFinUrlSuffixes: Record<string, keyof FxPages> = {
   "openfin-window-frame?app=FX": "mainPage",
-  "fx-blotter": "fxBlotterPO",
-  "fx-tiles": "fxTilePO",
-  "fx-analytics": "fxAnalyticsPO",
+  "fx-blotter": "blotterPO",
+  "fx-tiles": "tilePO",
+  "fx-analytics": "analyticsPO",
 }
 
 const limitCheckerUrlPath = "limit-checker"
@@ -91,13 +91,13 @@ export const test = base.extend<Fixtures>({
               rec.mainPage = page
               break
             case "fx-blotter":
-              rec.fxBlotterPO = new FxBlotterPageObject(page, testInfo)
+              rec.blotterPO = new FxBlotterPageObject(page, testInfo)
               break
             case "fx-tiles":
-              rec.fxTilePO = new FxTilesPageObject(page, testInfo)
+              rec.tilePO = new FxTilesPageObject(page, testInfo)
               break
             case "fx-analytics":
-              rec.fxAnalyticsPO = new FxAnalyticsPageObject(page, testInfo)
+              rec.analyticsPO = new FxAnalyticsPageObject(page, testInfo)
               break
             default:
               throw Error(`Unknown Openfin page URL - ${urlPath}`)
@@ -111,9 +111,9 @@ export const test = base.extend<Fixtures>({
       await mainPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}`)
       use({
         mainPage,
-        fxTilePO: new FxTilesPageObject(mainPage, testInfo),
-        fxBlotterPO: new FxBlotterPageObject(mainPage, testInfo),
-        fxAnalyticsPO: new FxAnalyticsPageObject(mainPage, testInfo),
+        tilePO: new FxTilesPageObject(mainPage, testInfo),
+        blotterPO: new FxBlotterPageObject(mainPage, testInfo),
+        analyticsPO: new FxAnalyticsPageObject(mainPage, testInfo),
       })
     }
   },

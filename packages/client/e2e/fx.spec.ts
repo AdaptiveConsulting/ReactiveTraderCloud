@@ -1,17 +1,13 @@
-import { expect, Page } from "@playwright/test"
+import { expect } from "@playwright/test"
 
 import { test } from "./fixtures"
 import { isOpenFin } from "./utils"
 
 test.describe("Fx App", () => {
-  let mainPage: Page
-
-  test.beforeAll(async ({ fxPages }) => {
-    mainPage = fxPages.mainPage
-  })
-
   test("Views should open new windows when popped out, and reattach to main window when closed", async ({
     context,
+
+    fxPages: { mainPage },
   }, workerInfo) => {
     //TODO either adapt this test for web tear out or write a companion test
     //TODO Test is failing intermittently due to issue documented in RT-5538. Skipping the test until resolved
