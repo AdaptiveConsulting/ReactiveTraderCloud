@@ -8,6 +8,18 @@ export class FxBlotterPageObject {
     readonly testInfo: TestInfo,
   ) {}
 
+  get tradeFilterButton() {
+    return this.page.locator('[aria-label*="Open Trade ID"]')
+  }
+
+  get primaryFilter() {
+    return this.page.locator('[aria-label*="Primary filter"]')
+  }
+
+  get exportToCsvButton() {
+    return this.page.locator('[aria-label="Export to CSV"]')
+  }
+
   get filterButton() {
     return this.page.getByTestId("filter-button")
   }

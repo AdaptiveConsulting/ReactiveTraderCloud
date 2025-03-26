@@ -1,7 +1,8 @@
-import { expect, Page } from "@playwright/test"
+import { expect } from "@playwright/test"
 
 import { test } from "./fixtures"
-import { ExpectTimeout, isOpenFin } from "./utils"
+import { FxAnalyticsPageObject } from "./pages"
+import { ExpectTimeout } from "./utils"
 
 const currencyPairs = [
   "EUR/USD",
@@ -17,33 +18,22 @@ const currencyPairs = [
 const currencies = ["NZD", "USD", "JPY", "GBP", "EUR", "CAD", "AUD"]
 
 test.describe("Analytics panel", () => {
-  let analyticsPage: Page
+  let analyticsPage: FxAnalyticsPageObject
 
-  test.beforeAll(async ({ context, fxPages }, workerInfo) => {
-    if (isOpenFin(workerInfo)) {
-      analyticsPage = fxPages["fx-analytics"]
-    } else {
-      const pages = context.pages()
-      const mainWindow = pages.length > 0 ? pages[0] : await context.newPage()
-
-      await mainWindow.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}`)
-
-      analyticsPage = mainWindow
-    }
+  test.beforeAll(async ({ fxPages }) => {
+    analyticsPage = fxPages.fxAnalyticsPO
   })
 
   test.describe("Profit & Loss section", () => {
     test("Last Profit & Loss amount is displayed in numerical format @smoke", async () => {
-      const lastPnlAmount = await analyticsPage
-        .locator("[data-testid='lastPosition']")
-        .textContent()
+      const lastPnlAmount = await analyticsPage.lastPnLPosition.textContent()
 
       const regexp = RegExp(`[-+,.0-9]`, "g")
       expect(lastPnlAmount).toMatch(regexp)
     })
 
     test("Profit & Loss amount is updated periodically", async () => {
-      const pnlLocator = analyticsPage.locator("[data-testid='lastPosition']")
+      const pnlLocator = analyticsPage.lastPnLPosition
       const initialPnlAmount = await pnlLocator.textContent()
 
       await expect(pnlLocator).not.toContainText(initialPnlAmount ?? "", {
@@ -52,7 +42,7 @@ test.describe("Analytics panel", () => {
     })
 
     test("Correct text color is displayed based on Profit & Loss amount", async () => {
-      const pnlLocator = analyticsPage.locator("[data-testid='lastPosition']")
+      const pnlLocator = analyticsPage.lastPnLPosition
 
       const pnlText = await pnlLocator.textContent()
 
@@ -71,11 +61,8 @@ test.describe("Analytics panel", () => {
   test.describe("Positions section", () => {
     test("Position nodes are showing tooltip information for each currencies", async () => {
       for (const currency of currencies) {
-        const currencyCircle = analyticsPage
-          .locator("g.node")
-          .filter({ hasText: currency })
-          .first()
-        const currencyTooltip = analyticsPage
+        const currencyCircle = analyticsPage.currencyCircle(currency).first()
+        const currencyTooltip = analyticsPage.page
           .locator("[data-testid='tooltip']", { hasText: currency })
           .first()
 
@@ -90,15 +77,9 @@ test.describe("Analytics panel", () => {
     })
 
     test("Position nodes can be moved", async () => {
-      const nzdNode = analyticsPage
-        .locator("g.node")
-        .filter({ hasText: "NZD" })
-        .first()
+      const nzdNode = analyticsPage.currencyCircle("NZD").first()
 
-      const jpyNode = analyticsPage
-        .locator("g.node")
-        .filter({ hasText: "JPY" })
-        .first()
+      const jpyNode = analyticsPage.currencyCircle("JPY").first()
 
       const nzdInitialPosition = await nzdNode.boundingBox()
       await nzdNode.dragTo(jpyNode)
@@ -110,8 +91,7 @@ test.describe("Analytics panel", () => {
     test("PnL value is displayed for each currencies", async () => {
       for (const currencypair of currencyPairs) {
         const amountString = await analyticsPage
-          .getByTestId(`pnlbar-${currencypair}`)
-          .getByTestId("priceLabel")
+          .PnLAmount(currencypair)
           .textContent()
 
         const regexp = RegExp(`[-,.0-9km]`, "g")
