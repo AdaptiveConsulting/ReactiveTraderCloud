@@ -78,13 +78,11 @@ test.describe("Trade Blotter", () => {
 
   test("when user enters column values into column search filter, it should return only rows with those values", async () => {
     await blotterPage.tradeIDColHeader.hover()
-    const filterButton = blotterPage.page.locator(
-      '[aria-label*="Open Trade ID"]',
-    )
+    const filterButton = blotterPage.tradeFilterButton
+
     await filterButton.click()
-    const searchInput = blotterPage.page.locator(
-      '[aria-label*="Primary filter"]',
-    )
+    const searchInput = blotterPage.primaryFilter
+
     const tradeIDToSearch = "1"
     await searchInput.pressSequentially(tradeIDToSearch, { delay: 100 })
     const rows = blotterPage.page.locator(`[role="grid"] > div`)
@@ -98,9 +96,7 @@ test.describe("Trade Blotter", () => {
   test("when user clicks export button on blotter, should download a csv, and the csv data should match blotter data", async () => {
     const firstRowTradeID = await blotterPage.tradeIDCellContent
     const downloadPromise = blotterPage.page.waitForEvent("download")
-    const downloadButton = blotterPage.page.locator(
-      '[aria-label="Export to CSV"]',
-    )
+    const downloadButton = blotterPage.exportToCsvButton
     await downloadButton.click()
     const download = await downloadPromise
     await download.saveAs("e2e/test-data/blotter-data.csv")
@@ -120,15 +116,11 @@ test.describe("Trade Blotter", () => {
   test("when user filters blotter and then clicks export button on blotter, the csv file should be filtered", async () => {
     await blotterPage.tradeIDColHeader.hover()
 
-    const filterButton = blotterPage.page.locator(
-      '[aria-label*="Open Trade ID"]',
-    )
+    const filterButton = blotterPage.tradeFilterButton
 
     await filterButton.click()
 
-    const searchInput = blotterPage.page.locator(
-      '[aria-label*="Primary filter"]',
-    )
+    const searchInput = blotterPage.primaryFilter
 
     const tradeIDToSearch = "1"
     await searchInput.pressSequentially(tradeIDToSearch, { delay: 100 })

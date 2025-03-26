@@ -5,6 +5,7 @@ import {
   CreditBlotterPageObject,
   CreditNewRfqPageObject,
   CreditRfqTilesPageObject,
+  FxAnalyticsPageObject,
   FxBlotterPageObject,
   FxTilesPageObject,
 } from "./pages"
@@ -18,6 +19,7 @@ const RUNTIME_ADDRESS = process.env.OPENFIN_RUNTIME_ADDRESS ?? ""
 type FxPages = {
   fxTilePO: FxTilesPageObject
   fxBlotterPO: FxBlotterPageObject
+  fxAnalyticsPO: FxAnalyticsPageObject
 }
 
 type CreditPages = {
@@ -41,6 +43,7 @@ const creditOpenfinUrlSuffixes: Record<string, keyof CreditPages> = {
 const fxOpenFinUrlSuffixes: Record<string, keyof FxPages> = {
   "fx-blotter": "fxBlotterPO",
   "fx-tiles": "fxTilePO",
+  "fx-analytics": "fxAnalyticsPO",
 }
 
 const limitCheckerUrlPath = "limit-checker"
@@ -88,6 +91,9 @@ export const test = base.extend<Fixtures>({
             case "fx-tiles":
               rec.fxTilePO = new FxTilesPageObject(page, testInfo)
               break
+            case "fx-analytics":
+              rec.fxAnalyticsPO = new FxAnalyticsPageObject(page, testInfo)
+              break
             default:
               throw Error(`Unknown Openfin page URL - ${urlPath}`)
           }
@@ -101,6 +107,7 @@ export const test = base.extend<Fixtures>({
       use({
         fxTilePO: new FxTilesPageObject(mainPage, testInfo),
         fxBlotterPO: new FxBlotterPageObject(mainPage, testInfo),
+        fxAnalyticsPO: new FxAnalyticsPageObject(mainPage, testInfo),
       })
     }
   },
