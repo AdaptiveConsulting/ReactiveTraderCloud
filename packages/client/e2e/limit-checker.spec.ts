@@ -14,14 +14,12 @@ export const assertGridRow = async ({
   firstCellToAssert?: number
   lastCellToAssert?: number
 }) => {
-  let j = 0
   for (
-    let i = firstCellToAssert ? firstCellToAssert : 0;
+    let i = firstCellToAssert ? firstCellToAssert : 0, j = 0;
     i < (lastCellToAssert ? lastCellToAssert : assertions.length);
-    i++
+    i++, j++
   ) {
     await expect(row.nth(i)).toHaveText(assertions[j])
-    j++
   }
 }
 
@@ -31,28 +29,16 @@ test.describe("Limit Checker", () => {
   })
 
   test("Trade is checked and allowed if notional is under set limit", async ({
-    limitCheckerPage,
+    limitCheckerPO,
     fxPages: { tilePO, blotterPO },
   }) => {
-    const limitTableFirstRowCells = limitCheckerPage
-      .locator(`[role="grid"] > div`)
-      .nth(1)
-      .locator("div")
+    const fxBlotterLastTradeId = Number(await blotterPO.firstTradeIDCellContent)
 
-    const limitCheckInput = limitCheckerPage
-      .locator("div", {
-        has: limitCheckerPage.locator("div", { hasText: /^EUR\/USD$/ }),
-      })
-      .last()
-      .locator("input")
+    const limitCheckerTradeId = Number(
+      await limitCheckerPO.firstTradeIDCellContent,
+    )
 
-    const lastTradeIdString = await blotterPO.firstTradeRow.nth(1).innerText()
-    const lastTradeId = Number(lastTradeIdString)
-
-    const limitIdString = await limitTableFirstRowCells.nth(1).innerText()
-    const limitId = Number(limitIdString)
-
-    await limitCheckInput.fill("2000000")
+    await limitCheckerPO.limitCheckerInput.fill("2000000")
 
     await tilePO.selectFilter("EUR")
     await tilePO.notionalInput("EURUSD").fill("1999999")
@@ -61,13 +47,15 @@ test.describe("Limit Checker", () => {
     await expect(
       blotterPO.firstTradeRow
         .nth(1)
-        .getByText(String(isNaN(lastTradeId) ? 1 : lastTradeId + 1)),
+        .getByText(
+          String(isNaN(fxBlotterLastTradeId) ? 1 : fxBlotterLastTradeId + 1),
+        ),
     ).toBeVisible()
 
     await assertGridRow({
-      row: limitTableFirstRowCells,
+      row: limitCheckerPO.firstTradeRow,
       assertions: [
-        String(isNaN(limitId) ? 0 : limitId + 1),
+        String(isNaN(limitCheckerTradeId) ? 0 : limitCheckerTradeId + 1),
         "Success",
         "EURUSD",
         "1,999,999",
@@ -86,36 +74,25 @@ test.describe("Limit Checker", () => {
   })
 
   test("Trade is blocked if notional is above limit", async ({
-    limitCheckerPage,
+    limitCheckerPO,
     fxPages: { tilePO, blotterPO },
   }) => {
-    const limitTableFirstRowCells = limitCheckerPage
-      .locator(`[role="grid"] > div`)
-      .nth(1)
-      .locator("div")
+    const fxBlotterLastTradeId = await blotterPO.firstTradeIDCellContent
 
-    const tradeId = await blotterPO.firstTradeRow.nth(1).innerText()
+    const limitCheckerTradeId = Number(
+      await limitCheckerPO.firstTradeIDCellContent,
+    )
 
-    const limitCheckInput = limitCheckerPage
-      .locator("div", {
-        has: limitCheckerPage.locator("div", { hasText: /^EUR\/USD$/ }),
-      })
-      .last()
-      .locator("input")
-
-    const limitIdString = await limitTableFirstRowCells.nth(1).innerText()
-    const limitId = Number(limitIdString)
-
-    await limitCheckInput.fill("1000000")
+    await limitCheckerPO.limitCheckerInput.fill("1000000")
 
     await tilePO.selectFilter("EUR")
     await tilePO.notionalInput("EURUSD").fill("1000001")
     await tilePO.buy("EURUSD")
 
     await assertGridRow({
-      row: limitTableFirstRowCells,
+      row: limitCheckerPO.firstTradeRow,
       assertions: [
-        String(isNaN(limitId) ? 0 : limitId + 1),
+        String(isNaN(limitCheckerTradeId) ? 0 : limitCheckerTradeId + 1),
         "Failure",
         "EURUSD",
         "1,000,001",
@@ -125,6 +102,6 @@ test.describe("Limit Checker", () => {
       lastCellToAssert: 6,
     })
 
-    await expect(blotterPO.firstTradeRow.nth(1)).toHaveText(tradeId)
+    expect(await blotterPO.firstTradeIDCellContent).toBe(fxBlotterLastTradeId)
   })
 })

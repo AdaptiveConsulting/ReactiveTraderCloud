@@ -56,17 +56,17 @@ test.describe("Trade Blotter", () => {
   test("when user clicks on the header of any column, it should sort it (depending on number of clicks, can be ascending or descending)", async ({
     fxPages: { blotterPO },
   }) => {
-    const firstRowTradeID = await blotterPO.tradeIDCellContent
+    const firstRowTradeID = await blotterPO.firstTradeIDCellContent
 
     // filter once (descending)
     await blotterPO.tradeIDColHeader.click()
-    const afterClick1 = await blotterPO.tradeIDCellContent
+    const afterClick1 = await blotterPO.firstTradeIDCellContent
 
     expect(afterClick1).toBe(firstRowTradeID)
 
     // filter 2nd time (ascending)
     await blotterPO.tradeIDColHeader.click()
-    const afterClick2 = await blotterPO.tradeIDCellContent
+    const afterClick2 = await blotterPO.firstTradeIDCellContent
 
     expect(afterClick2).toBe("1")
 
@@ -87,7 +87,7 @@ test.describe("Trade Blotter", () => {
     await searchInput.pressSequentially(tradeIDToSearch, { delay: 100 })
     const rows = blotterPO.page.locator(`[role="grid"] > div`)
     expect(await rows.count()).toBe(2)
-    const firstRowTradeID = await blotterPO.tradeIDCellContent
+    const firstRowTradeID = await blotterPO.firstTradeIDCellContent
     expect(firstRowTradeID).toBe(tradeIDToSearch)
     // cleanup so the next test that runs is not filtered
     await searchInput.fill("")
@@ -96,7 +96,7 @@ test.describe("Trade Blotter", () => {
   test("when user clicks export button on blotter, should download a csv, and the csv data should match blotter data", async ({
     fxPages: { blotterPO },
   }) => {
-    const firstRowTradeID = await blotterPO.tradeIDCellContent
+    const firstRowTradeID = await blotterPO.firstTradeIDCellContent
     const downloadPromise = blotterPO.page.waitForEvent("download")
     const downloadButton = blotterPO.exportToCsvButton
     await downloadButton.click()
