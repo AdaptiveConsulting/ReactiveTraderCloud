@@ -8,6 +8,7 @@ import {
   FxAnalyticsPageObject,
   FxBlotterPageObject,
   FxTilesPageObject,
+  LimitCheckerPageObject,
 } from "./pages"
 import { isOpenFin } from "./utils"
 
@@ -32,7 +33,7 @@ type CreditPages = {
 interface Fixtures {
   fxPages: FxPages
   creditPages: CreditPages
-  limitCheckerPage: Page
+  limitCheckerPO: LimitCheckerPageObject
 }
 
 const creditOpenfinUrlSuffixes: Record<string, keyof CreditPages> = {
@@ -51,8 +52,8 @@ const fxOpenFinUrlSuffixes: Record<string, keyof FxPages> = {
 const limitCheckerUrlPath = "limit-checker"
 
 export const test = base.extend<Fixtures>({
-  browser: async ({}, use, workerInfo) => {
-    if (isOpenFin(workerInfo)) {
+  browser: async ({}, use, testInfo) => {
+    if (isOpenFin(testInfo)) {
       const runtimeConnection = await chromium.connectOverCDP(RUNTIME_ADDRESS)
       await use(runtimeConnection)
     } else {
@@ -117,10 +118,10 @@ export const test = base.extend<Fixtures>({
       })
     }
   },
-  creditPages: async ({ context }, use, workerInfo) => {
+  creditPages: async ({ context }, use, testInfo) => {
     const contextPages = context.pages()
 
-    if (isOpenFin(workerInfo)) {
+    if (isOpenFin(testInfo)) {
       use(
         Object.keys(creditOpenfinUrlSuffixes).reduce<CreditPages>(
           (rec, urlPath) => {
@@ -133,14 +134,14 @@ export const test = base.extend<Fixtures>({
 
             switch (urlPath) {
               case "credit-blotter":
-                rec.blotterPO = new CreditBlotterPageObject(page, workerInfo)
+                rec.blotterPO = new CreditBlotterPageObject(page, testInfo)
                 break
               case "credit-new-rfq":
-                rec.newRfqPO = new CreditNewRfqPageObject(page, workerInfo)
+                rec.newRfqPO = new CreditNewRfqPageObject(page, testInfo)
                 break
               case "credit-rfqs":
                 page.setViewportSize({ width: 1280, height: 1024 })
-                rec.rfqsPO = new CreditRfqTilesPageObject(page, workerInfo)
+                rec.rfqsPO = new CreditRfqTilesPageObject(page, testInfo)
                 break
               default:
                 throw Error(`Unknown Openfin page URL - ${urlPath}`)
@@ -155,16 +156,16 @@ export const test = base.extend<Fixtures>({
         contextPages.length > 0 ? contextPages[0] : await context.newPage()
       await mainPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}/credit`)
       use({
-        blotterPO: new CreditBlotterPageObject(mainPage, workerInfo),
-        newRfqPO: new CreditNewRfqPageObject(mainPage, workerInfo),
-        rfqsPO: new CreditRfqTilesPageObject(mainPage, workerInfo),
+        blotterPO: new CreditBlotterPageObject(mainPage, testInfo),
+        newRfqPO: new CreditNewRfqPageObject(mainPage, testInfo),
+        rfqsPO: new CreditRfqTilesPageObject(mainPage, testInfo),
       })
     }
   },
-  limitCheckerPage: async ({ context }, use, workerInfo) => {
+  limitCheckerPO: async ({ context }, use, testInfo) => {
     const contextPages = context.pages()
 
-    if (isOpenFin(workerInfo)) {
+    if (isOpenFin(testInfo)) {
       const page = contextPages.find(
         (p) =>
           p.url() ===
@@ -172,12 +173,8 @@ export const test = base.extend<Fixtures>({
       )
       if (!page)
         throw Error(`Openfin page at ${limitCheckerUrlPath} was not found`)
-      use(page)
-    } else {
-      const mainPage =
-        contextPages.length > 0 ? contextPages[0] : await context.newPage()
 
-      use(mainPage)
+      use(new LimitCheckerPageObject(page, testInfo))
     }
   },
 })
