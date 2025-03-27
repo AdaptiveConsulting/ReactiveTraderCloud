@@ -30,9 +30,7 @@ test.describe("Spot Tile", () => {
 
       await tilePO.buy("USDJPY")
 
-      const greenConfirmation = tilePO.page
-        .locator("div[role='dialog']")
-        .getByText(/You Bought/)
+      const greenConfirmation = tilePO.dialogText(/You Bought/)
       await expect(greenConfirmation).toBeVisible()
     })
   })
@@ -45,9 +43,7 @@ test.describe("Spot Tile", () => {
 
       await tilePO.buy("GBPJPY")
 
-      const redConfirmation = tilePO.page
-        .locator("div[role='dialog']")
-        .getByText(/Your trade has been rejected/)
+      const redConfirmation = tilePO.dialogText("Your trade has been rejected")
       await expect(redConfirmation).toBeVisible()
     })
   })
@@ -60,12 +56,12 @@ test.describe("Spot Tile", () => {
 
       await tilePO.sell("EURJPY")
 
-      const executingSpinner = tilePO.page.getByText(/Executing/)
+      const executingSpinner = tilePO.textValue("Executing")
       await expect(executingSpinner).toBeVisible()
 
-      const orangeConfirmation = tilePO.page
-        .locator("div[role='dialog']")
-        .getByText(/Trade execution taking longer than expected/)
+      const orangeConfirmation = tilePO.dialogText(
+        "Trade execution taking longer than expected",
+      )
       await expect(orangeConfirmation).toBeVisible()
     })
   })
@@ -78,14 +74,14 @@ test.describe("Spot Tile", () => {
     }) => {
       await tilePO.selectFilter("NZD")
 
-      await tilePO.page.locator("[data-testid='rfqButton']").click()
+      await tilePO.rfqButton.click()
 
-      await expect(tilePO.page.getByTestId("rfqTimer")).toBeVisible()
-      await tilePO.page.getByTestId("rfqTimer").waitFor({
+      await expect(tilePO.rfqTimer).toBeVisible()
+      await tilePO.rfqTimer.waitFor({
         state: "hidden",
         timeout: SPOT_TILE_RFQ_TIMEOUT,
       })
-      const requoteBtn = tilePO.page.getByText(/Requote/)
+      const requoteBtn = tilePO.textValue("Requote")
       await expect(requoteBtn).toBeVisible({
         timeout: SPOT_TILE_RFQ_TIMEOUT,
       })
