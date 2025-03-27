@@ -3,47 +3,40 @@ import { PropsWithChildren } from "react"
 import { Typography } from "@/client/components/Typography"
 import { SOCIAL_ADDRESSES, SocialPlatform } from "@/client/constants"
 
-import { ContactUsContentResolver, Link } from "./styled"
+import { ContactUsContentResolver } from "./styled"
 
 const Row = ({
   children,
   label,
-  onClick,
-}: PropsWithChildren<{ onClick: () => void; label: string }>) => (
+}: PropsWithChildren<{ label: SocialPlatform }>) => (
   <>
     <Typography variant="Text md/Regular">{label}</Typography>
-    <Link
+    <Typography
+      as="a"
+      href={SOCIAL_ADDRESSES[label]}
+      target="_blank"
       variant="Text sm/Regular underlined"
       color="Component colors/Utility/Blue dark/utility-blue-dark-500"
-      onClick={onClick}
       paddingBottom="md"
+      onClick={() => {
+        window.gtag("event", "outbound_click", {
+          destination: SOCIAL_ADDRESSES[label],
+        })
+      }}
     >
       {children}
-    </Link>
+    </Typography>
   </>
 )
 export const FollowUs = () => {
-  const onClick = (social: SocialPlatform) => () => {
-    window.gtag("event", "outbound_click", {
-      destination: SOCIAL_ADDRESSES[social],
-    })
-    window.open(SOCIAL_ADDRESSES[social])
-  }
-
   return (
     <ContactUsContentResolver>
-      <Typography variant="Text lg/Regular" paddingBottom="sm">
-        Follow us on
-      </Typography>
-      <Row label="LinkedIn" onClick={onClick("LinkedIn")}>
+      <Typography variant="Text lg/Regular">Follow us on</Typography>
+      <Row label="LinkedIn">
         linkedin.com/company/{<br />}adaptive-consulting-ltd/
       </Row>
-      <Row label="Twitter" onClick={onClick("Twitter")}>
-        @WeAreAdaptive
-      </Row>
-      <Row label="Github" onClick={onClick("Github")}>
-        github.com/adaptiveConsulting
-      </Row>
+      <Row label="Twitter">@WeAreAdaptive</Row>
+      <Row label="Github">github.com/adaptiveConsulting</Row>
     </ContactUsContentResolver>
   )
 }

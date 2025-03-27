@@ -1,3 +1,4 @@
+import type * as CSS from "csstype"
 import { CSSProperties } from "react"
 import styled, { css } from "styled-components"
 
@@ -39,10 +40,16 @@ type PaddingKeys = [
 ][number]
 type ColorKeys = (typeof colorPropNames)[number]
 
-type MarginProps = { [k in MarginKeys]?: Spacing | number | string }
-type PaddingProps = { [k in PaddingKeys]?: Spacing | number | string }
-type ColorProps = { [k in ColorKeys]?: Color }
-type RadiusProp = { borderRadius?: Radius | string }
+type MarginProps = {
+  [k in MarginKeys]?: Spacing | number | CSS.Properties["margin"]
+}
+type PaddingProps = {
+  [k in PaddingKeys]?: Spacing | number | CSS.Properties["margin"]
+}
+type ColorProps = {
+  [k in ColorKeys]?: Color | "black" | "white"
+}
+type RadiusProp = { borderRadius?: Radius | CSS.Properties["borderRadius"] }
 export type BoxProps = MarginProps &
   PaddingProps &
   ColorProps &
