@@ -1,7 +1,6 @@
 import styled from "styled-components"
 
 import Popup from "@/client/components/Popup"
-import { Typography } from "@/client/components/Typography"
 
 const buttonHeight = "2rem"
 
@@ -18,9 +17,5 @@ const ContactUsContent = styled.div`
 
 export const LogoWrapper = styled.div`
   padding: 1rem 0.5rem 0 0.5rem;
-`
-
-export const Link = styled(Typography)`
-  cursor: pointer;
 `
 export const ContactUsContentResolver = ContactUsContent

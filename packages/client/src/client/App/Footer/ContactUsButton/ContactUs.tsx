@@ -3,7 +3,7 @@ import { PropsWithChildren } from "react"
 import { Typography } from "@/client/components/Typography"
 import { EMAIL, WEBSITE } from "@/client/constants"
 
-import { ContactUsContentResolver, Link } from "./styled"
+import { ContactUsContentResolver } from "./styled"
 
 const Row = ({ children }: PropsWithChildren) => (
   <>
@@ -23,28 +23,29 @@ export const ContactUs = () => (
     <Row>530 7th Avenue, New York</Row>
     <Row>+1 929 205 4900</Row>
 
-    <Link
+    <Typography
+      as="a"
+      href={`mailto:${EMAIL}`}
       variant="Text sm/Regular underlined"
       color="Component colors/Utility/Blue dark/utility-blue-dark-500"
-      onClick={() => {
-        window.open(`mailto:${EMAIL}`)
-      }}
       paddingBottom="xs"
     >
       {EMAIL}
-    </Link>
+    </Typography>
 
-    <Link
+    <Typography
+      as="a"
+      href={WEBSITE}
+      target="_blank"
       variant="Text sm/Regular underlined"
       color="Component colors/Utility/Blue dark/utility-blue-dark-500"
       onClick={() => {
         window.gtag("event", "outbound_click", {
           destination: WEBSITE,
         })
-        window.open(WEBSITE)
       }}
     >
       www.weareadaptive.com
-    </Link>
+    </Typography>
   </ContactUsContentResolver>
 )

@@ -44,7 +44,7 @@ export const LiveRatesHeader = () => {
     {
       name: "toggleTileView",
       inner: <ChartIcon />,
-      active: tileView === TileView.Analytics,
+      active: tileView === TileView.Chart,
       onClick: onToggleSelectedView,
     },
   ]

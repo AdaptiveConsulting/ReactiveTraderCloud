@@ -2,6 +2,7 @@ import { bind } from "@react-rxjs/core"
 import { createKeyedSignal } from "@react-rxjs/utils"
 import { concat, race, timer } from "rxjs"
 import {
+  delay,
   exhaustMap,
   map,
   mapTo,
@@ -98,6 +99,8 @@ export const [useTileState, getTileState$] = bind(
       exhaustMap((request) =>
         concat(
           execute$(request).pipe(
+            // Simulating real time trade delay
+            delay(Math.random() * 1000 + 100),
             map((trade) =>
               trade.status === ExecutionStatus.Timeout
                 ? TIMEOUT

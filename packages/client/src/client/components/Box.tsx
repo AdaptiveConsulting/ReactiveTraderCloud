@@ -1,6 +1,8 @@
+import type * as CSS from "csstype"
+import { CSSProperties } from "react"
 import styled, { css } from "styled-components"
 
-import { Spacing as ThemeSpacing } from "../theme/types"
+import { Color, Radius, Spacing } from "../theme/types"
 
 // add custom css properties here
 type CustomMarginPropNames = ["marginX", "marginY"]
@@ -23,62 +25,112 @@ const paddingPropNames = [
   "paddingRight",
 ] as const
 
+const colorPropNames = ["color", "backgroundColor"] as const
+
+interface CssProps {
+  width?: CSSProperties["width"]
+  height?: CSSProperties["height"]
+  textAlign?: CSSProperties["textAlign"]
+  display?: CSSProperties["display"]
+  overflow?: CSSProperties["overflow"]
+}
+
 type MarginKeys = [...typeof marginPropNames, ...CustomMarginPropNames][number]
 type PaddingKeys = [
   ...typeof paddingPropNames,
   ...CustomPaddingPropNames,
 ][number]
-type MarginProps = { [k in MarginKeys]?: ThemeSpacing | number }
-type PaddingProps = { [k in PaddingKeys]?: ThemeSpacing | number }
-export type BoxProps = MarginProps & PaddingProps
+type ColorKeys = (typeof colorPropNames)[number]
+
+type MarginProps = {
+  [k in MarginKeys]?: Spacing | number | CSS.Properties["margin"]
+}
+type PaddingProps = {
+  [k in PaddingKeys]?: Spacing | number | CSS.Properties["margin"]
+}
+type ColorProps = {
+  [k in ColorKeys]?: Color | "black" | "white" | "inherit"
+}
+type RadiusProp = { borderRadius?: Radius | CSS.Properties["borderRadius"] }
+export type BoxProps = MarginProps &
+  PaddingProps &
+  ColorProps &
+  RadiusProp &
+  CssProps
 
 export const Box = styled.div<BoxProps>`
   ${({ theme, ...props }) => {
-    const mapSpacingCss = (prop?: ThemeSpacing | number) =>
-      prop && (typeof prop === "number" ? prop : theme.spacing[prop])
+    const mapThemeCss = <T extends keyof typeof theme>(
+      themeKey: T,
+      prop?: keyof (typeof theme)[T] | number | string,
+    ) => {
+      if (!prop) return
+      if (theme[themeKey][prop as keyof (typeof theme)[T]]) {
+        return theme[themeKey][prop as keyof (typeof theme)[T]]
+      }
+      return prop
+    }
 
-    const marginProps = Object.entries(props).filter(([name]) =>
-      marginPropNames.includes(name as (typeof marginPropNames)[number]),
-    )
-
-    const paddingProps = Object.entries(props).filter(([name]) =>
-      paddingPropNames.includes(name as (typeof paddingPropNames)[number]),
-    )
+    const filterProps = <T extends readonly string[] | string>(names: T) =>
+      Object.entries(props).filter(([name]) =>
+        names.includes(name as T[number]),
+      )
 
     const { marginX, marginY, paddingX, paddingY } = props
 
     const customSpacingStyles = {
       ...(paddingX && {
-        paddingLeft: mapSpacingCss(paddingX),
-        paddingRight: mapSpacingCss(paddingX),
+        paddingLeft: mapThemeCss("spacing", paddingX),
+        paddingRight: mapThemeCss("spacing", paddingX),
       }),
       ...(paddingY && {
-        paddingTop: mapSpacingCss(paddingY),
-        paddingBottom: mapSpacingCss(paddingY),
+        paddingTop: mapThemeCss("spacing", paddingY),
+        paddingBottom: mapThemeCss("spacing", paddingY),
       }),
       ...(marginX && {
-        marginLeft: mapSpacingCss(marginX),
-        marginRight: mapSpacingCss(marginX),
+        marginLeft: mapThemeCss("spacing", marginX),
+        marginRight: mapThemeCss("spacing", marginX),
       }),
       ...(marginY && {
-        marginTop: mapSpacingCss(marginY),
-        marginBottom: mapSpacingCss(marginY),
+        marginTop: mapThemeCss("spacing", marginY),
+        marginBottom: mapThemeCss("spacing", marginY),
       }),
     }
 
+    const marginProps = filterProps(marginPropNames)
     const marginStyles = Object.fromEntries(
-      marginProps.map(([name, value]) => [name, mapSpacingCss(value)]),
+      marginProps.map(([name, value]) => [name, mapThemeCss("spacing", value)]),
     )
 
+    const paddingProps = filterProps(paddingPropNames)
     const paddingStyles = Object.fromEntries(
-      paddingProps.map(([name, value]) => [name, mapSpacingCss(value)]),
+      paddingProps.map(([name, value]) => [
+        name,
+        mapThemeCss("spacing", value),
+      ]),
     )
+
+    const colorProps = filterProps(colorPropNames)
+    const colorStyles = Object.fromEntries(
+      colorProps.map(([name, value]) => [name, mapThemeCss("color", value)]),
+    )
+
+    const { width, height, textAlign, display, overflow } = props
+
+    const borderRadius = mapThemeCss("radius", props.borderRadius)
 
     return css({
       ...customSpacingStyles,
       // the more specific styles should overwrite the more general custom styles
       ...marginStyles,
       ...paddingStyles,
+      ...colorStyles,
+      width,
+      height,
+      textAlign,
+      borderRadius,
+      display,
+      overflow,
     })
   }}
 `

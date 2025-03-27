@@ -63,7 +63,7 @@ export const Tiles = () => {
         <Tile
           key={currencyPair.symbol}
           currencyPair={currencyPair}
-          isAnalytics={selectedView === TileView.Analytics}
+          showingChart={selectedView === TileView.Chart}
         />
       ))}
     </GridLayout>

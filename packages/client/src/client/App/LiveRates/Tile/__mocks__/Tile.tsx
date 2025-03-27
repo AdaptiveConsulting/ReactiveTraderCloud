@@ -4,13 +4,13 @@ import { CurrencyPair } from "@/services/currencyPairs"
 
 export const Tile = ({
   currencyPair,
-  isAnalytics,
+  showingChart,
 }: {
   currencyPair: CurrencyPair
-  isAnalytics: boolean
+  showingChart: boolean
 }) => (
   <div data-testid={`tile-${currencyPair.symbol}`}>
-    IsAnalytics: {isAnalytics ? "true" : "false"}
+    ShowingChart: {showingChart ? "true" : "false"}
   </div>
 )
 

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react"
+import React, { ButtonHTMLAttributes, PropsWithChildren } from "react"
 import styled, { css } from "styled-components"
 
 import { Typography } from "./Typography"
@@ -6,10 +6,6 @@ import { Typography } from "./Typography"
 interface Props {
   variant: "brand" | "primary" | "warning" | "outline" | "white-outline"
   size: "xxs" | "xs" | "sm" | "lg"
-  className?: string
-  disabled?: boolean
-  style?: React.CSSProperties
-  onClick: () => void
 }
 
 const focus = css`
@@ -81,24 +77,9 @@ const warningStyle = css`
   }
 `
 
-const whiteOutlineStyle = css`
-  ${({ theme }) => `
-  color: ${theme.color["Colors/Text/text-white"]};
-  border: 1px solid ${theme.color["Colors/Text/text-white"]};
-  `}
-  &:hover,
-  &.sg-button-hover {
-    ${({ theme }) => `
-    color: ${theme.color["Component colors/Components/Buttons/Primary/button-primary-fg_hover"]};
-    background-color: ${theme.color["Component colors/Components/Buttons/Primary/button-primary-bg"]};
-    `}
-  }
-`
-
 const ButtonStyled = styled.button<Props>`
-  padding: 0 ${({ theme }) => theme.spacing.xl};
+  padding: 0 ${({ theme }) => theme.spacing.md};
   border-radius: ${({ theme }) => theme.radius.full};
-
   &:focus,
   &.sg-button-focus {
     ${focus}
@@ -131,15 +112,13 @@ const ButtonStyled = styled.button<Props>`
         return outlineStyle
       case "warning":
         return warningStyle
-      case "white-outline":
-        return whiteOutlineStyle
     }
   }};
 `
 
 export const Button = React.forwardRef<
   HTMLButtonElement,
-  PropsWithChildren<Props>
+  PropsWithChildren<Props & ButtonHTMLAttributes<HTMLButtonElement>>
 >(function ButtonInner({ children, className, ...props }, ref) {
   return (
     <ButtonStyled ref={ref} className={className} {...props}>

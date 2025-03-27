@@ -4,6 +4,7 @@ import { map, switchMap } from "rxjs/operators"
 
 import { isBuy } from "@/client/App/Credit/common"
 import { AdaptiveLoader } from "@/client/components/AdaptiveLoader"
+import { Box } from "@/client/components/Box"
 import { ForbiddenIcon } from "@/client/components/icons"
 import { Stack } from "@/client/components/Stack"
 import { Typography } from "@/client/components/Typography"
@@ -22,11 +23,7 @@ import { getRfqPayload$, QuoteState, useIsRfq } from "../Rfq/Rfq.state"
 import { useTileCurrencyPair } from "../Tile.context"
 import { sendExecution } from "../Tile.state"
 import {
-  ExpiredPrice,
-  Price,
   PriceButtonDisabledPlaceholder,
-  PriceContainer,
-  PriceTypography,
   QuotePriceLoading,
   TradeButton,
 } from "./PriceButton.styles"
@@ -113,34 +110,49 @@ export const PriceButtonInner = ({
       priceAnnounced={priceAnnounced}
       disabled={disabled}
       isStatic={isStatic}
+      isExpired={isExpired}
       data-testid={`${direction}-${currencyPair.symbol}`}
     >
-      <Price disabled={disabled}>
-        <Typography
-          variant="Text sm/Regular"
-          color="Colors/Text/text-secondary (700)"
-        >
-          {`${direction} ${currencyPair.base}`.toUpperCase()}
+      <Stack justifyContent="center" alignItems="center" direction="column">
+        <Typography color={disabled ? "Colors/Text/text-disabled" : "inherit"}>
+          <Typography
+            display="inline"
+            variant="Text xxs/Regular"
+            className="symbol"
+          >
+            {`${direction} ${currencyPair.base}`.toUpperCase()}
+          </Typography>
+          <Box color="inherit">
+            <Typography display="inline" variant="Text sm/Regular">
+              {price ? bigFigure : "-"}
+            </Typography>
+            {price && (
+              <>
+                <Typography
+                  lineHeight={1}
+                  display="inline"
+                  variant="Display xl/Regular"
+                >
+                  {pip}
+                </Typography>
+                <Typography display="inline" variant="Text sm/Regular">
+                  {tenth}
+                </Typography>
+              </>
+            )}
+            {isExpired && (
+              <Typography
+                variant="Text xs/Regular"
+                color="Colors/Text/text-error-primary (600)"
+                textTransform="uppercase"
+                data-testid="expireLabel"
+              >
+                Expired
+              </Typography>
+            )}
+          </Box>
         </Typography>
-        <PriceContainer>
-          <PriceTypography variant="Text sm/Regular">
-            {price ? bigFigure : "-"}
-          </PriceTypography>
-          {price && (
-            <>
-              <PriceTypography variant="Display xl/Regular">
-                {pip}
-              </PriceTypography>
-              <PriceTypography variant="Text sm/Regular">
-                {tenth}
-              </PriceTypography>
-            </>
-          )}
-        </PriceContainer>
-      </Price>
-      {isExpired && (
-        <ExpiredPrice data-testid="expireLabel">Expired</ExpiredPrice>
-      )}
+      </Stack>
     </TradeButton>
   )
 }

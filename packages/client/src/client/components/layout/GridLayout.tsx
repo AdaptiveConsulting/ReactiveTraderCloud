@@ -2,8 +2,8 @@ import styled from "styled-components"
 
 export const GridLayout = styled.div<{ empty?: boolean }>`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-  grid-gap: ${({ theme }) => theme.spacing.md};
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-gap: ${({ theme }) => theme.spacing.lg};
   padding: ${({ theme }) => theme.spacing.lg};
   padding-bottom: 0;
 

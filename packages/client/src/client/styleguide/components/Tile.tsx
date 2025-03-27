@@ -12,7 +12,8 @@ import {
 import { PriceMovementInner } from "@/client/App/LiveRates/Tile/PriceMovement"
 import { RfqTimer } from "@/client/App/LiveRates/Tile/Rfq"
 import { RfqButtonInner } from "@/client/App/LiveRates/Tile/Rfq/RfqButton"
-import { TileState } from "@/client/App/LiveRates/Tile/Tile.state"
+import { useTileContext } from "@/client/App/LiveRates/Tile/Tile.context"
+import { TileState, TileStates } from "@/client/App/LiveRates/Tile/Tile.state"
 import {
   Body,
   InputTimerStyle,
@@ -52,8 +53,6 @@ export type TileProps = {
 }
 
 export const Tile = ({
-  currencyPair,
-  isAnalytics,
   timerData,
   canResetNotional,
   disabledNotional,
@@ -65,7 +64,6 @@ export const Tile = ({
   hover,
   tileState,
   isRfq,
-  rfqTextWrap,
   rfqButtonText,
   staticProgressWidth,
   isExpired,
@@ -73,9 +71,11 @@ export const Tile = ({
   priceButtonStatic,
   graphPath,
 }: TileProps) => {
+  const { showingChart, currencyPair } = useTileContext()
+
   const InputTimerWrapper = ({ isAnalytics }: { isAnalytics?: boolean }) => {
     return (
-      <InputTimerStyle isAnalyticsView={!!isAnalytics}>
+      <InputTimerStyle>
         <NotionalInputInner
           base={currencyPair.base}
           canReset={!!canResetNotional}
@@ -107,20 +107,21 @@ export const Tile = ({
           date={`SPT (${format(new Date(), "dd MMM").toUpperCase()})`}
           onClick={() => null}
           supportsTearOut={true}
+          executing={tileState.status === TileStates.Started}
           isTornOut={false}
         />
-        <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>
-          {isAnalytics && graphPath ? (
+        <Body>
+          {showingChart && graphPath ? (
             <HistoricalGraphComponent
               showTimer={!!timerData}
               path={graphPath}
             />
           ) : null}
-          <PriceControlsStyle isAnalyticsView={isAnalytics}>
+          <PriceControlsStyle>
             <PriceMovementInner
               movementType={isRfq ? PriceMovementType.NONE : priceMovementType}
               spread={priceMovement}
-              isAnalyticsView={isAnalytics}
+              showingChart={showingChart}
             />
 
             <Stack justifyContent="center" alignItems="center">
@@ -161,12 +162,12 @@ export const Tile = ({
             </Stack>
             {rfqButtonText && typeof rfqButtonText === "string" && (
               <RfqButtonInner
-                isAnalytics={isAnalytics}
                 disabled={false}
                 onClick={() => null}
-                textWrap={!!rfqTextWrap}
-                buttonText={rfqButtonText}
-              />
+                cancellable={false}
+              >
+                {rfqButtonText}
+              </RfqButtonInner>
             )}
           </PriceControlsStyle>
         </Body>

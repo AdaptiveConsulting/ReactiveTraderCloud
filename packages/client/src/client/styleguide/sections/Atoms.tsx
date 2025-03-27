@@ -27,13 +27,7 @@ import {
 import { AtomsChart } from "./components/AtomsChart"
 import { AtomsPricingTile } from "./components/AtomsPricingTile"
 
-const buttonVariants = [
-  "primary",
-  "brand",
-  "outline",
-  "warning",
-  "white-outline",
-] as const
+const buttonVariants = ["primary", "brand", "outline", "warning"] as const
 const inputVariants = ["text", "combo-box"] as const
 const checkBoxVariants = ["unchecked", "checked"] as const
 const pricingTileVariants = [Direction.Buy, Direction.Sell] as const
@@ -208,7 +202,7 @@ export const Atoms = () => {
               <PriceMovementInner
                 movementType={state}
                 spread="3.0"
-                isAnalyticsView={false}
+                showingChart={false}
               />
             )}
           />

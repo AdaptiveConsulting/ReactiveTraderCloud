@@ -42,7 +42,7 @@ export const TornOutTile = withSubscriber<{
       <Wrapper>
         <Tile
           currencyPair={useCurrencyPair(symbol)}
-          isAnalytics={view === TileView.Analytics}
+          showingChart={view === TileView.Chart}
           isTornOut
           supportsTearOut={supportsTearOut}
         />

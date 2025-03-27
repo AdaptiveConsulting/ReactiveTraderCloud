@@ -66,16 +66,6 @@ export const QuotesContainer = styled.div`
     theme.color["Colors/Background/bg-primary"]};
 `
 
-export const NoRfqsWrapper = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-// Card Footer
-
 export const CardFooterWrapper = styled(Stack)`
   background: ${({ theme }) =>
     theme.color["Colors/Background/bg-secondary_subtle"]};
@@ -83,16 +73,6 @@ export const CardFooterWrapper = styled(Stack)`
     theme.color["Colors/Text/text-success-primary (600)"]};
   svg {
     margin-right: ${({ theme }) => theme.spacing.xs};
-  }
-`
-
-export const AcceptedCardState = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-
-  svg {
-    margin-right: ${({ theme }) => theme.spacing.md};
   }
 `
 

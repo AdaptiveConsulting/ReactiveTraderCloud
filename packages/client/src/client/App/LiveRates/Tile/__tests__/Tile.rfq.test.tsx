@@ -17,6 +17,7 @@ import { HistoryPrice, Price, PriceMovementType } from "@/services/prices"
 import { pricesMock } from "@/services/prices/__mocks__/_prices"
 
 import { Tile, tile$ } from ".."
+import { assertSuccessOverlay } from "./utils"
 
 vi.mock("@/services/executions/executions")
 vi.mock("@/services/prices/prices")
@@ -50,7 +51,7 @@ const renderComponent = async (
     render(
       <TestThemeProvider>
         <Subscribe source$={tile$(currencyPair.symbol)} fallback="No data">
-          <Tile currencyPair={currencyPairMock} isAnalytics={isAnalytics} />
+          <Tile currencyPair={currencyPairMock} showingChart={isAnalytics} />
         </Subscribe>
       </TestThemeProvider>,
     )
@@ -100,7 +101,7 @@ describe("Tile/rfq", () => {
     const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
 
     act(() => {
-      fireEvent.change(input, { target: { value: "10000000" } })
+      fireEvent.change(input, { target: { value: "100000000" } })
     })
 
     expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe(
@@ -197,15 +198,11 @@ describe("Tile/rfq", () => {
       currencyPair: "EURUSD",
       dealtCurrency: "USD",
       direction: Direction.Sell,
-      notional: 10000000,
+      notional: 10_000_000,
       spotRate: 1.53816,
     })
 
     expect(screen.queryByText("Executing")).not.toBeNull()
-
-    act(() => {
-      vi.advanceTimersByTime(2001)
-    })
 
     act(() => {
       response$.next({
@@ -218,9 +215,11 @@ describe("Tile/rfq", () => {
       response$.complete()
     })
 
-    expect(screen.getByRole("alert").textContent).toEqual(
-      "You sold EUR 10,000,000 at a rate of 1.53816 for USD 15,381,600 settling (Spt) 04 Feb.",
-    )
+    act(() => {
+      vi.advanceTimersByTime(2001)
+    })
+
+    assertSuccessOverlay()
 
     act(() => {
       fireEvent.click(screen.getByText("Close"))
@@ -239,12 +238,12 @@ describe("Tile/rfq", () => {
 
   it("RFQ button should be disabled where notional is not valid", async () => {
     act(() => {
-      const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
-      fireEvent.change(input, { target: { value: "1000000001" } })
+      const input = screen.getByLabelText("EUR")
+      fireEvent.change(input, { target: { value: "1000000000000000001" } })
     })
 
     expect(
-      screen.queryByText("Initiate RFQ")?.hasAttribute("disabled"),
+      screen.getByText("Initiate RFQ").parentElement?.hasAttribute("disabled"),
     ).toEqual(true)
   })
 })
