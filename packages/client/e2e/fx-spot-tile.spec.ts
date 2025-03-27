@@ -15,10 +15,7 @@ test.describe("Spot Tile", () => {
       await tilePO.sell("EURUSD")
 
       const tradeId = await tilePO.tradeId.innerText()
-      const blotterTradeID = blotterPO
-        .tradesGridRow(tradeId)
-        .locator("div")
-        .nth(1)
+      const blotterTradeID = blotterPO.tradesGridRow(tradeId)
 
       await expect(blotterTradeID).toHaveText(tradeId)
     })
