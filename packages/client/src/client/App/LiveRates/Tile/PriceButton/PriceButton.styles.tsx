@@ -2,7 +2,6 @@ import styled, { css, DefaultTheme, keyframes } from "styled-components"
 
 import { isBuy } from "@/client/App/Credit/common"
 import { Stack } from "@/client/components/Stack"
-import { Typography } from "@/client/components/Typography"
 import { Theme } from "@/client/theme/themes"
 import { Direction } from "@/generated/TradingGateway"
 
@@ -15,11 +14,11 @@ const backgroundEffectKeyframes = ({
 }) => keyframes`
   5% {
     background-color: ${getDirectionColor(theme, direction)};
-    color: white;
+    color: ${theme.color["Colors/Text/text-primary (900)"]};
   }
   80% {
     background-color: ${getDirectionColor(theme, direction)};
-    color: white;
+    color: ${theme.color["Colors/Text/text-primary (900)"]};
   }
 `
 
@@ -53,8 +52,9 @@ const backgroundEffect = ({
     ? getAnimationCSSProperty({ direction, theme })
     : isStatic
       ? `
-    background-color: ${getDirectionColor(theme, direction)};
-    color: white;`
+        background-color: ${getDirectionColor(theme, direction)};
+        color: ${theme.color["Colors/Text/text-primary (900)"]};
+        `
       : ""
 
 const buttonDimensions = css`
@@ -69,6 +69,7 @@ const SharedButtonStyle = styled.button`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border-radius: ${({ theme }) => theme.radius.xxs};
 `
 
 export const TradeButton = styled(SharedButtonStyle)<TradeButtonProps>`
@@ -77,6 +78,17 @@ export const TradeButton = styled(SharedButtonStyle)<TradeButtonProps>`
     theme.color["Colors/Background/bg-primary"]};
   color: ${({ theme, priceAnnounced, direction }) =>
     priceAnnounced ? getDirectionColor(theme, direction) : "inherit"};
+  .symbol {
+    color: ${({ theme, priceAnnounced, disabled }) => {
+      if (priceAnnounced) {
+        return theme.color["Colors/Text/text-primary (900)"]
+      }
+      if (disabled) {
+        return theme.color["Colors/Text/text-disabled"]
+      }
+      return theme.color["Colors/Text/text-tertiary (600)"]
+    }};
+  }
   transition: background-color 0.2s ease;
   cursor: pointer;
   border: none;
@@ -87,7 +99,7 @@ export const TradeButton = styled(SharedButtonStyle)<TradeButtonProps>`
     isStatic
       ? `
         background-color: ${getDirectionColor(theme, direction)};
-        color: white;
+        color: ${theme.color["Colors/Text/text-primary (900)"]};
       `
       : ``}
 
@@ -98,10 +110,13 @@ export const TradeButton = styled(SharedButtonStyle)<TradeButtonProps>`
         pointer-events: none;
   `
       : `
-  &:hover {
-    background-color: ${getDirectionColor(theme, direction)};
-    color: ${theme.color["Colors/Text/text-primary (900)"]};
-    }
+        &:hover {
+          background-color: ${getDirectionColor(theme, direction)};
+          color: ${theme.color["Colors/Text/text-primary (900)"]};
+          .symbol {
+            color: ${theme.color["Colors/Text/text-primary (900)"]};
+          }
+        }
     `};
 `
 
@@ -109,37 +124,6 @@ export const QuotePriceLoading = styled(SharedButtonStyle)`
   transition: background-color 0.2s ease;
   opacity: 0.5;
   margin: 0;
-`
-
-const Box = styled.div`
-  padding: 0;
-  margin: 0;
-`
-
-export const PriceContainer = styled(Box)`
-  color: inherit;
-  padding-top: ${({ theme }) => theme.spacing.xl};
-`
-
-export const PriceTypography = styled(Typography)`
-  display: inline;
-  line-height: 0;
-`
-
-export const Price = styled.div<{ disabled: boolean }>`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  ${({ disabled }) => (disabled ? "opacity: 0.3" : "")}
-`
-
-export const ExpiredPrice = styled.div`
-  z-index: 1;
-  color: ${({ theme }) => theme.color["Colors/Text/text-error-primary (600)"]};
-  font-size: 8px;
-  text-transform: uppercase;
 `
 
 export const PriceButtonDisabledPlaceholder = styled(Stack)`

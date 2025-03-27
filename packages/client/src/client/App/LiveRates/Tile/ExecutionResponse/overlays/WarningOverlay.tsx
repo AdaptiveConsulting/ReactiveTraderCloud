@@ -8,7 +8,7 @@ export const WarningOverlay = (props: { base: string; terms: string }) => (
   <OverlayBase
     backgroundColor="Colors/Background/bg-warning-primary"
     color="Colors/Foreground/fg-warning-primary"
-    Icon={<WarningIcon height={16} width={16} />}
+    Icon={<WarningIcon />}
     {...props}
   >
     <OverlayBackgroundImage

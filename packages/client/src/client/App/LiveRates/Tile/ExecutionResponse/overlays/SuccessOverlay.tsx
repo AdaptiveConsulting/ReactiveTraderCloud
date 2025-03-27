@@ -41,6 +41,9 @@ const Stat = ({
       <Typography
         variant="Text sm/Regular"
         color="Colors/Text/text-primary (900)"
+        overflow="hidden"
+        whiteSpace="nowrap"
+        textOverflow="ellipsis"
       >
         {value}
       </Typography>

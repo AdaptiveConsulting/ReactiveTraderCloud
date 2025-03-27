@@ -31,6 +31,8 @@ interface CssProps {
   width?: CSSProperties["width"]
   height?: CSSProperties["height"]
   textAlign?: CSSProperties["textAlign"]
+  display?: CSSProperties["display"]
+  overflow?: CSSProperties["overflow"]
 }
 
 type MarginKeys = [...typeof marginPropNames, ...CustomMarginPropNames][number]
@@ -47,7 +49,7 @@ type PaddingProps = {
   [k in PaddingKeys]?: Spacing | number | CSS.Properties["margin"]
 }
 type ColorProps = {
-  [k in ColorKeys]?: Color | "black" | "white"
+  [k in ColorKeys]?: Color | "black" | "white" | "inherit"
 }
 type RadiusProp = { borderRadius?: Radius | CSS.Properties["borderRadius"] }
 export type BoxProps = MarginProps &
@@ -113,7 +115,7 @@ export const Box = styled.div<BoxProps>`
       colorProps.map(([name, value]) => [name, mapThemeCss("color", value)]),
     )
 
-    const { width, height, textAlign } = props
+    const { width, height, textAlign, display, overflow } = props
 
     const borderRadius = mapThemeCss("radius", props.borderRadius)
 
@@ -127,6 +129,8 @@ export const Box = styled.div<BoxProps>`
       height,
       textAlign,
       borderRadius,
+      display,
+      overflow,
     })
   }}
 `

@@ -20,7 +20,7 @@ export const PriceControlsStyle = styled("div")(({ theme }) => {
   padding-right: ${theme.spacing.xs}
   `
       : `
-  grid-template-columns: 87px 1fr 87px;
+  grid-template-columns: 1fr .35fr 1fr;
   grid-template-rows: 100%;
   grid-template-areas:
   "sell movement buy";

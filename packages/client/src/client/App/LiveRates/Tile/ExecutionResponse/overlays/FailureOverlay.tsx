@@ -14,7 +14,7 @@ export const FailureOverlay = ({
   <OverlayBase
     backgroundColor="Colors/Background/bg-error-primary"
     color="Colors/Foreground/fg-error-primary"
-    Icon={<ErrorIcon height={16} width={16} />}
+    Icon={<ErrorIcon />}
     tradeId={tileState.trade?.tradeId}
     {...props}
   >
