@@ -23,9 +23,7 @@ export class FxTilesPageObject {
   }
 
   get selectedView() {
-    return this.page.evaluate(() =>
-      window.localStorage.getItem("selectedView"),
-    )
+    return this.page.evaluate(() => window.localStorage.getItem("selectedView"))
   }
 
   get tileGraph() {

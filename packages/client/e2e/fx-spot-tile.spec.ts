@@ -15,7 +15,10 @@ test.describe("Spot Tile", () => {
       await tilePO.sell("EURUSD")
 
       const tradeId = await tilePO.tradeId.innerText()
-      const blotterTradeID = blotterPO.tradesGridRow(tradeId).locator('div').nth(1)
+      const blotterTradeID = blotterPO
+        .tradesGridRow(tradeId)
+        .locator("div")
+        .nth(1)
 
       await expect(blotterTradeID).toHaveText(tradeId)
     })
@@ -131,18 +134,14 @@ test.describe("Spot Tile", () => {
       await toggle.click()
       const tileState = await tilePO.selectedView
       expect(tileState).toBe("Normal")
-      await expect(
-        tilePO.tileGraph.nth(0),
-      ).toBeHidden()
+      await expect(tilePO.tileGraph.nth(0)).toBeHidden()
 
       // click toggleButton again, now expect there to be graphs
       await toggle.click()
       const tileState2 = await tilePO.selectedView
 
       expect(tileState2).toBe("Analytics")
-      await expect(
-        tilePO.tileGraph.nth(0),
-      ).toBeVisible()
+      await expect(tilePO.tileGraph.nth(0)).toBeVisible()
     })
   })
 
