@@ -18,6 +18,24 @@ export class FxTilesPageObject {
     return this.page.getByTestId("rfqTimer")
   }
 
+  get toggleTileView() {
+    return this.page.getByTestId("action-toggleTileView")
+  }
+
+  get selectedView() {
+    return this.page.evaluate(() =>
+      window.localStorage.getItem("selectedView"),
+    )
+  }
+
+  get tileGraph() {
+    return this.page.getByTestId("tile-graph")
+  }
+
+  get totalTiles() {
+    return this.page.locator('div[aria-label="Lives Rates Tiles"] > div')
+  }
+
   notionalInput(currency: string) {
     return this.page.locator(`input[id='notional-input-${currency}']`)
   }
