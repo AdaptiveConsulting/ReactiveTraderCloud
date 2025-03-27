@@ -42,7 +42,7 @@ const OverlayHeader = ({
         textTransform="uppercase"
         marginLeft="auto"
       >
-        {"Trade id: " + tradeId}
+        {"Trade id: "} <span data-testid="trade-id">{tradeId}</span>
       </Typography>
     )}
   </OverlayHeaderBackground>
