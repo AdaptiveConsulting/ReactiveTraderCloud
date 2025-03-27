@@ -15,7 +15,7 @@ test.describe("Spot Tile", () => {
       await tilePO.sell("EURUSD")
 
       const tradeId = await tilePO.tradeId.innerText()
-      const blotterTradeID = await blotterPO.tradesGridRow(tradeId)
+      const blotterTradeID = blotterPO.tradesGridRow(tradeId).locator('div').nth(1)
 
       await expect(blotterTradeID).toHaveText(tradeId)
     })
@@ -113,11 +113,11 @@ test.describe("Spot Tile", () => {
     }) => {
       await tilePO.notionalInput("EURUSD").clear()
       await tilePO.notionalInput("EURUSD").pressSequentially("1200000000")
-      await expect(tilePO.page.getByText(/Max exceeded/)).toBeVisible()
+      await expect(tilePO.textValue("Max exceeded")).toBeVisible()
 
       await tilePO.notionalInput("EURUSD").selectText()
       await tilePO.notionalInput("EURUSD").pressSequentially("1m")
-      await expect(tilePO.page.getByText(/Max exceeded/)).toBeHidden()
+      await expect(tilePO.textValue("Max exceeded")).toBeHidden()
     })
   })
 
@@ -125,28 +125,23 @@ test.describe("Spot Tile", () => {
     test("When I click the graph icon on the Live Rates bar then I should toggle from graph to price views", async ({
       fxPages: { tilePO },
     }) => {
-      const toggle = tilePO.page.locator(
-        "[data-testid='action-toggleTileView']",
-      )
+      const toggle = tilePO.toggleTileView
 
       // first click, goes into normal mode, should be no graphs
       await toggle.click()
-      const tileState = await tilePO.page.evaluate(() =>
-        window.localStorage.getItem("selectedView"),
-      )
+      const tileState = await tilePO.selectedView
       expect(tileState).toBe("Normal")
       await expect(
-        tilePO.page.locator("[data-testid='tile-graph']").nth(0),
+        tilePO.tileGraph.nth(0),
       ).toBeHidden()
 
       // click toggleButton again, now expect there to be graphs
       await toggle.click()
-      const tileState2 = await tilePO.page.evaluate(() =>
-        window.localStorage.getItem("selectedView"),
-      )
+      const tileState2 = await tilePO.selectedView
+
       expect(tileState2).toBe("Analytics")
       await expect(
-        tilePO.page.locator("[data-testid='tile-graph']").nth(0),
+        tilePO.tileGraph.nth(0),
       ).toBeVisible()
     })
   })
@@ -165,9 +160,7 @@ test.describe("Spot Tile", () => {
         fxPages: { tilePO },
       }) => {
         await tilePO.selectFilter(currency)
-        const totalTiles = await tilePO.page
-          .locator('div[aria-label="Lives Rates Tiles"] > div')
-          .count()
+        const totalTiles = await tilePO.totalTiles.count()
 
         expect(totalTiles).toBe(numTiles)
       })
