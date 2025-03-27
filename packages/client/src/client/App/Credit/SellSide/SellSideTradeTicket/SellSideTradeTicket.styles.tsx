@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-import { FlexBox } from "@/client/components/FlexBox"
+import { Stack } from "@/client/components/Stack"
 
 export const SellSideWrapper = styled.div`
   z-index: 1;
@@ -23,11 +23,9 @@ export const NoSelectHeader = styled.div`
     theme.color["Colors/Background/bg-secondary"]};
 `
 
-export const NoSelectedMessage = styled(FlexBox)`
+export const NoSelectedMessage = styled(Stack)`
   flex: 1 1 auto;
   text-align: center;
-  flex-direction: column;
-  justify-content: center;
   background-color: ${({ theme }) =>
     theme.color["Colors/Background/bg-tertiary"]};
 `

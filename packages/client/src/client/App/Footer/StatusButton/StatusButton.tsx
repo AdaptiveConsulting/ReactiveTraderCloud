@@ -1,4 +1,3 @@
-import { Gap } from "@/client/components/Gap"
 import { Typography } from "@/client/components/Typography"
 import { ConnectionStatus, useConnectionStatus } from "@/services/connection"
 
@@ -15,8 +14,7 @@ export const StatusButtonInner = ({ status }: { status: ConnectionStatus }) => {
   return (
     <Root>
       <StatusCircle status={appStatus} />
-      <Gap width="xs" />
-      <Typography variant="Text sm/Regular">
+      <Typography variant="Text sm/Regular" paddingTop="xs">
         {appStatus[0].toUpperCase() + appStatus.slice(1).toLowerCase()}
       </Typography>
     </Root>

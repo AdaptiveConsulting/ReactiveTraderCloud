@@ -1,7 +1,6 @@
 import { PropsWithChildren, useEffect, useRef } from "react"
 
 import { TextInput } from "@/client/components/Form/TextInput"
-import { Gap } from "@/client/components/Gap"
 import { Typography } from "@/client/components/Typography"
 import { truncatedDecimalNumberFormatter } from "@/client/utils"
 import {
@@ -43,10 +42,10 @@ const Parameter = ({
     <Typography
       variant="Text sm/Medium"
       color="Colors/Text/text-secondary (700)"
+      marginBottom="sm"
     >
       {label}
     </Typography>
-    <Gap height="sm" />
     {value && <Typography variant="Text sm/Regular">{value}</Typography>}
     {children}
   </div>
