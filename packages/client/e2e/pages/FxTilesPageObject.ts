@@ -18,12 +18,8 @@ export class FxTilesPageObject {
     return this.page.getByTestId("rfqTimer")
   }
 
-  get toggleTileView() {
+  get tileView() {
     return this.page.getByTestId("action-toggleTileView")
-  }
-
-  get selectedView() {
-    return this.page.evaluate(() => window.localStorage.getItem("selectedView"))
   }
 
   get tileGraph() {

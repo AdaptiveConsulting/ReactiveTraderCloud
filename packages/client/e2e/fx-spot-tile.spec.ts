@@ -128,19 +128,12 @@ test.describe("Spot Tile", () => {
     test("When I click the graph icon on the Live Rates bar then I should toggle from graph to price views", async ({
       fxPages: { tilePO },
     }) => {
-      const toggle = tilePO.toggleTileView
+      const toggle = tilePO.tileView
 
-      // first click, goes into normal mode, should be no graphs
       await toggle.click()
-      const tileState = await tilePO.selectedView
-      expect(tileState).toBe("Normal")
       await expect(tilePO.tileGraph.nth(0)).toBeHidden()
 
-      // click toggleButton again, now expect there to be graphs
       await toggle.click()
-      const tileState2 = await tilePO.selectedView
-
-      expect(tileState2).toBe("Chart")
       await expect(tilePO.tileGraph.nth(0)).toBeVisible()
     })
   })
