@@ -16,10 +16,6 @@ import {
   useRfqState,
 } from "./Rfq.state"
 
-const RfqButtonContainer = styled(OverlayDiv)`
-  position: absolute;
-`
-
 const buttonState = (quoteState: QuoteStateStage) => {
   switch (quoteState) {
     case QuoteStateStage.Init:
@@ -62,7 +58,7 @@ const RFQButtonStyled = styled(Button)<RFQButtonProps>`
 
 export const RfqButtonInner = (props: PropsWithChildren<RFQButtonProps>) => {
   return (
-    <RfqButtonContainer>
+    <OverlayDiv>
       <CenteringContainer>
         <RFQButtonStyled
           variant="brand"
@@ -71,7 +67,7 @@ export const RfqButtonInner = (props: PropsWithChildren<RFQButtonProps>) => {
           {...props}
         />
       </CenteringContainer>
-    </RfqButtonContainer>
+    </OverlayDiv>
   )
 }
 

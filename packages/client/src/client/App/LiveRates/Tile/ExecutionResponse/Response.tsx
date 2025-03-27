@@ -1,3 +1,4 @@
+import { OverlayDiv } from "@/client/components/OverlayDiv"
 import { CurrencyPair } from "@/services/currencyPairs"
 import { ExecutionStatus } from "@/services/executions"
 
@@ -11,7 +12,6 @@ import {
 } from "../Tile.state"
 import { FailureOverlay, SuccessOverlay, WarningOverlay } from "./overlays"
 import { Pending } from "./Pending"
-import { ExecutionStatusAlertContainer } from "./Response.styles"
 
 const ExecutionOverlay = ({
   tileState,
@@ -35,7 +35,7 @@ const ExecutionOverlay = ({
     tileState.trade.status === ExecutionStatus.Done
 
   return (
-    <ExecutionStatusAlertContainer state={tileState} role="dialog">
+    <OverlayDiv role="dialog">
       {(() => {
         switch (true) {
           case isSuccessful:
@@ -58,7 +58,7 @@ const ExecutionOverlay = ({
             return <WarningOverlay {...currencyPair} />
         }
       })()}
-    </ExecutionStatusAlertContainer>
+    </OverlayDiv>
   )
 }
 
