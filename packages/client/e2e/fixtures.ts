@@ -95,10 +95,10 @@ export const test = base.extend<Fixtures>({
               rec.blotterPO = new FxBlotterPageObject(page, testInfo)
               break
             case "fx-tiles":
+              page.setViewportSize({ height: 1280, width: 1024 })
               rec.tilePO = new FxTilesPageObject(page, testInfo)
               break
             case "fx-analytics":
-              page.setViewportSize({ height: 1280, width: 1024 })
               rec.analyticsPO = new FxAnalyticsPageObject(page, testInfo)
               break
             default:
