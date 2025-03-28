@@ -18,8 +18,12 @@ export class CreditNewRfqPageObject {
     return this.page.getByLabel("Quantity (000)")
   }
 
-  get adaptiveBankToggle() {
-    return this.page.getByLabel(/Adaptive Bank/)
+  selectAllCounterparties() {
+    return this.page.getByLabel(/All/).click()
+  }
+
+  selectAdaptiveBankCounterparty() {
+    return this.page.getByLabel(/Adaptive Bank/).click()
   }
 
   get sendRFQButton() {

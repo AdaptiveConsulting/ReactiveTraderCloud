@@ -43,12 +43,7 @@ const ContactUsButton = () => {
   }, [])
 
   return (
-    <Button
-      variant="primary"
-      size="sm"
-      onClick={showPopup}
-      data-qa="contact-us-button"
-    >
+    <Button variant="primary" size="sm" onClick={showPopup}>
       {/* <MailIcon height="1" width="1" active={showing} /> TODO add icon support to button component */}
       Get in touch
     </Button>

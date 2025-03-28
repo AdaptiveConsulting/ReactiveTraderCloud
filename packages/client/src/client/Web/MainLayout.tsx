@@ -36,7 +36,7 @@ const MainWrapper = styled.div`
 
 const MainLayout = () => (
   <Wrapper>
-    <AppLayoutRoot data-qa="app-layout__root">
+    <AppLayoutRoot>
       <Header />
       <MainWrapper>
         <Outlet />

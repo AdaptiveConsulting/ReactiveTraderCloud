@@ -52,9 +52,9 @@ test.describe("Credit", () => {
     if (!triggerSellSide) {
       // if we want to avoid popping up the sell side window (should be minority of tests)
       // select all, then the click on Adaptive Bank below will switch off the sell side for that test
-      await newRfqPage.page.getByLabel(/All/).click()
+      await newRfqPage.selectAllCounterparties()
     }
-    await newRfqPage.adaptiveBankToggle.click()
+    await newRfqPage.selectAdaptiveBankCounterparty()
 
     const pagePromise = triggerSellSide
       ? browserContext.waitForEvent("page", {
