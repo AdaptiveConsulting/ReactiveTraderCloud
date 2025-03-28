@@ -20,10 +20,6 @@ export class FxBlotterPageObject {
     return this.page.locator('[aria-label="Export to CSV"]')
   }
 
-  get filterButton() {
-    return this.page.getByTestId("filter-button")
-  }
-
   get firstTradeRow() {
     return this.page.locator('[role="grid"] > div').nth(1).locator("div")
   }
@@ -36,6 +32,15 @@ export class FxBlotterPageObject {
     return this.page.getByText("Trade ID", {
       exact: true,
     })
+  }
+
+  async clearFilters() {
+    for (const button of await this.page
+      .getByTestId("clear-filter-button")
+      .all()) {
+      await button.click()
+    }
+    return
   }
 
   tradesGridRow(tradeId: string) {
