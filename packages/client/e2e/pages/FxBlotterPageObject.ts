@@ -34,13 +34,8 @@ export class FxBlotterPageObject {
     })
   }
 
-  async clearFilters() {
-    for (const button of await this.page
-      .getByTestId("clear-filter-button")
-      .all()) {
-      await button.click()
-    }
-    return
+  async clearFilter() {
+    await this.page.getByTestId("clear-filter-button").click()
   }
 
   tradesGridRow(tradeId: string) {
