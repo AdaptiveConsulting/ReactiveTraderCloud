@@ -33,7 +33,7 @@ export const AppliedFilters = () => {
         <FilterField
           key={field}
           onClick={() => onFilterReset(field)}
-          data-testid="filter-button"
+          data-testid="clear-filter-button"
         >
           <Typography variant="Text sm/Regular" paddingRight="md">
             {colDef[field].headerName}

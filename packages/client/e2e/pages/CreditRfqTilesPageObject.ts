@@ -36,10 +36,10 @@ export class CreditRfqTilesPageObject {
     return this.page.getByTestId("tab-bar-dropdown")
   }
 
-  async selectFilter(filter: string) {
+  selectFilter(filter: string) {
     if (isRfqTilesResponsive(this.workerInfo)) {
       this.filterDropdown.click()
-      return await this.filterDropdown.getByText(filter).click()
+      return this.filterDropdown.getByText(filter).click()
     }
     return this.filterTabs.getByText(filter).click()
   }
