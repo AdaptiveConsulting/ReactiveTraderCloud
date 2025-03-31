@@ -44,8 +44,7 @@ Suggest [vitest](https://marketplace.visualstudio.com/items?itemName=vitest.expl
 
 ### Testing and Quality Checks
 
-Run `npm run verify` before pushing to run type checking, linting, format checking, and tests.
-This command is run as part of the continuous integration pipeline on GitHub actions.
+Run `npm run verify` before pushing any commits to origin to run type checking, linting, format checking, and tests. This command is run as part of the continuous integration pipeline on GitHub actions.
 
 ### Mac and Windows
 

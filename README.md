@@ -1,4 +1,4 @@
-![example workflow](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/actions/workflows/branch.yml/badge.svg?branch=master)
+[![example workflow](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/actions/workflows/branch.yml/badge.svg?branch=master)](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/actions/workflows/branch.yml)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/AdaptiveConsulting/ReactiveTraderCloud)](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/latest)
 [![GitHub](https://img.shields.io/github/license/AdaptiveConsulting/ReactiveTraderCloud)](https://opensource.org/licenses/Apache-2.0)
 
@@ -8,7 +8,7 @@
 
 Reactive Trader® is a real-time FX trading platform designed to showcase reactive programming principles across the full application stack.
 
-Written in React and RxJs / React-RxJs and running on [Hydra](https://weareadaptive.com/platform-solutions/), the platform will continue to evolve and use the latest technologies.
+Written in React and RxJs / React-RxJs and running on [Hydra](https://weareadaptive.com/hydra/), the platform will continue to evolve and use the latest technologies.
 
 Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full list of the latest features.
 
@@ -16,20 +16,10 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 
 ## Demo
 
-- [Web & Mobile]
-- [OpenFin] installer: [Windows][openfin-win], [Mac][openfin-mac]
-- [Finsemble] smart desktop installer: [Windows][finsemble-win]
-- [Style guide]: Colours, iconography, typography, atoms and molecules
-- [Storybook]: Explore individual React components
-
-[web & mobile]: https://www.reactivetrader.com
-[openfin]: https://openfin.co/
-[finsemble]: https://cosaic.io/finsemble/
-[storybook]: https://www.reactivetrader.com/storybook
-[style guide]: https://www.reactivetrader.com/styleguide
-[openfin-win]: ./packages/client/install/Reactive-Launcher-Demo.exe?raw=true
-[openfin-mac]: ./packages/client/install/Reactive-Launcher-Demo.dmg?raw=true
-[finsemble-win]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsemble.exe
+- [Web & Mobile](https://www.reactivetrader.com)
+- [OpenFin([]](https://openfin.co/)) & [Finsemble](https://cosaic.io/finsemble/) installers [here](./packages/client/install/README.md)
+- [Style guide](https://www.reactivetrader.com/storybook): Colours, iconography, typography, atoms and molecules
+- [Storybook](https://www.reactivetrader.com/styleguide): Explore individual React components
 
 ## Development
 
@@ -80,7 +70,7 @@ Please see our [contribution guidelines](./CONTRIBUTING.md).
 
 Reactive Trader was written by the team at [Adaptive](http://weareadaptive.com/), a consultancy that specialises in building real-time trading systems.
 
-Please [contact us](https://weareadaptive.com/contact/) if you'd like to learn more, or follow us via our [blog](https://weareadaptive.com/category/blog/), [Twitter](https://twitter.com/WeAreAdaptive), or [LinkedIn](https://www.linkedin.com/company/adaptive-consulting-ltd/).
+Please [contact us](https://weareadaptive.com/contact/) if you'd like to learn more, or follow us via our [blog](https://weareadaptive.com/life-at-adaptive/), [Twitter](https://twitter.com/WeAreAdaptive), or [LinkedIn](https://www.linkedin.com/company/adaptive-consulting-ltd/).
 
 ## License
 
