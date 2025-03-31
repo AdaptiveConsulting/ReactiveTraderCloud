@@ -12,10 +12,6 @@ const getTradeIDFromCSV = (csvRows: string | string[]): string => {
 }
 
 test.describe("Trade Blotter", () => {
-  test.afterAll(async ({ fxPages: { blotterPO } }) => {
-    await blotterPO.clearFilters()
-  })
-
   test("When user hovers over a row on the Blotter, it should highlight that row", async ({
     fxPages: { blotterPO },
   }) => {
@@ -149,5 +145,7 @@ test.describe("Trade Blotter", () => {
 
     expect(typeof filteredCSVRows).not.toBe("string")
     expect(getTradeIDFromCSV(filteredCSVRows)).toBe(tradeIDToSearch)
+
+    await blotterPO.clearFilter()
   })
 })
