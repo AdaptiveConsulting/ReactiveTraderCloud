@@ -1,8 +1,15 @@
 import { expect } from "@playwright/test"
 
 import { test } from "./fixtures"
+import { isOpenFin } from "./utils"
 
 test.describe("Spot Tile", () => {
+  test.beforeAll(async ({ fxPages: { mainPage } }, workerInfo) => {
+    if (!isOpenFin(workerInfo)) {
+      await mainPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}`)
+    }
+  })
+
   test.describe("Valid Purchase", () => {
     test("When I sell EUR to USD then trade Id shown in tile should match trade Id shown in blotter @smoke", async ({
       fxPages: { tilePO, blotterPO },

@@ -1,10 +1,16 @@
 import { expect } from "@playwright/test"
 
 import { test } from "./fixtures"
-import { ExpectTimeout } from "./utils"
+import { ExpectTimeout, isOpenFin } from "./utils"
 
 test.describe("FX Analytics", () => {
   test.describe("Profit & Loss section", () => {
+    test.beforeAll(async ({ fxPages: { mainPage } }, workerInfo) => {
+      if (!isOpenFin(workerInfo)) {
+        await mainPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}`)
+      }
+    })
+
     test("Last Profit & Loss amount is displayed in numerical format @smoke", async ({
       fxPages: { analyticsPO },
     }) => {

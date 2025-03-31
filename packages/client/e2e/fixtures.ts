@@ -25,6 +25,7 @@ type FxPages = {
 }
 
 type CreditPages = {
+  mainPage: Page
   blotterPO: CreditBlotterPageObject
   newRfqPO: CreditNewRfqPageObject
   rfqsPO: CreditRfqTilesPageObject
@@ -37,6 +38,7 @@ interface Fixtures {
 }
 
 const creditOpenfinUrlSuffixes: Record<string, keyof CreditPages> = {
+  "openfin-window-frame?app=CREDIT": "mainPage",
   "credit-blotter": "blotterPO",
   "credit-new-rfq": "newRfqPO",
   "credit-rfqs": "rfqsPO",
@@ -110,7 +112,7 @@ export const test = base.extend<Fixtures>({
     } else {
       const mainPage =
         contextPages.length > 0 ? contextPages[0] : await context.newPage()
-      await mainPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}`)
+
       use({
         mainPage,
         tilePO: new FxTilesPageObject(mainPage, testInfo),
@@ -134,6 +136,9 @@ export const test = base.extend<Fixtures>({
             if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
 
             switch (urlPath) {
+              case "openfin-window-frame?app=CREDIT":
+                rec.mainPage = page
+                break
               case "credit-blotter":
                 rec.blotterPO = new CreditBlotterPageObject(page, testInfo)
                 break
@@ -155,8 +160,9 @@ export const test = base.extend<Fixtures>({
     } else {
       const mainPage =
         contextPages.length > 0 ? contextPages[0] : await context.newPage()
-      await mainPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}/credit`)
+
       use({
+        mainPage,
         blotterPO: new CreditBlotterPageObject(mainPage, testInfo),
         newRfqPO: new CreditNewRfqPageObject(mainPage, testInfo),
         rfqsPO: new CreditRfqTilesPageObject(mainPage, testInfo),

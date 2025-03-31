@@ -2,6 +2,7 @@ import { expect } from "@playwright/test"
 import fs from "fs"
 
 import { test } from "./fixtures"
+import { isOpenFin } from "./utils"
 
 const FIRST_TRADE_ROW_INDEX = 1 // account for header row
 
@@ -12,6 +13,18 @@ const getTradeIDFromCSV = (csvRows: string | string[]): string => {
 }
 
 test.describe("Trade Blotter", () => {
+  test.beforeAll(async ({ fxPages: { mainPage } }, workerInfo) => {
+    if (!isOpenFin(workerInfo)) {
+      await mainPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}`)
+    }
+  })
+
+  test.afterAll(async ({ fxPages: { blotterPO } }, workerInfo) => {
+    if (isOpenFin(workerInfo)) {
+      await blotterPO.clearFilter()
+    }
+  })
+
   test("When user hovers over a row on the Blotter, it should highlight that row", async ({
     fxPages: { blotterPO },
   }) => {
@@ -145,7 +158,5 @@ test.describe("Trade Blotter", () => {
 
     expect(typeof filteredCSVRows).not.toBe("string")
     expect(getTradeIDFromCSV(filteredCSVRows)).toBe(tradeIDToSearch)
-
-    await blotterPO.clearFilter()
   })
 })
