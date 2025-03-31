@@ -40,8 +40,9 @@ export const FailureOverlay = ({
           if (
             tileState.status === TileStates.Finished &&
             tileState.trade.status === ExecutionStatus.Rejected
-          )
+          ) {
             return "Your trade has been rejected"
+          }
         })()}
       </Typography>
     </OverlayBackgroundImage>

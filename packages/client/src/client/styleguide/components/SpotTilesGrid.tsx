@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-import { TileContextProver } from "@/client/App/LiveRates/Tile/Tile.context"
+import { TileContext } from "@/client/App/LiveRates/Tile/Tile.context"
 import { TileStates } from "@/client/App/LiveRates/Tile/Tile.state"
 import { Box } from "@/client/components/Box"
 import { Typography } from "@/client/components/Typography"
@@ -230,7 +230,7 @@ const TileCell = ({
     <Typography variant="Text lg/Regular" marginBottom="sm">
       {item.title}
     </Typography>
-    <TileContextProver
+    <TileContext.Provider
       value={{
         currencyPair,
         isTornOut: false,
@@ -239,7 +239,7 @@ const TileCell = ({
       }}
     >
       <Tile {...item.props} graphPath={graphPath} />
-    </TileContextProver>
+    </TileContext.Provider>
   </Cell>
 )
 

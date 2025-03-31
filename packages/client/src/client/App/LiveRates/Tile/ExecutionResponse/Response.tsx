@@ -37,25 +37,26 @@ const ExecutionOverlay = ({
   return (
     <OverlayDiv role="dialog">
       {(() => {
-        switch (true) {
-          case isSuccessful:
-            return (
-              <SuccessOverlay
-                trade={tileState.trade}
-                onClose={onClose}
-                {...currencyPair}
-              />
-            )
-          case isFailure:
-            return (
-              <FailureOverlay
-                tileState={tileState}
-                onClose={onClose}
-                {...currencyPair}
-              />
-            )
-          case isTooLong:
-            return <WarningOverlay {...currencyPair} />
+        if (isSuccessful) {
+          return (
+            <SuccessOverlay
+              trade={tileState.trade}
+              onClose={onClose}
+              {...currencyPair}
+            />
+          )
+        }
+        if (isFailure) {
+          return (
+            <FailureOverlay
+              tileState={tileState}
+              onClose={onClose}
+              {...currencyPair}
+            />
+          )
+        }
+        if (isTooLong) {
+          return <WarningOverlay {...currencyPair} />
         }
       })()}
     </OverlayDiv>

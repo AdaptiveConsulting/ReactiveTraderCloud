@@ -13,14 +13,13 @@ type TileContextInitial = TileContextBase & {
 }
 type TileContextType = TileContextBase & { currencyPair: CurrencyPair }
 
-const TileContext = createContext<TileContextInitial>({
+export const TileContext = createContext<TileContextInitial>({
   currencyPair: null,
   isTornOut: false,
   supportsTearOut: false,
   showingChart: false,
 })
 
-export const { Provider: TileContextProver } = TileContext
 export const useTileContext = () => {
   const tileContext = useContext(TileContext)
   if (!tileContext.currencyPair) {

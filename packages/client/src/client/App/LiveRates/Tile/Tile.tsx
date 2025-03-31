@@ -23,7 +23,7 @@ import {
   RfqTimer,
   useRfqState,
 } from "./Rfq"
-import { symbolBind, TileContextProver, useTileContext } from "./Tile.context"
+import { symbolBind, TileContext, useTileContext } from "./Tile.context"
 import {
   Body,
   InputTimerStyle,
@@ -54,7 +54,7 @@ const [useIsSymbolDataStale] = symbolBind(
   ),
 )
 
-const Tile = () => {
+const TileInner = () => {
   useIsSymbolDataStale()
   const rfq = useRfqState()
 
@@ -104,7 +104,7 @@ const Tile = () => {
   )
 }
 
-const TileContext = memo(function TileContext({
+export const Tile = memo(function Tile({
   currencyPair,
   showingChart,
   isTornOut = false,
@@ -116,7 +116,7 @@ const TileContext = memo(function TileContext({
   supportsTearOut?: boolean
 }) {
   return (
-    <TileContextProver
+    <TileContext.Provider
       value={{
         currencyPair,
         isTornOut,
@@ -124,9 +124,7 @@ const TileContext = memo(function TileContext({
         showingChart: showingChart,
       }}
     >
-      <Tile />
-    </TileContextProver>
+      <TileInner />
+    </TileContext.Provider>
   )
 })
-
-export { TileContext as Tile }
