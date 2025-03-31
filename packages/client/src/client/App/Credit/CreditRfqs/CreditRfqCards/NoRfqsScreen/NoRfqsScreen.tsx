@@ -72,7 +72,7 @@ export const NoRfqsScreen = () => {
   const IconComponent = getIconComponent(selectedRfqsTab)
 
   return (
-    <Wrapper direction="column" justifyContent="center">
+    <Wrapper direction="column" alignItems="center" justifyContent="center">
       <IconComponent />
       <Typography variant="Text lg/Semibold" marginBottom="xs">
         {getTitleForTab(selectedRfqsTab)}
