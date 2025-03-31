@@ -24,7 +24,15 @@ import { HistoryPrice, Price, PriceMovementType } from "@/services/prices"
 import { pricesMock } from "@/services/prices/__mocks__/_prices"
 
 import { Tile, tile$ } from "../Tile"
+import { assertSuccessOverlay } from "./utils"
 
+vi.mock(import("rxjs/operators"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    delay: () => (s) => s,
+  }
+})
 vi.mock("@/services/prices/prices")
 vi.mock("@/services/currencyPairs/currencyPairs")
 vi.mock("@/services/executions/executions")
@@ -58,7 +66,7 @@ const renderComponent = async (
     component = render(
       <TestThemeProvider>
         <Subscribe source$={tile$(currencyPair.symbol)} fallback="No data">
-          <Tile currencyPair={currencyPairMock} isAnalytics={isAnalytics} />
+          <Tile currencyPair={currencyPairMock} showingChart={isAnalytics} />
         </Subscribe>
       </TestThemeProvider>,
     )
@@ -76,6 +84,11 @@ describe("Tile", () => {
       [currencyPairMock.symbol]: currencyPairMock,
     })
     ccppMock.__setMock(ccPairMock$)
+  })
+
+  afterAll(() => {
+    vi.runOnlyPendingTimers()
+    vi.useRealTimers()
   })
 
   it("should trigger Suspense before it receives the first update", async () => {
@@ -159,7 +172,7 @@ describe("Tile", () => {
       currencyPair: "EURUSD",
       dealtCurrency: "USD",
       direction: Direction.Sell,
-      notional: 1000000,
+      notional: 1_000_000,
       spotRate: 1.53816,
     })
 
@@ -177,10 +190,9 @@ describe("Tile", () => {
       response$.complete()
     })
 
-    await waitFor(() => expect(screen.queryByText("Executing")).toBeNull())
-    expect(screen.getByRole("alert").textContent).toEqual(
-      "You sold EUR 1,000,000 at a rate of 1.53816 for USD 1,538,160 settling (Spt) 04 Feb.",
-    )
+    expect(screen.queryByText("Executing")).toBeNull()
+
+    assertSuccessOverlay({ "You Sold": "EUR 1,000,000", Cost: "USD 1,538,160" })
 
     act(() => {
       fireEvent.click(screen.getByText("Close"))
@@ -241,9 +253,10 @@ describe("Tile", () => {
     act(() => {
       vi.advanceTimersByTime(2000)
     })
+
     expect(screen.queryByText("Executing")).toBeNull()
     expect(screen.getByRole("alert").textContent).toEqual(
-      "Trade execution taking longer than expected",
+      "Trade execution taking longer than expected.",
     )
 
     const tradeId = 200
@@ -258,9 +271,7 @@ describe("Tile", () => {
       response$.complete()
     })
 
-    expect(screen.getByRole("alert").textContent).toEqual(
-      "You sold EUR 1,000,000 at a rate of 1.53816 for USD 1,538,160 settling (Spt) 04 Feb.",
-    )
+    assertSuccessOverlay({ "You Sold": "EUR 1,000,000", Cost: "USD 1,538,160" })
 
     act(() => {
       fireEvent.click(screen.getByText("Close"))

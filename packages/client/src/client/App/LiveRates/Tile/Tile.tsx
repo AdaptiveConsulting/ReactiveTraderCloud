@@ -23,7 +23,7 @@ import {
   RfqTimer,
   useRfqState,
 } from "./Rfq"
-import { Provider, symbolBind, useTileContext } from "./Tile.context"
+import { symbolBind, TileContext, useTileContext } from "./Tile.context"
 import {
   Body,
   InputTimerStyle,
@@ -54,13 +54,14 @@ const [useIsSymbolDataStale] = symbolBind(
   ),
 )
 
-const Tile = ({ isAnalytics }: { isAnalytics: boolean }) => {
+const TileInner = () => {
   useIsSymbolDataStale()
   const rfq = useRfqState()
 
   const {
     currencyPair: { symbol },
     supportsTearOut,
+    showingChart,
   } = useTileContext()
 
   const timerData =
@@ -70,7 +71,7 @@ const Tile = ({ isAnalytics }: { isAnalytics: boolean }) => {
 
   const InputTimerWrapper = ({ isAnalytics }: { isAnalytics?: boolean }) => {
     return (
-      <InputTimerStyle isAnalyticsView={!!isAnalytics}>
+      <InputTimerStyle>
         {timerData ? (
           <RfqTimer
             {...timerData}
@@ -87,13 +88,13 @@ const Tile = ({ isAnalytics }: { isAnalytics: boolean }) => {
     <PanelItem shouldMoveDate={supportsTearOut}>
       <Main>
         <Header />
-        <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>
-          {isAnalytics ? <HistoricalGraph showTimer={!!timerData} /> : null}
-          <PriceControlsStyle isAnalyticsView={isAnalytics}>
-            <PriceMovement isAnalyticsView={isAnalytics} />
+        <Body>
+          {showingChart ? <HistoricalGraph showTimer={!!timerData} /> : null}
+          <PriceControlsStyle>
             <PriceButton direction={Direction.Sell} />
+            <PriceMovement />
             <PriceButton direction={Direction.Buy} />
-            <RfqButton isAnalytics={isAnalytics} />
+            <RfqButton />
           </PriceControlsStyle>
         </Body>
         <InputTimerWrapper />
@@ -103,28 +104,27 @@ const Tile = ({ isAnalytics }: { isAnalytics: boolean }) => {
   )
 }
 
-const TileContext = memo(function TileContext({
+export const Tile = memo(function Tile({
   currencyPair,
-  isAnalytics,
+  showingChart,
   isTornOut = false,
   supportsTearOut = true,
 }: {
   currencyPair: CurrencyPair
-  isAnalytics: boolean
+  showingChart: boolean
   isTornOut?: boolean
   supportsTearOut?: boolean
 }) {
   return (
-    <Provider
+    <TileContext.Provider
       value={{
         currencyPair,
         isTornOut,
         supportsTearOut: supportsTearOut && !isMobileDevice,
+        showingChart: showingChart,
       }}
     >
-      <Tile isAnalytics={isAnalytics} />
-    </Provider>
+      <TileInner />
+    </TileContext.Provider>
   )
 })
-
-export { TileContext as Tile }

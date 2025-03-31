@@ -5,12 +5,6 @@ import { CenteringContainer } from "@/client/components/CenteringContainer"
 import { OverlayDiv } from "@/client/components/OverlayDiv"
 import { Typography } from "@/client/components/Typography"
 
-const PendingContainer = styled(OverlayDiv)`
-  // Solution to stack flex child ontop of another, height is not respected in safari
-  // margin-left: -100%;
-  position: absolute;
-`
-
 const PendingPill = styled("div")`
   display: flex;
   gap: ${({ theme }) => theme.spacing.sm};
@@ -22,7 +16,7 @@ const PendingPill = styled("div")`
 
 export const Pending = () => {
   return (
-    <PendingContainer>
+    <OverlayDiv>
       <CenteringContainer>
         <PendingPill>
           <AdaptiveLoader
@@ -35,6 +29,6 @@ export const Pending = () => {
           <Typography variant="Text md/Bold">Executing</Typography>
         </PendingPill>
       </CenteringContainer>
-    </PendingContainer>
+    </OverlayDiv>
   )
 }

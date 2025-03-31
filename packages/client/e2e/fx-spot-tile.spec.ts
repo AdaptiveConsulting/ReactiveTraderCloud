@@ -35,6 +35,9 @@ test.describe("Spot Tile", () => {
 
       await tilePage.locator("[data-testid='Sell-EURUSD']").click()
 
+      // Wait for execution delay to end
+      await expect(tilePage.locator("[data-testid='trade-id']")).toBeVisible()
+
       const tradeId = await tilePage
         .locator("[data-testid='trade-id']")
         .innerText()
@@ -52,7 +55,7 @@ test.describe("Spot Tile", () => {
 
       const greenConfirmation = tilePage
         .locator("div[role='dialog']")
-        .getByText(/You bought/)
+        .getByText(/You Bought/)
       await expect(greenConfirmation).toBeVisible()
     })
   })
@@ -165,7 +168,7 @@ test.describe("Spot Tile", () => {
       const tileState2 = await tilePage.evaluate(() =>
         window.localStorage.getItem("selectedView"),
       )
-      expect(tileState2).toBe("Analytics")
+      expect(tileState2).toBe("Chart")
       await expect(
         tilePage.locator("[data-testid='tile-graph']").nth(0),
       ).toBeVisible()

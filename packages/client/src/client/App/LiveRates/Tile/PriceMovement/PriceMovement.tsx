@@ -7,7 +7,7 @@ import { equals } from "@/client/utils/equals"
 import { getPrice$, PriceMovementType } from "@/services/prices"
 
 import { useRfqPayload } from "../Rfq/Rfq.state"
-import { symbolBind } from "../Tile.context"
+import { symbolBind, useTileContext } from "../Tile.context"
 import {
   MovementIconDown,
   MovementIconUP,
@@ -36,29 +36,17 @@ const MovementTypography = ({ children }: PropsWithChildren) => (
   </MovementValue>
 )
 
-export const PriceFromQuoteInner = ({
-  isAnalytics,
-  spread,
-}: {
-  isAnalytics: boolean
-  spread: string
-}) => (
-  <PriceMovementStyle isAnalyticsView={isAnalytics}>
-    <MovementTypography>{spread}</MovementTypography>
-  </PriceMovementStyle>
-)
-
 export const PriceMovementInner = ({
   spread,
   movementType,
-  isAnalyticsView,
+  showingChart,
 }: {
   spread: string
   movementType?: PriceMovementType
-  isAnalyticsView?: boolean
+  showingChart?: boolean
 }) => (
-  <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
-    <Line height={isAnalyticsView ? "3xl" : "lg"} />
+  <PriceMovementStyle isAnalyticsView={showingChart}>
+    <Line height={showingChart ? "3xl" : "lg"} />
     <MovementIconUP
       $show={movementType === PriceMovementType.UP}
       aria-hidden="true"
@@ -68,21 +56,17 @@ export const PriceMovementInner = ({
       $show={movementType === PriceMovementType.DOWN}
       aria-hidden="true"
     />
-    <Line height={isAnalyticsView ? "3xl" : "lg"} />
+    <Line height={showingChart ? "3xl" : "lg"} />
   </PriceMovementStyle>
 )
 
-export const PriceMovement = ({
-  isAnalyticsView,
-}: {
-  isAnalyticsView: boolean
-}) => {
+export const PriceMovement = () => {
   const payload = useRfqPayload()
   const { spread, movementType } = usePriceMovementData()
-
+  const { showingChart } = useTileContext()
   return (
     <PriceMovementInner
-      isAnalyticsView={isAnalyticsView}
+      showingChart={showingChart}
       spread={payload?.rfqResponse.price.spread || spread}
       movementType={payload ? PriceMovementType.NONE : movementType}
     />

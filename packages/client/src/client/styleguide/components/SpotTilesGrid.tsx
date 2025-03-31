@@ -1,8 +1,11 @@
 import styled from "styled-components"
 
+import { TileContext } from "@/client/App/LiveRates/Tile/Tile.context"
 import { TileStates } from "@/client/App/LiveRates/Tile/Tile.state"
 import { Box } from "@/client/components/Box"
 import { Typography } from "@/client/components/Typography"
+import { Direction } from "@/generated/TradingGateway"
+import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { PriceMovementType } from "@/services/prices"
 
 import { H3 } from "../elements"
@@ -12,7 +15,7 @@ import { Tile, TileProps } from "./Tile"
 
 const Grid = styled(Box)`
   display: grid;
-  grid-template-columns: 120px 1fr 1fr;
+  grid-template-columns: 120px 270px 270px;
   grid-column-gap: 43px;
   grid-row-gap: 24px;
 `
@@ -21,10 +24,10 @@ const Cell = styled.div`
   grid-row-gap: 9px;
 `
 const FxSpot = styled.div`
-  grid-row: 1 / span 2;
+  grid-row: 1 / span 4;
 `
 const FxRfq = styled.div`
-  grid-row: 4 / span 4;
+  grid-row: 6 / span 7;
 `
 const GridSeparator = styled(Separator)`
   grid-column: 1 / -1;
@@ -86,6 +89,49 @@ const FX_SPOT: TileCellProps[] = [
       tileState: { status: TileStates.Started },
       disabledNotional: true,
       priceDisabled: true,
+    },
+  },
+  {
+    title: "Success",
+    props: {
+      ...BASE_FX_SPOT_PROPS,
+      tileState: {
+        status: TileStates.Finished,
+        trade: {
+          direction: Direction.Buy,
+          notional: 200000,
+          spotRate: 1000,
+          valueDate: new Date(Date.now()),
+          tradeId: 12345,
+          status: ExecutionStatus.Done,
+        } as ExecutionTrade,
+      },
+    },
+  },
+  {
+    title: "Failure",
+    props: {
+      ...BASE_FX_SPOT_PROPS,
+      tileState: {
+        status: TileStates.Finished,
+        trade: {
+          direction: Direction.Buy,
+          notional: 200000,
+          spotRate: 1000,
+          valueDate: new Date(Date.now()),
+          tradeId: 12345,
+          status: ExecutionStatus.Rejected,
+        } as ExecutionTrade,
+      },
+    },
+  },
+  {
+    title: "Warning",
+    props: {
+      ...BASE_FX_SPOT_PROPS,
+      tileState: {
+        status: TileStates.TooLong,
+      },
     },
   },
 ]
@@ -184,7 +230,16 @@ const TileCell = ({
     <Typography variant="Text lg/Regular" marginBottom="sm">
       {item.title}
     </Typography>
-    <Tile {...item.props} isAnalytics={isAnalytics} graphPath={graphPath} />
+    <TileContext.Provider
+      value={{
+        currencyPair,
+        isTornOut: false,
+        supportsTearOut: false,
+        showingChart: !!isAnalytics,
+      }}
+    >
+      <Tile {...item.props} graphPath={graphPath} />
+    </TileContext.Provider>
   </Cell>
 )
 

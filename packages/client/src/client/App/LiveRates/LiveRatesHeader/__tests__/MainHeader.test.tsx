@@ -101,7 +101,7 @@ describe("MainHeader", () => {
     await renderComponent()
 
     expect(screen.getByTestId("tile-EURUSD").textContent).toBe(
-      "IsAnalytics: true",
+      "ShowingChart: true",
     )
 
     act(() => {
@@ -109,7 +109,7 @@ describe("MainHeader", () => {
     })
 
     expect(screen.getByTestId("tile-EURUSD").textContent).toBe(
-      "IsAnalytics: false",
+      "ShowingChart: false",
     )
 
     act(() => {
@@ -117,7 +117,7 @@ describe("MainHeader", () => {
     })
 
     expect(screen.getByTestId("tile-EURUSD").textContent).toBe(
-      "IsAnalytics: true",
+      "ShowingChart: true",
     )
   })
 })

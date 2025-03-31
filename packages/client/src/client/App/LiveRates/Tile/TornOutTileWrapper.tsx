@@ -12,7 +12,7 @@ export const TornOutTileWrapper = () => {
   const query = new URLSearchParams(search)
   const view = query.has("tileView")
     ? (query.get("tileView") as TileView)
-    : TileView.Analytics
+    : TileView.Chart
 
   return (
     <>
