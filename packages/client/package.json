@@ -17,7 +17,7 @@
     }
   ],
   "engines": {
-    "node": "> 20.5.0"
+    "node": ">= 22.14.0"
   },
   "repository": {
     "type": "git",
@@ -99,7 +99,8 @@
   },
   "overrides": {
     "cookie": "0.x",
-    "next": "14.2.26"
+    "next": "14.2.26",
+    "tar-fs": "3.0.8"
   },
   "optionalDependencies": {
     "@adaptive-uikit/figma-to-theme": "0.0.2"
